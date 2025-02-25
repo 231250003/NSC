@@ -7,8 +7,8 @@ public class Main {
     public static void main(String[] args) {
         String filePath = args[0];
         if (args.length != 1) {
-            System.err.println("Usage: java Main <filename>");
             System.out.println("crz");
+            System.err.println("Usage: java Main <filename>");
             System.exit(1);
         }
         try {
