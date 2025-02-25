@@ -16,6 +16,7 @@ public class Main {
             Files.lines(Paths.get(filePath), StandardCharsets.UTF_8)
                     .forEach(System.out::println);
         } catch (IOException e) {
+            System.out.println("crz");
             throw new RuntimeException(e);
         }
     }
