@@ -6,7 +6,6 @@ public class Main {
 
     public static void main(String[] args) {
         if (args.length != 1) {
-            System.out.println("crz");
             System.err.println("Usage: java Main <filename>");
             System.exit(1);
         }
