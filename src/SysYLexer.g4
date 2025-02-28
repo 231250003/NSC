@@ -38,6 +38,7 @@ IDENT       : [a-zA-Z_][a-zA-Z_0-9]*;
 INTEGER_CONST : [0-9]+
               | '0' [0-7]*
               | '0x' [0-9a-fA-F]+
+              | '0X' [0-9a-fA-F]+
               ;
 
 WS          : [ \r\n\t]+ -> skip;
