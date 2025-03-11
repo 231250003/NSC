@@ -19,13 +19,7 @@ public class MyErrorListener extends BaseErrorListener{
             x = String.format("Error type A at Line %d: %s", line, msg);
         }
         else {
-            if (offendingSymbol instanceof Token) {
-                Token token = (Token) offendingSymbol;
-                x = String.format("Error type B at Line %d: mismatched input '%s' %s",
-                        line, token.getText(), msg);
-            } else {
                 x = String.format("Error type B at Line %d: %s", line, msg);
-            }
         }
         errors.add(x);
     }

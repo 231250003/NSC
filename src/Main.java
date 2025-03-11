@@ -38,15 +38,15 @@ public class Main {
         else if(parser_errorListener.hasErrorInformation()){
             parser_errorListener.printLexerErrorInformation(true);
         }
-        else{
-            ParseTree tree = parser.program();
-            FormatterVisitor visitor = new FormatterVisitor();
-            visitor.visit(tree);
-            List<? extends Token> myTokens = lexer.getAllTokens();
-            for(Token t: myTokens){
-                printSysYTokenInformation(t);
-            }
-        }
+//        else{
+//            ParseTree tree = parser.program();
+//            FormatterVisitor visitor = new FormatterVisitor();
+//            visitor.visit(tree);
+//            List<? extends Token> myTokens = lexer.getAllTokens();
+//            for(Token t: myTokens){
+//                printSysYTokenInformation(t);
+//            }
+//        }
     }
     public static void printSysYTokenInformation(Token t){
         String tokenType = SysYLexer.VOCABULARY.getSymbolicName(t.getType());
