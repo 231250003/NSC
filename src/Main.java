@@ -1,5 +1,6 @@
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 
 import java.io.IOException;
@@ -20,9 +21,18 @@ public class Main {
         lexer.removeErrorListeners();
         MyErrorListener errorListener=new MyErrorListener();
         lexer.addErrorListener(errorListener);
+
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        SysYParser parser = new SysYParser(tokens);
+        parser.removeErrorListeners();
+        MyErrorListener parser_errorListener=new MyErrorListener();
+        parser.addErrorListener(parser_errorListener);
         List<? extends Token> myTokens = lexer.getAllTokens();
         if(errorListener.hasErrorInformation()){
-            errorListener.printLexerErrorInformation();
+            errorListener.printLexerErrorInformation(false);
+        }
+        else if(parser_errorListener.hasErrorInformation()){
+            parser_errorListener.printLexerErrorInformation(true);
         }
         else{
             for(Token t: myTokens){
