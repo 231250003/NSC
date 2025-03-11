@@ -27,7 +27,7 @@ varDef : IDENT (L_BRACKT constExp R_BRACKT)* | IDENT (L_BRACKT constExp R_BRACKT
 
 initVal : exp | L_BRACE (initVal (COMMA initVal)*)? R_BRACE;
 
-funcDef : funcType IDENT L_PAREN (funcFParams)? L_PAREN block;
+funcDef : funcType IDENT L_PAREN (funcFParams)? R_PAREN block;
 
 funcType : VOID | INT;
 

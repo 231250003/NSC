@@ -14,10 +14,19 @@ public class MyErrorListener extends BaseErrorListener{
                             int line, int charPositionInLine,
                             String msg,
                             RecognitionException e){
-        String errorType="";
-        if(type==1) errorType =  "Error type A" ;
-        else errorType="Error type B";
-        String x = String.format("%s at Line %d: %s", errorType, line, msg);
+        String x;
+        if(type==1) {
+            x = String.format("Error type A at Line %d: %s", line, msg);
+        }
+        else {
+            if (offendingSymbol instanceof Token) {
+                Token token = (Token) offendingSymbol;
+                x = String.format("Error type B at Line %d: mismatched input '%s' %s",
+                        line, token.getText(), msg);
+            } else {
+                x = String.format("Error type B at Line %d: %s", line, msg);
+            }
+        }
         errors.add(x);
     }
     public boolean hasErrorInformation(){
