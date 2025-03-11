@@ -21,22 +21,22 @@ public class Main {
         lexer.removeErrorListeners();
         MyErrorListener errorListener=new MyErrorListener(1);
         lexer.addErrorListener(errorListener);
-//
-//        CommonTokenStream tokens = new CommonTokenStream(lexer);
-//
-//        SysYParser parser = new SysYParser(tokens);
-//        parser.removeErrorListeners();
-//        MyErrorListener parser_errorListener=new MyErrorListener(2);
-//        parser.addErrorListener(parser_errorListener);
 
-       // parser.compUnit();
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+        SysYParser parser = new SysYParser(tokens);
+        parser.removeErrorListeners();
+        MyErrorListener parser_errorListener=new MyErrorListener(2);
+        parser.addErrorListener(parser_errorListener);
+
+        parser.compUnit();
 
         if(errorListener.hasErrorInformation()){
             errorListener.printLexerErrorInformation(false);
         }
-//        else if(parser_errorListener.hasErrorInformation()){
-//            parser_errorListener.printLexerErrorInformation(true);
-//        }
+        else if(parser_errorListener.hasErrorInformation()){
+            parser_errorListener.printLexerErrorInformation(true);
+        }
         else{
          //   tokens.seek(0);
             List<? extends Token> myTokens = lexer.getAllTokens();
