@@ -39,7 +39,16 @@ block : L_BRACE (blockItem)* R_BRACE;
 
 blockItem : decl | stmt;
 
-stmt : lVal ASSIGN exp SEMICOLON | (exp)? SEMICOLON | block | IF L_PAREN cond R_PAREN stmt (ELSE stmt)?;
+stmt
+   : lVal ASSIGN exp SEMICOLON
+   | (exp)? SEMICOLON
+   | block
+   | IF L_PAREN cond R_PAREN stmt (ELSE stmt)?
+   | WHILE L_PAREN cond R_PAREN stmt
+   | BREAK SEMICOLON
+   | CONTINUE SEMICOLON
+   | RETURN (exp)? SEMICOLON
+   ;
 
 exp
    : L_PAREN exp R_PAREN
