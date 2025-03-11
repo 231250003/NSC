@@ -1,2 +1,4 @@
-int;
-const;
+int main(){
+    int a[];
+    return a][;
+}
