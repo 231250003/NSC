@@ -27,6 +27,26 @@ public class Main {
         parser.removeErrorListeners();
         MyErrorListener parser_errorListener=new MyErrorListener(2);
         parser.addErrorListener(parser_errorListener);
+        parser.setErrorHandler(new DefaultErrorStrategy() {
+                                   @Override
+                                   public void recover(Parser recognizer, RecognitionException e) {
+                                       Token token = recognizer.getCurrentToken();
+                                       String msg = String.format("Error type B at Line %d: unexpected token '%s'",
+                                               token.getLine(), token.getText());
+                                       System.out.println(msg);
+                                   }
+
+                                   @Override
+                                   public Token recoverInline(Parser recognizer) throws RecognitionException {
+                                       Token token = recognizer.getCurrentToken();
+                                       throw new InputMismatchException(recognizer);
+                                   }
+
+                                   @Override
+                                   public void sync(Parser recognizer) throws RecognitionException {
+                                       // 取消 ANTLR 默认的同步机制，防止跳过 Token
+                                   }
+                               });
         parser.compUnit();
 
 //        if(errorListener.hasErrorInformation()){
