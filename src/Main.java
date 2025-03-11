@@ -27,23 +27,6 @@ public class Main {
         parser.removeErrorListeners();
         MyErrorListener parser_errorListener=new MyErrorListener(2);
         parser.addErrorListener(parser_errorListener);
-        parser.setErrorHandler(new DefaultErrorStrategy() {
-            @Override
-            public void recover(Parser recognizer, RecognitionException e) {
-                // 记录错误但不要跳过整行
-                System.out.println("Error: " + e.getMessage());
-            }
-
-            @Override
-            public Token recoverInline(Parser recognizer) throws RecognitionException {
-                // 确保所有错误都能被报告，而不会跳过 Token
-                throw new InputMismatchException(recognizer);
-            }
-
-            @Override
-            public void sync(Parser recognizer) throws RecognitionException {
-            }
-        });
         parser.compUnit();
 
 //        if(errorListener.hasErrorInformation()){
