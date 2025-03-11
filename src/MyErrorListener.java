@@ -31,8 +31,9 @@ public class MyErrorListener extends BaseErrorListener{
     }
     public void printLexerErrorInformation(boolean is_stdout){
         for(String error:errors){
-            if(!is_stdout)System.err.println(error);
-            else System.out.println(error);
+           // if(!is_stdout)System.err.println(error);
+            //else
+                System.out.println(error);
         }
     }
 }
