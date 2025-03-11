@@ -2,6 +2,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -38,7 +39,9 @@ public class Main {
             parser_errorListener.printLexerErrorInformation(true);
         }
         else{
-         //   tokens.seek(0);
+            ParseTree tree = parser.program();
+            FormatterVisitor visitor = new FormatterVisitor();
+            visitor.visit(tree);
             List<? extends Token> myTokens = lexer.getAllTokens();
             for(Token t: myTokens){
                 printSysYTokenInformation(t);
