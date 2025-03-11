@@ -1,1 +1,3 @@
-int print();
+int print(){
+    int x;
+}
