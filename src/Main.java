@@ -28,24 +28,26 @@ public class Main {
         MyErrorListener parser_errorListener=new MyErrorListener(2);
         parser.addErrorListener(parser_errorListener);
         parser.setErrorHandler(new DefaultErrorStrategy() {
-                                   @Override
-                                   public void recover(Parser recognizer, RecognitionException e) {
-                                       Token token = recognizer.getCurrentToken();
-                                       String msg = String.format("Error type B at Line %d: unexpected token '%s'",
-                                               token.getLine(), token.getText());
-                                       System.out.println(msg);
-                                   }
+            @Override
+            public void recover(Parser recognizer, RecognitionException e) {
+                Token token = recognizer.getCurrentToken();
+                System.out.printf("Error type B at Line %d: unexpected token '%s'%n",
+                        token.getLine(), token.getText());
 
-                                   @Override
-                                   public Token recoverInline(Parser recognizer) throws RecognitionException {
-                                       Token token = recognizer.getCurrentToken();
-                                       throw new InputMismatchException(recognizer);
-                                   }
+                // **手动跳过错误的 Token**
+                recognizer.consume();
+            }
 
-                                   @Override
-                                   public void sync(Parser recognizer) throws RecognitionException {
-                                       // 取消 ANTLR 默认的同步机制，防止跳过 Token
-                                   }
+            @Override
+            public Token recoverInline(Parser recognizer) throws RecognitionException {
+                Token token = recognizer.getCurrentToken();
+                throw new InputMismatchException(recognizer);
+            }
+
+            @Override
+            public void sync(Parser recognizer) throws RecognitionException {
+                // 取消默认的错误恢复同步机制，防止跳过后续 Token
+            }
                                });
         parser.compUnit();
 
