@@ -27,7 +27,6 @@ public class Main {
         parser.removeErrorListeners();
         MyErrorListener parser_errorListener=new MyErrorListener();
         parser.addErrorListener(parser_errorListener);
-        List<? extends Token> myTokens = lexer.getAllTokens();
         if(errorListener.hasErrorInformation()){
             errorListener.printLexerErrorInformation(false);
         }
@@ -35,6 +34,7 @@ public class Main {
             parser_errorListener.printLexerErrorInformation(true);
         }
         else{
+            List<? extends Token> myTokens = lexer.getAllTokens();
             for(Token t: myTokens){
                 printSysYTokenInformation(t);
             }
