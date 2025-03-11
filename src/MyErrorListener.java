@@ -5,12 +5,19 @@ import java.util.List;
 
 public class MyErrorListener extends BaseErrorListener{
     private List<String> errors=new ArrayList<>();
+    private int type; // 1代表词法，2代表语法
+    public MyErrorListener(int type) {
+        this.type = type;
+    }
     public void syntaxError(Recognizer<?, ?> recognizer,
                             Object offendingSymbol,
                             int line, int charPositionInLine,
                             String msg,
                             RecognitionException e){
-        String x=String.format("Error type A at Line %d: %s",line,msg);
+        String errorType="";
+        if(type==1) errorType =  "Error type A" ;
+        else errorType="Error type B";
+        String x = String.format("%s at Line %d: %s", errorType, line, msg);
         errors.add(x);
     }
     public boolean hasErrorInformation(){

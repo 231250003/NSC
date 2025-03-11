@@ -19,13 +19,14 @@ public class Main {
         CharStream input = CharStreams.fromFileName(source);
         SysYLexer lexer = new SysYLexer(input);
         lexer.removeErrorListeners();
-        MyErrorListener errorListener=new MyErrorListener();
+        MyErrorListener errorListener=new MyErrorListener(1);
         lexer.addErrorListener(errorListener);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
+
         SysYParser parser = new SysYParser(tokens);
         parser.removeErrorListeners();
-        MyErrorListener parser_errorListener=new MyErrorListener();
+        MyErrorListener parser_errorListener=new MyErrorListener(2);
         parser.addErrorListener(parser_errorListener);
         if(errorListener.hasErrorInformation()){
             errorListener.printLexerErrorInformation(false);
