@@ -431,7 +431,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                 System.out.println();
             }
             else {
-                System.out.print("!32424");
                 System.out.println();
                 printIndent();
                 System.out.print("{");
