@@ -26,6 +26,9 @@ int func() {
                     }
                     else if(cond6)
                         x=y+z;
+                        //2312321
+
+                        z=x+y;
                 }
                 a=9;
             }
