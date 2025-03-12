@@ -21,11 +21,15 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         return null;
     }
     public Void visitCompUnit(SysYParser.CompUnitContext ctx) {
-        for (SysYParser.FuncDefContext funcDef : ctx.funcDef()) {
-            visitFuncDef(funcDef);
+        if(ctx.funcDef()!=null){
+            for (SysYParser.FuncDefContext funcDef : ctx.funcDef()) {
+                visitFuncDef(funcDef);
+            }
         }
-        for (SysYParser.DeclContext decl : ctx.decl()) {
-            visitDecl(decl);
+        if(ctx.decl()!=null) {
+            for (SysYParser.DeclContext decl : ctx.decl()) {
+                visitDecl(decl);
+            }
         }
         return null;
     }
@@ -109,10 +113,12 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     @Override
     public Void visitConstDef(SysYParser.ConstDefContext ctx) {
         System.out.print(ctx.IDENT().getText());
-        for(int i=0;i<ctx.constExp().size();i++){
-            System.out.print(ctx.L_BRACKT().get(i).getText());
-            visit(ctx.constExp().get(i));
-            System.out.print(ctx.R_BRACKT().get(i).getText());
+        if(ctx.constExp()!=null) {
+            for (int i = 0; i < ctx.constExp().size(); i++) {
+                System.out.print(ctx.L_BRACKT().get(i).getText());
+                visit(ctx.constExp().get(i));
+                System.out.print(ctx.R_BRACKT().get(i).getText());
+            }
         }
         System.out.print(" ");
         System.out.print(ctx.ASSIGN().getText());
@@ -162,10 +168,12 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     @Override
     public Void visitVarDef(SysYParser.VarDefContext ctx) {
         visit(ctx.IDENT());
-        for (int i = 0; i < ctx.L_BRACKT().size(); i++) {
-            System.out.print("[");
-            visit(ctx.constExp(i));
-            System.out.print("]");
+        if(ctx.L_BRACKT()!=null) {
+            for (int i = 0; i < ctx.L_BRACKT().size(); i++) {
+                System.out.print("[");
+                visit(ctx.constExp(i));
+                System.out.print("]");
+            }
         }
         if (ctx.ASSIGN() != null) {
             System.out.print(" = ");
@@ -313,10 +321,12 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     @Override
     public Void visitLVal(SysYParser.LValContext ctx) {
         System.out.print(ctx.IDENT().getText());
-        for (SysYParser.ExpContext expCtx : ctx.exp()) {
-            System.out.print("[");
-            visit(expCtx);
-            System.out.print("]");
+        if(ctx.exp()!=null) {
+            for (SysYParser.ExpContext expCtx : ctx.exp()) {
+                System.out.print("[");
+                visit(expCtx);
+                System.out.print("]");
+            }
         }
 
         return null;
@@ -403,8 +413,10 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             System.out.println("{");
         }
         indentLevel++;
-        for (SysYParser.BlockItemContext item : ctx.blockItem()) {
-            visit(item);
+        if(ctx.blockItem()!=null){
+            for (SysYParser.BlockItemContext item : ctx.blockItem()) {
+                visit(item);
+            }
         }
         indentLevel--;
         System.out.println("}");
