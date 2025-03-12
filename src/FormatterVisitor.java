@@ -22,14 +22,14 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         return null;
     }
     public Void visitCompUnit(SysYParser.CompUnitContext ctx) {
-        if(ctx.funcDef()!=null){
-            for (SysYParser.FuncDefContext funcDef : ctx.funcDef()) {
-                visitFuncDef(funcDef);
-            }
-        }
         if(ctx.decl()!=null) {
             for (SysYParser.DeclContext decl : ctx.decl()) {
                 visitDecl(decl);
+            }
+        }
+        if(ctx.funcDef()!=null){
+            for (SysYParser.FuncDefContext funcDef : ctx.funcDef()) {
+                visitFuncDef(funcDef);
             }
         }
         return null;
