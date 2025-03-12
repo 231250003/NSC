@@ -225,7 +225,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                 System.out.println();
                 visit(ctx.stmt(0));
                 indentLevel--;
-                System.out.println();
+               // System.out.println();
             }
             else {
                 is_if_while=true;
@@ -244,7 +244,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                         System.out.println();
                         visit(ctx.stmt(1));
                         indentLevel--;
-                        System.out.println();
+                       // System.out.println();
                     }
                     else {
                         is_if_while=true;
