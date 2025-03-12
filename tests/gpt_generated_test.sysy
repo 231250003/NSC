@@ -1,0 +1,45 @@
+const int a = 5;
+const int b[2] = {1, 2};
+const int c[2][2] = {{1, 2}, {3, 4}};
+
+int d;
+int e = 10;
+int f[3];
+int g[2] = {1, 2};
+int h[2][2] = {{1, 2}, {3, 4}};
+
+int add(int x, int y) {
+    return x + y;
+}
+
+void printNum(int num) {
+    if (num > 0) {
+        printNum(num - 1);
+    }
+    return;
+}
+
+int main() {
+    int x = 10;
+    int y = 20;
+    int z = add(x, y);
+
+    if (z > 15) {
+        z = z - 5;
+    } else {
+        z = z + 5;
+    }
+
+    while (x > 0) {
+        x = x - 1;
+        if (x == 5) {
+            continue;
+        }
+        if (x == 2) {
+            break;
+        }
+    }
+
+    printNum(z);
+    return 0;
+}
