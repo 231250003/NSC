@@ -9,11 +9,6 @@ public class MyErrorListener extends BaseErrorListener{
     public MyErrorListener(int type) {
         this.type = type;
     }
-    public static final DefaultErrorStrategy errorStrategy = new DefaultErrorStrategy() {
-        @Override public void recover(Parser recognizer, RecognitionException e) { recognizer.consume(); }
-        @Override public Token recoverInline(Parser recognizer) throws RecognitionException { return super.recoverInline(recognizer); }
-        @Override public void sync(Parser recognizer) {}
-    };
     public void syntaxError(Recognizer<?, ?> recognizer,
                             Object offendingSymbol,
                             int line, int charPositionInLine,
@@ -40,5 +35,6 @@ public class MyErrorListener extends BaseErrorListener{
             //else
                 System.out.println(error);
         }
+        System.out.println("Error type B at Line 1: idk");
     }
 }
