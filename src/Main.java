@@ -27,7 +27,7 @@ public class Main {
         parser.removeErrorListeners();
         MyErrorListener parser_errorListener=new MyErrorListener(2);
         parser.addErrorListener(parser_errorListener);
-       // parser.compUnit();
+       parser.compUnit();
 
 //        if(errorListener.hasErrorInformation()){
 //            errorListener.printLexerErrorInformation(false);
