@@ -239,8 +239,8 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                     visit(ctx.stmt(1));
                 }
                 else {
+                    System.out.print("else");
                     if(ctx.stmt(1).block()==null){
-                        System.out.print("else");
                         indentLevel++;
                         System.out.println();
                         visit(ctx.stmt(1));
