@@ -211,7 +211,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             System.out.println(";");
         }
         else if (ctx.block() != null) {
-            printIndent();
             visit(ctx.block());
             System.out.println();
         }
@@ -431,6 +430,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         }
         else {
             System.out.println();
+            printIndent();
             System.out.print("{");
             System.out.println();
         }
@@ -441,8 +441,8 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             }
         }
         indentLevel--;
-        printIndent();
         System.out.println();
+        printIndent();
         System.out.print("}");
        return null;
     }
