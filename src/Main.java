@@ -40,10 +40,10 @@ public class Main {
             ParseTree tree = parser.program();
             FormatterVisitor visitor = new FormatterVisitor();
             visitor.visit(tree);
-            List<? extends Token> myTokens = lexer.getAllTokens();
-            for(Token t: myTokens){
-                printSysYTokenInformation(t);
-            }
+//            List<? extends Token> myTokens = lexer.getAllTokens();
+//            for(Token t: myTokens){
+//                printSysYTokenInformation(t);
+//            }
         }
     }
     public static void printSysYTokenInformation(Token t){
