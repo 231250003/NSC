@@ -437,7 +437,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             }
         }
         indentLevel--;
-        System.out.println();
         printIndent();
         System.out.println("}");
        return null;
