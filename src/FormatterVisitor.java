@@ -352,6 +352,7 @@ public class FormatterVisitor implements SysYParserVisitor<Void> {
     @Override
     public Void visit(ParseTree parseTree) {
         if (parseTree instanceof SysYParser.ProgramContext) {
+            System.out.print("!22311");
             return visitProgram((SysYParser.ProgramContext) parseTree);
         } else if (parseTree instanceof RuleNode) {
             return visitChildren((RuleNode) parseTree);
