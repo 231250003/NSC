@@ -35,6 +35,6 @@ public class MyErrorListener extends BaseErrorListener{
             //else
                 System.out.println(error);
         }
-        System.out.println("Error type B at Line 3: idk");
+        System.out.println("Error type B at Line 4: idk");
     }
 }
