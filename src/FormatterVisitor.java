@@ -390,6 +390,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         ParserRuleContext parent = ctx.getParent();
         if(parent instanceof SysYParser.StmtContext|| parent instanceof SysYParser.FuncDefContext){
             System.out.print(" {");
+            System.out.println();
         }
         else {
             System.out.println("{");
