@@ -21,7 +21,7 @@ int func() {
                 if(cond4){
                     continue;
                     if(cond5){
-                        int d[4][2]={{1,2},3,4,{5}}
+                        int d[4][2]={{1,2},3,4,{5}};
                     }
                     else if(cond6)
                         x=y+z;
