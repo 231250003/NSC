@@ -212,7 +212,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if (ctx.block() != null) {
             visit(ctx.block());
-            System.out.println();
         }
         else if (ctx.IF() != null) {
             if(is_else_if==false)printIndent();
@@ -229,7 +228,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             }
             else {
                 visit(ctx.stmt(0));
-                System.out.println();
             }
             if (ctx.stmt().size() > 1) {
                 printIndent();
@@ -248,7 +246,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                     }
                     else {
                         visit(ctx.stmt(1));
-                        System.out.println();
                     }
                 }
             }
@@ -267,7 +264,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             }
             else {
                 visit(ctx.stmt(0));
-                System.out.println();
             }
         }
         else if (ctx.BREAK() != null) {
@@ -443,7 +439,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         indentLevel--;
         System.out.println();
         printIndent();
-        System.out.print("}");
+        System.out.println("}");
        return null;
     }
 
