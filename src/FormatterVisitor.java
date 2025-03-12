@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
 
-public class FormatterVisitor implements SysYParserVisitor<Void> {
+public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     private int indentLevel = 0;
     private void printIndent() {
         for (int i = 0; i < indentLevel; i++) {
