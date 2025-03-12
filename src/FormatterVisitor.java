@@ -425,7 +425,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             System.out.println();
         }
         else {
-            System.out.print("1213432");
+            System.out.print("crzzzzzz");
             System.out.println();
             printIndent();
             System.out.print("{");
