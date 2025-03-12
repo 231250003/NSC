@@ -15,11 +15,18 @@ public class FormatterVisitor implements SysYParserVisitor<Void> {
         }
     }
     public Void visitProgram(SysYParser.ProgramContext ctx) {
-        visitChildren(ctx); // 访问所有子节点
+        if (ctx.compUnit() != null) {
+            visitCompUnit(ctx.compUnit());
+        }
         return null;
     }
     public Void visitCompUnit(SysYParser.CompUnitContext ctx) {
-        visitChildren(ctx);
+        for (SysYParser.FuncDefContext funcDef : ctx.funcDef()) {
+            visitFuncDef(funcDef);
+        }
+        for (SysYParser.DeclContext decl : ctx.decl()) {
+            visitDecl(decl);
+        }
         return null;
     }
     public Void visitFuncDef(SysYParser.FuncDefContext ctx) {
@@ -352,7 +359,6 @@ public class FormatterVisitor implements SysYParserVisitor<Void> {
     @Override
     public Void visit(ParseTree parseTree) {
         if (parseTree instanceof SysYParser.ProgramContext) {
-            System.out.print("!22311");
             return visitProgram((SysYParser.ProgramContext) parseTree);
         } else if (parseTree instanceof RuleNode) {
             return visitChildren((RuleNode) parseTree);
