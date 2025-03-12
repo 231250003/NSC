@@ -10,5 +10,5 @@ int func() {
         while(x<=3&&a[0]>=9)
         x=x+1;
     }
-    print(x,y,yy,_x_1)
+    print(x,y,yy,_x_1);
 }
