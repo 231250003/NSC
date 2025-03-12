@@ -1,9 +1,10 @@
+void print(int x) {
+}
+
 const int a = 1;
 int b = 2;
 int A[10] = {8, 7, 4};
 
-void print(int x) {
-}
 
 int func() {
     int c;
@@ -22,12 +23,6 @@ int func() {
                     continue;
                     if(cond5){
                         const int d[4][2]={{1,2},3,4,{5}};
-
-
-
-
-
-                        
                     }
                     else if(cond6)
                         x=y+z;
