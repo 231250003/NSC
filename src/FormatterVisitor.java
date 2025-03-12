@@ -281,24 +281,29 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         return null;
     }
     public Void visitExp(SysYParser.ExpContext ctx) {
-        if (ctx.L_PAREN() != null) {
-            System.out.print("(");
-            visit(ctx.exp(0));
-            System.out.print(")");
-        } else if (ctx.lVal() != null) {
-            visit(ctx.lVal());
-        } else if (ctx.number() != null) {
-            visit(ctx.number());
-        } else if (ctx.IDENT() != null) {
+        if (ctx.IDENT() != null) {
             System.out.print(ctx.IDENT().getText() + "(");
             if (ctx.funcRParams() != null) {
                 visit(ctx.funcRParams());
             }
             System.out.print(")");
-        } else if (ctx.unaryOp() != null) {
+        }
+        else if (ctx.unaryOp() != null) {
             visit(ctx.unaryOp());
             visit(ctx.exp(0));
-        } else if (ctx.exp().size() == 2) {
+        }
+        else if (ctx.lVal() != null) {
+            visit(ctx.lVal());
+        }
+        else if (ctx.number() != null) {
+            visit(ctx.number());
+        }
+        else if (ctx.L_PAREN() != null) {
+            System.out.print("(");
+            visit(ctx.exp(0));
+            System.out.print(")");
+        }
+        else if (ctx.exp().size() == 2) {
             visit(ctx.exp(0));
             System.out.print(" " + ctx.getChild(1).getText() + " ");
             visit(ctx.exp(1));
