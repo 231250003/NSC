@@ -67,6 +67,7 @@ public class FormatterVisitor implements SysYParserVisitor<Void> {
     }
 
     public Void visitDecl(SysYParser.DeclContext ctx) {
+        System.out.print("cdscds");
         printIndent();
         if (ctx.constDecl() != null) {
             visitConstDecl(ctx.constDecl());
