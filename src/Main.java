@@ -27,6 +27,7 @@ public class Main {
         parser.removeErrorListeners();
         MyErrorListener parser_errorListener=new MyErrorListener(2);
         parser.addErrorListener(parser_errorListener);
+        parser.setErrorHandler(MyErrorListener.errorStrategy);
        parser.program();
 
 //        if(errorListener.hasErrorInformation()){
