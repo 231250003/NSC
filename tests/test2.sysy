@@ -15,6 +15,14 @@ int func() {
             {
             break;
             continue;
+            if(cond(crz))
+            if(cond(cccc)){
+            while(1)
+            {
+                if(x+7==1)
+                    print(a[][]);
+            }
+                }
             }
             if(cond3){
                 continue;
