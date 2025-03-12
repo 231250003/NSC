@@ -265,6 +265,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if (ctx.RETURN() != null) {
             printIndent();
+            System.out.println("DCCD");
             System.out.print("return");
             if (ctx.exp() != null) {
                 System.out.print(" ");
