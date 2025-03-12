@@ -11,6 +11,7 @@ int func() {
         print(a);
         if (cond) {
             c = a + b;
+            break;
             {
             break;
             continue;
