@@ -27,16 +27,17 @@ public class Main {
         parser.removeErrorListeners();
         MyErrorListener parser_errorListener=new MyErrorListener(2);
         parser.addErrorListener(parser_errorListener);
-        parser.compUnit();
+       // parser.compUnit();
 
 //        if(errorListener.hasErrorInformation()){
 //            errorListener.printLexerErrorInformation(false);
 //        }
 //         else
-        if(parser_errorListener.hasErrorInformation()){
-            parser_errorListener.printLexerErrorInformation(true);
-        }
-        else{
+//        if(parser_errorListener.hasErrorInformation()){
+//            parser_errorListener.printLexerErrorInformation(true);
+//        }
+//        else
+        {
             ParseTree tree = parser.program();
             FormatterVisitor visitor = new FormatterVisitor();
             System.out.print(tree);
