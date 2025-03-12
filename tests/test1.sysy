@@ -12,6 +12,8 @@ int func() {
         if (cond) {
             c = a + b;
             {
+            break;
+            continue;
             }
         }
         else if (cond2) {
