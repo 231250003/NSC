@@ -27,7 +27,7 @@ public class Main {
         parser.removeErrorListeners();
         MyErrorListener parser_errorListener=new MyErrorListener(2);
         parser.addErrorListener(parser_errorListener);
-       parser.compUnit();
+       parser.program();
 
 //        if(errorListener.hasErrorInformation()){
 //            errorListener.printLexerErrorInformation(false);
@@ -38,6 +38,7 @@ public class Main {
         }
         else
         {
+            parser.reset();
             ParseTree tree = parser.program();
             FormatterVisitor visitor = new FormatterVisitor();
             visitor.visit(tree);
