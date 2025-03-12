@@ -8,7 +8,7 @@ program
    : compUnit
    ;
 compUnit
-   : (funcDef | decl)+ EOF
+   : (decl | funcDef)+ EOF
    ;
 
 decl : constDecl | varDecl;
