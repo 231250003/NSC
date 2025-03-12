@@ -12,7 +12,6 @@ int func() {
         if (cond) {
             c = a + b;
             {
-            a=a+1;
             }
         }
         else if (cond2) {
