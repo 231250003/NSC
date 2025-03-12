@@ -38,9 +38,9 @@ public class Main {
         }
         else{
             ParseTree tree = parser.program();
+            System.out.println(tree);
             FormatterVisitor visitor = new FormatterVisitor();
             visitor.visit(tree);
-            System.out.println(tree);
 //            List<? extends Token> myTokens = lexer.getAllTokens();
 //            for(Token t: myTokens){
 //                printSysYTokenInformation(t);
