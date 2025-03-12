@@ -9,7 +9,8 @@ import java.util.List;
 
 public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     private int indentLevel = 0;
-    boolean is_else_if;
+    boolean is_else_if=false;
+    boolean is_if_while=false;
     private void printIndent() {
         for (int i = 0; i < indentLevel; i++) {
             System.out.print("    "); // 每个级别4个空格
@@ -227,6 +228,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                 System.out.println();
             }
             else {
+                is_if_while=true;
                 visit(ctx.stmt(0));
             }
             if (ctx.stmt().size() > 1) {
@@ -245,6 +247,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                         System.out.println();
                     }
                     else {
+                        is_if_while=true;
                         visit(ctx.stmt(1));
                     }
                 }
@@ -263,6 +266,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                 System.out.println();
             }
             else {
+                is_if_while=true;
                 visit(ctx.stmt(0));
             }
         }
@@ -426,10 +430,10 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if(parent instanceof SysYParser.StmtContext) {
             SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
-            System.out.print(stmtCtx);
-            if (stmtCtx.IF() != null || stmtCtx.WHILE() != null) {
+            if (is_if_while==true) {
                 System.out.print(" {");
                 System.out.println();
+                is_if_while=false;
             }
             else {
                 printIndent();
