@@ -9,6 +9,7 @@ import java.util.List;
 
 public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     private int indentLevel = 0;
+    boolean is_else_if;
     private void printIndent() {
         for (int i = 0; i < indentLevel; i++) {
             System.out.print("    "); // 每个级别4个空格
@@ -215,7 +216,8 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             System.out.println();
         }
         else if (ctx.IF() != null) {
-            printIndent();
+            if(is_else_if==false)printIndent();
+            else is_else_if=false;
             System.out.print("if (");
             visit(ctx.cond());
             System.out.print(") ");
@@ -233,6 +235,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             if (ctx.stmt().size() > 1) {
                 System.out.print("else ");
                 if(ctx.stmt(1).IF()!=null){
+                    is_else_if=true;
                     visit(ctx.stmt(1));
                 }
                 else {
