@@ -21,8 +21,8 @@ public class FormatterVisitor implements SysYParserVisitor<Void> {
         return null;
     }
     public Void visitCompUnit(SysYParser.CompUnitContext ctx) {
-        System.out.print("121321231");
         for (SysYParser.FuncDefContext funcDef : ctx.funcDef()) {
+            System.out.print("121321231");
             visitFuncDef(funcDef);
         }
         for (SysYParser.DeclContext decl : ctx.decl()) {
