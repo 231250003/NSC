@@ -39,7 +39,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         System.out.print(" ");
         System.out.print(ctx.IDENT().getText());
         System.out.print("(");
-        if(!ctx.funcFParams().isEmpty()){
+        if(ctx.funcFParams()!=null){
             visit(ctx.funcFParams());
         }
         System.out.print(")");

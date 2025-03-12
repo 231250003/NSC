@@ -40,7 +40,6 @@ public class Main {
         {
             ParseTree tree = parser.program();
             FormatterVisitor visitor = new FormatterVisitor();
-            System.out.print(tree);
             visitor.visit(tree);
 //            List<? extends Token> myTokens = lexer.getAllTokens();
 //            for(Token t: myTokens){
