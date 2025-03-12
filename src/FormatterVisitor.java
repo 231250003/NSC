@@ -196,6 +196,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     }
 
     public Void visitStmt(SysYParser.StmtContext ctx) {
+        System.out.print("1231");
         if (ctx.lVal() != null && ctx.exp() != null) {
             printIndent();
             visit(ctx.lVal());
@@ -265,7 +266,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if (ctx.RETURN() != null) {
             printIndent();
-            System.out.println("DCCD");
             System.out.print("return");
             if (ctx.exp() != null) {
                 System.out.print(" ");
