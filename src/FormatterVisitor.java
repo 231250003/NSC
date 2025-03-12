@@ -415,7 +415,9 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             System.out.println();
         }
         else {
-            System.out.println("{");
+            System.out.println();
+            System.out.print("{");
+            System.out.println();
         }
         indentLevel++;
         if(ctx.blockItem()!=null){
