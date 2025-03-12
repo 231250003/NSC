@@ -233,13 +233,14 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             }
             if (ctx.stmt().size() > 1) {
                 printIndent();
-                System.out.print("else ");
                 if(ctx.stmt(1).IF()!=null){
+                    System.out.print("else ");
                     is_else_if=true;
                     visit(ctx.stmt(1));
                 }
                 else {
                     if(ctx.stmt(1).block()==null){
+                        System.out.print("else");
                         indentLevel++;
                         System.out.println();
                         visit(ctx.stmt(1));
