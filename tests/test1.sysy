@@ -18,11 +18,11 @@ int func() {
             if(cond3){
                 continue;
                 a=x+y;
-                if(cond 4){
+                if(cond4){
                     continue;
-                    if(cond 5){
+                    if(cond5){
                     }
-                    else if(cond 6)
+                    else if(cond6)
                         x=y+z;
                 }
             }
