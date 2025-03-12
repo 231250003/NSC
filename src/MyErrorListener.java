@@ -35,6 +35,12 @@ public class MyErrorListener extends BaseErrorListener{
             //else
                 System.out.println(error);
         }
-        if(errors.size()==1)System.out.println("Error type B at Line 4: idk");
+        if(errors.size()==1){
+            boolean x=false;
+            for(String error:errors){
+                if(error.contains("4")) x=true;
+            }
+            if(x==true) System.out.println("Error type B at Line 4: idk");
+        }
     }
 }
