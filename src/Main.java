@@ -33,10 +33,10 @@ public class Main {
 //            errorListener.printLexerErrorInformation(false);
 //        }
 //         else
-//        if(parser_errorListener.hasErrorInformation()){
-//            parser_errorListener.printLexerErrorInformation(true);
-//        }
-//        else
+        if(parser_errorListener.hasErrorInformation()){
+            parser_errorListener.printLexerErrorInformation(true);
+        }
+        else
         {
             ParseTree tree = parser.program();
             FormatterVisitor visitor = new FormatterVisitor();
