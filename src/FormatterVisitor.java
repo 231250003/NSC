@@ -425,9 +425,9 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             System.out.println();
         }
         else if(parent instanceof SysYParser.StmtContext) {
+            System.out.print("112312");
             SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
-            if (stmtCtx.IF() != null || stmtCtx.WHILE() != null ) {
-                System.out.print("112312");
+            if (stmtCtx.IF() != null || stmtCtx.WHILE() != null) {
                 System.out.print(" {");
                 System.out.println();
             }
