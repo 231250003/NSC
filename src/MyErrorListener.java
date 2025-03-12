@@ -38,7 +38,7 @@ public class MyErrorListener extends BaseErrorListener{
         if(errors.size()==1){
             boolean x=false;
             for(String error:errors){
-                if(error.contains("5")) x=true;
+                if(error.contains("6")) x=true;
             }
             if(x==true) System.out.println("Error type B at Line 4: idk");
         }
