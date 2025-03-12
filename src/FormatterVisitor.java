@@ -196,16 +196,10 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     }
 
     public Void visitStmt(SysYParser.StmtContext ctx) {
-        System.out.print("1231");
         if (ctx.lVal() != null && ctx.exp() != null) {
             printIndent();
             visit(ctx.lVal());
             System.out.print(" = ");
-            visit(ctx.exp());
-            System.out.println(";");
-        }
-        else if (ctx.exp() != null) {
-            printIndent();
             visit(ctx.exp());
             System.out.println(";");
         }
@@ -271,6 +265,11 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                 System.out.print(" ");
                 visit(ctx.exp());
             }
+            System.out.println(";");
+        }
+        else if (ctx.exp() != null) {
+            printIndent();
+            visit(ctx.exp());
             System.out.println(";");
         }
         return null;
