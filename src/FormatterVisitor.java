@@ -421,6 +421,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     public Void visitBlock(SysYParser.BlockContext ctx) {
         ParserRuleContext parent = ctx.getParent();
         if(parent instanceof SysYParser.StmtContext|| parent instanceof SysYParser.FuncDefContext){
+            System.out.println("mcsdcndjfdsjk");
             System.out.print("{");
             System.out.println();
         }
