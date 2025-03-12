@@ -26,8 +26,8 @@ int func() {
                     }
                     else if(cond6)
                         x=y+z;
-                        
-                    if(){
+
+                    if(1){
                         t=_x_y0+y;
                     }
                         z=x+y;
