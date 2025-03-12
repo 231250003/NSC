@@ -17,9 +17,9 @@ public class Main {
         String source = args[0];
         CharStream input = CharStreams.fromFileName(source);
         SysYLexer lexer = new SysYLexer(input);
-        lexer.removeErrorListeners();
-        MyErrorListener errorListener=new MyErrorListener(1);
-        lexer.addErrorListener(errorListener);
+//        lexer.removeErrorListeners();
+//        MyErrorListener errorListener=new MyErrorListener(1);
+//        lexer.addErrorListener(errorListener);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
@@ -29,11 +29,11 @@ public class Main {
         parser.addErrorListener(parser_errorListener);
         parser.compUnit();
 
-        if(errorListener.hasErrorInformation()){
-            errorListener.printLexerErrorInformation(false);
-        }
-         else
-            if(parser_errorListener.hasErrorInformation()){
+//        if(errorListener.hasErrorInformation()){
+//            errorListener.printLexerErrorInformation(false);
+//        }
+//         else
+        if(parser_errorListener.hasErrorInformation()){
             parser_errorListener.printLexerErrorInformation(true);
         }
         else{
