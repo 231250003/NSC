@@ -16,17 +16,16 @@ public class FormatterVisitor implements SysYParserVisitor<Void> {
     }
     public Void visitProgram(SysYParser.ProgramContext ctx) {
         if (ctx.compUnit() != null) {
+            System.out.print("121321231");
             visitCompUnit(ctx.compUnit());
         }
         return null;
     }
     public Void visitCompUnit(SysYParser.CompUnitContext ctx) {
         for (SysYParser.FuncDefContext funcDef : ctx.funcDef()) {
-            System.out.println("12123342423");
             visitFuncDef(funcDef);
         }
         for (SysYParser.DeclContext decl : ctx.decl()) {
-            System.out.println("12123342423");
             visitDecl(decl);
         }
         return null;
