@@ -420,16 +420,23 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     @Override
     public Void visitBlock(SysYParser.BlockContext ctx) {
         ParserRuleContext parent = ctx.getParent();
-        if(parent instanceof SysYParser.StmtContext || parent instanceof SysYParser.FuncDefContext){
+        if( parent instanceof SysYParser.FuncDefContext){
             System.out.print(" {");
             System.out.println();
         }
-        else {
-            System.out.print("crzzzzzz");
-            System.out.println();
-            printIndent();
-            System.out.print("{");
-            System.out.println();
+        else if(parent instanceof SysYParser.StmtContext) {
+            SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
+            if (stmtCtx.IF() != null || stmtCtx.WHILE() != null ) {
+                System.out.print(" {");
+                System.out.println();
+            }
+            else {
+                System.out.print("!32424");
+                System.out.println();
+                printIndent();
+                System.out.print("{");
+                System.out.println();
+            }
         }
         indentLevel++;
         if(ctx.blockItem()!=null){
