@@ -257,7 +257,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             printIndent();
             System.out.print("while (");
             visit(ctx.cond());
-            System.out.print(") ");
+            System.out.print(")");
             if(ctx.stmt(0).block()==null){
                 indentLevel++;
                 System.out.println();
