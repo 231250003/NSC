@@ -15,7 +15,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         }
     }
     public Void visitProgram(SysYParser.ProgramContext ctx) {
-        System.out.print("cdscds");
         if (ctx.compUnit() != null) {
             visitCompUnit(ctx.compUnit());
         }
