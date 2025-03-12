@@ -123,8 +123,10 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
 
     @Override
     public Void visitConstInitVal(SysYParser.ConstInitValContext ctx) {
-        if(ctx.constExp()!=null){
+        if(ctx.constExp()!=null) {
             visit(ctx.constExp());
+        }
+        else{
             System.out.print(ctx.L_BRACE().getText());
             for (int i = 0; i < ctx.constInitVal().size(); i++) {
                 SysYParser.ConstInitValContext const_init_val = ctx.constInitVal().get(i);
@@ -178,11 +180,13 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             visit(ctx.exp());
         } else {
             System.out.print("{");
-            for (int i = 0; i < ctx.initVal().size(); i++) {
-                if (i > 0) {
-                    System.out.print(", ");
+            if(ctx.initVal()!=null) {
+                for (int i = 0; i < ctx.initVal().size(); i++) {
+                    if (i > 0) {
+                        System.out.print(", ");
+                    }
+                    visit(ctx.initVal(i));
                 }
-                visit(ctx.initVal(i));
             }
             System.out.print("}");
         }
@@ -261,9 +265,9 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             }
             System.out.println(";");
         }
-        else if (ctx.exp() != null) {
+        else if (ctx.SEMICOLON() != null) {
             printIndent();
-            visit(ctx.exp());
+            if(ctx.exp()!=null) visit(ctx.exp());
             System.out.println(";");
         }
         return null;
@@ -357,6 +361,9 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
 
     @Override
     public Void visitTerminal(TerminalNode node) {
+        if (node.getSymbol().getType() == Token.EOF || node.getSymbol().getType() == SysYLexer.LINE_COMMENT){
+            return null;  // 不打印 EOF
+        }
         System.out.print(node.getText());
         return null;
     }
