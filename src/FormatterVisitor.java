@@ -360,27 +360,8 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         return null;
     }
 
-    @Override
-    public Void visit(ParseTree parseTree) {
-        if (parseTree instanceof SysYParser.ProgramContext) {
-            return visitProgram((SysYParser.ProgramContext) parseTree);
-        } else if (parseTree instanceof RuleNode) {
-            return visitChildren((RuleNode) parseTree);
-        } else if (parseTree instanceof TerminalNode) {
-            return visitTerminal((TerminalNode) parseTree);
-        }
-        return null;
-    }
 
     @Override
-    public Void visitChildren(RuleNode ruleNode) {
-        int n = ruleNode.getChildCount();
-        for (int i = 0; i < n; i++) {
-            ruleNode.getChild(i).accept(this);
-        }
-        return null;
-    }
-
     public Void visitTerminal(TerminalNode node) {
         System.out.print(node.getText());
         return null;
