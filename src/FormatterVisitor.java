@@ -21,6 +21,7 @@ public class FormatterVisitor implements SysYParserVisitor<Void> {
         return null;
     }
     public Void visitCompUnit(SysYParser.CompUnitContext ctx) {
+        System.out.print("cdscdsc");
         for (SysYParser.FuncDefContext funcDef : ctx.funcDef()) {
             visitFuncDef(funcDef);
         }
@@ -67,7 +68,6 @@ public class FormatterVisitor implements SysYParserVisitor<Void> {
     }
 
     public Void visitDecl(SysYParser.DeclContext ctx) {
-        System.out.print("cdscds");
         printIndent();
         if (ctx.constDecl() != null) {
             visitConstDecl(ctx.constDecl());
