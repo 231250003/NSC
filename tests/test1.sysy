@@ -11,10 +11,20 @@ int func() {
         print(a);
         if (cond) {
             c = a + b;
-            break;
             {
             break;
             continue;
+            }
+            if(cond3){
+                continue;
+                a=x+y;
+                if(cond 4){
+                    continue;
+                    if(cond 5){
+                    }
+                    else if(cond 6)
+                        x=y+z;
+                }
             }
         }
         else if (cond2) {
