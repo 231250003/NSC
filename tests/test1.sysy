@@ -21,7 +21,7 @@ int func() {
             return;
         }
 
-        if(cond4)[
+        if(cond4){
             return;
         }
         else if(cond5){
