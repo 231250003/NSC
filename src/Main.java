@@ -33,7 +33,20 @@ public class Main {
 //            errorListener.printLexerErrorInformation(false);
 //        }
 //         else
-      
+        if(parser_errorListener.hasErrorInformation()){
+            parser_errorListener.printLexerErrorInformation(true);
+        }
+        else
+        {
+            parser.reset();
+            ParseTree tree = parser.program();
+            FormatterVisitor visitor = new FormatterVisitor();
+            visitor.visit(tree);
+//            List<? extends Token> myTokens = lexer.getAllTokens();
+//            for(Token t: myTokens){
+//                printSysYTokenInformation(t);
+//            }
+        }
     }
     public static void printSysYTokenInformation(Token t){
         String tokenType = SysYLexer.VOCABULARY.getSymbolicName(t.getType());
