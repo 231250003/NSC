@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-
+import semantic_check.*;
 public class Main {
 
     public static void main(String[] args) throws IOException {
@@ -50,6 +50,9 @@ public class Main {
           ParseTree semantic_tree= parser.program();
           SemanticVisitor semantic_visitor=new SemanticVisitor();
           semantic_visitor.visit(semantic_tree);
+          if(OutPutHelper.is_semantic_correct==true){
+              System.err.println("No semantic errors in the program!");
+          }
     }
     public static void printSysYTokenInformation(Token t){
         String tokenType = SysYLexer.VOCABULARY.getSymbolicName(t.getType());
