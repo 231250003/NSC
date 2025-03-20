@@ -24,29 +24,30 @@ public class Main {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         SysYParser parser = new SysYParser(tokens);
-        parser.removeErrorListeners();
-        MyErrorListener parser_errorListener=new MyErrorListener(2);
-        parser.addErrorListener(parser_errorListener);
-       parser.program();
+        //parser.removeErrorListeners();
+        //MyErrorListener parser_errorListener=new MyErrorListener(2);
+        parser.program();
 
 //        if(errorListener.hasErrorInformation()){
 //            errorListener.printLexerErrorInformation(false);
 //        }
 //         else
-        if(parser_errorListener.hasErrorInformation()){
-            parser_errorListener.printLexerErrorInformation(true);
-        }
-        else
-        {
-            parser.reset();
-            ParseTree tree = parser.program();
-            FormatterVisitor visitor = new FormatterVisitor();
-            visitor.visit(tree);
-//            List<? extends Token> myTokens = lexer.getAllTokens();
-//            for(Token t: myTokens){
-//                printSysYTokenInformation(t);
-//            }
-        }
+//        if(parser_errorListener.hasErrorInformation()){
+//            parser_errorListener.printErrorInformation();
+//        }
+//        else {
+//             if(parser_errorListener.type==1){
+//                 //List<? extends Token> myTokens = lexer.getAllTokens();
+//                //for(Token t: myTokens){
+//                 ///printSysYTokenInformation(t);
+//             }
+//             if (parser_errorListener.type == 2) {
+//                parser.reset();
+//                ParseTree tree = parser.program();
+//                FormatterVisitor visitor = new FormatterVisitor();
+//                visitor.visit(tree);
+//             }
+//        }
     }
     public static void printSysYTokenInformation(Token t){
         String tokenType = SysYLexer.VOCABULARY.getSymbolicName(t.getType());
