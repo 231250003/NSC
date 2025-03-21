@@ -15,8 +15,8 @@ void x(){
     {
     {
         int a[2][1][3];
-        main(a[2][1][2],a[2][1]);
-        return ;
+
+        return  main(a[2][1][2],a[2][1]);
     }
     }
     }

@@ -288,7 +288,10 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             Type stmt_return_type=symbolTable.get_cur_scope_return_type();
             if(ctx.exp()!=null){
                 Type y=getExp(ctx.exp());
-                if(y!=null &&(   (!(y instanceof IntType))    ||   stmt_return_type instanceof VoidType  )){
+                if(y!=null &&(   (!(y instanceof IntType))    &&   stmt_return_type instanceof IntType  )){
+                    OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
+                }
+                if(y!=null &&(   (!(y instanceof VoidType))    &&   stmt_return_type instanceof VoidType  )){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
                 }
             }
