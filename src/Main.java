@@ -50,7 +50,7 @@ public class Main {
           ParseTree semantic_tree= parser.program();
           SemanticVisitor semantic_visitor=new SemanticVisitor();
           semantic_visitor.visit(semantic_tree);
-          if(OutPutHelper.is_semantic_correct==true){
+          if(OutputHelper.is_semantic_correct){
               System.err.println("No semantic errors in the program!");
           }
     }

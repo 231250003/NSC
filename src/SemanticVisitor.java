@@ -5,12 +5,14 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.util.List;
+import java.util.*;
 
+import semantic_check.*;
 public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     private int indentLevel = 0;
     boolean is_else_if=false;
     boolean is_if_while=false;
+    public SymbolTable symbolTable=new SymbolTable();
     private void printIndent() {
         for (int i = 0; i < indentLevel; i++) {
             System.out.print("    "); // 每个级别4个空格
@@ -35,86 +37,93 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         return null;
     }
+    @Override
     public Void visitFuncDef(SysYParser.FuncDefContext ctx) {
-        int currentLine = ctx.getStart().getLine();
-        if(currentLine!=1){
-            System.out.println();
+        String ret = getFuncType(ctx.funcType());
+        Type retType;
+        if (ret == "int") {
+            retType=new IntType();
         }
-        printIndent();
-        visit(ctx.funcType());
-        System.out.print(" ");
-        System.out.print(ctx.IDENT().getText());
-        System.out.print("(");
+        else{
+            retType=new VoidType();
+        }
+        String funcName = ctx.IDENT().getText();
+        if(symbolTable.isGlobal(funcName) ){
+            OutputHelper.printSemanticError(ErrorType.REPEATED_FUNCTION_DEFINITION,ctx.IDENT().getSymbol().getLine());
+            return null;
+        }
+        List<Symbol> params=null;
         if(ctx.funcFParams()!=null){
-            visit(ctx.funcFParams());
+            params=getFuncFParams(ctx.funcFParams());
         }
-        System.out.print(")");
-        visit(ctx.block());
-        return null;
-    }
-
-    @Override
-    public Void visitFuncType(SysYParser.FuncTypeContext ctx) {
-        System.out.print(ctx.getText());
-        return null;
-    }
-
-    @Override
-    public Void visitFuncFParams(SysYParser.FuncFParamsContext ctx) {
-        List<SysYParser.FuncFParamContext> funcFParams = ctx.funcFParam(); // 获取所有 funcFParam 节点
-        for (int i = 0; i < funcFParams.size(); i++) {
-            SysYParser.FuncFParamContext funcFParam = funcFParams.get(i);
-            visit(funcFParam);
-            if (i < funcFParams.size() - 1) {
-                System.out.print(", ");
+        FunctionType functionType = new FunctionType(retType, params);
+        symbolTable.addGlobal(new Symbol(funcName,functionType));
+        symbolTable.enterScope();
+        if(params!=null){
+            for(Symbol symbol:params){
+                symbolTable.put(symbol);
             }
         }
+        visit(ctx.block());
+        symbolTable.exitScope();
         return null;
     }
 
+    public String getFuncType(SysYParser.FuncTypeContext ctx) {
+        return ctx.getText();
+    }
+
+    public  List<Symbol>  getFuncFParams(SysYParser.FuncFParamsContext ctx) {
+        List<SysYParser.FuncFParamContext> funcFParams = ctx.funcFParam(); // 获取所有 funcFParam 节点
+        List< AbstractMap.SimpleEntry<String,Type>> paramsType=new ArrayList<>();
+        for (int i = 0; i < funcFParams.size(); i++) {
+            SysYParser.FuncFParamContext funcFParam = funcFParams.get(i);
+            AbstractMap.SimpleEntry<String, Type> result=getFuncFParam(funcFParam);
+            paramsType.add(result);
+        }
+        Set<String> seenKeys = new HashSet<>();
+        List<Symbol> result = new ArrayList<>();
+        for (AbstractMap.SimpleEntry<String, Type> entry : paramsType) {
+            if (seenKeys.add(entry.getKey())) {
+                result.add(new Symbol(entry.getKey(), entry.getValue()));
+            }
+        }
+        return result;
+    }
+
+    public AbstractMap.SimpleEntry<String,Type> getFuncFParam(SysYParser.FuncFParamContext ctx) {
+        Type type;
+        String name=ctx.IDENT().getText();
+        if (ctx.L_BRACKT().size() > 0) {
+            type=new ArrayType(new IntType(),1);
+        }
+        else type=new IntType();
+        return new AbstractMap.SimpleEntry<>(name,type);
+    }
+
+    @Override
     public Void visitDecl(SysYParser.DeclContext ctx) {
-        printIndent();
         if (ctx.constDecl() != null) {
-            visitConstDecl(ctx.constDecl());
+            List<Symbol> symbol =getConstDecl(ctx.constDecl());
         } else if (ctx.varDecl() != null) {
             visitVarDecl(ctx.varDecl());
         }
-        System.out.println();
         return null;
     }
 
-    @Override
-    public Void visitConstDecl(SysYParser.ConstDeclContext ctx) {
-        System.out.print(ctx.CONST().getText());
-        System.out.print(" ");
-        visit(ctx.bType());
+    public List<Symbol> getConstDecl(SysYParser.ConstDeclContext ctx) {
         for (int i = 0; i < ctx.constDef().size(); i++) {
-            SysYParser.ConstDefContext constdef = ctx.constDef().get(i);
-            if(ctx.constDef().size()==1){
-                visit(constdef);
-                break;
+                SysYParser.ConstDefContext constdef = ctx.constDef().get(i);
+                Symbol x=getConstdef(constdef);
             }
-            else{
-                visit(constdef);
-                if (i < ctx.constDef().size() - 1) {
-                    System.out.print(", ");
-                }
-            }
-        }
-        System.out.print(ctx.SEMICOLON().getText());
+        //System.out.print(ctx.SEMICOLON().getText());
+        //return null;
         return null;
     }
 
-    @Override
-    public Void visitBType(SysYParser.BTypeContext ctx) {
-        System.out.print(ctx.INT().getText());
-        System.out.print(" ");
-        return null;
-    }
-
-    @Override
-    public Void visitConstDef(SysYParser.ConstDefContext ctx) {
-        System.out.print(ctx.IDENT().getText());
+    public Symbol getConstdef(SysYParser.ConstDefContext ctx) {
+       Symbol symbol=new Symbol();
+       symbol.name=ctx.IDENT().getText();
         if(ctx.constExp()!=null) {
             for (int i = 0; i < ctx.constExp().size(); i++) {
                 System.out.print(ctx.L_BRACKT().get(i).getText());
@@ -122,11 +131,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 System.out.print(ctx.R_BRACKT().get(i).getText());
             }
         }
-        System.out.print(" ");
-        System.out.print(ctx.ASSIGN().getText());
-        System.out.print(" ");
-        visit(ctx.constInitVal());
-        return null;
+        return symbol;
     }
 
     @Override
@@ -408,20 +413,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         return null;
     }
 
-    @Override
-    public Void visitFuncFParam(SysYParser.FuncFParamContext ctx) {
-        visit(ctx.bType());
-        System.out.print(ctx.IDENT().getText());
-        if (ctx.L_BRACKT().size() > 0) {
-            System.out.print("[]");
-            for (int i = 1; i < ctx.L_BRACKT().size(); i++) {
-                System.out.print("[");
-                visit(ctx.exp(i - 1));
-                System.out.print("]");
-            }
-        }
-        return null;
-    }
     @Override
     public Void visitBlock(SysYParser.BlockContext ctx) {
         ParserRuleContext parent = ctx.getParent();
