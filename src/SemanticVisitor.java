@@ -388,11 +388,10 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         } else if (ctx.cond().size() == 2) {
             Type x=getCond(ctx.cond(0));
             Type y=getCond(ctx.cond(1));
-            System.out.println(x);
-            System.out.println(y);
             if(x!=null&&y!=null){
                 if(!x.equals(y)){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_OPERATOR,ctx.getStart().getLine());
+                    System.out.println("crzzz");
                     return null;
                 }
             }
