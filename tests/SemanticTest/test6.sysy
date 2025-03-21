@@ -5,6 +5,6 @@ void print(int y){
     return;
 }
 int main(){
-    const a[2]={0,1};
+    const int a[2]={0,1};
     print(2);
 }
