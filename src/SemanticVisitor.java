@@ -74,7 +74,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             else{
                 if(!entry.getValue().equals(seenKeys.get(entry.getKey()))){
                     OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
-                    result.add(new Symbol(entry.getKey(), entry.getValue()));
                 }
             }
         }
