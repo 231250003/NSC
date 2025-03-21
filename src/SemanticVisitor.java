@@ -70,11 +70,12 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         Map<String,Type> seenKeys = new HashMap<>();
         List<Symbol> result = new ArrayList<>();
         for (AbstractMap.SimpleEntry<String, Type> entry : paramsType) {
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
             if (seenKeys.get(entry.getKey())==null) {
                 result.add(new Symbol(entry.getKey(), entry.getValue()));
             }
             else{
-                System.out.println("crzzz");
                 if(!entry.getValue().equals(seenKeys.get(entry.getKey()))){
                     OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
                     result.add(new Symbol(entry.getKey(), entry.getValue()));
