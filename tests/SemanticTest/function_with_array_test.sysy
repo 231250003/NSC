@@ -8,6 +8,6 @@ int main(int argc,int argv[200]){
     int t=print();
     int arg[2003];
     int argv;
-    main(2+5-x,argv)
+    main(2+5-x+arg,argv)
     main(print(),arg);
 }
