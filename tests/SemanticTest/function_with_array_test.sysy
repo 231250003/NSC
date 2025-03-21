@@ -11,8 +11,8 @@ int main(int argc,int argv[200]){
     main(2+5-x+arg[3],argv)
     main(print(),arg);
 }
-void z(){
-    return -1;
+int z(){
+return -1;
 }
 int t(int x,int y,int p[2003]){
     int t=z();
