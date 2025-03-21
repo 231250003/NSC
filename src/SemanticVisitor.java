@@ -9,15 +9,7 @@ import java.util.*;
 
 import semantic_check.*;
 public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
-    private int indentLevel = 0;
-    boolean is_else_if=false;
-    boolean is_if_while=false;
     public SymbolTable symbolTable=new SymbolTable();
-    private void printIndent() {
-        for (int i = 0; i < indentLevel; i++) {
-            System.out.print("    "); // 每个级别4个空格
-        }
-    }
     public Void visitProgram(SysYParser.ProgramContext ctx) {
         if (ctx.compUnit() != null) {
             visitCompUnit(ctx.compUnit());
@@ -58,14 +50,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         FunctionType functionType = new FunctionType(retType, params);
         symbolTable.addGlobal(new Symbol(funcName,functionType));
-        symbolTable.enterScope();
-        if(params!=null){
-            for(Symbol symbol:params){
-                symbolTable.put(symbol);
-            }
-        }
-        visit(ctx.block());
-        symbolTable.exitScope();
+        visit_block(ctx.block(),params);
         return null;
     }
 
@@ -104,293 +89,330 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     @Override
     public Void visitDecl(SysYParser.DeclContext ctx) {
         if (ctx.constDecl() != null) {
-            List<Symbol> symbol =getConstDecl(ctx.constDecl());
-        } else if (ctx.varDecl() != null) {
+            visit(ctx.constDecl());
+        }
+        else if (ctx.varDecl() != null) {
             visitVarDecl(ctx.varDecl());
         }
         return null;
     }
 
-    public List<Symbol> getConstDecl(SysYParser.ConstDeclContext ctx) {
+    @Override
+    public Void visitConstDecl(SysYParser.ConstDeclContext ctx) {
+        List<Symbol> symbols=new ArrayList<>();
         for (int i = 0; i < ctx.constDef().size(); i++) {
-                SysYParser.ConstDefContext constdef = ctx.constDef().get(i);
-                Symbol x=getConstdef(constdef);
+            SysYParser.ConstDefContext constdef = ctx.constDef().get(i);
+            Symbol x = getConstdef(constdef);
+            if(x!=null)symbols.add(x);
+        }
+        for(Symbol symbol:symbols){
+            if(symbolTable.is_cur_scopeGlobal()){
+                if(symbolTable.isGlobal(symbol.name)){
+                    OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+                }
+                else if(symbolTable.cur_scope_has_same_symbol(symbol.name)){
+                    OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+                }
             }
-        //System.out.print(ctx.SEMICOLON().getText());
-        //return null;
+        }
+        Set<String> seenKeys = new HashSet<>();
+        List<Symbol> result = new ArrayList<>();
+        for (Symbol x: symbols) {
+            if (seenKeys.add(x.name)) {
+                result.add(x);
+            }
+            else{
+                OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+            }
+        }
+        for(Symbol x:result){
+            symbolTable.put(x);
+        }
         return null;
     }
 
     public Symbol getConstdef(SysYParser.ConstDefContext ctx) {
        Symbol symbol=new Symbol();
        symbol.name=ctx.IDENT().getText();
-        if(ctx.constExp()!=null) {
+        if(ctx.constExp()!=null) {//gurantee that assignof the array on the right side always correct
+            symbol.type=new ArrayType();
+            ((ArrayType)symbol.type).dim= ctx.constExp().size();
+            ((ArrayType)symbol.type).elementType=new IntType();
             for (int i = 0; i < ctx.constExp().size(); i++) {
-                System.out.print(ctx.L_BRACKT().get(i).getText());
-                visit(ctx.constExp().get(i));
-                System.out.print(ctx.R_BRACKT().get(i).getText());
+                if(getConstExp(ctx.constExp().get(i))==null) return null;//null means there is an error in constEXP,ele return the expTYPE
+            }
+        }
+        else{
+            if(!(getConstinitvalue(ctx.constInitVal()) instanceof IntType)){
+                OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
             }
         }
         return symbol;
     }
 
-    @Override
-    public Void visitConstInitVal(SysYParser.ConstInitValContext ctx) {
+    public Type getConstinitvalue(SysYParser.ConstInitValContext ctx) {
         if(ctx.constExp()!=null) {
-            visit(ctx.constExp());
+            return getConstExp(ctx.constExp());
         }
         else{
-            System.out.print(ctx.L_BRACE().getText());
-            for (int i = 0; i < ctx.constInitVal().size(); i++) {
-                SysYParser.ConstInitValContext const_init_val = ctx.constInitVal().get(i);
-                if(ctx.constInitVal().size()==1){
-                    visit(const_init_val);
-                    break;
-                }
-                else{
-                    visit(const_init_val);
-                    if (i < ctx.constInitVal().size() - 1) {
-                        System.out.print(", ");
-                    }
-                }
-            }
-            System.out.print(ctx.R_BRACE().getText());
+           return new ArrayType();
         }
-        return null;
     }
 
     @Override
     public Void visitVarDecl(SysYParser.VarDeclContext ctx) {
-        visit(ctx.bType());
-        visit(ctx.varDef().get(0));
-        for (int i = 1; i < ctx.varDef().size(); i++) {
-            System.out.print(", ");
-            SysYParser.VarDefContext var_def = ctx.varDef().get(i);
-            visit(var_def);
+        List<Symbol> symbols=new ArrayList<>();
+        for (int i = 0; i < ctx.varDef().size(); i++) {
+            SysYParser.VarDefContext vardef = ctx.varDef().get(i);
+            Symbol x = getVardef(vardef);
+            if(x!=null)symbols.add(x);
         }
-        System.out.print(";");
-        return null;
-    }
-
-    @Override
-    public Void visitVarDef(SysYParser.VarDefContext ctx) {
-        visit(ctx.IDENT());
-        if(ctx.L_BRACKT()!=null) {
-            for (int i = 0; i < ctx.L_BRACKT().size(); i++) {
-                System.out.print("[");
-                visit(ctx.constExp(i));
-                System.out.print("]");
-            }
-        }
-        if (ctx.ASSIGN() != null) {
-            System.out.print(" = ");
-            visit(ctx.initVal());
-        }
-        return null;
-    }
-
-    @Override
-    public Void visitInitVal(SysYParser.InitValContext ctx) {
-        if (ctx.exp() != null) {
-            visit(ctx.exp());
-        } else {
-            System.out.print("{");
-            if(ctx.initVal()!=null) {
-                for (int i = 0; i < ctx.initVal().size(); i++) {
-                    if (i > 0) {
-                        System.out.print(", ");
-                    }
-                    visit(ctx.initVal(i));
+        for(Symbol symbol:symbols){
+            if(symbolTable.is_cur_scopeGlobal()){
+                if(symbolTable.isGlobal(symbol.name)){
+                    OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+                }
+                else if(symbolTable.cur_scope_has_same_symbol(symbol.name)){
+                    OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
                 }
             }
-            System.out.print("}");
+        }
+        Set<String> seenKeys = new HashSet<>();
+        List<Symbol> result = new ArrayList<>();
+        for (Symbol x: symbols) {
+            if (seenKeys.add(x.name)) {
+                result.add(x);
+            }
+            else{
+                OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+            }
+        }
+        for(Symbol x:result){
+            symbolTable.put(x);
         }
         return null;
+    }
+
+    public Symbol getVardef(SysYParser.VarDefContext ctx) {
+        Symbol symbol=new Symbol();
+        symbol.name=ctx.IDENT().getText();
+        if(ctx.initVal()==null) {
+            if (ctx.constExp() != null) {
+                symbol.type = new ArrayType();
+                ((ArrayType) symbol.type).dim = ctx.constExp().size();
+                ((ArrayType) symbol.type).elementType = new IntType();
+                for (int i = 0; i < ctx.constExp().size(); i++) {
+                    if (getConstExp(ctx.constExp().get(i)) == null) return null;
+                }
+            }
+        }
+        else{
+            if(ctx.constExp()!=null) {
+                symbol.type=new ArrayType();
+                ((ArrayType)symbol.type).dim= ctx.constExp().size();
+                ((ArrayType)symbol.type).elementType=new IntType();
+                for (int i = 0; i < ctx.constExp().size(); i++) {
+                    if(getConstExp(ctx.constExp().get(i))==null) return null;
+                }
+            }
+            else{
+                if(!(getinitvalue(ctx.initVal()) instanceof IntType)){
+                    OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
+                }
+            }
+        }
+        return symbol;
+    }
+
+    public Type getinitvalue(SysYParser.InitValContext ctx) {
+        if(ctx.exp()!=null) {
+            return getExp(ctx.exp());
+        }
+        else{
+            return new ArrayType();
+        }
     }
 
     public Void visitStmt(SysYParser.StmtContext ctx) {
         if (ctx.lVal() != null && ctx.exp() != null) {
-            printIndent();
-            visit(ctx.lVal());
-            System.out.print(" = ");
-            visit(ctx.exp());
-            System.out.println(";");
+           Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
+           Type right=getExp(ctx.exp());
+           if(left!=null || right!=null){
+                if(left!=right){
+                    OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
+                }
+                if(left instanceof FunctionType){
+                    OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
+                }
+                else if(left instanceof ArrayType && right instanceof ArrayType ){
+                    if(((ArrayType)left).dim!=((ArrayType)right).dim) {
+                        OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
+                    }
+                }
+           }
         }
         else if (ctx.block() != null) {
-            visit(ctx.block());
+            visit_block(ctx.block());
         }
         else if (ctx.IF() != null) {
-            if(is_else_if==false)printIndent();
-            else is_else_if=false;
-            System.out.print("if (");
-            visit(ctx.cond());
-            System.out.print(")");
-            if(ctx.stmt(0).block()==null){
-                indentLevel++;
-                System.out.println();
-                visit(ctx.stmt(0));
-                indentLevel--;
-                // System.out.println();
-            }
-            else {
-                is_if_while=true;
-                visit(ctx.stmt(0));
-            }
-            if (ctx.stmt().size() > 1) {
-                printIndent();
-                if(ctx.stmt(1).IF()!=null){
-                    System.out.print("else ");
-                    is_else_if=true;
-                    visit(ctx.stmt(1));
-                }
-                else {
-                    System.out.print("else");
-                    if(ctx.stmt(1).block()==null){
-                        indentLevel++;
-                        System.out.println();
-                        visit(ctx.stmt(1));
-                        indentLevel--;
-                        // System.out.println();
-                    }
-                    else {
-                        is_if_while=true;
-                        visit(ctx.stmt(1));
-                    }
-                }
+            getCond(ctx.cond());
+            for(int i=0;i<ctx.stmt().size();i++){
+                visit(ctx.stmt(i));
             }
         }
         else if (ctx.WHILE() != null) {
-            printIndent();
-            System.out.print("while (");
-            visit(ctx.cond());
-            System.out.print(")");
-            if(ctx.stmt(0).block()==null){
-                indentLevel++;
-                System.out.println();
-                visit(ctx.stmt(0));
-                indentLevel--;
-                System.out.println();
-            }
-            else {
-                is_if_while=true;
-                visit(ctx.stmt(0));
+            getCond(ctx.cond());
+            for(int i=0;i<ctx.stmt().size();i++){
+                visit(ctx.stmt(i));
             }
         }
         else if (ctx.BREAK() != null) {
-            printIndent();
-            System.out.println("break;");
+           return null;
         }
         else if (ctx.CONTINUE() != null) {
-            printIndent();
-            System.out.println("continue;");
+            return null;
         }
         else if (ctx.RETURN() != null) {
-            printIndent();
-            System.out.print("return");
-            if (ctx.exp() != null) {
-                System.out.print(" ");
-                visit(ctx.exp());
+            Type stmt_return_type=symbolTable.get_cur_scope_return_type();
+            if(ctx.exp()!=null){
+                if(!(getExp(ctx.exp()) instanceof IntType)){
+                    OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
+                }
             }
-            System.out.println(";");
+            else{
+                if(stmt_return_type instanceof IntType){
+                    OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
+                }
+            }
         }
         else if (ctx.SEMICOLON() != null) {
-            printIndent();
-            if(ctx.exp()!=null) visit(ctx.exp());
-            System.out.println(";");
+            if(ctx.exp()!=null){
+                getExp(ctx.exp());
+                return null;
+            }
         }
         return null;
     }
-    public Void visitExp(SysYParser.ExpContext ctx) {
+    public Type getExp(SysYParser.ExpContext ctx) {
         if (ctx.IDENT() != null) {
-            System.out.print(ctx.IDENT().getText() + "(");
-            if (ctx.funcRParams() != null) {
-                visit(ctx.funcRParams());
+            Symbol x=symbolTable.get_name_matched_symbol(ctx.IDENT().getText());
+            if(x==null){
+                OutputHelper.printSemanticError(ErrorType.UNDECLARED_FUNCTION,ctx.getStart().getLine());
+                return null;
             }
-            System.out.print(")");
+            else if(x.type instanceof IntType || x.type instanceof ArrayType){
+                OutputHelper.printSemanticError(ErrorType.CALLING_NON_FUNCTION,ctx.getStart().getLine());
+                return null;
+            }
+            else{
+                List<Type> r_params=getFuncRParams(ctx.funcRParams());
+                List<Symbol> f_params=((FunctionType)(x.type)).getparams();
+                if(r_params==null) return null;
+                if(r_params.size()!=f_params.size()){
+                    OutputHelper.printSemanticError(ErrorType.FUNCTION_ARGUMENT_MISMATCH,ctx.getStart().getLine());
+                    return null;
+                }
+                for(int i=0;i<r_params.size();i++){
+                    if(!f_params.get(i).type.equals(r_params.get(i))){
+                        OutputHelper.printSemanticError(ErrorType.FUNCTION_ARGUMENT_MISMATCH,ctx.getStart().getLine());
+                        return null;
+                    }
+                }
+            }
+            return ((FunctionType)(x.type)).getReturnType();
         }
         else if (ctx.unaryOp() != null) {
-            visit(ctx.unaryOp());
-            visit(ctx.exp(0));
+            if(!(getExp(ctx.exp(0)) instanceof IntType)){
+                OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_OPERATOR,ctx.getStart().getLine());
+            }
+            return new IntType();
         }
         else if (ctx.lVal() != null) {
-            visit(ctx.lVal());
+            return getlVal(ctx.lVal());
         }
         else if (ctx.number() != null) {
-            visit(ctx.number());
+            return new IntType();
         }
         else if (ctx.L_PAREN() != null) {
-            System.out.print("(");
-            visit(ctx.exp(0));
-            System.out.print(")");
+            return getExp(ctx.exp(0));
         }
         else if (ctx.exp().size() == 2) {
-            visit(ctx.exp(0));
-            System.out.print(" " + ctx.getChild(1).getText() + " ");
-            visit(ctx.exp(1));
-        }
-        return null;
-    }
-
-    @Override
-    public Void visitCond(SysYParser.CondContext ctx) {
-        if (ctx.exp() != null) {
-            visit(ctx.exp());
-        } else if (ctx.cond().size() == 2) {
-            visit(ctx.cond(0));
-            System.out.print(" " + ctx.getChild(1).getText() + " ");
-            visit(ctx.cond(1));
-        }
-        return null;
-    }
-
-    @Override
-    public Void visitLVal(SysYParser.LValContext ctx) {
-        System.out.print(ctx.IDENT().getText());
-        if(ctx.exp()!=null) {
-            for (SysYParser.ExpContext expCtx : ctx.exp()) {
-                System.out.print("[");
-                visit(expCtx);
-                System.out.print("]");
+            if((!(getExp(ctx.exp(0)) instanceof IntType) ) || (!(getExp(ctx.exp(1)) instanceof  IntType))){
+                OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_OPERATOR,ctx.getStart().getLine());
+                return null;
             }
+            return new IntType();
         }
-
+        assert(false);
         return null;
     }
-
-    @Override
-    public Void visitNumber(SysYParser.NumberContext ctx) {
-        System.out.print(ctx.INTEGER_CONST());
-        return null;
-    }
-
-    @Override
-    public Void visitUnaryOp(SysYParser.UnaryOpContext ctx) {
-        System.out.print(ctx.getText());
-        return null;
-    }
-
-    @Override
-    public Void visitFuncRParams(SysYParser.FuncRParamsContext ctx) {
+    public List<Type> getFuncRParams(SysYParser.FuncRParamsContext ctx) {
         List<SysYParser.ParamContext> params = ctx.param();
+        List<Type> types=new ArrayList<>();
         for (int i = 0; i < params.size(); i++) {
-            visit(params.get(i)); // 访问参数
-            if (i != params.size() - 1) {
-                System.out.print(", "); // 逗号分隔
+            Type x=getRParam(params.get(i));
+            if(x==null) return null;
+            else types.add(x);
+        }
+        return types;
+    }
+    public Type getRParam(SysYParser.ParamContext ctx) {
+        return getExp(ctx.exp());
+    }
+
+    public Type getCond(SysYParser.CondContext ctx) {
+        if (ctx.exp() != null) {
+            return getExp(ctx.exp());
+        } else if (ctx.cond().size() == 2) {
+            Type x=getCond(ctx.cond(0));
+            Type y=getCond(ctx.cond(1));
+            if(x!=null&&y!=null){
+                if(!x.equals(y)){
+                    OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_OPERATOR,ctx.getStart().getLine());
+                    return null;
+                }
             }
         }
         return null;
     }
 
-    @Override
-    public Void visitParam(SysYParser.ParamContext ctx) {
-        visit(ctx.exp());
-        return null;
+    public Type getlVal(SysYParser.LValContext ctx) {
+        String name=ctx.IDENT().getText();
+        Symbol s=symbolTable.get_name_matched_symbol(name);
+        if(s==null){
+            OutputHelper.printSemanticError(ErrorType.UNDECLARED_VARIABLE,ctx.getStart().getLine());
+            return null;
+        }
+        if(ctx.exp()!=null) {
+            if(s.type instanceof IntType){
+                OutputHelper.printSemanticError(ErrorType.INDEXING_NON_ARRAY,ctx.getStart().getLine());
+                return null;
+            }
+            else{
+                for (SysYParser.ExpContext expCtx : ctx.exp()) {
+                    Type x=getExp(expCtx);
+                    if(x==null) return null;
+                }
+                int dim=ctx.L_BRACKT().size();
+                int org_dim=((ArrayType)s.type).dim;
+                if(dim>org_dim) {
+                    OutputHelper.printSemanticError(ErrorType.UNDECLARED_VARIABLE,ctx.getStart().getLine());
+                    return null;
+                }
+                else if(dim==org_dim) return new IntType();
+                else{
+                    int ans_dim=org_dim-dim;
+                    return new ArrayType(new IntType(),ans_dim);
+                }
+            }
+        }
+        else{
+            return s.type;
+        }
     }
 
-    @Override
-    public Void visitConstExp(SysYParser.ConstExpContext ctx) {
-        visit(ctx.exp());
-        return null;
+    public Type getConstExp(SysYParser.ConstExpContext ctx) {
+        return getExp(ctx.exp());
     }
 
 
@@ -405,43 +427,33 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
 
     @Override
     public Void visitErrorNode(ErrorNode errorNode) {
-        Token token = errorNode.getSymbol();
-        int line = token.getLine();
-        String msg = errorNode.getText();
-        String errorMessage = String.format("Error type B at Line %d: %s", line, msg);
-        System.out.println(errorMessage);
+       // Token token = errorNode.getSymbol();
+        //int line = token.getLine();
+        //String msg = errorNode.getText();
+        //String errorMessage = String.format("Error type B at Line %d: %s", line, msg);
+        //System.out.println(errorMessage);
         return null;
     }
 
-    @Override
-    public Void visitBlock(SysYParser.BlockContext ctx) {
-        ParserRuleContext parent = ctx.getParent();
-        if( parent instanceof SysYParser.FuncDefContext){
-            System.out.print(" {");
-            System.out.println();
+    public Void visit_block(SysYParser.BlockContext ctx) {
+        symbolTable.enterScope();
+        for(int i=0;i<ctx.blockItem().size();i++){
+            visit(ctx.blockItem(i));
         }
-        else if(parent instanceof SysYParser.StmtContext) {
-            SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
-            if (is_if_while==true) {
-                System.out.print(" {");
-                System.out.println();
-                is_if_while=false;
-            }
-            else {
-                printIndent();
-                System.out.print("{");
-                System.out.println();
+        symbolTable.exitScope();
+        return null;
+    }
+    public Void visit_block(SysYParser.BlockContext ctx,List<Symbol> symbols) {
+        symbolTable.enterScope();
+        if(symbols!=null){
+            for(Symbol symbol:symbols){
+                symbolTable.put(symbol);
             }
         }
-        indentLevel++;
-        if(ctx.blockItem()!=null){
-            for (SysYParser.BlockItemContext item : ctx.blockItem()) {
-                visit(item);
-            }
+        for(int i=0;i<ctx.blockItem().size();i++){
+            visit(ctx.blockItem(i));
         }
-        indentLevel--;
-        printIndent();
-        System.out.println("}");
+        symbolTable.exitScope();
         return null;
     }
 
