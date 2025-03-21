@@ -14,7 +14,7 @@ void x(){
     {
     {
     {
-        return 1+2;
+        return main;
     }
     }
     }
