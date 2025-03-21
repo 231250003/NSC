@@ -1,7 +1,7 @@
 /src/*
 !/src/*.java
 !/src/*.g4
-!/src/semantic_check/*
+!/src/semantic_check/*.java
 /src/*Lexer.java
 /src/*Parser.java 
 /src/*ParserBaseListener.java
