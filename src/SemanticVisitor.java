@@ -189,6 +189,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
             }
         }
+        System.out.println("crz");
         for(Symbol x:result){
             symbolTable.put(x);
         }
