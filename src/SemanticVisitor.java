@@ -325,6 +325,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                     }
                 }
             }
+            System.out.println(x.name);
             System.out.println(((FunctionType)(x.type)).getReturnType());
             return ((FunctionType)(x.type)).getReturnType();
         }
