@@ -22,5 +22,6 @@ int t(int x,int y,int x,int p[2003]){
     while(z) main(print(),z[1]);
 }
 int print(){
+    pp=pp+1;
     return -1;
 }
