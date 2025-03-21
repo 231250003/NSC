@@ -340,7 +340,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             return ((FunctionType)(x.type)).getReturnType();
         }
         else if (ctx.unaryOp() != null) {
-            if(!(getExp(ctx.exp(0)) instanceof IntType)){
+            Type x=getExp(ctx.exp(0));
+            if(x!=null&&(!(x instanceof IntType))){
                 OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_OPERATOR,ctx.getStart().getLine());
             }
             return new IntType();
