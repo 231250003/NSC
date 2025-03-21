@@ -1,6 +1,5 @@
+int a;
+
 int main() {
-    if (1) {
-        int a = 1;
-    }
-    int b = a; // a 在 if 作用域内定义，此处未定义
+    int b = a(1); // a 不是函数
 }
