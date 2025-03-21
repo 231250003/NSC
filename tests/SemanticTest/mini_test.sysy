@@ -1,8 +1,6 @@
-void a() {}
+int a() {}
 
 int main() {
     int a = 1;
-    if (cond1) {
-        int b = a; // 误报a未定义
-    }
+    int b = a(a); // 报错(应报告类型10，该变量非函数)
 }
