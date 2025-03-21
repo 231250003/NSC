@@ -1,0 +1,11 @@
+int z=3;
+int print(){
+    return 3;
+}
+int print=4;
+int main(int argc,int argv[200]){
+    int x=1;
+    int t=print();
+    int arg[2003];
+    main(print(),arg);
+}
