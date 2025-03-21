@@ -206,6 +206,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                     if (getConstExp(ctx.constExp().get(i)) == null) return null;
                 }
             }
+            else symbol.type=new IntType();
         }
         else{
             if(ctx.constExp()!=null) {
@@ -388,8 +389,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         if(ctx.exp()!=null) {
             if(s.type instanceof IntType){
-                System.out.println(s.name);
-                System.out.println(s.type);
+//                System.out.println(s.name);
+//                System.out.println(s.type);
                 OutputHelper.printSemanticError(ErrorType.INDEXING_NON_ARRAY,ctx.getStart().getLine());
                 return null;
             }
