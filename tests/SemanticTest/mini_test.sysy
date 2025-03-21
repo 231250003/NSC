@@ -2,8 +2,8 @@ int main() {
     int a, b, c;
     int a, b, c;
     int a,b;
-    const int c;
-   // int c[3]={2,3,4};
+    const int c=5;
+    int c[3]={2,3,4};
     int a[2003];
     main(a);
 }
