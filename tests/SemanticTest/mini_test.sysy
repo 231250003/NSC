@@ -1,6 +1,8 @@
 void a() {}
 
 int main() {
-    int a, b, c;
-    int a, b, c;
+    int a = 1;
+    if (cond1) {
+        int b = a; // 误报a未定义
+    }
 }
