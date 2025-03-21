@@ -31,8 +31,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     }
     @Override
     public Void visitFuncDef(SysYParser.FuncDefContext ctx) {
-        System.out.println("crzzz");
         String ret = getFuncType(ctx.funcType());
+        System.out.println("cr");
         Type retType;
         if (ret == "int") {
             retType=new IntType();
