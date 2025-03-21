@@ -6,9 +6,10 @@ int main(){
     if(print==3)
     {
         int y;
+        int z=0;
         if(y==2)
         {
-            int z=print(y);
+            int z[2005]=print(y);
         }
         int t=print(z);
         print(t);
