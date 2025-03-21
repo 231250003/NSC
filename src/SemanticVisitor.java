@@ -430,7 +430,15 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                     return new ArrayType(new IntType(),ans_dim);
                 }
             }
-            else return s.type;
+            else {
+                if(s.type instanceof FunctionType) {
+                    OutputHelper.printSemanticError(ErrorType.INDEXING_NON_ARRAY, ctx.getStart().getLine());
+                    return null;
+                }
+                else{
+                    return s.type;
+                }
+            }
         }
         else{
             return s.type;
