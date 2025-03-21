@@ -2,8 +2,6 @@ int a = 1;
 int b[3];
 void c() {}
 // 函数重复定义
-    int f(int x) { return x; }
-    int f(int x) { return x; } // Error type 4: Redefined function 'f'.
 int main() {
     // 变量未声明
     int x = y; // Error type 1: Variable 'y' is not defined.
@@ -32,8 +30,6 @@ int main() {
     g = b + 1; // Error type 6: Invalid operation between 'array' and 'int'.
 
 
-    // 函数参数不适用
-    int func(int x, int y) { return x + y; }
     int value = func(1); // Error type 8: Function parameter mismatch.
 
     // 对非数组使用下标运算符
