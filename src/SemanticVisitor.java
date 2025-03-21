@@ -171,7 +171,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         for (int i = 0; i < ctx.varDef().size(); i++) {
             SysYParser.VarDefContext vardef = ctx.varDef().get(i);
             Symbol x = getVardef(vardef);
-            System.out.println(x.name);
             if(x!=null)symbols.add(x);
         }
         for(Symbol symbol:symbols){
