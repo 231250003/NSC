@@ -310,6 +310,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     public Type getExp(SysYParser.ExpContext ctx) {
         if (ctx.IDENT() != null) {
             Symbol x=symbolTable.get_name_matched_symbol(ctx.IDENT().getText());
+            System.out.println(x.name);
             if(x==null){
                 OutputHelper.printSemanticError(ErrorType.UNDECLARED_FUNCTION,ctx.getStart().getLine());
                 return null;
