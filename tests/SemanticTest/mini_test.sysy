@@ -1,6 +1,7 @@
 int main() {
     int a, b, c;
     int a, b, c;
+    int c,d,e;
     int x[20]=a();
     const int c=5;
     int c[3]={2,3,4};
