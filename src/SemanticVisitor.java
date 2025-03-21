@@ -239,8 +239,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         if (ctx.lVal() != null && ctx.exp() != null) {
            Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
            Type right=getExp(ctx.exp());
-          // System.out.println(left);
-           //System.out.println(right);
+           System.out.println(left);
+           System.out.println(right);
            if(left!=null && right!=null){
                 if(!left.equals(right)){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
