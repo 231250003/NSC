@@ -40,9 +40,9 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             retType=new VoidType();
         }
         String funcName = ctx.IDENT().getText();
-        System.out.println("cr");
         if(symbolTable.isGlobal(funcName) ){
             OutputHelper.printSemanticError(ErrorType.REPEATED_FUNCTION_DEFINITION,ctx.IDENT().getSymbol().getLine());
+            System.out.println("cr");
             return null;
         }
         List<Symbol> params=null;
