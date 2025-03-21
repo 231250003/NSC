@@ -312,9 +312,12 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 return null;
             }
             else{
-                List<Type> r_params=getFuncRParams(ctx.funcRParams());
+                List<Type> r_params=new ArrayList<>();
+                if(!ctx.funcRParams().isEmpty()){
+                   if(getFuncRParams(ctx.funcRParams())!=null) r_params=new ArrayList<>(getFuncRParams(ctx.funcRParams()));
+                   else return null;
+                }
                 List<Symbol> f_params=((FunctionType)(x.type)).getparams();
-                if(r_params==null) return null;
                 if(r_params.size()!=f_params.size()){
                     OutputHelper.printSemanticError(ErrorType.FUNCTION_ARGUMENT_MISMATCH,ctx.getStart().getLine());
                     return null;
