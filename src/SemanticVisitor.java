@@ -199,8 +199,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         Symbol symbol=new Symbol();
         symbol.name=ctx.IDENT().getText();
         if(ctx.initVal()==null) {
-            System.out.println("crz");
             if (ctx.constExp() != null) {
+                System.out.println("crz");
                 symbol.type = new ArrayType();
                 ((ArrayType) symbol.type).dim = ctx.constExp().size();
                 ((ArrayType) symbol.type).elementType = new IntType();
