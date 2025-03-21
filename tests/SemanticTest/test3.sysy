@@ -1,8 +1,11 @@
 int a(int x,int y) {
     return 1;
 }
-
+void x(int t){
+    return;
+}
 int main() {
+    x();
     b = c();
     int test1;
     int test1;
