@@ -248,7 +248,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     }
 
     public Void visitStmt(SysYParser.StmtContext ctx) {
-       // System.out.println(ctx);
         if (ctx.lVal() != null && ctx.exp() != null) {
            Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
            Type right=getExp(ctx.exp());
@@ -356,7 +355,9 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             return getExp(ctx.exp(0));
         }
         else if (ctx.exp().size() == 2) {
-            if(getExp(ctx.exp(0))!=null && getExp(ctx.exp(1))!=null &&  ( !(getExp(ctx.exp(0)) instanceof IntType)  || (!(getExp(ctx.exp(1)) instanceof  IntType))))
+            Type a=getExp(ctx.exp(0));
+            Type b=getExp(ctx.exp(1));
+            if( a!=null&& b!=null &&  ( !(a instanceof IntType)  || (!(b instanceof  IntType))))
             {
                 OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_OPERATOR,ctx.getStart().getLine());
                 return null;
