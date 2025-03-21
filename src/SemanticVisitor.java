@@ -391,9 +391,9 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             if(x!=null&&y!=null){
                 if(!x.equals(y)){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_OPERATOR,ctx.getStart().getLine());
-                    System.out.println("crzzz");
                     return null;
                 }
+                System.out.println("crzzz");
             }
         }
         return null;
