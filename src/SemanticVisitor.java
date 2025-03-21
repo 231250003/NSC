@@ -148,7 +148,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             }
         }
         else{
-            if(!(getConstinitvalue(ctx.constInitVal()) instanceof IntType)){
+            Type y=getConstinitvalue(ctx.constInitVal());
+            if(y!=null&&(!(y instanceof IntType))){
                 OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
             }
             symbol.type=new IntType();
@@ -224,7 +225,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             }
             else{
                 symbol.type=new IntType();
-                if(getinitvalue(ctx.initVal())!=null&&(!(getinitvalue(ctx.initVal()) instanceof IntType)))
+                Type x=getinitvalue(ctx.initVal());
+                if(x!=null&&(!(x instanceof IntType)))
                 {
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
                 }
