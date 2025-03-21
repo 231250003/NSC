@@ -16,4 +16,5 @@ int xtc(){
     int t=t1+1;
 
 }
+int x=2;
 const int t=xtc(1);
