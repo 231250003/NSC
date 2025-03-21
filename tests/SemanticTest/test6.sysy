@@ -4,7 +4,7 @@ void print(int y){
     x=2;
     y=2;
     y=y+1;
-    return;
+    return   x;
 }
 int main(){
     const int a[2]={0,1};
