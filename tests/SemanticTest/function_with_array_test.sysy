@@ -16,6 +16,7 @@ void z(){
 }
 int t(int x,int y,int p[2003]){
     int t=z();
+    z();
     const int t11=p[z()];
     int z[2003][12];
     t(2,3,z[12]);
