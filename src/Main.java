@@ -24,7 +24,7 @@ public class Main {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         SysYParser parser = new SysYParser(tokens);
-        //parser.removeErrorListeners();
+        parser.removeErrorListeners();
         //MyErrorListener parser_errorListener=new MyErrorListener(2);
 
 //        if(errorListener.hasErrorInformation()){
