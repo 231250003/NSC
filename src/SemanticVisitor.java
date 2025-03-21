@@ -50,7 +50,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         else params=new ArrayList<>();
         FunctionType functionType = new FunctionType(retType, params);
-        System.out.println(retType);
         symbolTable.addGlobal(new Symbol(funcName,functionType));
         visit_block(ctx.block(),params);
         return null;
@@ -282,6 +281,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if (ctx.RETURN() != null) {
             Type stmt_return_type=symbolTable.get_cur_scope_return_type();
+            System.out.println(stmt_return_type);
             if(ctx.exp()!=null){
                 if(!(getExp(ctx.exp()) instanceof IntType)){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
