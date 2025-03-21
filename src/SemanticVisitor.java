@@ -393,7 +393,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_OPERATOR,ctx.getStart().getLine());
                     return null;
                 }
-                System.out.println("crzzz");
             }
         }
         return null;
