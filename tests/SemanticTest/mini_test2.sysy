@@ -1,2 +1,6 @@
-int x;
-x=2;
+int main(){
+return 1;
+}
+int xtc(){
+    main[2];
+}
