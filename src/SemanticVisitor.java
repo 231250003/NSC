@@ -73,6 +73,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 result.add(new Symbol(entry.getKey(), entry.getValue()));
             }
         }
+        System.out.println(result.size());
         return result;
     }
 
