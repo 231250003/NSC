@@ -389,7 +389,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 OutputHelper.printSemanticError(ErrorType.INDEXING_NON_ARRAY,ctx.getStart().getLine());
                 return null;
             }
-            else{
+            else if(s.type instanceof ArrayType){
                 for (SysYParser.ExpContext expCtx : ctx.exp()) {
                     Type x=getExp(expCtx);
                     if(x==null) return null;
@@ -406,6 +406,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                     return new ArrayType(new IntType(),ans_dim);
                 }
             }
+            else return s.type;
         }
         else{
             return s.type;
