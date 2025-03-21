@@ -10,7 +10,7 @@ int xtc(){
     int x=main[2];
     int x=main;
     int x=main();
-    t=t+1;
+    int t=t+1;
 
 }
 const int t=xtc(1);
