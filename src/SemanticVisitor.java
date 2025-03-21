@@ -70,8 +70,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         Map<String,Type> seenKeys = new HashMap<>();
         List<Symbol> result = new ArrayList<>();
         for (AbstractMap.SimpleEntry<String, Type> entry : paramsType) {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
             if (seenKeys.get(entry.getKey())==null) {
                 seenKeys.put(entry.getKey(),entry.getValue());
                 result.add(new Symbol(entry.getKey(), entry.getValue()));
