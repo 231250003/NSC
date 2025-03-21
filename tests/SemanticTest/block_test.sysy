@@ -18,7 +18,7 @@ int main(){
                 print=print(array)+4;
                 {
                     const int y[2][3];
-                    y=7;
+                    y[2][3]=prin;
                 }
             }
             main[2];
