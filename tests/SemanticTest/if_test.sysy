@@ -8,11 +8,11 @@ int a() {
 int c(int x,int a[],int b[],int c){
     return 2;
 }
-void c(){
+void crrr(){
     return 2;
 }
 int main() {
-    int y=c();
+    int y=crrrr();
     int x=1;
     int test1;
     int test1;
