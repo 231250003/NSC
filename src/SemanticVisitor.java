@@ -32,7 +32,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     @Override
     public Void visitFuncDef(SysYParser.FuncDefContext ctx) {
         String ret = getFuncType(ctx.funcType());
-        System.out.println("cr");
         Type retType;
         if (ret == "int") {
             retType=new IntType();
@@ -40,6 +39,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         else{
             retType=new VoidType();
         }
+        System.out.println("cr");
         String funcName = ctx.IDENT().getText();
         if(symbolTable.isGlobal(funcName) ){
             OutputHelper.printSemanticError(ErrorType.REPEATED_FUNCTION_DEFINITION,ctx.IDENT().getSymbol().getLine());
