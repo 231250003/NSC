@@ -4,8 +4,8 @@ int main() {
     int x[20]=a();
     const int c=5;
     int c[3]={2,3,4};
-    int a[2003];
-    x=a;
+    int d[2003];
+    x=d;
     x=x+1;
     main(a);
 }
