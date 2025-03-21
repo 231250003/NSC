@@ -2,6 +2,7 @@ int main(int x){
 int t;
 return 1;
 }
+int x;
 int xtc(){
     int x=3;
     int z;
