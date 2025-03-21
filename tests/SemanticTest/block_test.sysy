@@ -20,6 +20,7 @@ int main(){
                     const int x[2][3];
                     x[2][3]=prin;
                 }
+                 while(1!=0) x=3;
             }
             main[2];
             print(3)=4;
