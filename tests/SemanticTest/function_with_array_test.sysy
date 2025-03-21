@@ -14,7 +14,7 @@ int main(int argc,int argv[200]){
 int z(){
 return -1;
 }
-int t(int x,int y,int x[2003],int x,int y,int z){
+int t(int x,int y,int x,int y,int z){
     t(2,3);
     //int z[2003][12];
     z[2003]=z[2003][12];
