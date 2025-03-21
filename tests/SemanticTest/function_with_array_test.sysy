@@ -16,9 +16,10 @@ int main(int argc,int argv[200]){
 }
 int z(){
     return -1;
+
 }
 int t(int x,int y,int x,int p[2003]){
-    z();
+    int t=z();
     const int t11=p[2];
     int z[2003][12];
     t(2,3,z[12]);
