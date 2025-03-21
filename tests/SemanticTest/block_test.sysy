@@ -9,7 +9,7 @@ int main(){
         int z=0;
         if(y==2)
         {
-            array[2];
+            int array[2];
             int z=array;
         }
         int t=print(z);
