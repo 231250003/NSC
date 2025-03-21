@@ -1,6 +1,6 @@
 int a() {};
 
-int main() {
+void main(int x,int a[2003]) {
   {
   {
     return 1;
@@ -14,7 +14,9 @@ void x(){
     {
     {
     {
-        return    ;
+        int a[2][1][3];
+        return main(a[2][1][2],a[2][1]);
+
     }
     }
     }
