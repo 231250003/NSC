@@ -44,11 +44,11 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             OutputHelper.printSemanticError(ErrorType.REPEATED_FUNCTION_DEFINITION,ctx.IDENT().getSymbol().getLine());
             return null;
         }
-        List<Symbol> params=null;
+        List<Symbol> params;
         if(ctx.funcFParams()!=null){
             params=new ArrayList<>(getFuncFParams(ctx.funcFParams()));
-            System.out.println("cr");
         }
+        else params=new ArrayList<>();
         FunctionType functionType = new FunctionType(retType, params);
         symbolTable.addGlobal(new Symbol(funcName,functionType));
         visit_block(ctx.block(),params);
