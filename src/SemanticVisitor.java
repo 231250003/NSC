@@ -179,7 +179,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         Set<String> seenKeys = new HashSet<>();
         List<Symbol> result = new ArrayList<>();
         for (Symbol x: symbols) {
-            System.out.println(x.name);
             if (seenKeys.add(x.name)) {
                 result.add(x);
             }
