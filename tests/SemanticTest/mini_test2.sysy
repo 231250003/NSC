@@ -6,6 +6,7 @@ int x;
 int xtc(){
     int x=3;
     int z;
+    const int x[20];
     int a[20];
     if(x==1)  z=a;
     main(z);
@@ -16,5 +17,4 @@ int xtc(){
     int t=t1+1;
 
 }
-int x=2;
 const int t=xtc(1);
