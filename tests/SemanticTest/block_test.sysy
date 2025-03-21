@@ -2,7 +2,7 @@ int print(int x){
     return 2;
 }
 int main(){
-    int print=3;
+    int prin=3;
     if(print==3)
     {
         int y;
