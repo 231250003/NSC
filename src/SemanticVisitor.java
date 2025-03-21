@@ -252,8 +252,11 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
                 return null;
             }
+            System.out.println(ctx.exp());
+            System.out.println(left.toString());
            Type right=getExp(ctx.exp());
-           if(left!=null && right!=null){
+            System.out.println(right);
+            if(left!=null && right!=null){
                 if(!left.equals(right)){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
                 }
