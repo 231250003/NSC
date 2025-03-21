@@ -10,6 +10,7 @@ int xtc(){
     int x=main[2];
     int x=main;
     int x=main();
+    int t;
     int t=t+1;
 
 }
