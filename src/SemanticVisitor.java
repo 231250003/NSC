@@ -170,6 +170,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
 
     @Override
     public Void visitVarDecl(SysYParser.VarDeclContext ctx) {
+        System.out.println(ctx.getText());
         List<Symbol> symbols=new ArrayList<>();
         for (int i = 0; i < ctx.varDef().size(); i++) {
             SysYParser.VarDefContext vardef = ctx.varDef().get(i);
