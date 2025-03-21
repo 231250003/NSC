@@ -381,6 +381,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         String name=ctx.IDENT().getText();
         Symbol s=symbolTable.get_name_matched_symbol(name);
         if(s==null){
+            System.out.println("crzzz");
             OutputHelper.printSemanticError(ErrorType.UNDECLARED_VARIABLE,ctx.getStart().getLine());
             return null;
         }
