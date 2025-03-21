@@ -16,6 +16,6 @@ int main(int argc,int argv[200]){
 }
 int t(int x,int y,int x,int x[2003]){
     int z[2003][12];
-    t(2,3,z);
+    t(2,3,z[12]);
     t(2,3,1);
 }
