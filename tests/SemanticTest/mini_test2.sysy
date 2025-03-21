@@ -1,5 +1,5 @@
-int f; // 全局变量 f
+int f;
 
-int f() { // 与全局变量同名
+int f() { // f 已经是全局变量
     return 0;
 }
