@@ -2,6 +2,7 @@ int main(int x){
 return 1;
 }
 int xtc(){
+    int x=3;
     if(x==1) int z=2;
     main(z);
     int x=main[2];
