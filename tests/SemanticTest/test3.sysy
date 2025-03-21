@@ -7,7 +7,6 @@ int main() {
     int test1;
     int test1;
     int array[2] = {0, 0};
-    test1 = array;
     test1 = a(2,3);
     test1 = a(1);
     test1 = test1[0];
