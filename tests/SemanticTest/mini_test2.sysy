@@ -1,5 +1,6 @@
-int f(int a, int b) { return a + b; }
+int f(int a) { return a; }
 
 int main() {
-    int x = f(1); // 参数数量不匹配
+    int x[2];
+    int y = f(x); // 传递数组给 int 形参
 }
