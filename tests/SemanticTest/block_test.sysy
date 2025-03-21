@@ -10,6 +10,8 @@ int print2(){
 int ttt=12l
 void t(){
     int x=tttt+ttt+tt+t[12];
+    int y=t[12];
+    z=x+y;
     return;
 }
 int tttt=2000;
