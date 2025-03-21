@@ -15,7 +15,7 @@ int z(){
 return -1;
 }
 int t(int x,int y,int x[2003],int x){
-    t(2,3);
+    t(2,3,4);
     int t=z();
     //int z[2003][12];
     z[2003]=z[2003][12];
