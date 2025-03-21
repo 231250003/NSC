@@ -118,9 +118,9 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 if(symbolTable.isGlobal(symbol.name)){
                     OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
                 }
-                else if(symbolTable.cur_scope_has_same_symbol(symbol.name)){
-                    OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
-                }
+            }
+            else if(symbolTable.cur_scope_has_same_symbol(symbol.name)){
+                OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
             }
         }
         Set<String> seenKeys = new HashSet<>();
@@ -289,7 +289,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         else if (ctx.RETURN() != null) {
             Type stmt_return_type=symbolTable.get_cur_scope_return_type();
             if(ctx.exp()!=null){
-                if(getExp(ctx.exp())!=null &&(   (!(getExp(ctx.exp()) instanceof IntType))    ||   stmt_return_type instanceof VoidType  )){
+                Type y=getExp(ctx.exp());
+                if(y!=null &&(   (!(y instanceof IntType))    ||   stmt_return_type instanceof VoidType  )){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
                 }
             }
