@@ -45,9 +45,9 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             return null;
         }
         List<Symbol> params=null;
-        System.out.println("cr");
         if(ctx.funcFParams()!=null){
             params=new ArrayList<>(getFuncFParams(ctx.funcFParams()));
+            System.out.println("cr");
         }
         FunctionType functionType = new FunctionType(retType, params);
         symbolTable.addGlobal(new Symbol(funcName,functionType));
