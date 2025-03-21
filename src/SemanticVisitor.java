@@ -171,6 +171,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         for (int i = 0; i < ctx.varDef().size(); i++) {
             SysYParser.VarDefContext vardef = ctx.varDef().get(i);
             Symbol x = getVardef(vardef);
+            System.out.println(x.name);
             if(x!=null)symbols.add(x);
         }
         for(Symbol symbol:symbols){
@@ -254,9 +255,9 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             }
            // System.out.println(ctx.exp());
            Type right=getExp(ctx.exp());
-            System.out.println(left.toString());
-
-            System.out.println(right);
+//            System.out.println(left.toString());
+//
+//            System.out.println(right);
             if(left!=null && right!=null){
                 if(!left.equals(right)){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
