@@ -1,5 +1,5 @@
-int a[3];
+int f() { return 1; }
 
 int main() {
-    int b = a + 1; // a 是数组，不能直接进行加法
+    int a = f * 2; // f 是函数，不能用于乘法
 }
