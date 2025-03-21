@@ -3,7 +3,7 @@ int print(int x){
 }
 int main(){
     int prin=3;
-    if(print==3)
+    if(print=3)
     {
         int y;
         if(y==2)
