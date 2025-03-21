@@ -14,7 +14,11 @@ int main(int argc,int argv[200]){
     main(2+5-x+arg[3],argv)
     main(print(),arg);
 }
+int z(){
+    return -1;
+}
 int t(int x,int y,int x,int p[2003]){
+    z();
     const int t11=p[2];
     int z[2003][12];
     t(2,3,z[12]);
