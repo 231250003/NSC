@@ -1,3 +1,5 @@
-int main() {
-    foo(); // foo 未定义
+int f; // 全局变量 f
+
+int f() { // 与全局变量同名
+    return 0;
 }
