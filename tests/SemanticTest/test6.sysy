@@ -1,7 +1,7 @@
 const int x={2,3,4};
-const int x=2;
 int y[2005];
 void print(int y){
+    x=2;
     y=2;
     y=y+1;
     return;
