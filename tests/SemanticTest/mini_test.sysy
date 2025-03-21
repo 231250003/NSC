@@ -3,4 +3,6 @@ int a() {}
 int main() {
     int a = 1;
     int b = a(a); // 报错(应报告类型10，该变量非函数)
+    const int x=1;
+    const int x=1;
 }
