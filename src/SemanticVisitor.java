@@ -135,7 +135,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     public Symbol getConstdef(SysYParser.ConstDefContext ctx) {
        Symbol symbol=new Symbol();
        symbol.name=ctx.IDENT().getText();
-        if(ctx.constExp()!=null) {//gurantee that assignof the array on the right side always correct
+        if(!ctx.constExp().isEmpty()) {//gurantee that assignof the array on the right side always correct
             symbol.type=new ArrayType();
             ((ArrayType)symbol.type).dim= ctx.constExp().size();
             ((ArrayType)symbol.type).elementType=new IntType();
@@ -199,8 +199,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         Symbol symbol=new Symbol();
         symbol.name=ctx.IDENT().getText();
         if(ctx.initVal()==null) {
-            if (ctx.constExp() != null) {
-                System.out.println(ctx.constExp(0));
+            if (!ctx.constExp().isEmpty()) {
                 symbol.type = new ArrayType();
                 ((ArrayType) symbol.type).dim = ctx.constExp().size();
                 ((ArrayType) symbol.type).elementType = new IntType();
@@ -211,7 +210,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             else symbol.type=new IntType();
         }
         else{
-            if(ctx.constExp()!=null) {
+            if(!ctx.constExp().isEmpty()) {
                 symbol.type=new ArrayType();
                 ((ArrayType)symbol.type).dim= ctx.constExp().size();
                 ((ArrayType)symbol.type).elementType=new IntType();
