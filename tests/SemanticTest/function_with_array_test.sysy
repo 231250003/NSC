@@ -14,3 +14,7 @@ int main(int argc,int argv[200]){
     main(2+5-x+arg[3],argv)
     main(print(),arg);
 }
+int t(int x,int y,int x){
+    t(2,3);
+    t(2,3,1);
+}
