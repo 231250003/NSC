@@ -25,6 +25,8 @@ int main(){
             print(3)=4;
             array[0][2][2]=x;
             array[0]=array[1][2];
+            a[2][2]
+            array[1]=a;
          }
         int t=print(z);
         print(t);
