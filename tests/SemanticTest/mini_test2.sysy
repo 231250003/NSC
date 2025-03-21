@@ -4,6 +4,17 @@ return 1;
 }
 int x;
 int xtc(){
+{
+    {
+    {
+        {
+        {
+            x[1]=1;
+        }
+        }
+    }
+    }
+}
     int z;
     const int x[20];
     int a[20];
