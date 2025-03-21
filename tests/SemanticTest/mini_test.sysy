@@ -3,7 +3,7 @@ int main() {
     int a, b, c;
     int a,b;
     const int c;
-    int c[1002]={2,3,4};
+    int c[3]={2,3,4};
     int a[2003];
     main(a);
 }
