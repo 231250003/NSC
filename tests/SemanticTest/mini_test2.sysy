@@ -1,2 +1,6 @@
-void f() { return 0; }
-int f() { return; } // f 已经被定义过
+int a;
+int b[2];
+
+int main() {
+    a = b; // int = array
+}
