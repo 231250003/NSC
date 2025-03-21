@@ -12,6 +12,7 @@ void c(){
     return 2;
 }
 int main() {
+    int y=c();
     int x=1;
     int test1;
     int test1;
