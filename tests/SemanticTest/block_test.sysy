@@ -10,7 +10,7 @@ int main(){
         if(y==2)
         {
             int array[2];
-            int z=array;
+            int z=array,x=2,t=3,q=4;
         }
         int t=print(z);
         print(t);
