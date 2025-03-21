@@ -17,7 +17,8 @@ int main(){
                 print(array);
                 print=print(array)+4;
             }
-            array[0][2][2]=main[1];
+            main[2];
+            array[0][2][2]=x;
             array[0]=array[1][2];
          }
         int t=print(z);
