@@ -50,6 +50,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         else params=new ArrayList<>();
         FunctionType functionType = new FunctionType(retType, params);
+        System.out.println(retType);
         symbolTable.addGlobal(new Symbol(funcName,functionType));
         visit_block(ctx.block(),params);
         return null;
