@@ -1,5 +1,5 @@
 int z=3;
-int print(){
+void print(){
     return 3;
 }
 int print=4;
