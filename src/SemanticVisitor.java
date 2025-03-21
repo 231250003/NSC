@@ -326,6 +326,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 }
                 List<Symbol> f_params=((FunctionType)(x.type)).getparams();
                 if(r_params.size()!=f_params.size()){
+                    System.out.println(f_params.get(0).name);
                     OutputHelper.printSemanticError(ErrorType.FUNCTION_ARGUMENT_MISMATCH,ctx.getStart().getLine());
                     return null;
                 }
