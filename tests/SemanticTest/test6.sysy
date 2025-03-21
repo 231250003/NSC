@@ -1,4 +1,4 @@
-const int x={2,3,4}
+const int x={2,3,4};
 const int x=2;
 void print(int x){
     return;
