@@ -1,4 +1,4 @@
-//int z=3;
+int z=3;
 int print(){
     return z+3;
 }
