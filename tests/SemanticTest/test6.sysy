@@ -1,6 +1,7 @@
 const int x={2,3,4};
 const int x=2;
-void print(int x){
+int y[2005];
+void print(int y){
     return;
 }
 int main(){
