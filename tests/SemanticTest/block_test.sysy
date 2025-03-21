@@ -1,12 +1,18 @@
+const int t[2003];
+int tt=100;
 int print(int x){
     return 2;
 }
 int print2(){
     int x[2003];
-    return ;
+    return x[2003]+1;
 }
+int ttt=12l
 void t(){
+    int x=tttt+ttt+tt+t[12];
+    return;
 }
+int tttt=2000;
 int main(){
     int prin=3;
 
