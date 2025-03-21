@@ -8,5 +8,5 @@ void print(int y){
 }
 int main(){
     const int a[2]={0,1};
-    print(2);
+    print(x);
 }
