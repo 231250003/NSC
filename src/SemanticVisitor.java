@@ -169,11 +169,13 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             if(x!=null)symbols.add(x);
         }
         for(Symbol symbol:symbols){
-            if(symbolTable.isGlobal(symbol.name)){
+            if(symbolTable.is_cur_scopeGlobal()){
+                if(symbolTable.isGlobal(symbol.name)){
                     OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+                }
             }
             else if(symbolTable.cur_scope_has_same_symbol(symbol.name)){
-                    OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+                OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
             }
         }
         Set<String> seenKeys = new HashSet<>();
