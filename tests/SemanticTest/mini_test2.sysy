@@ -1,5 +1,3 @@
-int a;
-
 int main() {
-    int b = a(1); // a 不是函数
+    foo(); // foo 未定义
 }
