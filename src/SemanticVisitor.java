@@ -389,7 +389,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             OutputHelper.printSemanticError(ErrorType.UNDECLARED_VARIABLE,ctx.getStart().getLine());
             return null;
         }
-        if(ctx.exp()!=null) {
+        if(!ctx.exp().isEmpty()) {
            // System.out.println(s.type);
             if(s.type instanceof IntType){
 //                System.out.println(s.name);
