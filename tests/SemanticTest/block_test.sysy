@@ -16,7 +16,10 @@ int main(){
                 print(array);
                 print=print(array)+4;
             }
-        }
+            array[0]=1;
+            array[0]=array[1];
+            array[2]=print(z);
+         }
         int t=print(z);
         print(t);
     }
