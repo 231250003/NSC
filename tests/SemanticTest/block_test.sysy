@@ -8,7 +8,7 @@ int print2(){
     return x[2003]+1;
 }
 int ttt=12l
-void t(){
+void t1(){
     int x=tttt+ttt+tt+t[12];
     int y=t[12];
     z=x+y;
