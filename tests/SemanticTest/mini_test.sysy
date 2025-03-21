@@ -1,4 +1,9 @@
 int main() {
-     const int a=3, b=4, c=5;
-     int a, b, c;
+    int a, b, c;
+    int a, b, c;
+    int a,b;
+    const int c;
+    int c={2,3,4};
+    int a[2003];
+    main(a);
 }
