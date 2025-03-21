@@ -1,3 +1,5 @@
-int f() {
-    return; // 需要返回 int
+int f(int a, int b) { return a + b; }
+
+int main() {
+    int x = f(1); // 参数数量不匹配
 }
