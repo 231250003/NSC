@@ -169,13 +169,11 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             if(x!=null)symbols.add(x);
         }
         for(Symbol symbol:symbols){
-            if(symbolTable.is_cur_scopeGlobal()){
-                if(symbolTable.isGlobal(symbol.name)){
+            if(symbolTable.isGlobal(symbol.name)){
                     OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
-                }
-                else if(symbolTable.cur_scope_has_same_symbol(symbol.name)){
+            }
+            else if(symbolTable.cur_scope_has_same_symbol(symbol.name)){
                     OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
-                }
             }
         }
         Set<String> seenKeys = new HashSet<>();
@@ -189,7 +187,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
             }
         }
-        System.out.println("crz");
         for(Symbol x:result){
             symbolTable.put(x);
         }
