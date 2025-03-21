@@ -12,7 +12,7 @@ void crrr(){
     return 2;
 }
 int main() {
-    int y=crrrr();
+    int y=crrr();
     int x=1;
     int test1;
     int test1;
