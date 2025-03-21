@@ -24,6 +24,14 @@ int main() {
             return array;
         }
     }
+    else if(2){
+        if(3){
+            return 4;
+        }
+        if(4){
+            return 5;
+        }
+    }
     d=5;
     return a;
 }
