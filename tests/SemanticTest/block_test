@@ -1,0 +1,17 @@
+int print(int x){
+    return 2;
+}
+int main(){
+    int print=3;
+    if(print==3)
+    {
+        int y;
+        if(y==2)
+        {
+            int z=print(y);
+        }
+        int t=print(z);
+        print(t);
+    }
+    return;
+}
