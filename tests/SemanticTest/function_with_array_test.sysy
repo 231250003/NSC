@@ -7,5 +7,6 @@ int main(int argc,int argv[200]){
     int x=1;
     int t=print();
     int arg[2003];
+    int argv;
     main(print(),arg);
 }
