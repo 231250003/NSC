@@ -18,6 +18,7 @@ int main(){
                 print=print(array)+4;
             }
             main[2];
+            print(3)=4;
             array[0][2][2]=x;
             array[0]=array[1][2];
          }
