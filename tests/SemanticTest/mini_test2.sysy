@@ -1,6 +1,5 @@
-int f(int a) { return a; }
+int f() { return 0; }
 
 int main() {
-    int x[2];
-    int y = f(x); // 传递数组给 int 形参
+    int x = f[0]; // f 不是数组
 }
