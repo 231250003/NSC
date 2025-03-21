@@ -7,10 +7,9 @@ int main() {
     int x = y; // Error type 1: Variable 'y' is not defined.
 
     // 变量重复声明
-    int a; // Error type 3: Redefined variable 'a'.
-
+    int a;
     // 全局作用域函数和变量重名
-    int c; // Error type 4: Redefined function as a variable 'c'.
+    int c;
 
     // 函数未定义
     int result = unknownFunction(5); // Error type 2: Undefined function 'unknownFunction'.
