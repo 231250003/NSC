@@ -1,6 +1,9 @@
 int z=3;
-void print(){
-    return 3;
+int z(){
+    x=z+1;
+}
+int print(){
+    return z+3;
 }
 int print=4;
 int main(int argc,int argv[200]){
