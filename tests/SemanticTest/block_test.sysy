@@ -20,7 +20,7 @@ int main(){
                     const int x[2][3];
                     x[2][3]=prin;
                 }
-                 while(1!=0) int x[1005];
+                 while(1!=0) {int x[1005]};
                  x=5;
             }
             main[2];
