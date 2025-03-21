@@ -2,6 +2,7 @@ const int x={2,3,4};
 const int x=2;
 int y[2005];
 void print(int y){
+    y=2;
     return;
 }
 int main(){
