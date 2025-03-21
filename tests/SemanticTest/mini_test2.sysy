@@ -2,9 +2,13 @@ int main(){
 return 1;
 }
 int xtc(){
+{   if(x==1)
+        z=2;
+    
     int x=main[2];
     int x=main;
     int x=main();
     t=t+1;
+
 }
 const int t=xtc(1);
