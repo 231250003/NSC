@@ -9,7 +9,8 @@ int main(){
         int z=0;
         if(y==2)
         {
-            int z=y+y;
+            array[2];
+            int z=array;
         }
         int t=print(z);
         print(t);
