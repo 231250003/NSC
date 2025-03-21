@@ -7,11 +7,12 @@ int print2(){
     int x[2003];
     return x[2003]+1;
 }
-int ttt=12l
+int print2;
+int t1=12;
 void t1(){
     int x=tttt+ttt+tt+t[12];
     int y=t[12];
-    z=x+y;
+    int z=x+y[20];
     return;
 }
 int tttt=2000;
