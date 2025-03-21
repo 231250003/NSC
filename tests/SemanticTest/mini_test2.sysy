@@ -1,3 +1,6 @@
 int main() {
-    int a = b + 1; // b 未定义
+    if (1) {
+        int a = 1;
+    }
+    int b = a; // a 在 if 作用域内定义，此处未定义
 }
