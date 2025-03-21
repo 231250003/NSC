@@ -1,6 +1,8 @@
 int print(int x){
     return 2;
 }
+void t(){
+}
 int main(){
     int prin=3;
 
@@ -22,7 +24,8 @@ int main(){
                 }
                  while(1!=0) {
                     int x[1005];
-                    }
+                  }
+                  x=x+t();
             }
             main()[2];
             print(3)=4;
