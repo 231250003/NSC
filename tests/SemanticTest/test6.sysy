@@ -11,6 +11,6 @@ int main(){
     print(x);
     x=x+{2,3,4};
     x=x+print()+3;
-    x=-print(3)+5;
+    x=-print()+5;
     return x;
 }
