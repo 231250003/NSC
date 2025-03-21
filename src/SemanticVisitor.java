@@ -313,7 +313,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             }
             else{
                 List<Type> r_params=new ArrayList<>();
-                if(!ctx.funcRParams().isEmpty()){
+                if(ctx.funcRParams()!=null){
                    if(getFuncRParams(ctx.funcRParams())!=null) r_params=new ArrayList<>(getFuncRParams(ctx.funcRParams()));
                    else return null;
                 }
