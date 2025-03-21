@@ -1,4 +1,4 @@
 int main() {
-     int a=3, b, c;
+     const int a=3, b=4, c=5;
      int a, b, c;
 }
