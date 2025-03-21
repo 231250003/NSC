@@ -247,18 +247,14 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     public Void visitStmt(SysYParser.StmtContext ctx) {
         if (ctx.lVal() != null && ctx.exp() != null) {
            Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
+            if(left instanceof FunctionType){
+                OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
+                return null;
+            }
            Type right=getExp(ctx.exp());
            if(left!=null && right!=null){
-               if(left instanceof FunctionType){
-                   OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
-               }
-               else  if(!left.equals(right)){
+                if(!left.equals(right)){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
-                }
-                else if(left instanceof ArrayType && right instanceof ArrayType ){
-                    if(((ArrayType)left).dim!=((ArrayType)right).dim) {
-                        OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
-                    }
                 }
            }
         }
