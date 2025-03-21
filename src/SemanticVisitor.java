@@ -354,7 +354,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             return getExp(ctx.exp(0));
         }
         else if (ctx.exp().size() == 2) {
-            if((!(getExp(ctx.exp(0)) instanceof IntType) ) || (!(getExp(ctx.exp(1)) instanceof  IntType))){
+            if(getExp(ctx.exp(0))!=null && getExp(ctx.exp(1))!=null &&  ( !(getExp(ctx.exp(0)) instanceof IntType)  || (!(getExp(ctx.exp(1)) instanceof  IntType))))
+            {
                 OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_OPERATOR,ctx.getStart().getLine());
                 return null;
             }
