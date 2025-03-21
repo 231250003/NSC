@@ -39,8 +39,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         else{
             retType=new VoidType();
         }
-        System.out.println("cr");
         String funcName = ctx.IDENT().getText();
+        System.out.println("cr");
         if(symbolTable.isGlobal(funcName) ){
             OutputHelper.printSemanticError(ErrorType.REPEATED_FUNCTION_DEFINITION,ctx.IDENT().getSymbol().getLine());
             return null;
