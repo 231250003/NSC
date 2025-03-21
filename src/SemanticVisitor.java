@@ -248,7 +248,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     }
 
     public Void visitStmt(SysYParser.StmtContext ctx) {
-        System.out.println(ctx);
+       // System.out.println(ctx);
         if (ctx.lVal() != null && ctx.exp() != null) {
            Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
            Type right=getExp(ctx.exp());
