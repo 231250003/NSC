@@ -9,7 +9,7 @@ int print(int y){
 int main(){
     const int a[2]={0,1};
     print(x);
-    x=x+{2,3,4};
+    x=x+2;
     x=x+print()+3;
     x=-print(x)+5;
     return x;
