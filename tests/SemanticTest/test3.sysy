@@ -4,6 +4,12 @@ int a(int x,int y) {
 void x(){
     return;
 }
+void test(int i,int i){
+    return;
+}
+void test2(int i,int i[1005]){
+    return;
+}
 int main() {
     x();
     b = c();
@@ -15,5 +21,9 @@ int main() {
     test1 = test1[0];
     test1();
     a = 1;
+    int tt={2,3,4};
+    tt=tt+1;
+    test(2);
+    test2(100,array);
     return a;
 }
