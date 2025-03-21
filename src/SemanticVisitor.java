@@ -308,8 +308,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         return null;
     }
     public Type getExp(SysYParser.ExpContext ctx) {
+        System.out.println(ctx.getText());
         if (ctx.IDENT() != null) {
-            System.out.println(ctx.getText());
             Symbol x=symbolTable.get_name_matched_symbol(ctx.IDENT().getText());
             if(x==null){
                 OutputHelper.printSemanticError(ErrorType.UNDECLARED_FUNCTION,ctx.getStart().getLine());
