@@ -3,7 +3,7 @@ int print(int x){
 }
 int print2(){
     int x[2003];
-    return x[2003]+1;
+    return ;
 }
 void t(){
 }
