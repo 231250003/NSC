@@ -67,11 +67,17 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             AbstractMap.SimpleEntry<String, Type> result=getFuncFParam(funcFParam);
             paramsType.add(result);
         }
-        Set<String> seenKeys = new HashSet<>();
+        Map<String,Type> seenKeys = new HashMap<>();
         List<Symbol> result = new ArrayList<>();
         for (AbstractMap.SimpleEntry<String, Type> entry : paramsType) {
-            if (seenKeys.add(entry.getKey())) {
+            if (seenKeys.get(entry.getKey())==null) {
                 result.add(new Symbol(entry.getKey(), entry.getValue()));
+            }
+            else{
+                if(!entry.getValue().equals(seenKeys.get(entry.getKey()))){
+                    OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+                    result.add(new Symbol(entry.getKey(), entry.getValue()));
+                }
             }
         }
         return result;
@@ -245,11 +251,11 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
            Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
            Type right=getExp(ctx.exp());
            if(left!=null && right!=null){
-                if(!left.equals(right)){
+               if(left instanceof FunctionType){
+                   OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
+               }
+               else  if(!left.equals(right)){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
-                }
-                if(left instanceof FunctionType){
-                    OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
                 }
                 else if(left instanceof ArrayType && right instanceof ArrayType ){
                     if(((ArrayType)left).dim!=((ArrayType)right).dim) {
