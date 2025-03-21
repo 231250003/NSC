@@ -390,6 +390,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             return null;
         }
         if(ctx.exp()!=null) {
+            System.out.println(s.type);
             if(s.type instanceof IntType){
 //                System.out.println(s.name);
 //                System.out.println(s.type);
