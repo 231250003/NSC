@@ -6,4 +6,4 @@ int xtc(){
     int x=main;
     int x=main();
 }
-xtc();
+xtc(1);
