@@ -424,7 +424,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 int dim=ctx.L_BRACKT().size();
                 int org_dim=((ArrayType)s.type).dim;
                 if(dim>org_dim) {
-                    OutputHelper.printSemanticError(ErrorType.UNDECLARED_VARIABLE,ctx.getStart().getLine());
+                    OutputHelper.printSemanticError(ErrorType.INDEXING_NON_ARRAY,ctx.getStart().getLine());
                     return null;
                 }
                 else if(dim==org_dim) return new IntType();
