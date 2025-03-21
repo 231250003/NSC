@@ -1,6 +1,10 @@
 int print(int x){
     return 2;
 }
+int print2(){
+    int x[2003];
+    return x[2003]+1;
+}
 void t(){
 }
 int main(){
