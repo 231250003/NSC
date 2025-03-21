@@ -380,6 +380,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     public Type getlVal(SysYParser.LValContext ctx) {
         String name=ctx.IDENT().getText();
         Symbol s=symbolTable.get_name_matched_symbol(name);
+        System.out.println(s.type);
         if(s==null){
             OutputHelper.printSemanticError(ErrorType.UNDECLARED_VARIABLE,ctx.getStart().getLine());
             return null;
@@ -397,7 +398,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 int dim=ctx.L_BRACKT().size();
                 int org_dim=((ArrayType)s.type).dim;
                 if(dim>org_dim) {
-                    System.out.println("crzzz");
                     OutputHelper.printSemanticError(ErrorType.UNDECLARED_VARIABLE,ctx.getStart().getLine());
                     return null;
                 }
