@@ -17,14 +17,11 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         return null;
     }
     public Void visitCompUnit(SysYParser.CompUnitContext ctx) {
-        if(ctx.decl()!=null) {
-            for (SysYParser.DeclContext decl : ctx.decl()) {
-                visitDecl(decl);
-            }
-        }
-        if(ctx.funcDef()!=null){
-            for (SysYParser.FuncDefContext funcDef : ctx.funcDef()) {
-                visitFuncDef(funcDef);
+        for (ParseTree child : ctx.children) {
+            if (child instanceof SysYParser.DeclContext) {
+                visitDecl((SysYParser.DeclContext) child);
+            } else if (child instanceof SysYParser.FuncDefContext) {
+                visitFuncDef((SysYParser.FuncDefContext) child);
             }
         }
         return null;
