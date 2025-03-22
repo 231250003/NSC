@@ -487,9 +487,10 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 symbolTable.put(symbol);
             }
         }
+        System.err.println(ctx.blockItem().size());
+        System.err.println("crzzz");
         for(int i=0;i<ctx.blockItem().size();i++){
             System.err.println(symbolTable.cur_scope_has_same_symbol("x"));
-            System.err.println(i);
             visit(ctx.blockItem(i));
         }
         symbolTable.exitScope();
