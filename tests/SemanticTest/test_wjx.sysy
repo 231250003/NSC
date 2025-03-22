@@ -1,6 +1,8 @@
 int a() {};
 int f(int x){}
 int f(int x,int y){}
+int f[2],f=3;
+int g[2],g;
 int f(){}
 void main(int x,int a[2003]) {
     {
