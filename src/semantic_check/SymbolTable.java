@@ -26,6 +26,7 @@ public class SymbolTable {
     // 在当前作用域添加符号
     public void put(Symbol symbol) {
         if (!scopeStack.isEmpty()) {
+            System.out.println(symbol.name);
             scopeStack.peek().add(symbol);
         }
     }
