@@ -6,7 +6,7 @@ int g[2],g;
 int f(){}
 int x;
 void main(int x,int a[2003]) {
-        int x[2003],x=2,x;
+        int x[2003],x=2,x,a,a[2003];
         x[2]+=1;
         ttt()+=1;
         x=1;
@@ -29,4 +29,5 @@ void x(){
     }
     }
 }
-int f(int x){}
+int f(int i, int i)
+{ return 0; }
