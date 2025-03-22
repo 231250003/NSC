@@ -27,6 +27,7 @@ public class SymbolTable {
     public void put(Symbol symbol) {
         if (!scopeStack.isEmpty()) {
             scopeStack.peek().add(symbol);
+            System.out.println( scopeStack.peek().size());
         }
     }
 
