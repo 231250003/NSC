@@ -173,6 +173,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             Symbol x = getVardef(vardef);
             if(x!=null)symbols.add(x);
         }
+        Set<String> seenKeys = new HashSet<>();
+        List<Symbol> result = new ArrayList<>();
         for(Symbol symbol:symbols){
             if(symbolTable.is_cur_scopeGlobal()){
                 if(symbolTable.isGlobal(symbol.name)){
@@ -182,12 +184,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             else if(symbolTable.cur_scope_has_same_symbol(symbol.name)){
                 OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
             }
-        }
-        Set<String> seenKeys = new HashSet<>();
-        List<Symbol> result = new ArrayList<>();
-        for (Symbol x: symbols) {
-            if (seenKeys.add(x.name)) {
-                result.add(x);
+            if(seenKeys.add(symbol.name)){
+                result.add(symbol);
             }
             else{
                 OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
