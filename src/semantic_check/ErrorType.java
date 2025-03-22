@@ -3,7 +3,7 @@ package semantic_check;
 public enum ErrorType {
     UNDECLARED_VARIABLE(1, "变量未声明"),
     UNDECLARED_FUNCTION(2, "函数未定义"),
-    REPEATED_VARIABLE_DECLARATION(3, "变量重复声明"),
+    REPEATED_VARIABLE_DECLARATION(0, "变量重复声明"),
     REPEATED_FUNCTION_DEFINITION(4, "函数重复定义"),
     TYPE_MISMATCH_ASSIGNMENT(5, "赋值号两侧类型不匹配"),
     TYPE_MISMATCH_OPERATOR(6, "运算符需求类型与提供类型不匹配"),
