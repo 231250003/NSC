@@ -484,6 +484,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         symbolTable.enterScope();
         if(symbols!=null){
             for(Symbol symbol:symbols){
+                System.out.println(symbol.name);
                 symbolTable.put(symbol);
             }
         }
