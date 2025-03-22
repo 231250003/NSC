@@ -5,12 +5,10 @@ int f[2],f=3;
 int g[2],g;
 int f(){}
 void main(int x,int a[2003]) {
-    {
         int x[2003],x=2,x;
         x[2]+=1;
         ttt()+=1;
         x+=1;
-    }
 }
 void x(){
     {
