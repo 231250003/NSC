@@ -5,7 +5,7 @@ public enum ErrorType {
     UNDECLARED_FUNCTION(2, "函数未定义"),
     REPEATED_VARIABLE_DECLARATION(3, "变量重复声明"),
     REPEATED_FUNCTION_DEFINITION(4, "函数重复定义"),
-    TYPE_MISMATCH_ASSIGNMENT(5, "赋值号两侧类型不匹配"),
+    TYPE_MISMATCH_ASSIGNMENT(0, "赋值号两侧类型不匹配"),
     TYPE_MISMATCH_OPERATOR(6, "运算符需求类型与提供类型不匹配"),
     TYPE_MISMATCH_RETURN(7, "返回值类型不匹配"),
     FUNCTION_ARGUMENT_MISMATCH(8, "函数参数不适用"),

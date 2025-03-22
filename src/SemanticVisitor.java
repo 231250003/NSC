@@ -485,7 +485,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         if(symbols!=null){
             for(Symbol symbol:symbols){
                 symbolTable.put(symbol);
-                System.out.println(symbol.name);
             }
         }
         for(int i=0;i<ctx.blockItem().size();i++){
