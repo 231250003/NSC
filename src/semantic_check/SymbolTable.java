@@ -33,7 +33,7 @@ public class SymbolTable {
     // 查找符号类型（从当前作用域向外层作用域查找）
     public boolean cur_scope_has_same_symbol(String name) {
             List<Symbol> curScope=scopeStack.get( scopeStack.size() - 1);
-            System.err.println(curScope.size());
+            //System.err.println(curScope.size());
             for(int j=0;j<curScope.size();j++)
             {
                 if(curScope.get(j).name.equals(name)) return true;
