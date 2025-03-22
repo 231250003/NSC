@@ -6,7 +6,7 @@ int g[2],g;
 int f(){}
 void main(int x,int a[2003]) {
     {
-
+        int x=2,x;
     }
 }
 void x(){
