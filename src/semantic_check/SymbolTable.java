@@ -35,7 +35,6 @@ public class SymbolTable {
             List<Symbol> curScope=scopeStack.get( scopeStack.size() - 1);
             for(int j=0;j<curScope.size();j++)
             {
-                System.out.println(curScope.get(j).name);
                 if(curScope.get(j).name.equals(name)) return true;
             }
         return false; // 未找到
