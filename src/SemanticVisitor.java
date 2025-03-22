@@ -179,10 +179,12 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             if(symbolTable.is_cur_scopeGlobal()){
                 if(symbolTable.isGlobal(symbol.name)){
                     OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+                    continue;
                 }
             }
             else if(symbolTable.cur_scope_has_same_symbol(symbol.name)){
                 OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
+                continue;
             }
             if(seenKeys.add(symbol.name)){
                 result.add(symbol);
