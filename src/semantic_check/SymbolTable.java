@@ -32,6 +32,7 @@ public class SymbolTable {
 
     // 查找符号类型（从当前作用域向外层作用域查找）
     public boolean cur_scope_has_same_symbol(String name) {
+            System.out.println("crz");
             List<Symbol> curScope=scopeStack.get( scopeStack.size() - 1);
             for(int j=0;j<curScope.size();j++)
             {
