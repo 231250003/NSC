@@ -273,6 +273,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         if (ctx.RETURN() != null) {
             LLVMValueRef returnValue;
             if(ctx.exp() != null ){
+                System.err.println("crzzzz");
                 returnValue = visit(ctx.exp());
                 return LLVMBuildRet(builder, returnValue);
             }
