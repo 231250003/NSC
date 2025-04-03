@@ -240,9 +240,12 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         PointerPointer<LLVMValueRef> args = new PointerPointer<>(paramCount);
         for (int i = 0; i < paramCount; i++) {
             LLVMValueRef argValue = visit(ctx.param(i));
+            if (LLVMGetTypeKind(LLVMTypeOf(argValue)) == LLVMPointerTypeKind) {
+                argValue = LLVMBuildLoad(builder, argValue, "arg");
+            }
             args.put(i, argValue);
         }
-        return null;
+        return args;
     }
 
     public LLVMValueRef getinitvalue(SysYParser.InitValContext ctx) {
