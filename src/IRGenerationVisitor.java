@@ -362,7 +362,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
             LLVMValueRef firstCondInt = LLVMBuildZExt(builder, firstCond, LLVMInt32Type(), "cond_int");
             System.err.println("dfsfds");
-            System.out.println(firstCondInt);
+            System.out.println(firstCondInt!=zero);
             LLVMBuildCondBr(builder, firstCondInt, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             visit(ctx.stmt(0));
