@@ -1,11 +1,7 @@
 int a = 10;
 int main() {
-    if(a!=2){
-        a=a+1;
-        if(a!=4){
-        return a;
-        }
-        else return a-1;
-    }
+    int b=2;
+    int c=3;
+    if(a>b>c) return c;
     return a;
 }

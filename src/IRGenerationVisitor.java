@@ -411,6 +411,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
+        else if(ctx.WHILE()!=null){
+
+        }
         return null;
     }
 
