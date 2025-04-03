@@ -146,7 +146,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
                 symbolTable.set_r_params(funcName,args);
-                return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
+                return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), "var");
             }
         }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
