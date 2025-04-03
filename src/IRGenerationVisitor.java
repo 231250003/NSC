@@ -361,6 +361,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 elseBlock = LLVMAppendBasicBlock(function, "if.else");
             }
             System.err.println(firstCond);
+            System.err.println("dfsfds");
             LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             visit(ctx.stmt(0));
