@@ -137,7 +137,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
         if (ctx.number() != null) return visit(ctx.number());
         else if(ctx.L_PAREN()!=null&&ctx.exp()!=null){
-            System.err.println("cd");
+            System.err.println("121231321");
             return visit(ctx.exp(0));
         }
         else if (ctx.IDENT() != null && ctx.L_PAREN() != null) {
