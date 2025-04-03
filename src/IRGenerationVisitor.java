@@ -329,8 +329,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             } else {
                 predicate = LLVMIntSGE;
             }
-            LLVMValueRef cmpResult = LLVMBuildICmp(builder, predicate, left, right, "cmp");
-            return LLVMBuildSelect(builder, cmpResult, LLVMConstInt(LLVMInt32Type(), 1, 0), LLVMConstInt(LLVMInt32Type(), 0, 0), "select");
+            return LLVMBuildICmp(builder, predicate, left, right, "cmp");
         }
         else if (ctx.EQ() != null || ctx.NEQ() != null) {
             LLVMValueRef left = visit(ctx.cond(0));
@@ -342,8 +341,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind) {
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
-            LLVMValueRef cmpResult = LLVMBuildICmp(builder, predicate, left, right, "cmp");
-            return LLVMBuildSelect(builder, cmpResult, LLVMConstInt(LLVMInt32Type(), 1, 0), LLVMConstInt(LLVMInt32Type(), 0, 0), "select");
+            return LLVMBuildICmp(builder, predicate, left, right, "cmp");
         }
         else if (ctx.AND() != null) {
             LLVMValueRef left = visit(ctx.cond(0));
