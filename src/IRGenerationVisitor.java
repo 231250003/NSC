@@ -136,6 +136,20 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     @Override
     public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
         if (ctx.number() != null) return visit(ctx.number());
+        else if (ctx.IDENT() != null && ctx.L_PAREN() != null) {
+            System.err.println("crzasa");
+            String funcName = ctx.IDENT().getText();
+            LLVMValueRef function = LLVMGetNamedFunction(module, funcName);
+            if (function == null) {
+                throw new RuntimeException("Undefined function: " + funcName);
+            }
+            PointerPointer<LLVMValueRef> args = null;
+            if (ctx.funcRParams() != null) {
+                args=getFuncRParams(ctx.funcRParams());
+                symbolTable.set_r_params(funcName,args);
+                return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
+            }
+        }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
             LLVMValueRef val = visit(ctx.exp(0));
             switch (ctx.unaryOp().getText()) {
@@ -162,20 +176,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else if(ctx.lVal()!=null){
             return visit(ctx.lVal());
-        }
-        else if (ctx.IDENT() != null && ctx.L_PAREN() != null) {
-            System.err.println("crzzadas");
-            String funcName = ctx.IDENT().getText();
-            LLVMValueRef function = LLVMGetNamedFunction(module, funcName);
-            if (function == null) {
-                throw new RuntimeException("Undefined function: " + funcName);
-            }
-            PointerPointer<LLVMValueRef> args = null;
-            if (ctx.funcRParams() != null) {
-                args=getFuncRParams(ctx.funcRParams());
-                symbolTable.set_r_params(funcName,args);
-                return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
-            }
         }
         return null;
     }
