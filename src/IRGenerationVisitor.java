@@ -316,7 +316,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef right = visit(ctx.cond(1));
             int predicate = (ctx.EQ() != null) ? LLVMIntEQ : LLVMIntNE;
             System.out.println("cdscds");
-            System.err.println(left);
+            System.err.println(right);
             return LLVMBuildICmp(builder, predicate, left, right, "eqcmp");
         }
         else if (ctx.AND() != null) {
