@@ -299,6 +299,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             // 处理 <, >, <=, >=
             LLVMValueRef left = visit(ctx.cond(0));
             LLVMValueRef right = visit(ctx.cond(1));
+            left = LLVMBuildLoad(builder, left, "load_a");
+            right = LLVMBuildLoad(builder, right, "load_const");
             int predicate;
             if (ctx.LT() != null) {
                 predicate = LLVMIntSLT;
@@ -315,17 +317,22 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef left = visit(ctx.cond(0));
             LLVMValueRef right = visit(ctx.cond(1));
             int predicate = (ctx.EQ() != null) ? LLVMIntEQ : LLVMIntNE;
-            System.out.println("Left value: " + LLVMPrintValueToString(right).getString());
+            left = LLVMBuildLoad(builder, left, "load_a");
+            right = LLVMBuildLoad(builder, right, "load_const");
             return LLVMBuildICmp(builder, predicate, left, right, "eqcmp");
         }
         else if (ctx.AND() != null) {
             LLVMValueRef left = visit(ctx.cond(0));
             LLVMValueRef right = visit(ctx.cond(1));
+            left = LLVMBuildLoad(builder, left, "load_a");
+            right = LLVMBuildLoad(builder, right, "load_const");
             return LLVMBuildAnd(builder, left, right, "and");
         }
         else if (ctx.OR() != null) {
             LLVMValueRef left = visit(ctx.cond(0));
             LLVMValueRef right = visit(ctx.cond(1));
+            left = LLVMBuildLoad(builder, left, "load_a");
+            right = LLVMBuildLoad(builder, right, "load_const");
             return LLVMBuildOr(builder, left, right, "or");
         }
         else return null;
