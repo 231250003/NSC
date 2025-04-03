@@ -360,7 +360,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (ctx.ELSE() != null) {
                 elseBlock = LLVMAppendBasicBlock(function, "if.else");
             }
-            LLVMValueRef firstCondInt = LLVMBuildZExt(builder, firstCond, LLVMInt32Type(), "cond_int");
+            LLVMValueRef firstCondInt = LLVMBuildZExt(builder, firstCond, LLVMInt1Type(), "cond_int");
             System.err.println("dfsfds");
             System.out.println(firstCondInt!=zero);
             LLVMBuildCondBr(builder, firstCondInt, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
