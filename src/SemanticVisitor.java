@@ -1,8 +1,6 @@
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.*;
@@ -480,7 +478,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         symbolTable.exitScope();
         return null;
     }
-    public Void visit_block(SysYParser.BlockContext ctx,List<Symbol> symbols) {
+    public Void visit_block(SysYParser.BlockContext ctx, List<Symbol> symbols) {
         symbolTable.enterScope();
         if(symbols!=null){
             for(Symbol symbol:symbols){

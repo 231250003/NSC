@@ -7,24 +7,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import semantic_check.*;
+import org.bytedeco.llvm.LLVM.*;
+import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 1) {
+        /* if (args.length < 1) {
             System.err.println("input path is required");
-        }
-        String source = args[0];
-        CharStream input = CharStreams.fromFileName(source);
-        SysYLexer lexer = new SysYLexer(input);
-//        lexer.removeErrorListeners();
+        }*/
+          String source = args[0];
+         CharStream input = CharStreams.fromFileName(source);
+         SysYLexer lexer = new SysYLexer(input);
+          lexer.removeErrorListeners();
 //        MyErrorListener errorListener=new MyErrorListener(1);
 //        lexer.addErrorListener(errorListener);
 
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-        SysYParser parser = new SysYParser(tokens);
-        parser.removeErrorListeners();
+         SysYParser parser = new SysYParser(tokens);
+         parser.removeErrorListeners();
         //MyErrorListener parser_errorListener=new MyErrorListener(2);
 
 //        if(errorListener.hasErrorInformation()){
@@ -47,14 +48,25 @@ public class Main {
 //                visitor.visit(tree);
 //             }
 //        }
-          ParseTree semantic_tree= parser.program();
-          SemanticVisitor semantic_visitor=new SemanticVisitor();
-          semantic_visitor.visit(semantic_tree);
-          if(OutputHelper.is_semantic_correct){
-              System.err.println("No semantic errors in the program!");
-          }
+   //       ParseTree semantic_tree= parser.program();
+     //     SemanticVisitor semantic_visitor=new SemanticVisitor();
+       //   semantic_visitor.visit(semantic_tree);
+         // if(OutputHelper.is_semantic_correct){
+           //   System.err.println("No semantic errors in the program!");
+          //}
+        ParseTree tree = parser.program();
+        LLVMInitializeNativeTarget();
+        LLVMInitializeNativeAsmPrinter();
+        LLVMInitializeNativeAsmParser();
+        LLVMModuleRef module = LLVMModuleCreateWithName("my_module");
+        LLVMBuilderRef builder = LLVMCreateBuilder();
+        MyVisitor visitor = new MyVisitor(module, builder);
+        visitor.visit(tree);
+        LLVMDumpModule(module);
+        LLVMDisposeBuilder(builder);
+        LLVMDisposeModule(module);
     }
-    public static void printSysYTokenInformation(Token t){
+    /*public static void printSysYTokenInformation(Token t){
         String tokenType = SysYLexer.VOCABULARY.getSymbolicName(t.getType());
         String tokenText=t.getText();
         if(tokenType.equals("INTEGER_CONST")){
@@ -66,5 +78,5 @@ public class Main {
             }
         }
         System.err.printf("%s %s at Line %d.%n", tokenType,tokenText, t.getLine());
-    }
+    }*/
 }
