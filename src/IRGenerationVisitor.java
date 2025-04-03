@@ -21,6 +21,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     @Override
     public LLVMValueRef visitBlock(SysYParser.BlockContext ctx) {
         for (SysYParser.BlockItemContext blockItem : ctx.blockItem()) {
+                System.out.println("crzzz");
                 visit(blockItem);
         }
         return null;
@@ -28,8 +29,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitBlockItem(SysYParser.BlockItemContext ctx) {
-        if (ctx.decl() != null) return visit(ctx.decl());
-        if (ctx.stmt() != null) return visit(ctx.stmt());
+        if (ctx.decl() != null)  visit(ctx.decl());
+        if (ctx.stmt() != null)  visit(ctx.stmt());
         return null;
     }
 
