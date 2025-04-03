@@ -136,6 +136,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     @Override
     public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
         if (ctx.number() != null) return visit(ctx.number());
+        else if(ctx.L_PAREN()!=null&&ctx.exp()!=null){
+            return visit(ctx.exp(0));
+        }
         else if (ctx.IDENT() != null && ctx.L_PAREN() != null) {
             System.err.println("crzasa");
             String funcName = ctx.IDENT().getText();
@@ -170,9 +173,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                  case "%" :return LLVMBuildSRem(builder, left, right, "mod");
                  default :return null;
             }
-        }
-        else if(ctx.L_PAREN()!=null&&ctx.exp()!=null){
-            return visit(ctx.exp(0));
         }
         else if(ctx.lVal()!=null){
             return visit(ctx.lVal());
