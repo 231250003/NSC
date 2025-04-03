@@ -315,6 +315,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef left = visit(ctx.cond(0));
             LLVMValueRef right = visit(ctx.cond(1));
             int predicate = (ctx.EQ() != null) ? LLVMIntEQ : LLVMIntNE;
+            System.out.println("Left value: " + LLVMPrintValueToString(left).getString());
             return LLVMBuildICmp(builder, predicate, left, right, "eqcmp");
         }
         else if (ctx.AND() != null) {
@@ -360,7 +361,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (ctx.ELSE() != null) {
                 elseBlock = LLVMAppendBasicBlock(function, "if.else");
             }
-            System.out.println("First condition value: " + LLVMPrintValueToString(firstCond).getString());
             LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             visit(ctx.stmt(0));
