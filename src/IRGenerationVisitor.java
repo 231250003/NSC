@@ -5,8 +5,9 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.bytedeco.javacpp.PointerPointer;
 import org.bytedeco.llvm.LLVM.*;
 import semantic_check.*;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
+
 import static org.bytedeco.llvm.global.LLVM.*;
 
 public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
@@ -161,6 +162,18 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         else if(ctx.lVal()!=null){
             return visit(ctx.lVal());
         }
+        else if (ctx.IDENT() != null && ctx.L_PAREN() != null) {
+            String funcName = ctx.IDENT().getText();
+            LLVMValueRef function = LLVMGetNamedFunction(module, funcName);
+            if (function == null) {
+                throw new RuntimeException("Undefined function: " + funcName);
+            }
+            PointerPointer<LLVMValueRef> args = null;
+            if (ctx.funcRParams() != null) {
+                args=getFuncRParams(ctx.funcRParams());
+            }
+            return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
+        }
         return null;
     }
 
@@ -170,34 +183,58 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             throw new RuntimeException("Only 'main' function is supported.");
         }
         String funcName = ctx.IDENT().getText();
-        LLVMTypeRef returnType = LLVMInt32Type();
-        PointerPointer<LLVMTypeRef> paramTypes = new PointerPointer<>(0);
-        LLVMTypeRef funcType = LLVMFunctionType(returnType, paramTypes, 0, 0);
+        LLVMTypeRef returnType;
+        if(ctx.funcType().getText().equals("int"))  returnType = LLVMInt32Type();
+        else returnType = LLVMVoidType();
+        List<LLVMTypeRef> paramTypeList = new ArrayList<>();
+        List<Symbol> params=new ArrayList<>();
+        if(ctx.funcFParams()!=null){
+            params=new ArrayList<>(getFuncFParams(ctx.funcFParams()));
+            for (Symbol x: params) {
+                if(x.type.equals(new IntType())) paramTypeList.add(LLVMInt32Type());
+                 //TODO adding array type params
+            }
+        }
+        PointerPointer<LLVMTypeRef> paramTypes = new PointerPointer<>(paramTypeList.size());
+        for (int i = 0; i < paramTypeList.size(); i++) {
+            paramTypes.put(i, paramTypeList.get(i));
+        }
+        LLVMTypeRef funcType = LLVMFunctionType(returnType, paramTypes, paramTypeList.size(), 0);
         LLVMValueRef function = LLVMAddFunction(module, funcName, funcType);
         LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
         LLVMPositionBuilderAtEnd(builder, entry);
-        visit_block(ctx.block(),null);
+        visit_block(ctx.block(),params);
         return null;
     }
 
-    @Override
-    public LLVMValueRef visitFuncFParam(SysYParser.FuncFParamContext ctx) {
-        return super.visitFuncFParam(ctx);
+    public Symbol getFuncFParam(SysYParser.FuncFParamContext ctx) {
+        Type type;
+        String name=ctx.IDENT().getText();
+        if (ctx.L_BRACKT().size() > 0) {
+            type=new ArrayType(new IntType(),1);
+        }
+        else type=new IntType();
+        return new Symbol(name,type);
+    }
+    public List<Symbol> getFuncFParams(SysYParser.FuncFParamsContext ctx) {
+        List<SysYParser.FuncFParamContext> funcFParams = ctx.funcFParam();
+        List<Symbol> result = new ArrayList<>();
+        for (int i = 0; i < funcFParams.size(); i++) {
+            SysYParser.FuncFParamContext funcFParam = funcFParams.get(i);
+            Symbol x=getFuncFParam(funcFParam);
+            result.add(x);
+        }
+        return result;
     }
 
-    @Override
-    public LLVMValueRef visitFuncFParams(SysYParser.FuncFParamsContext ctx) {
-        return super.visitFuncFParams(ctx);
-    }
-
-    @Override
-    public LLVMValueRef visitFuncRParams(SysYParser.FuncRParamsContext ctx) {
-        return super.visitFuncRParams(ctx);
-    }
-
-    @Override
-    public LLVMValueRef visitFuncType(SysYParser.FuncTypeContext ctx) {
-        return super.visitFuncType(ctx);
+    public PointerPointer<LLVMValueRef> getFuncRParams(SysYParser.FuncRParamsContext ctx) {
+        int paramCount = ctx.param().size();
+        PointerPointer<LLVMValueRef> args = new PointerPointer<>(paramCount);
+        for (int i = 0; i < paramCount; i++) {
+            LLVMValueRef argValue = visit(ctx.param(i));
+            args.put(i, argValue);
+        }
+        return null;
     }
 
     public LLVMValueRef getinitvalue(SysYParser.InitValContext ctx) {
@@ -226,7 +263,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitParam(SysYParser.ParamContext ctx) {
-        return super.visitParam(ctx);
+        return visit(ctx.exp());
     }
 
     @Override
