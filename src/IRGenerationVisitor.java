@@ -315,6 +315,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef left = visit(ctx.cond(0));
             LLVMValueRef right = visit(ctx.cond(1));
             int predicate = (ctx.EQ() != null) ? LLVMIntEQ : LLVMIntNE;
+            System.out.println("cdscds");
             assert (left!=null);
             assert (right!=null);
             assert (left.equals(right));
@@ -365,8 +366,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 elseBlock = LLVMAppendBasicBlock(function, "if.else");
             }
             LLVMValueRef firstCondInt = LLVMBuildZExt(builder, firstCond, LLVMInt1Type(), "cond_int");
-            System.err.println("dfsfds");
-            System.out.println(firstCondInt!=zero);
             LLVMBuildCondBr(builder, firstCondInt, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             visit(ctx.stmt(0));
