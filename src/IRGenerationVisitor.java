@@ -174,6 +174,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 args=getFuncRParams(ctx.funcRParams());
                 symbolTable.set_r_params(funcName,args);
             }
+            System.err.println("crzzadas");
             return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
         }
         return null;
@@ -270,9 +271,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         String name=ctx.IDENT().getText();
         int paramCount = LLVMCountParams(func);
         for (int i = 0; i < paramCount; i++) {
-            System.err.println("crzzz");
+            //System.err.println("crzzz");
             LLVMValueRef param = LLVMGetParam(func, i);
-            System.err.println(LLVMGetValueName(param).getString());
+            //System.err.println(LLVMGetValueName(param).getString());
             if (LLVMGetValueName(param).getString().equals(name)) {
                 return param;
             }
