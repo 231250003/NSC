@@ -8,21 +8,29 @@ import java.util.*;
 
 public class SymbolTable {
     private Stack<List<Symbol>> scopeStack;
-
+    private Stack<Boolean> is_while_scope;
     public SymbolTable() {
         scopeStack = new Stack<>();
+        is_while_scope=new Stack<>();
         enterScope(); // 初始化全局作用域
     }
 
     // 进入新作用域
     public void enterScope() {
         scopeStack.push(new ArrayList<>());
+        is_while_scope.push(false);
     }
-
+    public void enterScope(boolean is_while_stmt) {
+        scopeStack.push(new ArrayList<>());
+        is_while_scope.push(is_while_stmt);
+    }
     // 退出当前作用域
     public void exitScope() {
         if (!scopeStack.isEmpty()) {
             scopeStack.pop();
+        }
+        if(!is_while_scope.isEmpty()){
+            is_while_scope.pop();
         }
     }
 
