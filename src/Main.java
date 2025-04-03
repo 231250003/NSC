@@ -54,12 +54,12 @@ public class Main {
          // if(OutputHelper.is_semantic_correct){
            //   System.err.println("No semantic errors in the program!");
           //}
-        ParseTree tree = parser.program();
         LLVMInitializeNativeTarget();
         LLVMInitializeNativeAsmPrinter();
         LLVMInitializeNativeAsmParser();
         LLVMModuleRef module = LLVMModuleCreateWithName("my_module");
         LLVMBuilderRef builder = LLVMCreateBuilder();
+        ParseTree tree = parser.program();
         IRGenerationVisitor visitor = new IRGenerationVisitor(module, builder);
         visitor.visit(tree);
         LLVMDumpModule(module);
