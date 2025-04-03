@@ -249,7 +249,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
         String name=ctx.IDENT().getText();
         Symbol s=symbolTable.get_name_matched_symbol(name);
-        if(s.reference!=null)System.err.println("crzzzcrz");
+        if(s.reference!=null)System.err.println("crzasa");
         return s.reference;
     }
 
