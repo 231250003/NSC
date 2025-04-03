@@ -40,7 +40,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitCompUnit(SysYParser.CompUnitContext ctx) {
-        System.out.println("crzzz");
 
         for (ParseTree child : ctx.children) {
             if (child instanceof SysYParser.DeclContext) {
@@ -207,7 +206,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visit(ParseTree tree) {
-        return null;
+        if (tree == null) return null;
+        return tree.accept(this);
     }
 
     @Override
