@@ -171,6 +171,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             PointerPointer<LLVMValueRef> args = null;
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
+                symbolTable.set_r_params(funcName,args);
             }
             return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
         }
@@ -181,8 +182,15 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitFuncDef(SysYParser.FuncDefContext ctx) {
         String funcName = ctx.IDENT().getText();
         LLVMTypeRef returnType;
-        if(ctx.funcType().getText().equals("int"))  returnType = LLVMInt32Type();
-        else returnType = LLVMVoidType();
+        Type retType;
+        if(ctx.funcType().getText().equals("int")){
+            returnType = LLVMInt32Type();
+            retType=new IntType();
+        }
+        else {
+            returnType = LLVMVoidType();
+            retType=new VoidType();
+        }
         List<LLVMTypeRef> paramTypeList = new ArrayList<>();
         List<Symbol> params=new ArrayList<>();
         if(ctx.funcFParams()!=null){
@@ -200,6 +208,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         LLVMValueRef function = LLVMAddFunction(module, funcName, funcType);
         LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
         LLVMPositionBuilderAtEnd(builder, entry);
+        FunctionType functionType = new FunctionType(retType, params);
+        symbolTable.addGlobal(new Symbol(funcName,functionType));
         visit_block(ctx.block(),params);
         return null;
     }
@@ -249,7 +259,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
         String name=ctx.IDENT().getText();
         Symbol s=symbolTable.get_name_matched_symbol(name);
-        if(s.reference!=null)System.err.println("crzasa");
         return s.reference;
     }
 
