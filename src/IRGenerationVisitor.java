@@ -172,7 +172,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             PointerPointer<LLVMValueRef> args = null;
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
-                assert(args!=null);
                 symbolTable.set_r_params(funcName,args);
             }
             return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
@@ -208,6 +207,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         LLVMTypeRef funcType = LLVMFunctionType(returnType, paramTypes, paramTypeList.size(), 0);
         LLVMValueRef function = LLVMAddFunction(module, funcName, funcType);
+        for (int i = 0; i < params.size(); i++) {
+            LLVMValueRef param = LLVMGetParam(function, i);
+            LLVMSetValueName(param, params.get(i).name);
+            params.get(i).reference = param;
+        }
         LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
         LLVMPositionBuilderAtEnd(builder, entry);
         FunctionType functionType = new FunctionType(retType, params);
