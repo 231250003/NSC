@@ -40,7 +40,14 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitCompUnit(SysYParser.CompUnitContext ctx) {
-        return super.visitCompUnit(ctx);
+        for (ParseTree child : ctx.children) {
+            if (child instanceof SysYParser.DeclContext) {
+                visitDecl((SysYParser.DeclContext) child);
+            } else if (child instanceof SysYParser.FuncDefContext) {
+                visitFuncDef((SysYParser.FuncDefContext) child);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -107,7 +114,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         LLVMValueRef function = LLVMAddFunction(module, funcName, funcType);
         LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
         LLVMPositionBuilderAtEnd(builder, entry);
-        return visit(ctx.block());
+        visit(ctx.block());
+        return null;
     }
 
     @Override
@@ -153,7 +161,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitProgram(SysYParser.ProgramContext ctx) {
-        return super.visitProgram(ctx);
+        return visit(ctx.compUnit());
     }
 
     @Override
