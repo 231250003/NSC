@@ -179,9 +179,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitFuncDef(SysYParser.FuncDefContext ctx) {
-        if (!ctx.IDENT().getText().equals("main")) {
-            throw new RuntimeException("Only 'main' function is supported.");
-        }
         String funcName = ctx.IDENT().getText();
         LLVMTypeRef returnType;
         if(ctx.funcType().getText().equals("int"))  returnType = LLVMInt32Type();
