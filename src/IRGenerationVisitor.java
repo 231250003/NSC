@@ -137,7 +137,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
         if (ctx.number() != null) return visit(ctx.number());
         else if (ctx.IDENT() != null && ctx.L_PAREN() != null) {
-            System.err.println("crzasa");
             String funcName = ctx.IDENT().getText();
             LLVMValueRef function = LLVMGetNamedFunction(module, funcName);
             if (function == null) {
