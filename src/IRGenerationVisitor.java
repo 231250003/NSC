@@ -146,7 +146,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
                 symbolTable.set_r_params(funcName,args);
-                return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), "var");
+                return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
             }
         }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
@@ -303,9 +303,17 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef returnValue;
             if(ctx.exp() != null ){
                 returnValue = visit(ctx.exp());
-                return LLVMBuildRet(builder, returnValue);
+                LLVMBuildRet(builder, returnValue);
             }
-            else  return LLVMBuildRetVoid(builder);
+            else   LLVMBuildRetVoid(builder);
+        }
+        else if(ctx.ASSIGN()!=null){
+            LLVMValueRef x=visitLVal(ctx.lVal());
+            LLVMValueRef y=visitExp(ctx.exp());
+            LLVMBuildStore(builder, y, x);
+        }
+        else if(ctx.block()!=null){
+            visit_block(ctx.block());
         }
         return null;
     }
