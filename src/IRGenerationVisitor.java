@@ -25,12 +25,25 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
          else visit((ctx.constDecl()));
          return null;
     }
-
-    @Override
-    public LLVMValueRef visitBlock(SysYParser.BlockContext ctx) {
-        for (SysYParser.BlockItemContext blockItem : ctx.blockItem()) {
-                visit(blockItem);
+    public Void visit_block(SysYParser.BlockContext ctx) {
+        symbolTable.enterScope();
+        for(int i=0;i<ctx.blockItem().size();i++){
+            visit(ctx.blockItem(i));
         }
+        symbolTable.exitScope();
+        return null;
+    }
+    public Void visit_block(SysYParser.BlockContext ctx, List<Symbol> symbols) {
+        symbolTable.enterScope();
+        if(symbols!=null){
+            for(Symbol symbol:symbols){
+                symbolTable.put(symbol);
+            }
+        }
+        for(int i=0;i<ctx.blockItem().size();i++){
+            visit(ctx.blockItem(i));
+        }
+        symbolTable.exitScope();
         return null;
     }
 
@@ -163,7 +176,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         LLVMValueRef function = LLVMAddFunction(module, funcName, funcType);
         LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
         LLVMPositionBuilderAtEnd(builder, entry);
-        visit(ctx.block());
+        visit_block(ctx.block(),null);
         return null;
     }
 
