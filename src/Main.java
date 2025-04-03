@@ -60,11 +60,11 @@ public class Main {
         LLVMInitializeNativeAsmParser();
         LLVMModuleRef module = LLVMModuleCreateWithName("my_module");
         LLVMBuilderRef builder = LLVMCreateBuilder();
-        MyVisitor visitor = new MyVisitor(module, builder);
-        visitor.visit(tree);
-        LLVMDumpModule(module);
-        LLVMDisposeBuilder(builder);
-        LLVMDisposeModule(module);
+        //MyVisitor visitor = new MyVisitor(module, builder);
+        //visitor.visit(tree);
+        //LLVMDumpModule(module);
+        //LLVMDisposeBuilder(builder);
+        //LLVMDisposeModule(module);
     }
     /*public static void printSysYTokenInformation(Token t){
         String tokenType = SysYLexer.VOCABULARY.getSymbolicName(t.getType());
