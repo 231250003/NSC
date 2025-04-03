@@ -164,6 +164,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             return visit(ctx.lVal());
         }
         else if (ctx.IDENT() != null && ctx.L_PAREN() != null) {
+            System.err.println("crzzadas");
             String funcName = ctx.IDENT().getText();
             LLVMValueRef function = LLVMGetNamedFunction(module, funcName);
             if (function == null) {
@@ -173,7 +174,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
                 symbolTable.set_r_params(funcName,args);
-                System.err.println("crzzadas");
                 return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
             }
         }
