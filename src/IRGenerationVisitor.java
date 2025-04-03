@@ -74,10 +74,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         return null;
     }
 
-    @Override
-    public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
-        return super.visitCond(ctx);
-    }
 
     @Override
     public LLVMValueRef visitConstDecl(SysYParser.ConstDeclContext ctx) {
@@ -296,7 +292,43 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitProgram(SysYParser.ProgramContext ctx) {
         return visit(ctx.compUnit());
     }
-
+    @Override
+    public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
+        if(ctx.exp()!=null) return visit(ctx.exp());
+        else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {
+            // 处理 <, >, <=, >=
+            LLVMValueRef left = visit(ctx.cond(0));
+            LLVMValueRef right = visit(ctx.cond(1));
+            int predicate;
+            if (ctx.LT() != null) {
+                predicate = LLVMIntSLT;
+            } else if (ctx.GT() != null) {
+                predicate = LLVMIntSGT;
+            } else if (ctx.LE() != null) {
+                predicate = LLVMIntSLE;
+            } else {
+                predicate = LLVMIntSGE;
+            }
+            return LLVMBuildICmp(builder, predicate, left, right, "cmp");
+        }
+        else if (ctx.EQ() != null || ctx.NEQ() != null) {
+            LLVMValueRef left = visit(ctx.cond(0));
+            LLVMValueRef right = visit(ctx.cond(1));
+            int predicate = (ctx.EQ() != null) ? LLVMIntEQ : LLVMIntNE;
+            return LLVMBuildICmp(builder, predicate, left, right, "eqcmp");
+        }
+        else if (ctx.AND() != null) {
+            LLVMValueRef left = visit(ctx.cond(0));
+            LLVMValueRef right = visit(ctx.cond(1));
+            return LLVMBuildAnd(builder, left, right, "and");
+        }
+        else if (ctx.OR() != null) {
+            LLVMValueRef left = visit(ctx.cond(0));
+            LLVMValueRef right = visit(ctx.cond(1));
+            return LLVMBuildOr(builder, left, right, "or");
+        }
+        else return null;
+    }
     @Override
     public LLVMValueRef visitStmt(SysYParser.StmtContext ctx) {
         if (ctx.RETURN() != null) {
@@ -312,8 +344,32 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef y=visitExp(ctx.exp());
             LLVMBuildStore(builder, y, x);
         }
+        else if(ctx.exp()!=null){
+            visitExp(ctx.exp());
+        }
         else if(ctx.block()!=null){
             visit_block(ctx.block());
+        }
+        else if(ctx.IF()!=null){
+            LLVMValueRef function = symbolTable.get_cur_scope_func();
+            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "merge");
+            LLVMPositionBuilderAtEnd(builder, LLVMGetInsertBlock(builder));
+            LLVMValueRef firstCond = visitCond(ctx.cond());
+            LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, "if.then");
+            LLVMBasicBlockRef elseBlock = null;
+            if (ctx.ELSE() != null) {
+                elseBlock = LLVMAppendBasicBlock(function, "if.else");
+            }
+            LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
+            LLVMPositionBuilderAtEnd(builder, thenBlock);
+            visit(ctx.stmt(0));
+            LLVMBuildBr(builder, mergeBlock);
+            if (elseBlock != null) {
+                LLVMPositionBuilderAtEnd(builder, elseBlock);
+                visit(ctx.stmt(1));
+                LLVMBuildBr(builder, mergeBlock);
+            }
+            LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
         return null;
     }
