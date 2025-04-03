@@ -264,7 +264,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         for (int i = 0; i < paramCount; i++) {
             LLVMValueRef param = LLVMGetParam(func, i);
             if (LLVMGetValueName(param).getString().equals(name)) {
-                return param;  // 返回匹配的参数
+                System.err.println("crzz");
+                return param;
             }
         }
         Symbol s=symbolTable.get_name_matched_symbol(name);
