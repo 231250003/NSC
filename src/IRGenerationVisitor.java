@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.bytedeco.javacpp.PointerPointer;
 import org.bytedeco.llvm.LLVM.*;
+import org.bytedeco.llvm.global.LLVM;
 import semantic_check.*;
 
 import java.util.*;
@@ -172,7 +173,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
                 symbolTable.set_r_params(funcName,args);
-                System.err.println("crzads");
             }
             return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
         }
@@ -210,7 +210,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
         LLVMPositionBuilderAtEnd(builder, entry);
         FunctionType functionType = new FunctionType(retType, params);
-        symbolTable.addGlobal(new Symbol(funcName,functionType));
+        symbolTable.addGlobal(new Symbol(funcName,functionType,function));
         visit_block(ctx.block(),params);
         return null;
     }
@@ -258,7 +258,15 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
+        LLVMValueRef func =symbolTable.get_cur_scope_func();
         String name=ctx.IDENT().getText();
+        int paramCount = LLVMCountParams(func);
+        for (int i = 0; i < paramCount; i++) {
+            LLVMValueRef param = LLVMGetParam(func, i);
+            if (LLVMGetValueName(param).getString().equals(name)) {
+                return param;  // 返回匹配的参数
+            }
+        }
         Symbol s=symbolTable.get_name_matched_symbol(name);
         return s.reference;
     }

@@ -32,7 +32,6 @@ public class SymbolTable {
             scopeStack.peek().add(symbol);
         }
     }
-
     // 查找符号类型（从当前作用域向外层作用域查找）
     public boolean cur_scope_has_same_symbol(String name) {
             List<Symbol> curScope=scopeStack.get( scopeStack.size() - 1);
@@ -50,7 +49,7 @@ public class SymbolTable {
                 List<Symbol> params = ((FunctionType) x.type).getparams();
                 for (int i = 0; i < params.size(); i++) {
                     Symbol param = params.get(i);
-                    LLVMValueRef argValue =(LLVMValueRef)args.get(i); // 获取 LLVM 参数值
+                    LLVMValueRef argValue =new LLVMValueRef(args.get(i)); // 获取 LLVM 参数值
                     param.reference = argValue; // 赋值给 symbol 的 reference
                 }
             }
@@ -88,5 +87,11 @@ public class SymbolTable {
         assert(Globalscope.get(Globalscope.size()-1).type instanceof FunctionType);
         assert (((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof VoidType || ((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof IntType);
         return ((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType();
+    }
+    public LLVMValueRef get_cur_scope_func(){
+        List<Symbol> Globalscope= scopeStack.get(0);
+        assert(Globalscope.get(Globalscope.size()-1).type instanceof FunctionType);
+        assert (((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof VoidType || ((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof IntType);
+        return (Globalscope.get(Globalscope.size()-1).reference);
     }
 }
