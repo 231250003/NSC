@@ -7,7 +7,7 @@ import java.util.*;
 
 import semantic_check.*;
 public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
-    public SymbolTable symbolTable=new SymbolTable();
+    private SymbolTable symbolTable=new SymbolTable();
     public Void visitProgram(SysYParser.ProgramContext ctx) {
         if (ctx.compUnit() != null) {
             visitCompUnit(ctx.compUnit());

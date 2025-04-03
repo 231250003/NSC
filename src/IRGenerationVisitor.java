@@ -4,18 +4,26 @@ import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.bytedeco.javacpp.PointerPointer;
 import org.bytedeco.llvm.LLVM.*;
+import semantic_check.*;
+import java.util.ArrayList;
+import java.util.List;
 import static org.bytedeco.llvm.global.LLVM.*;
 
 public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     private final LLVMModuleRef module;
     private final LLVMBuilderRef builder;
+    private static final LLVMTypeRef i32Type = LLVMInt32Type();
+    private static final   LLVMValueRef zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);
+    private SymbolTable symbolTable=new SymbolTable();
     public IRGenerationVisitor(LLVMModuleRef module, LLVMBuilderRef builder) {
         this.module = module;
         this.builder = builder;
     }
     @Override
     public LLVMValueRef visitDecl(SysYParser.DeclContext ctx) {
-        return super.visitDecl(ctx);
+         if(ctx.varDecl()!=null) visit(ctx.varDecl());
+         else visit((ctx.constDecl()));
+         return null;
     }
 
     @Override
@@ -58,22 +66,56 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitConstDecl(SysYParser.ConstDeclContext ctx) {
-        return super.visitConstDecl(ctx);
+        for (int i = 0; i < ctx.constDef().size(); i++) {
+            SysYParser.ConstDefContext constdef = ctx.constDef().get(i);
+            Symbol x = getConstDef(constdef);
+            symbolTable.put(x);
+        }
+        return null;
     }
 
-    @Override
-    public LLVMValueRef visitConstDef(SysYParser.ConstDefContext ctx) {
-        return super.visitConstDef(ctx);
+    public Symbol getConstDef(SysYParser.ConstDefContext ctx) {
+        Symbol symbol=new Symbol();
+        symbol.name=ctx.IDENT().getText();
+        if(ctx.L_BRACKT().isEmpty()){
+            symbol.type=new IntType();
+            if(symbolTable.is_cur_scopeGlobal()){
+                LLVMValueRef initval=getconstinitvalue(ctx.constInitVal());
+                if(LLVMIsAConstantInt(initval) != null) {
+                    LLVMValueRef pointer = LLVMAddGlobal(module, i32Type, symbol.name);
+                    LLVMSetInitializer(pointer, LLVMIsAConstantInt(initval));
+                    symbol.reference=pointer;
+                }
+                else assert(false);
+            }
+            else{
+                LLVMValueRef pointer = LLVMBuildAlloca(builder, LLVMInt32Type(), symbol.name);
+                LLVMValueRef initval=getconstinitvalue(ctx.constInitVal());
+                LLVMBuildStore(builder, initval, pointer);
+                symbol.reference=pointer;
+            }
+        }
+        else{
+            // TODO  assigning array  to initval, no need in lab4
+            assert(false);
+        }
+        return symbol;
     }
 
     @Override
     public LLVMValueRef visitConstExp(SysYParser.ConstExpContext ctx) {
-        return super.visitConstExp(ctx);
+        return visit(ctx.exp());
     }
 
-    @Override
-    public LLVMValueRef visitConstInitVal(SysYParser.ConstInitValContext ctx) {
-        return super.visitConstInitVal(ctx);
+    public LLVMValueRef getconstinitvalue(SysYParser.ConstInitValContext ctx) {
+        if(ctx.L_BRACE()==null){
+            return visit(ctx.constExp());
+        }
+        else {
+            // TODO  assigning array to initval, no need in lab4
+            assert(false);
+        }
+        return null;
     }
 
     @Override
@@ -139,9 +181,15 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         return super.visitFuncType(ctx);
     }
 
-    @Override
-    public LLVMValueRef visitInitVal(SysYParser.InitValContext ctx) {
-        return super.visitInitVal(ctx);
+    public LLVMValueRef getinitvalue(SysYParser.InitValContext ctx) {
+        if(ctx.L_BRACE()==null){
+            return visit(ctx.exp());
+        }
+        else {
+            // TODO  assigning array to initval, no need in lab4
+            assert(false);
+        }
+        return null;
     }
 
     @Override
@@ -181,27 +229,62 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitVarDecl(SysYParser.VarDeclContext ctx) {
-        return super.visitVarDecl(ctx);
+        for (int i = 0; i < ctx.varDef().size(); i++) {
+            SysYParser.VarDefContext vardef = ctx.varDef().get(i);
+            Symbol x = getVardef(vardef);
+            symbolTable.put(x);
+        }
+        return null;
     }
 
-    @Override
-    public LLVMValueRef visitVarDef(SysYParser.VarDefContext ctx) {
-        return super.visitVarDef(ctx);
-    }
-
-    @Override
-    protected LLVMValueRef aggregateResult(LLVMValueRef aggregate, LLVMValueRef nextResult) {
-        return super.aggregateResult(aggregate, nextResult);
-    }
-
-    @Override
-    protected LLVMValueRef defaultResult() {
-        return super.defaultResult();
-    }
-
-    @Override
-    protected boolean shouldVisitNextChild(RuleNode node, LLVMValueRef currentResult) {
-        return super.shouldVisitNextChild(node, currentResult);
+    public Symbol getVardef(SysYParser.VarDefContext ctx) {
+        Symbol symbol=new Symbol();
+        symbol.name=ctx.IDENT().getText();
+        if(ctx.initVal()==null) {
+            if(ctx.L_BRACKT().isEmpty()) {
+                symbol.type = new IntType();
+                LLVMValueRef pointer;
+                //May be wrong but is in the manual
+                if (symbolTable.is_cur_scopeGlobal()) {
+                    pointer = LLVMAddGlobal(module, i32Type, symbol.name);
+                    LLVMSetInitializer(pointer, zero);
+                } else {
+                    pointer = LLVMBuildAlloca(builder, i32Type, symbol.name);
+                    LLVMValueRef undefVal = LLVMGetUndef(i32Type);
+                    LLVMBuildStore(builder, undefVal, pointer);
+                }
+                symbol.reference = pointer;
+            }
+            else{
+                // TODO adding array to symbol table, no need in lab4
+                assert(false);
+            }
+        }
+        else{
+            if(ctx.L_BRACKT().isEmpty()){
+                symbol.type=new IntType();
+                if(symbolTable.is_cur_scopeGlobal()){
+                    LLVMValueRef initval=getinitvalue(ctx.initVal());
+                    if(LLVMIsAConstantInt(initval) != null) {
+                        LLVMValueRef pointer = LLVMAddGlobal(module, i32Type, symbol.name);
+                        LLVMSetInitializer(pointer, LLVMIsAConstantInt(initval));
+                        symbol.reference=pointer;
+                    }
+                    else assert(false);
+                }
+                else{
+                    LLVMValueRef pointer = LLVMBuildAlloca(builder, LLVMInt32Type(), symbol.name);
+                    LLVMValueRef initval=getinitvalue(ctx.initVal());
+                    LLVMBuildStore(builder, initval, pointer);
+                    symbol.reference=pointer;
+                }
+            }
+            else{
+                // TODO adding array to symbol table, no need in lab4
+                assert(false);
+            }
+        }
+        return symbol;
     }
 
     @Override
