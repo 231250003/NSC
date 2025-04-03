@@ -181,7 +181,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitFuncDef(SysYParser.FuncDefContext ctx) {
         String funcName = ctx.IDENT().getText();
         LLVMTypeRef returnType;
-        System.out.println(ctx.funcType().getText());
         if(ctx.funcType().getText().equals("int"))  returnType = LLVMInt32Type();
         else returnType = LLVMVoidType();
         List<LLVMTypeRef> paramTypeList = new ArrayList<>();
@@ -275,9 +274,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef returnValue;
             if(ctx.exp() != null ){
                 returnValue = visit(ctx.exp());
-                LLVMBuildRet(builder, returnValue);
+                return LLVMBuildRet(builder, returnValue);
             }
-            else  LLVMBuildRetVoid(builder);
+            else  return LLVMBuildRetVoid(builder);
         }
         return null;
     }
