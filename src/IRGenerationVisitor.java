@@ -338,7 +338,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind) {
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
-            return LLVMBuildAnd(builder, left, right, "and");
+            LLVMValueRef result = LLVMBuildICmp(builder, LLVMIntEQ, left, LLVMConstInt(LLVMInt1Type(), 0, 0), "left_is_zero");
+            LLVMValueRef short_circuit = LLVMBuildSelect(builder, result, LLVMConstInt(LLVMInt1Type(), 0, 0), right, "short_circuit");
+            return short_circuit;
         }
         else if (ctx.OR() != null) {
             LLVMValueRef left = visit(ctx.cond(0));
@@ -349,7 +351,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind) {
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
-            return LLVMBuildOr(builder, left, right, "or");
+            LLVMValueRef result = LLVMBuildICmp(builder, LLVMIntNE, left, LLVMConstInt(LLVMInt1Type(), 0, 0), "left_is_nonzero");
+            return LLVMBuildSelect(builder, result, LLVMConstInt(LLVMInt1Type(), 1, 0), right, "short_circuit");
         }
         else return null;
     }
