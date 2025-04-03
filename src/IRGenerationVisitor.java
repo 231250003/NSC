@@ -262,8 +262,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         String name=ctx.IDENT().getText();
         int paramCount = LLVMCountParams(func);
         for (int i = 0; i < paramCount; i++) {
-            System.err.println("crzz");
             LLVMValueRef param = LLVMGetParam(func, i);
+            System.err.println(LLVMGetValueName(param).getString());
             if (LLVMGetValueName(param).getString().equals(name)) {
                 return param;
             }
