@@ -121,7 +121,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     @Override
     public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
         if (ctx.number() != null) return visit(ctx.number());
-        if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
+        else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
             LLVMValueRef val = visit(ctx.exp(0));
             switch (ctx.unaryOp().getText()) {
                 case "-" :return LLVMBuildNeg(builder, val, "neg");
@@ -130,7 +130,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 default :return null;
             }
         }
-        if (ctx.exp().size() == 2) {
+        else if (ctx.exp().size() == 2) {
             LLVMValueRef left = visit(ctx.exp(0));
             LLVMValueRef right = visit(ctx.exp(1));
              switch (ctx.getChild(1).getText()) {
@@ -141,6 +141,12 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                  case "%" :return LLVMBuildSRem(builder, left, right, "mod");
                  default :return null;
             }
+        }
+        else if(ctx.L_PAREN()!=null&&ctx.exp()!=null){
+            return visit(ctx.exp(0));
+        }
+        else if(ctx.lVal()!=null){
+            return visit(ctx.lVal());
         }
         return null;
     }
@@ -194,7 +200,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
-        return super.visitLVal(ctx);
+        String name=ctx.IDENT().getText();
+        Symbol s=symbolTable.get_name_matched_symbol(name);
+        return s.reference;
     }
 
     @Override
