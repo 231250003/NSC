@@ -60,7 +60,7 @@ public class SymbolTable {
                     LLVMValueRef argValue =new LLVMValueRef(args.get(i));
                     LLVMValueRef paramAddr = LLVMBuildAlloca(builder, LLVMTypeOf(argValue), param.name + "_addr");
                     LLVMBuildStore(builder, argValue, paramAddr);
-                    param.reference = argValue; // 赋值给 symbol 的 reference
+                    param.reference = paramAddr;
                 }
             }
         }
