@@ -29,10 +29,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     }
     public Void visit_block(SysYParser.BlockContext ctx) {
         ParseTree parent = ctx.getParent();
+        System.err.println("crzsasa");
+
         if ((parent instanceof SysYParser.StmtContext)&& (((SysYParser.StmtContext)parent).WHILE() != null)) {
             SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
             ParseTree grandparent = stmtCtx.getParent();
-            System.err.println("crzsasa");
             if (grandparent instanceof SysYParser.StmtContext)
             {
                 SysYParser.StmtContext whileStmt = (SysYParser.StmtContext) grandparent;
