@@ -171,7 +171,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             PointerPointer<LLVMValueRef> args = null;
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
-                symbolTable.set_r_params(funcName,args,builder);
+                symbolTable.set_r_params(funcName,args);
                 return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
             }
         }
@@ -301,18 +301,21 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
-      //  LLVMValueRef func =symbolTable.get_cur_scope_func();
+        LLVMValueRef func =symbolTable.get_cur_scope_func();
         String name=ctx.IDENT().getText();
-//        int paramCount = LLVMCountParams(func);
-//        for (int i = 0; i < paramCount; i++) {
-//            //System.err.println("crzzz");
-//            LLVMValueRef param = LLVMGetParam(func, i);
-//            //System.err.println(LLVMGetValueName(param).getString());
-//            if (LLVMGetValueName(param).getString().equals(name)) {
-//                return param;
-//            }
-//        }
+        int paramCount = LLVMCountParams(func);
+        for (int i = 0; i < paramCount; i++) {
+            //System.err.println("crzzz");
+            LLVMValueRef param = LLVMGetParam(func, i);
+            //System.err.println(LLVMGetValueName(param).getString());
+            if (LLVMGetValueName(param).getString().equals(name)) {
+                return param;
+            }
+        }
         Symbol s=symbolTable.get_name_matched_symbol(name);
+        if (LLVMGetTypeKind( LLVMTypeOf(s.reference)) == LLVMPointerTypeKind){
+            return LLVMBuildLoad(builder,  s.reference, "load_lval");
+        }
         return s.reference;
     }
 

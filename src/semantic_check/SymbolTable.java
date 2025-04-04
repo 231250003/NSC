@@ -1,10 +1,11 @@
 package semantic_check;
 
 import org.bytedeco.javacpp.PointerPointer;
-import org.bytedeco.llvm.LLVM.*;
+import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
+import org.bytedeco.llvm.LLVM.LLVMValueRef;
 
+import javax.swing.plaf.PanelUI;
 import java.util.*;
-import static org.bytedeco.llvm.global.LLVM.*;
 
 public class SymbolTable {
     private Stack<List<Symbol>> scopeStack;
@@ -50,17 +51,15 @@ public class SymbolTable {
             }
         return false; // 未找到
     }
-    public void set_r_params(String fuc_name, PointerPointer<LLVMValueRef> args,LLVMBuilderRef builder){
+    public void set_r_params(String fuc_name, PointerPointer<LLVMValueRef> args){
         List<Symbol> Globalscope= scopeStack.get(0);
         for(Symbol x: Globalscope){
             if(x.type instanceof FunctionType && x.name.equals(fuc_name)){
                 List<Symbol> params = ((FunctionType) x.type).getparams();
                 for (int i = 0; i < params.size(); i++) {
                     Symbol param = params.get(i);
-                    LLVMValueRef argValue = (LLVMValueRef)args.get(i);
-                    LLVMValueRef paramAddr = LLVMBuildAlloca(builder, LLVMTypeOf(argValue), param.name + "_addr");
-                    LLVMBuildStore(builder, argValue, paramAddr);
-                    param.reference = paramAddr;
+                    LLVMValueRef argValue =new LLVMValueRef(args.get(i)); // 获取 LLVM 参数值
+                    param.reference = argValue; // 赋值给 symbol 的 reference
                 }
             }
         }
