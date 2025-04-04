@@ -29,7 +29,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     }
     public Void visit_block(SysYParser.BlockContext ctx) {
         ParseTree parent = ctx.getParent();
-        if ((parent instanceof SysYParser.StmtContext)&& (((SysYParser.StmtContext)parent).WHILE() != null)) {
+        if ((parent instanceof SysYParser.StmtContext)) {
             symbolTable.enterScope(true);
             System.err.println("crzsasa");
         }
