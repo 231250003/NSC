@@ -68,6 +68,16 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public Void visit_block(SysYParser.BlockContext ctx, List<Symbol> symbols) {
         symbolTable.enterScope();
         if(symbols!=null){
+            LLVMValueRef function=symbolTable.get_cur_scope_func();
+            int paramCount = LLVMCountParams(function); 
+            for (int i = 0; i < paramCount; i++) {
+                LLVMValueRef param = LLVMGetParam(function, i);
+                LLVMTypeRef paramType = LLVMTypeOf(param);
+                LLVMValueRef paramAddr = LLVMBuildAlloca(builder, paramType, "param" + i + "_addr");
+                LLVMBuildStore(builder, param, paramAddr);
+                Symbol symbol = symbols.get(i);
+                symbol.reference = paramAddr;
+            }
             for(Symbol symbol:symbols){
                 symbolTable.put(symbol);
             }
