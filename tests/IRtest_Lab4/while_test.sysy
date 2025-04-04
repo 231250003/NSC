@@ -6,6 +6,6 @@ int main(int x) {
         a=a+1;
         break;
     }
-    a=x+1;
-    return a;
+    x=x+1;
+    return x;
 }
