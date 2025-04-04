@@ -27,7 +27,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
          else visit((ctx.constDecl()));
          return null;
     }
-    public Void visit_block(SysYParser.BlockContext ctx) {
+    public Void visit_block(SysYParser.BlockContext ctx,LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock) {
         ParseTree parent = ctx.getParent();
         if ((parent instanceof SysYParser.StmtContext)) {
             SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
@@ -37,7 +37,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 SysYParser.StmtContext whileStmt = (SysYParser.StmtContext) grandparent;
                 if (whileStmt.WHILE() != null) {
                     if (whileStmt.stmt(0) == stmtCtx) {
-                        symbolTable.enterScope(true);
+                        symbolTable.enterScope(condblock,mergeblock);
                     } else {
                         symbolTable.enterScope();
                     }
@@ -51,6 +51,14 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
         }
         else symbolTable.enterScope();
+        for(int i=0;i<ctx.blockItem().size();i++){
+            visit(ctx.blockItem(i));
+        }
+        symbolTable.exitScope();
+        return null;
+    }
+    public Void visit_block(SysYParser.BlockContext ctx) {
+        symbolTable.enterScope();
         for(int i=0;i<ctx.blockItem().size();i++){
             visit(ctx.blockItem(i));
         }
@@ -447,11 +455,20 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBuildCondBr(builder, firstCond, thenBlock,mergeBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             if(ctx.stmt(0).block()!=null){
-                System.err.println("1234");
-                visit(ctx.stmt(0));
+                //System.err.println("1234");
+                visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);
             }
+            else  visit(ctx.stmt(0));
             LLVMBuildBr(builder, condBlock);
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
+        }
+        else if(ctx.BREAK()!=null){
+            AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
+            LLVMPositionBuilderAtEnd(builder, x.getValue());
+        }
+        else if(ctx.CONTINUE()!=null){
+            AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
+            LLVMPositionBuilderAtEnd(builder, x.getKey());
         }
         return null;
     }
