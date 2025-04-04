@@ -399,8 +399,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitStmt(SysYParser.StmtContext ctx) {
         if (ctx.RETURN() != null) {
             LLVMValueRef returnValue;
-            System.err.println("cdscsa");
             if(ctx.exp() != null ){
+                System.err.println("cdscsa");
                 returnValue = visit(ctx.exp());
                 if (LLVMTypeOf(returnValue) == LLVMPointerType(LLVMInt32Type(), 0)) {
                     returnValue = LLVMBuildLoad(builder, returnValue, "load_return");
