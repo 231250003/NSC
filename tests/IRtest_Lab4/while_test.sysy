@@ -2,8 +2,12 @@ int a = 10;
 int main(int x) {
     int b=3;
     while(a<9){
+        while(a<10){
         if(a==77) continue;
         a=a+1;
+        break;
+        }
+        a=8;
         break;
     }
     x=x+1;
