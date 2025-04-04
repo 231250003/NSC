@@ -36,7 +36,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             {
                 SysYParser.StmtContext whileStmt = (SysYParser.StmtContext) grandparent;
                 if (whileStmt.WHILE() != null) {
-                    if (whileStmt.stmt() == stmtCtx) {
+                    if (whileStmt.stmt(0) == stmtCtx) {
                         symbolTable.enterScope(true);
                         System.err.println("crzsasa");
                     } else {
