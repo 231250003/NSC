@@ -219,7 +219,12 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             return visit(ctx.exp(0));
         }
         else if(ctx.lVal()!=null){
-            return visit(ctx.lVal());
+            LLVMValueRef value = visit(ctx.lVal());
+            if (LLVMPointerType(LLVMTypeOf(value), 0) != null) {
+                return LLVMBuildLoad(builder, value, "load_lval");
+            } else {
+                return value;
+            }
         }
         return null;
     }
@@ -323,9 +328,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 //            }
 //        }
         Symbol s=symbolTable.get_name_matched_symbol(name);
-        if (LLVMGetTypeKind( LLVMTypeOf(s.reference)) == LLVMPointerTypeKind){
-            return LLVMBuildLoad(builder,  s.reference, "load_lval");
-        }
         return s.reference;
     }
 
