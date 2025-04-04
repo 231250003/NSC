@@ -1,10 +1,11 @@
 int a = 10;
 int main() {
+    int b=3;
     while(a<9){
         if(a==77) continue;
         a=a+1;
         break;
     }
-    a=a+1;
+    a=b+1;
     return a;
 }
