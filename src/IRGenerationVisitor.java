@@ -446,7 +446,10 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMPositionBuilderAtEnd(builder, condBlock);
             LLVMBuildCondBr(builder, firstCond, thenBlock,mergeBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
-            visit(ctx.stmt(0));
+            if(ctx.stmt(0).block()!=null){
+                System.err.println("1234");
+                visit(ctx.stmt(0));
+            }
             LLVMBuildBr(builder, condBlock);
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
