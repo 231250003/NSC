@@ -313,7 +313,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
         }
         Symbol s=symbolTable.get_name_matched_symbol(name);
-        if (LLVMTypeOf( s.reference) == LLVMPointerType(LLVMInt32Type(), 0)) {
+        if (LLVMTypeOf(s.reference) == LLVMPointerType(LLVMInt32Type(), 0)) {
+            System.err.println("ddasdas");
             return LLVMBuildLoad(builder,  s.reference, "load_lval");
         }
         return s.reference;
