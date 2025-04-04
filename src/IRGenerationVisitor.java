@@ -35,13 +35,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (grandparent instanceof SysYParser.StmtContext) {
                 SysYParser.StmtContext whileStmt = (SysYParser.StmtContext) grandparent;
                 if (whileStmt.WHILE() != null) {
-                    if (whileStmt.stmt() == stmtCtx) {
-                        symbolTable.enterScope(true);
-                        System.err.println("crzsasa");
-                    }
-                    else {
-                        symbolTable.enterScope();
-                    }
+                    symbolTable.enterScope(true);
+                    System.err.println("crzsasa");
                 }
                 else {
                     symbolTable.enterScope();
