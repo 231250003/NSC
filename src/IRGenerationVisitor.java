@@ -32,10 +32,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         if ((parent instanceof SysYParser.StmtContext)&& (((SysYParser.StmtContext)parent).WHILE() != null)) {
             SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
             ParseTree grandparent = stmtCtx.getParent();
+            System.err.println("crzsasa");
             if (grandparent instanceof SysYParser.StmtContext)
             {
-                System.err.println("crzsasa");
-
                 SysYParser.StmtContext whileStmt = (SysYParser.StmtContext) grandparent;
                 if (whileStmt.WHILE() != null) {
                     symbolTable.enterScope(true);
