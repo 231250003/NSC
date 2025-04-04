@@ -468,11 +468,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else if(ctx.BREAK()!=null){
             AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
-            LLVMPositionBuilderAtEnd(builder, x.getValue());
+            LLVMBuildBr(builder, x.getValue());
         }
         else if(ctx.CONTINUE()!=null){
             AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
-            LLVMPositionBuilderAtEnd(builder, x.getKey());
+            LLVMBuildBr(builder, x.getKey());
         }
         return null;
     }
