@@ -29,9 +29,27 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     }
     public Void visit_block(SysYParser.BlockContext ctx) {
         ParseTree parent = ctx.getParent();
-        if ((parent instanceof SysYParser.StmtContext)&& (((SysYParser.StmtContext)parent).block() != null)) {
-            symbolTable.enterScope(true);
-            System.err.println("crzsasa");
+        if ((parent instanceof SysYParser.StmtContext)&& (((SysYParser.StmtContext)parent).WHILE() != null)) {
+            SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
+            ParseTree grandparent = stmtCtx.getParent();
+            if (grandparent instanceof SysYParser.StmtContext) {
+                SysYParser.StmtContext whileStmt = (SysYParser.StmtContext) grandparent;
+                if (whileStmt.WHILE() != null) {
+                    if (whileStmt.stmt() == stmtCtx) {
+                        symbolTable.enterScope(true);
+                        System.err.println("crzsasa");
+                    }
+                    else {
+                        symbolTable.enterScope();
+                    }
+                }
+                else {
+                    symbolTable.enterScope();
+                }
+            }
+            else {
+                symbolTable.enterScope();
+            }
         }
         else symbolTable.enterScope();
         for(int i=0;i<ctx.blockItem().size();i++){
