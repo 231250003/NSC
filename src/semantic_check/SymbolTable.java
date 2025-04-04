@@ -57,7 +57,7 @@ public class SymbolTable {
                 List<Symbol> params = ((FunctionType) x.type).getparams();
                 for (int i = 0; i < params.size(); i++) {
                     Symbol param = params.get(i);
-                    LLVMValueRef argValue =new LLVMValueRef(args.get(i));
+                    LLVMValueRef argValue = (LLVMValueRef)args.get(i);
                     LLVMValueRef paramAddr = LLVMBuildAlloca(builder, LLVMTypeOf(argValue), param.name + "_addr");
                     LLVMBuildStore(builder, argValue, paramAddr);
                     param.reference = paramAddr;
