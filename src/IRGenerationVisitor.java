@@ -402,6 +402,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if(ctx.exp() != null ){
                 returnValue = visit(ctx.exp());
                 if (LLVMTypeOf(returnValue) == LLVMPointerType(LLVMInt32Type(), 0)) {
+                    System.err.println("cdscsa");
                     returnValue = LLVMBuildLoad(builder, returnValue, "load_return");
                 }
                 LLVMBuildRet(builder, returnValue);
