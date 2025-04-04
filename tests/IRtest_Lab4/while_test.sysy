@@ -7,7 +7,7 @@ int main(int x) {
         a=a+1;
         break;
         }
-        a=b;
+        a=b+1;
         break;
     }
     x=x+1;
