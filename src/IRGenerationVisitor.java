@@ -313,6 +313,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
         }
         Symbol s=symbolTable.get_name_matched_symbol(name);
+        if (LLVMTypeOf( s.reference) == LLVMPointerType(LLVMInt32Type(), 0)) {
+            return LLVMBuildLoad(builder,  s.reference, "load_lval");
+        }
         return s.reference;
     }
 
@@ -402,7 +405,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if(ctx.exp() != null ){
                 returnValue = visit(ctx.exp());
                 if (LLVMTypeOf(returnValue) == LLVMPointerType(LLVMInt32Type(), 0)) {
-                    System.err.println("cdscsa");
                     returnValue = LLVMBuildLoad(builder, returnValue, "load_return");
                 }
                 LLVMBuildRet(builder, returnValue);
