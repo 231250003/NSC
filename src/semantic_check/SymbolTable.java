@@ -74,6 +74,7 @@ public class SymbolTable {
                     LLVMValueRef argValue =new LLVMValueRef(args.get(i));
                     scopeStack.peek().add(new Symbol(param.name,param.type,argValue));
                 }
+                return;
             }
         }
     }
