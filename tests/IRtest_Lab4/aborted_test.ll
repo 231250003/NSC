@@ -31,8 +31,8 @@ mainEntry:
   br i1 %lhs_bool, label %or.merge, label %or.rhs
 
 merge:                                            ; preds = %merge25, %or.merge5
-  %load_lval38 = load i32, i32* %x, align 4
-  ret i32 %load_lval38
+  %load_lval39 = load i32, i32* %x, align 4
+  ret i32 %load_lval39
 
 or.rhs:                                           ; preds = %mainEntry
   %load_lval2 = load i32, i32* %x, align 4
@@ -80,10 +80,8 @@ merge14:                                          ; preds = %if.else, %if.then17
   %load_lval26 = load i32, i32* %x, align 4
   %not = icmp eq i32 %load_lval26, 0
   %zext_to_i3227 = zext i1 %not to i32
-  %not28 = icmp eq i32 %zext_to_i3227, 0
-  %zext_to_i3229 = zext i1 %not28 to i32
-  %to_bool31 = icmp ne i32 %zext_to_i3229, 0
-  br i1 %to_bool31, label %if.then30, label %merge25
+  %to_bool30 = icmp ne i32 %zext_to_i3227, 0
+  br i1 %to_bool30, label %if.then28, label %if.else29
 
 if.then17:                                        ; preds = %if.then
   %load_lval19 = load i32, i32* %x, align 4
@@ -101,16 +99,22 @@ if.else:                                          ; preds = %if.then
   store i32 %add24, i32* %x, align 4
   br label %merge14
 
-merge25:                                          ; preds = %if.then30, %merge14
+merge25:                                          ; preds = %if.else29, %if.then28
   br label %merge
 
-if.then30:                                        ; preds = %merge14
-  %load_lval32 = load i32, i32* %x, align 4
-  %not33 = icmp eq i32 %load_lval32, 0
-  %zext_to_i3234 = zext i1 %not33 to i32
-  %not35 = icmp eq i32 %zext_to_i3234, 0
-  %zext_to_i3236 = zext i1 %not35 to i32
-  %add37 = add i32 %zext_to_i3236, 1
-  store i32 %add37, i32* %x, align 4
+if.then28:                                        ; preds = %merge14
+  %load_lval31 = load i32, i32* %x, align 4
+  %not32 = icmp eq i32 %load_lval31, 0
+  %zext_to_i3233 = zext i1 %not32 to i32
+  %not34 = icmp eq i32 %zext_to_i3233, 0
+  %zext_to_i3235 = zext i1 %not34 to i32
+  %add36 = add i32 %zext_to_i3235, 1
+  store i32 %add36, i32* %x, align 4
+  br label %merge25
+
+if.else29:                                        ; preds = %merge14
+  %load_lval37 = load i32, i32* %x, align 4
+  %add38 = add i32 %load_lval37, 205
+  store i32 %add38, i32* %x, align 4
   br label %merge25
 }
