@@ -7,9 +7,8 @@ int g(int t,int y){
     return y+1;
 }
 int main(){
-    int y=10;
     z=y;
-    if(x>5 || y/2==0){
+    if(x>5){
         int p=5;
         while(1){
             while(z<102){
