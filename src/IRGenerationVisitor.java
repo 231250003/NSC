@@ -258,6 +258,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             returnType = LLVMVoidType();
             retType=new VoidType();
         }
+        if(retType.toString().equals("void"))  LLVMBuildRetVoid(builder);
+        else                 LLVMBuildRet(builder, zero);
+        return null;
         List<LLVMTypeRef> paramTypeList = new ArrayList<>();
         List<Symbol> params=new ArrayList<>();
         if(ctx.funcFParams()!=null){
