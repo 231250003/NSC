@@ -8,7 +8,7 @@ mainEntry:
   %load_lval = load i32, i32* @a, align 4
   %cmp = icmp ne i32 %load_lval, 10
   %zext_to_i32 = zext i1 %cmp to i32
-  %lhs_bool = icmp ne i32 %zext_to_i32, i1 false
+  %lhs_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %lhs_bool, label %and.rhs, label %and.merge
 
 merge:                                            ; preds = %if.then, %and.merge
@@ -22,7 +22,7 @@ and.rhs:                                          ; preds = %mainEntry
   %load_lval1 = load i32, i32* @a, align 4
   %cmp2 = icmp ne i32 %load_lval1, 2
   %zext_to_i323 = zext i1 %cmp2 to i32
-  %rhs_bool = icmp ne i32 %zext_to_i323, i1 false
+  %rhs_bool = icmp ne i32 %zext_to_i323, 0
   br label %and.merge
 
 and.merge:                                        ; preds = %and.rhs, %mainEntry
