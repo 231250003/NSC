@@ -12,7 +12,7 @@ int main(){
        /* if(x<6){
             x=!x+!x+!x;
         }
-        if(x>7)
+        if(x>1)
         {
             x=g(x,x);
             x=x+1;
