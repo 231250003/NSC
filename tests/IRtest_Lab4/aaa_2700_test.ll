@@ -205,5 +205,6 @@ merge85:                                          ; preds = %if.then89, %merge41
 if.then89:                                        ; preds = %merge41
   %load_lval91 = load i32, i32* @x, align 4
   %sub92 = sub i32 %load_lval91, 10
+  store i32 %sub92, i32* @x, align 4
   br label %merge85
 }
