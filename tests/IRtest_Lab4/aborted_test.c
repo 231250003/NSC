@@ -1,6 +1,6 @@
 int x[2003];
 int y;
-/*
+
 void p(){
     y=y+1;
     return;
@@ -9,7 +9,7 @@ int f(int x,int t){
     p();
     return x+t+y;
 }
-*/
+
 int g(int x,int y,int z){
     y=y+1;
     return y;
@@ -19,6 +19,7 @@ int main(){
     int x=g(2,4,t);
     int y=100;
     int z=y+100;
+    /*
     if(x||x%0||x/0&&x){
         int y=100;
         {
@@ -38,5 +39,6 @@ int main(){
         }
         x=x+y+5;
     }
+    */
     return x;
 }
