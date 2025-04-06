@@ -1,6 +1,6 @@
 int a = 10;
 int f(int x){
-    return x+1;
+    return a+10;
 }
 int main() {
     return f(10);
