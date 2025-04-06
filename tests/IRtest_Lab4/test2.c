@@ -1,14 +1,32 @@
-int fib(int n) {
-   if (n <= 1) {
-    return n;
-   }
-   int x = fib(n - 1);
-   int y = fib(n - 2);
-   int z = x + y;
-   return z;
+int g(int x){
+    return x+1;
 }
+int main(){
+    int x=g(10);
+    while(x<100){
+        x=x+1;
+        if(x>30){
+            while(x>10){
+                if(x>20){
+                  if(x>21){
+                    x=x-5;
 
-int main() {
-    int n = 15;
-    return fib(n);
+                  }
+                   x=x-1;
+                   continue;
+                }
+                else if(x>25){
+                    x=x+1;
+                }
+                else break;
+            }
+            x=x-1;
+            return x;
+        }
+        if(x>10){
+            x=x+5;
+        }
+        else break;
+    }
+    return 1;
 }
