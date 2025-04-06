@@ -9,6 +9,10 @@ int f(int x){
 }
 int main() {
     x=f(200);
+    while(1){
+        g();
+        if(x>=200) break;
+    }
     if(x>=100){
         if(x<10) return 0;
         else if(x>200) return 2;
