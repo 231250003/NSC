@@ -18,16 +18,17 @@ merge:                                            ; preds = %if.then, %fibEntry
   %fib = call i32 @fib(i32 %sub)
   store i32 %fib, i32* %x, align 4
   %y = alloca i32, align 4
-  %sub3 = sub i32 %sub, 2
-  %fib4 = call i32 @fib(i32 %sub3)
-  store i32 %fib4, i32* %y, align 4
+  %load_lval3 = load i32, i32* %param0_addr, align 4
+  %sub4 = sub i32 %load_lval3, 2
+  %fib5 = call i32 @fib(i32 %sub4)
+  store i32 %fib5, i32* %y, align 4
   %z = alloca i32, align 4
-  %load_lval5 = load i32, i32* %x, align 4
-  %load_lval6 = load i32, i32* %y, align 4
-  %add = add i32 %load_lval5, %load_lval6
+  %load_lval6 = load i32, i32* %x, align 4
+  %load_lval7 = load i32, i32* %y, align 4
+  %add = add i32 %load_lval6, %load_lval7
   store i32 %add, i32* %z, align 4
-  %load_lval7 = load i32, i32* %z, align 4
-  ret i32 %load_lval7
+  %load_lval8 = load i32, i32* %z, align 4
+  ret i32 %load_lval8
 
 if.then:                                          ; preds = %fibEntry
   %load_lval1 = load i32, i32* %param0_addr, align 4
