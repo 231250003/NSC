@@ -4,6 +4,7 @@ int f(int x){
     return a+10;
 }
 int main() {
+
     a=a+1;
     int t=f(a);
     while(f(a)<10){
