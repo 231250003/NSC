@@ -4,7 +4,7 @@ int main(){
     int t=100;
     int x=5;
     int y=100;
-    if(x||x/0){
+    if(x||x%0){
        /* if(x<6){
             x=!x+!x+!x;
         }
