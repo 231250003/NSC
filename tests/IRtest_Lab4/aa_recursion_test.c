@@ -1,14 +1,8 @@
-int fib(int n) {
-   if (n <= 1) {
-    return n;
-   }
-   int x = fib(n - 1);
-   int y = fib(n - 2);
-   int z = x + y;
-   return z;
+int f(int x){
+    if(x==0) return 0;
+    if(x==1) return 1;
+    return f(x-1)+f(x-2);
 }
-
-int main() {
-    int n = 15;
-    return fib(n);
+int main(){
+    return f(8);
 }
