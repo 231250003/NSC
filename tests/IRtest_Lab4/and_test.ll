@@ -17,6 +17,7 @@ mainEntry:
   br i1 %short_circuit, label %if.then, label %merge
 
 merge:                                            ; preds = %if.then, %mainEntry
+  ret i32 0
 
 if.then:                                          ; preds = %mainEntry
   %load_lval3 = load i32, i32* %y, align 4
