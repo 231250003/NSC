@@ -2,6 +2,7 @@ int x[2003];
 int y;
 void p(){
     y=y+1;
+    return;
 }
 int f(int x,int t){
     p();
