@@ -4,14 +4,15 @@ int main(){
     int x=5;
     int y=100;
     if(x>=5&&y>0&&y/0==0){
-        if(x<6){
+       /* if(x<6){
             x=!x+!x+!x;
         }
         if(x>7)
         {
             x=x+1;
         }
-        else x=x+100;
+        else x=x+100;*/
+        return x;
     }
-    return x;
+   // return x;
 }
