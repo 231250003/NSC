@@ -30,7 +30,7 @@ mainEntry:
   %load_lval1 = load i32, i32* @x, align 4
   %cmp = icmp sgt i32 %load_lval1, 50
   %zext_to_i32 = zext i1 %cmp to i32
-  %lhs_bool = icmp ne i32 %zext_to_i32, i1 false
+  %lhs_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %lhs_bool, label %or.merge, label %or.rhs
 
 merge:                                            ; preds = %cur, %or.merge
@@ -42,7 +42,7 @@ or.rhs:                                           ; preds = %mainEntry
   %div = sdiv i32 %load_lval2, 2
   %cmp3 = icmp eq i32 %div, 0
   %zext_to_i324 = zext i1 %cmp3 to i32
-  %rhs_bool = icmp ne i32 %zext_to_i324, i1 false
+  %rhs_bool = icmp ne i32 %zext_to_i324, 0
   br label %or.merge
 
 or.merge:                                         ; preds = %or.rhs, %mainEntry
