@@ -1,10 +1,10 @@
 int x[2003];
 int y;
-int f(int x){
-    return x+100;
+int f(int x,t){
+    return x+t;
 }
 int g(int x,int y,int z){
-    return f(x);
+    return f(x,t);
 }
 int main(){
     int t=100;
@@ -28,7 +28,7 @@ int main(){
                 break;
             }
         }
-        x=y+5;
+        x=x+y+5;
     }
     return x;
 }
