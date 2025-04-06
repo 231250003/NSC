@@ -19,7 +19,7 @@ or.rhs:                                           ; preds = %mainEntry
   %load_lval1 = load i32, i32* %y, align 4
   %div = sdiv i32 %load_lval1, 0
   %cmp2 = icmp eq i32 %div, 0
-  %rhs_bool = icmp ne i1 %cmp2, i32 0
+  %rhs_bool = icmp ne i1 %cmp2, false
   br label %or.merge
 
 or.merge:                                         ; preds = %or.rhs, %mainEntry
