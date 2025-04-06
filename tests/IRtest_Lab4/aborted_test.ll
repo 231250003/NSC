@@ -3,6 +3,17 @@ source_filename = "my_module"
 
 @y = global i32 0
 
+define i32 @g(i32 %x, i32 %y) {
+gEntry:
+  %param0_addr = alloca i32, align 4
+  store i32 %x, i32* %param0_addr, align 4
+  %param1_addr = alloca i32, align 4
+  store i32 %y, i32* %param1_addr, align 4
+  %load_lval = load i32, i32* %param0_addr, align 4
+  %add = add i32 %load_lval, 1
+  ret i32 %add
+}
+
 define i32 @main() {
 mainEntry:
   %t = alloca i32, align 4
