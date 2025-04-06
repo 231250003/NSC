@@ -10,10 +10,12 @@ int main(){
     int y=10;
     z=y;
     if(x>5 || y/2==0){
-        int z=5;
+        int p=5;
         while(1){
-            int z=g(2,3);
-            if(x<50&&z>100){
+            while(z<102){
+                g(10,20);
+            }
+            if(x<50&&p>4){
                 x=x+3;
                 g(10,2);
                 continue;
