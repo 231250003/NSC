@@ -68,35 +68,6 @@ if.else:                                          ; preds = %maxEntry
   br label %merge
 }
 
-define void @logSum(i32 %val) {
-logSumEntry:
-  %param0_addr = alloca i32, align 4
-  store i32 %val, i32* %param0_addr, align 4
-  %t = alloca i32, align 4
-  store i32 0, i32* %t, align 4
-  br label %while.cond
-
-cur:                                              ; preds = %while.cond
-  ret void
-
-while.stmt:                                       ; preds = %while.cond
-  %load_lval2 = load i32, i32* %t, align 4
-  %add = add i32 %load_lval2, 1
-  store i32 %add, i32* %t, align 4
-  %load_lval3 = load i32, i32* @counter, align 4
-  %add4 = add i32 %load_lval3, 1
-  store i32 %add4, i32* @counter, align 4
-  br label %while.cond
-
-while.cond:                                       ; preds = %while.stmt, %logSumEntry
-  %load_lval = load i32, i32* %t, align 4
-  %load_lval1 = load i32, i32* %param0_addr, align 4
-  %cmp = icmp slt i32 %load_lval, %load_lval1
-  %zext_to_i32 = zext i1 %cmp to i32
-  %to_bool = icmp ne i32 %zext_to_i32, 0
-  br i1 %to_bool, label %while.stmt, label %cur
-}
-
 define i32 @main() {
 mainEntry:
   %i = alloca i32, align 4
