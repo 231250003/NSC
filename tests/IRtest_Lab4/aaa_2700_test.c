@@ -62,24 +62,6 @@ int main() {
     }
 
     // 三层嵌套 + && || 测试
-    int m = 0;
-    while (m < 3) {
-        int n = 0;
-        while (n < 3) {
-            int p = 0;
-            while (p < 2) {
-                if ((m == n && n == p) || (m + n + p != 0)) {
-                    sum = sum + 1;
-                } else {
-                    sum = sum - 1;
-                }
-                p = p + 1;
-            }
-            n = n + 1;
-        }
-        m = m + 1;
-    }
-
-
+  
     return  counter;
 }
