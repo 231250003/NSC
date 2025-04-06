@@ -9,13 +9,32 @@ int main() {
         else if(x>0x100) return 3;
         x=x+1;
         while(x<200){
-
             x=x+1;
             if(x<125) continue;
             g();
             x=x+2;
             continue;
             break;
+        }
+    }
+    if(x>=125){
+        if(x<2030)
+        {
+            while(x>100){
+                if(x) x--;
+               
+                else x=x-2;
+             }
+             if(x>100) return x;
+        }
+        else if(x<5000){
+            x=5000+0x10;
+        }
+        else if(x<231){
+            return x+1;
+        }
+        if(x>10){
+            x-=10;
         }
     }
     return x;
