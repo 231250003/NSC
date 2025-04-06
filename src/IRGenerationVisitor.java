@@ -192,7 +192,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 argCount = ctx.funcRParams().param().size();
                 symbolTable.set_r_params(funcName,args);
             }
-            if(((FunctionType)(symbolTable.get_name_matched_symbol(funcName).type)).getReturnType() instanceof VoidType){
+            if( (((FunctionType)(symbolTable.get_name_matched_symbol(funcName).type)).getReturnType() ) instanceof VoidType){
                 LLVMBuildCall(builder, function, args, argCount, funcName);
                 return null;
             }
