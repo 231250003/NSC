@@ -13,7 +13,6 @@ int main(){
         {
             x=g(x,x);
             x=x+1;
-            return x;
         }
         else x=x+100;
        // return x;
