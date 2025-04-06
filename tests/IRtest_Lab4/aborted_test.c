@@ -5,7 +5,7 @@ int main(){
     int x=5;
     int y=100;
     int z=y+100;
-    if(!x||x%0||x/0&&x){
+    if(x||x%0||x/0&&x){
        /* if(x<6){
             x=!x+!x+!x;
         }
@@ -15,7 +15,10 @@ int main(){
         }
         else x=x+100;*/
        // return x;
-       x=x+1;
+       if(!x&&x/0==0){
+          x=x+1;
+       }
+        else x=z-y+x/2+1;
     }
     return x;
 }
