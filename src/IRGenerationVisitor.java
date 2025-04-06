@@ -158,7 +158,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitConstExp(SysYParser.ConstExpContext ctx) {
         return visit(ctx.exp());
     }
-
+    
     public LLVMValueRef getconstinitvalue(SysYParser.ConstInitValContext ctx) {
         if(ctx.L_BRACE()==null){
             return visit(ctx.constExp());

@@ -10,7 +10,8 @@ gEntry:
   %load_lval = load i32, i32* %param0_addr, align 4
   %load_lval1 = load i32, i32* %param0_addr, align 4
   %not = icmp eq i32 %load_lval1, 0
-  %add = add i32 %load_lval, i1 %not
+  %zext_to_i32 = zext i1 %not to i32
+  %add = add i32 %load_lval, %zext_to_i32
   ret i32 %add
 }
 
@@ -31,7 +32,9 @@ cur:                                              ; preds = %cur1, %while.cond
   %load_lval16 = load i32, i32* %param0_addr, align 4
   %g = call i32 @g(i32 %load_lval16)
   %not = icmp eq i32 %g, 0
-  br i1 %not, label %if.then17, label %merge15
+  %zext_to_i32 = zext i1 %not to i32
+  %to_bool = icmp ne i32 %zext_to_i32, 0
+  br i1 %to_bool, label %if.then17, label %merge15
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval2 = load i32, i32* @a, align 4
