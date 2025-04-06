@@ -14,6 +14,7 @@ int main(){
             int x;
             while(x>0){
                 x=x+5;
+                x=x+100;
             }
         }
         x=x+1;
