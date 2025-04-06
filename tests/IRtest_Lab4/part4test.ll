@@ -19,6 +19,7 @@ mainEntry:
 merge:                                            ; preds = %merge2, %mainEntry
   %load_lval12 = load i32, i32* @a, align 4
   ret i32 %load_lval12
+  ret void
 
 if.then:                                          ; preds = %mainEntry
   %load_lval3 = load i32, i32* %b, align 4
