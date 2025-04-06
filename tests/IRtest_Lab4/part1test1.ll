@@ -12,7 +12,8 @@ mainEntry:
 
 merge:                                            ; preds = %if.then, %and.merge
   %load_lval4 = load i32, i32* @a, align 4
-  %cmp5 = icmp eq i32 %load_lval4, 4
+  %to_bool = icmp ne i32 %load_lval4, 0
+  %cmp5 = icmp eq i1 %to_bool, true
   br i1 %cmp5, label %if.then6, label %if.else
 
 and.rhs:                                          ; preds = %mainEntry
@@ -30,11 +31,11 @@ if.then:                                          ; preds = %and.merge
   br label %merge
 
 merge3:                                           ; preds = %merge7, %if.then6
-  %load_lval17 = load i32, i32* @a, align 4
-  %add = add i32 %load_lval17, 1
+  %load_lval19 = load i32, i32* @a, align 4
+  %add = add i32 %load_lval19, 1
   store i32 %add, i32* @a, align 4
-  %load_lval18 = load i32, i32* @a, align 4
-  ret i32 %load_lval18
+  %load_lval20 = load i32, i32* @a, align 4
+  ret i32 %load_lval20
 
 if.then6:                                         ; preds = %merge
   store i32 5, i32* @a, align 4
@@ -42,29 +43,31 @@ if.then6:                                         ; preds = %merge
 
 if.else:                                          ; preds = %merge
   %load_lval8 = load i32, i32* @a, align 4
-  %cmp9 = icmp eq i32 %load_lval8, 3
-  br i1 %cmp9, label %if.then10, label %if.else11
+  %to_bool9 = icmp ne i32 %load_lval8, 0
+  %cmp10 = icmp eq i1 %to_bool9, true
+  br i1 %cmp10, label %if.then11, label %if.else12
 
-merge7:                                           ; preds = %merge12, %if.then10
+merge7:                                           ; preds = %merge13, %if.then11
   br label %merge3
 
-if.then10:                                        ; preds = %if.else
+if.then11:                                        ; preds = %if.else
   store i32 20, i32* @a, align 4
   br label %merge7
 
-if.else11:                                        ; preds = %if.else
-  %load_lval13 = load i32, i32* @a, align 4
-  %cmp14 = icmp eq i32 %load_lval13, 6
-  br i1 %cmp14, label %if.then15, label %if.else16
+if.else12:                                        ; preds = %if.else
+  %load_lval14 = load i32, i32* @a, align 4
+  %to_bool15 = icmp ne i32 %load_lval14, 0
+  %cmp16 = icmp eq i1 %to_bool15, true
+  br i1 %cmp16, label %if.then17, label %if.else18
 
-merge12:                                          ; preds = %if.else16, %if.then15
+merge13:                                          ; preds = %if.else18, %if.then17
   br label %merge7
 
-if.then15:                                        ; preds = %if.else11
+if.then17:                                        ; preds = %if.else12
   store i32 7, i32* @a, align 4
-  br label %merge12
+  br label %merge13
 
-if.else16:                                        ; preds = %if.else11
+if.else18:                                        ; preds = %if.else12
   store i32 8, i32* @a, align 4
-  br label %merge12
+  br label %merge13
 }
