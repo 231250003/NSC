@@ -27,7 +27,8 @@ merge:                                            ; preds = %if.then, %fEntry
   %load_lval1 = load i32, i32* %param0_addr, align 4
   %sub = sub i32 %load_lval1, 1
   %f = call i32 @f(i32 %sub)
-  store i32 %f, i32* %param0_addr, align 4
+  %add = add i32 %f, 10
+  store i32 %add, i32* %param0_addr, align 4
   %load_lval2 = load i32, i32* %param0_addr, align 4
   ret i32 %load_lval2
 
@@ -38,7 +39,7 @@ if.then:                                          ; preds = %fEntry
 
 define i32 @main() {
 mainEntry:
-  %f = call i32 @f(i32 4)
+  %f = call i32 @f(i32 20)
   store i32 %f, i32* @x, align 4
   %load_lval = load i32, i32* @x, align 4
   %cmp = icmp sge i32 %load_lval, 100
