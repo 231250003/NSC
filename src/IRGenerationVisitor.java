@@ -390,7 +390,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 lhs = LLVMBuildLoad(builder, lhs, "load_lhs");
             }
 
-            lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt32Type(), 0, 0), "lhs_bool");
+            lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt1Type(), 0, 0), "lhs_bool");
 
             // block 准备
             LLVMBasicBlockRef current = LLVMGetInsertBlock(builder);
@@ -436,7 +436,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 lhs = LLVMBuildLoad(builder, lhs, "load_lhs");
             }
 
-            lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt32Type(), 0, 0), "lhs_bool");
+            lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt1Type(), 0, 0), "lhs_bool");
 
             LLVMBasicBlockRef current = LLVMGetInsertBlock(builder);
             LLVMValueRef function = LLVMGetBasicBlockParent(current);
