@@ -22,7 +22,7 @@ int main(){
        if(!x&&x/0==0){
           x=x+1;
        }
-        else x=z-y+x/2+1;
+       
     }
     return x;
 }
