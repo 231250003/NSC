@@ -22,6 +22,7 @@ gEntry:
   %load_lval5 = load i32, i32* %param1_addr, align 4
   %add6 = add i32 %load_lval5, 1
   ret i32 %add6
+  ret void
 }
 
 define i32 @main() {
@@ -35,6 +36,7 @@ cur:                                              ; preds = %if.then, %while.con
   %load_lval8 = load i32, i32* @x, align 4
   %add = add i32 %load_lval8, 1
   ret i32 %add
+  ret void
 
 while.stmt:                                       ; preds = %while.cond
   br label %while.cond3
