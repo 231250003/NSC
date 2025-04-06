@@ -56,6 +56,10 @@ maxEntry:
   br i1 %to_bool, label %if.then, label %if.else
 
 merge:                                            ; preds = %if.else, %if.then
+  %load_lval4 = load i32, i32* %param0_addr, align 4
+  %load_lval5 = load i32, i32* %param1_addr, align 4
+  %add = add i32 %load_lval4, %load_lval5
+  ret i32 %add
 
 if.then:                                          ; preds = %maxEntry
   %load_lval2 = load i32, i32* %param0_addr, align 4
