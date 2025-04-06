@@ -258,35 +258,32 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             returnType = LLVMVoidType();
             retType=new VoidType();
         }
+        List<LLVMTypeRef> paramTypeList = new ArrayList<>();
+        List<Symbol> params=new ArrayList<>();
+        if(ctx.funcFParams()!=null){
+            params=new ArrayList<>(getFuncFParams(ctx.funcFParams()));
+            for (Symbol x: params) {
+                if(x.type.equals(new IntType())) paramTypeList.add(LLVMInt32Type());
+                 //TODO adding array type params
+            }
+        }
+        PointerPointer<LLVMTypeRef> paramTypes = new PointerPointer<>(paramTypeList.size());
+        for (int i = 0; i < paramTypeList.size(); i++) {
+            paramTypes.put(i, paramTypeList.get(i));
+        }
+        LLVMTypeRef funcType = LLVMFunctionType(returnType, paramTypes, paramTypeList.size(), 0);
+        LLVMValueRef function = LLVMAddFunction(module, funcName, funcType);
+        for (int i = 0; i < params.size(); i++) {
+            LLVMValueRef param = LLVMGetParam(function, i);
+            LLVMSetValueName(param, params.get(i).name);
+        }
+        LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
+        LLVMPositionBuilderAtEnd(builder, entry);
+        FunctionType functionType = new FunctionType(retType, params);
+        symbolTable.addGlobal(new Symbol(funcName,functionType,function));
+        visit_block(ctx.block(),params);
         if(retType.toString().equals("void"))  LLVMBuildRetVoid(builder);
-        else    LLVMBuildRet(builder, zero);
         return null;
-//        List<LLVMTypeRef> paramTypeList = new ArrayList<>();
-//        List<Symbol> params=new ArrayList<>();
-//        if(ctx.funcFParams()!=null){
-//            params=new ArrayList<>(getFuncFParams(ctx.funcFParams()));
-//            for (Symbol x: params) {
-//                if(x.type.equals(new IntType())) paramTypeList.add(LLVMInt32Type());
-//                 //TODO adding array type params
-//            }
-//        }
-//        PointerPointer<LLVMTypeRef> paramTypes = new PointerPointer<>(paramTypeList.size());
-//        for (int i = 0; i < paramTypeList.size(); i++) {
-//            paramTypes.put(i, paramTypeList.get(i));
-//        }
-//        LLVMTypeRef funcType = LLVMFunctionType(returnType, paramTypes, paramTypeList.size(), 0);
-//        LLVMValueRef function = LLVMAddFunction(module, funcName, funcType);
-//        for (int i = 0; i < params.size(); i++) {
-//            LLVMValueRef param = LLVMGetParam(function, i);
-//            LLVMSetValueName(param, params.get(i).name);
-//        }
-//        LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
-//        LLVMPositionBuilderAtEnd(builder, entry);
-//        FunctionType functionType = new FunctionType(retType, params);
-//        symbolTable.addGlobal(new Symbol(funcName,functionType,function));
-//        visit_block(ctx.block(),params);
-//        if(retType.toString().equals("void"))  LLVMBuildRetVoid(builder);
-//        return null;
     }
 
     public Symbol getFuncFParam(SysYParser.FuncFParamContext ctx) {
