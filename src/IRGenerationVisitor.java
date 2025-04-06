@@ -356,7 +356,19 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     @Override
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
         if(ctx.exp()!=null){
-            return visit(ctx.exp());
+            LLVMValueRef value = visit(ctx.exp());
+            ParseTree parent = ctx.getParent();
+            if (parent != null) {
+                ParseTree grandparent = parent.getParent();
+                if (!(grandparent instanceof SysYParser.CondContext)) {
+                    if (LLVMGetTypeKind(LLVMTypeOf(value)) == LLVMIntegerTypeKind &&
+                            LLVMGetIntTypeWidth(LLVMTypeOf(value)) != 1) {
+                        value = LLVMBuildICmp(builder, LLVMIntNE, value,
+                                LLVMConstInt(LLVMInt32Type(), 0, 0), "to_bool");
+                    }
+                }
+            }
+            return value;
         }
         else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {
             // 处理 <, >, <=, >=
