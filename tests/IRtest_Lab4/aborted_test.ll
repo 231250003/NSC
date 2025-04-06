@@ -17,7 +17,7 @@ fEntry:
   store i32 %x, i32* %param0_addr, align 4
   %param1_addr = alloca i32, align 4
   store i32 %t, i32* %param1_addr, align 4
-  %p = call void @p()
+  call void @p()
   %load_lval = load i32, i32* %param0_addr, align 4
   %load_lval1 = load i32, i32* %param1_addr, align 4
   %add = add i32 %load_lval, %load_lval1
