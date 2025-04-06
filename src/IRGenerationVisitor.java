@@ -552,14 +552,14 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(condType) != LLVMIntegerTypeKind || LLVMGetIntTypeWidth(condType) != 1) {
                 firstCond = LLVMBuildICmp(builder, LLVMIntNE, firstCond, LLVMConstInt(condType, 0, 0), "to_bool");
             }
-            if(ctx.stmt(0).RETURN()==null) LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
+            LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             visit(ctx.stmt(0));
-            if(ctx.stmt(0).RETURN()==null)LLVMBuildBr(builder, mergeBlock);
+            LLVMBuildBr(builder, mergeBlock);
             if (elseBlock != null) {
                 LLVMPositionBuilderAtEnd(builder, elseBlock);
                 visit(ctx.stmt(1));
-                if(ctx.stmt(1).RETURN()==null) LLVMBuildBr(builder, mergeBlock);
+               LLVMBuildBr(builder, mergeBlock);
             }
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
@@ -582,7 +582,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);
             }
             else  visit(ctx.stmt(0));
-            if(ctx.stmt(0).RETURN()==null)LLVMBuildBr(builder, condBlock);
+            LLVMBuildBr(builder, condBlock);
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
         else if(ctx.BREAK()!=null){
