@@ -39,7 +39,7 @@ if.then:                                          ; preds = %fEntry
 
 define i32 @main() {
 mainEntry:
-  %f = call i32 @f(i32 20)
+  %f = call i32 @f(i32 200)
   store i32 %f, i32* @x, align 4
   %load_lval = load i32, i32* @x, align 4
   %cmp = icmp sge i32 %load_lval, 100
