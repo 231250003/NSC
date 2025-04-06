@@ -6,6 +6,12 @@ int mul(int a, int b) {
     if (a == 0 || b == 0) return 0;
     return a * b;
 }
+
+int max(int a, int b) {
+    if(a>b) return a;
+    else return b;
+}
+
 int main() {
     int i = 0, j = 0;
     int sum = 0;
