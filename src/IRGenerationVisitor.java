@@ -227,7 +227,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else if(ctx.lVal()!=null){
             LLVMValueRef value = visit(ctx.lVal());
-            if (LLVMPointerType(LLVMTypeOf(value), 0) != null) {
+            if (LLVMGetTypeKind(LLVMTypeOf(value)) ==LLVMPointerTypeKind) {
                 return castToI32(LLVMBuildLoad(builder, value, "load_lval"));
             } else {
                 return castToI32(value);
