@@ -7,7 +7,7 @@ define i32 @main() {
 mainEntry:
   %load_lval = load i32, i32* @a, align 4
   %cmp = icmp ne i32 %load_lval, 10
-  %lhs_bool = icmp ne i1 %cmp, i32 0
+  %lhs_bool = icmp ne i1 %cmp, false
   br i1 %lhs_bool, label %and.rhs, label %and.merge
 
 merge:                                            ; preds = %if.then, %and.merge
