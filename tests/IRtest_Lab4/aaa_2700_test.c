@@ -4,11 +4,11 @@ void g(){
 }
 int f(int x){
     if(x==0) return 0;
-    x=f(x-1);
+    x=f(x-1)+10;
     return x;
 }
 int main() {
-    x=f(4);
+    x=f(20);
     if(x>=100){
         if(x<10) return 0;
         else if(x>200) return 2;

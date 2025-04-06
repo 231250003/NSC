@@ -8,7 +8,7 @@ int f(int x){
     return x;
 }
 int main() {
-    x=f(4);
+    x=f(20);
     if(x>=100){
         if(x<10) return 0;
         else if(x>200) return 2;
