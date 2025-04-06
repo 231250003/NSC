@@ -37,10 +37,6 @@ cur:                                              ; preds = %if.then, %while.con
   ret i32 %add
 
 while.stmt:                                       ; preds = %while.cond
-  %load_lval = load i32, i32* @z, align 4
-  %cmp = icmp slt i32 %load_lval, 102
-  %zext_to_i32 = zext i1 %cmp to i32
-  %to_bool = icmp ne i32 %zext_to_i32, 0
   br label %while.cond3
 
 while.cond:                                       ; preds = %merge, %mainEntry
@@ -58,6 +54,10 @@ while.stmt2:                                      ; preds = %while.cond3
   br label %while.cond3
 
 while.cond3:                                      ; preds = %while.stmt2, %while.stmt
+  %load_lval = load i32, i32* @z, align 4
+  %cmp = icmp slt i32 %load_lval, 102
+  %zext_to_i32 = zext i1 %cmp to i32
+  %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt2, label %cur1
 
 merge:                                            ; preds = %if.then, %cur1
