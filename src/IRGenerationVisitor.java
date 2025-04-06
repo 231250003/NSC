@@ -357,17 +357,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
         if(ctx.exp()!=null){
             LLVMValueRef value = visit(ctx.exp());
-//            ParseTree parent = ctx.getParent();
-//            if (parent != null) {
-//                ParseTree grandparent = parent.getParent();
-//                if (!(grandparent instanceof SysYParser.CondContext)) {
-//                    if (LLVMGetTypeKind(LLVMTypeOf(value)) == LLVMIntegerTypeKind &&
-//                            LLVMGetIntTypeWidth(LLVMTypeOf(value)) != 1) {
-//                        value = LLVMBuildICmp(builder, LLVMIntNE, value,
-//                                LLVMConstInt(LLVMInt32Type(), 0, 0), "to_bool");
-//                    }
-//                }
-//            }
             return value;
         }
         else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {
@@ -390,7 +379,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             } else {
                 predicate = LLVMIntSGE;
             }
-            return LLVMBuildICmp(builder, predicate, left, right, "cmp");
+            return castToI32(LLVMBuildICmp(builder, predicate, left, right, "cmp"));
         }
         else if (ctx.EQ() != null || ctx.NEQ() != null) {
             LLVMValueRef left = visit(ctx.cond(0));
@@ -402,7 +391,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind) {
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
-            return LLVMBuildICmp(builder, predicate, left, right, "cmp");
+            return  castToI32(LLVMBuildICmp(builder, predicate, left, right, "cmp"));
         }
         else if (ctx.AND() != null) {
             LLVMValueRef lhs = visit(ctx.cond(0));
@@ -448,7 +437,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     new PointerPointer<>(incomingValues),
                     new PointerPointer<>(incomingBlocks),
                     incomingValues.length);
-            return phi;
+            return castToI32(phi);
         }
         else if (ctx.OR() != null) {
             LLVMValueRef lhs = visit(ctx.cond(0));
@@ -493,7 +482,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     new PointerPointer<>(incomingBlocks),
                     incomingValues.length);
 
-            return phi;
+            return castToI32(phi);
         }
         else return null;
     }
