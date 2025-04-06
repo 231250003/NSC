@@ -196,6 +196,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 LLVMBuildCall(builder, function, args, argCount, funcName);
                 return null;
             }
+            System.out.println(((FunctionType)(symbolTable.get_name_matched_symbol(funcName).type)).getReturnType());
             return castToI32(LLVMBuildCall(builder, function, args, argCount, funcName));
         }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
