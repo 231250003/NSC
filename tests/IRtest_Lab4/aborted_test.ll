@@ -31,8 +31,8 @@ mainEntry:
   br i1 %lhs_bool, label %or.merge, label %or.rhs
 
 merge:                                            ; preds = %cur, %or.merge5
-  %load_lval23 = load i32, i32* %x, align 4
-  ret i32 %load_lval23
+  %load_lval25 = load i32, i32* %x, align 4
+  ret i32 %load_lval25
 
 or.rhs:                                           ; preds = %mainEntry
   %load_lval2 = load i32, i32* %x, align 4
@@ -77,15 +77,18 @@ if.then:                                          ; preds = %or.merge5
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %load_lval21 = load i32, i32* %x14, align 4
-  %add22 = add i32 %load_lval21, 1
-  store i32 %add22, i32* %x14, align 4
+  %load_lval23 = load i32, i32* %x14, align 4
+  %add24 = add i32 %load_lval23, 1
+  store i32 %add24, i32* %x14, align 4
   br label %merge
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval19 = load i32, i32* %x15, align 4
   %add20 = add i32 %load_lval19, 5
   store i32 %add20, i32* %x15, align 4
+  %load_lval21 = load i32, i32* %x15, align 4
+  %add22 = add i32 %load_lval21, 100
+  store i32 %add22, i32* %x15, align 4
   br label %while.cond
 
 while.cond:                                       ; preds = %while.stmt, %if.then
