@@ -72,7 +72,7 @@ while.stmt:                                       ; preds = %while.cond
   %lhs_bool = icmp ne i32 %zext_to_i3228, 0
   br i1 %lhs_bool, label %and.rhs, label %and.merge
 
-while.cond:                                       ; preds = %merge42, %if.then46, %merge1
+while.cond:                                       ; preds = %merge42, %merge42, %merge42, %if.then46, %merge1
   %load_lval21 = load i32, i32* @x, align 4
   %cmp22 = icmp slt i32 %load_lval21, 200
   %zext_to_i3223 = zext i1 %cmp22 to i32
@@ -123,6 +123,8 @@ merge42:                                          ; preds = %if.then46, %merge25
   %load_lval48 = load i32, i32* @x, align 4
   %add49 = add i32 %load_lval48, 2
   store i32 %add49, i32* @x, align 4
+  br label %while.cond
+  br label %while.cond
   br label %while.cond
 
 if.then46:                                        ; preds = %merge25
