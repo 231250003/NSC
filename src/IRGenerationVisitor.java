@@ -186,11 +186,13 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 throw new RuntimeException("Undefined function: " + funcName);
             }
             PointerPointer<LLVMValueRef> args = null;
+            int argCount = 0;
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
+                argCount = ctx.funcRParams().param().size();
                 symbolTable.set_r_params(funcName,args);
-                return castToI32(LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName));
             }
+            return castToI32(LLVMBuildCall(builder, function, args, argCount, funcName));
         }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
             LLVMValueRef val = visit(ctx.exp(0));
