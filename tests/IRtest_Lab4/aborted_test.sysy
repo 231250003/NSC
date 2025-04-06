@@ -14,6 +14,7 @@ int main(){
         }
         else x=x+100;*/
        // return x;
+       x=x+1;
     }
     return x;
 }
