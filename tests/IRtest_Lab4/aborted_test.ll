@@ -8,6 +8,7 @@ pEntry:
   %load_lval = load i32, i32* @y, align 4
   %add = add i32 %load_lval, 1
   store i32 %add, i32* @y, align 4
+  ret void
 }
 
 define i32 @f(i32 %x, i32 %t) {
