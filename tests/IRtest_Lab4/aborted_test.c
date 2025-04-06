@@ -20,7 +20,7 @@ int main(){
     int y=100;
     int z=y+100;
 
-   {
+    if(x||x%0||x/0&&x){
         int y=100;
         {
             int x=5;
