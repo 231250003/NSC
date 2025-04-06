@@ -19,6 +19,10 @@ mulEntry:
   br i1 %lhs_bool, label %or.merge, label %or.rhs
 
 merge:                                            ; No predecessors!
+  %load_lval5 = load i32, i32* %param0_addr, align 4
+  %load_lval6 = load i32, i32* %param1_addr, align 4
+  %mul = mul i32 %load_lval5, %load_lval6
+  ret i32 %mul
 
 or.rhs:                                           ; preds = %mulEntry
   %load_lval1 = load i32, i32* %param1_addr, align 4
@@ -34,10 +38,6 @@ or.merge:                                         ; preds = %or.rhs, %mulEntry
 
 if.then:                                          ; No predecessors!
   ret i32 0
-  %load_lval5 = load i32, i32* %param0_addr, align 4
-  %load_lval6 = load i32, i32* %param1_addr, align 4
-  %mul = mul i32 %load_lval5, %load_lval6
-  ret i32 %mul
 }
 
 define i32 @max(i32 %a, i32 %b) {
