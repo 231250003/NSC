@@ -281,7 +281,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         FunctionType functionType = new FunctionType(retType, params);
         symbolTable.addGlobal(new Symbol(funcName,functionType,function));
         visit_block(ctx.block(),params);
-        LLVMBuildRetVoid(builder);
+        if(retType.toString().equals("void"))  LLVMBuildRetVoid(builder);
         return null;
     }
 
