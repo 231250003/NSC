@@ -169,7 +169,13 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         return null;
     }
-
+    private LLVMValueRef castToI32(LLVMValueRef val) {
+        LLVMTypeRef type = LLVMTypeOf(val);
+        if (LLVMGetTypeKind(type) == LLVMIntegerTypeKind && LLVMGetIntTypeWidth(type) == 1) {
+            return LLVMBuildZExt(builder, val, LLVMInt32Type(), "zext_to_i32");
+        }
+        return val;
+    }
     @Override
     public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
         if (ctx.number() != null) return visit(ctx.number());
@@ -183,7 +189,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
                 symbolTable.set_r_params(funcName,args);
-                return LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName);
+                return castToI32(LLVMBuildCall(builder, function, args, ctx.funcRParams() == null ? 0 : ctx.funcRParams().param().size(), funcName));
             }
         }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
@@ -192,9 +198,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 val = LLVMBuildLoad(builder, val, "load_val");
             }
             switch (ctx.unaryOp().getText()) {
-                case "-" :return LLVMBuildNeg(builder, val, "neg");
-                case "!" :return LLVMBuildICmp(builder, LLVMIntEQ, val, LLVMConstInt(LLVMInt32Type(), 0, 0), "not");
-                case "+" :return val;
+                case "-" :return castToI32(LLVMBuildNeg(builder, val, "neg"));
+                case "!" :return castToI32(LLVMBuildICmp(builder, LLVMIntEQ, val, LLVMConstInt(LLVMInt32Type(), 0, 0), "not"));
+                case "+" :return castToI32(val);
                 default :return null;
             }
         }
@@ -208,23 +214,23 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
             switch (ctx.getChild(1).getText()) {
-                 case "+" : return LLVMBuildAdd(builder, left, right, "add");
-                 case "-" :return LLVMBuildSub(builder, left, right, "sub");
-                 case "*" :return  LLVMBuildMul(builder, left, right, "mul");
-                 case "/" :return LLVMBuildSDiv(builder, left, right, "div");
-                 case "%" :return LLVMBuildSRem(builder, left, right, "mod");
+                 case "+" : return castToI32(LLVMBuildAdd(builder, left, right, "add"));
+                 case "-" :return castToI32(LLVMBuildSub(builder, left, right, "sub"));
+                 case "*" :return  castToI32(LLVMBuildMul(builder, left, right, "mul"));
+                 case "/" :return castToI32(LLVMBuildSDiv(builder, left, right, "div"));
+                 case "%" :return castToI32(LLVMBuildSRem(builder, left, right, "mod"));
                  default :return null;
             }
         }
         else if(ctx.L_PAREN()!=null&&ctx.exp()!=null){
-            return visit(ctx.exp(0));
+            return castToI32(visit(ctx.exp(0)));
         }
         else if(ctx.lVal()!=null){
             LLVMValueRef value = visit(ctx.lVal());
             if (LLVMPointerType(LLVMTypeOf(value), 0) != null) {
-                return LLVMBuildLoad(builder, value, "load_lval");
+                return castToI32(LLVMBuildLoad(builder, value, "load_lval"));
             } else {
-                return value;
+                return castToI32(value);
             }
         }
         return null;
