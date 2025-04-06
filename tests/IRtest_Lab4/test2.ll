@@ -8,7 +8,6 @@ gEntry:
   %load_lval = load i32, i32* %param0_addr, align 4
   %add = add i32 %load_lval, 1
   ret i32 %add
-  ret void
 }
 
 define i32 @main() {
@@ -20,7 +19,6 @@ mainEntry:
 
 cur:                                              ; preds = %if.else45, %while.cond
   ret i32 1
-  ret void
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval1 = load i32, i32* %x, align 4
