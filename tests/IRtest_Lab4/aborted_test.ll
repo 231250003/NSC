@@ -3,6 +3,13 @@ source_filename = "my_module"
 
 @y = global i32 0
 
+define void @p() {
+pEntry:
+  %load_lval = load i32, i32* @y, align 4
+  %add = add i32 %load_lval, 1
+  store i32 %add, i32* @y, align 4
+}
+
 define i32 @f(i32 %x, i32 %t) {
 fEntry:
   %param0_addr = alloca i32, align 4
@@ -12,7 +19,9 @@ fEntry:
   %load_lval = load i32, i32* %param0_addr, align 4
   %load_lval1 = load i32, i32* %param1_addr, align 4
   %add = add i32 %load_lval, %load_lval1
-  ret i32 %add
+  %load_lval2 = load i32, i32* @y, align 4
+  %add3 = add i32 %add, %load_lval2
+  ret i32 %add3
 }
 
 define i32 @g(i32 %x, i32 %y, i32 %z) {
