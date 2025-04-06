@@ -1,5 +1,5 @@
 int g(int x){
-    returrn x+1;
+    return x+1;
 }
 int main(){
     int x=g(10);
