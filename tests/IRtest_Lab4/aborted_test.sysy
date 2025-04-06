@@ -14,7 +14,7 @@ int main(){
         }
         if(x>7)
         {
-            g(x,x);
+            x=g(x,x);
             x=x+1;
         }
         else x=x+100;*/
