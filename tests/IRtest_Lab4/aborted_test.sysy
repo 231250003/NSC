@@ -1,6 +1,6 @@
 int x[2003];
 int y;
-int f(int x,t){
+int f(int x,int t){
     return x+t;
 }
 int g(int x,int y,int z){
