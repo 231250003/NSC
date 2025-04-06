@@ -8,14 +8,12 @@ int g(int t,int y){
 }
 int main(){
     z=4;
-    if(x>5){
-        int p=5;
-        while(1){
-            while(z<102){
-                g(10,20);
-            }
-            if(x>10) break;
+    int p=5;
+    while(1){
+        while(z<102){
+            g(10,20);
         }
+        if(x>10) break;
     }
     return x+1;
 }

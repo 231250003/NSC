@@ -26,71 +26,54 @@ gEntry:
 
 define i32 @main() {
 mainEntry:
-  %y = alloca i32, align 4
-  store i32 10, i32* %y, align 4
-  %load_lval = load i32, i32* %y, align 4
-  store i32 %load_lval, i32* @z, align 4
-  %load_lval1 = load i32, i32* @x, align 4
-  %cmp = icmp sgt i32 %load_lval1, 5
+  store i32 4, i32* @z, align 4
+  %load_lval = load i32, i32* @x, align 4
+  %cmp = icmp sgt i32 %load_lval, 5
   %zext_to_i32 = zext i1 %cmp to i32
-  %lhs_bool = icmp ne i32 %zext_to_i32, 0
-  br i1 %lhs_bool, label %or.merge, label %or.rhs
-
-merge:                                            ; preds = %cur, %or.merge
-  %load_lval19 = load i32, i32* @x, align 4
-  %add = add i32 %load_lval19, 1
-  ret i32 %add
-
-or.rhs:                                           ; preds = %mainEntry
-  %load_lval2 = load i32, i32* %y, align 4
-  %div = sdiv i32 %load_lval2, 2
-  %cmp3 = icmp eq i32 %div, 0
-  %zext_to_i324 = zext i1 %cmp3 to i32
-  %rhs_bool = icmp ne i32 %zext_to_i324, 0
-  br label %or.merge
-
-or.merge:                                         ; preds = %or.rhs, %mainEntry
-  %or_result = phi i1 [ true, %mainEntry ], [ %rhs_bool, %or.rhs ]
-  %zext_to_i325 = zext i1 %or_result to i32
-  %to_bool = icmp ne i32 %zext_to_i325, 0
+  %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %if.then, label %merge
 
-if.then:                                          ; preds = %or.merge
+merge:                                            ; preds = %cur, %mainEntry
+  %load_lval14 = load i32, i32* @x, align 4
+  %add = add i32 %load_lval14, 1
+  ret i32 %add
+
+if.then:                                          ; preds = %mainEntry
   %p = alloca i32, align 4
   store i32 5, i32* %p, align 4
   br label %while.cond
 
-cur:                                              ; preds = %if.then17, %while.cond
+cur:                                              ; preds = %if.then12, %while.cond
   br label %merge
 
 while.stmt:                                       ; preds = %while.cond
-  %load_lval7 = load i32, i32* @z, align 4
-  %cmp8 = icmp slt i32 %load_lval7, 102
-  %zext_to_i329 = zext i1 %cmp8 to i32
-  %to_bool10 = icmp ne i32 %zext_to_i329, 0
-  br label %while.cond12
+  %load_lval2 = load i32, i32* @z, align 4
+  %cmp3 = icmp slt i32 %load_lval2, 102
+  %zext_to_i324 = zext i1 %cmp3 to i32
+  %to_bool5 = icmp ne i32 %zext_to_i324, 0
+  br label %while.cond7
 
-while.cond:                                       ; preds = %merge13, %if.then
+while.cond:                                       ; preds = %merge8, %if.then
   br i1 true, label %while.stmt, label %cur
 
-cur6:                                             ; preds = %while.cond12
-  %load_lval14 = load i32, i32* @x, align 4
-  %cmp15 = icmp sgt i32 %load_lval14, 10
-  %zext_to_i3216 = zext i1 %cmp15 to i32
-  %to_bool18 = icmp ne i32 %zext_to_i3216, 0
-  br i1 %to_bool18, label %if.then17, label %merge13
+cur1:                                             ; preds = %while.cond7
+  %load_lval9 = load i32, i32* @x, align 4
+  %cmp10 = icmp sgt i32 %load_lval9, 10
+  %zext_to_i3211 = zext i1 %cmp10 to i32
+  %to_bool13 = icmp ne i32 %zext_to_i3211, 0
+  br i1 %to_bool13, label %if.then12, label %merge8
 
-while.stmt11:                                     ; preds = %while.cond12
+while.stmt6:                                      ; preds = %while.cond7
   %g = call i32 @g(i32 10, i32 20)
-  br label %while.cond12
+  br label %while.cond7
 
-while.cond12:                                     ; preds = %while.stmt11, %while.stmt
-  br i1 %to_bool10, label %while.stmt11, label %cur6
+while.cond7:                                      ; preds = %while.stmt6, %while.stmt
+  br i1 %to_bool5, label %while.stmt6, label %cur1
 
-merge13:                                          ; preds = %if.then17, %cur6
+merge8:                                           ; preds = %if.then12, %cur1
   br label %while.cond
 
-if.then17:                                        ; preds = %cur6
+if.then12:                                        ; preds = %cur1
   br label %cur
-  br label %merge13
+  br label %merge8
 }
