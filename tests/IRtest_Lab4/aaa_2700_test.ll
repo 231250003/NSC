@@ -8,7 +8,7 @@ source_filename = "my_module"
 define i32 @main() {
 mainEntry:
   %load_lval = load i32, i32* @x, align 4
-  %cmp = icmp sgt i32 %load_lval, 100
+  %cmp = icmp sge i32 %load_lval, 100
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %if.then, label %merge
