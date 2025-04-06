@@ -23,6 +23,7 @@ int main() {
             while(x>100){
                 if(x) x=x-1;
                 else x=x-2;
+                x=x+5;
              }
              if(x>100) return x;
         }
