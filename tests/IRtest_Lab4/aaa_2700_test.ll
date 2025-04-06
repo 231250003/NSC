@@ -110,9 +110,8 @@ mainEntry:
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %k = alloca i32, align 4
-  store i32 0, i32* %k, align 4
-  br label %while.cond76
+  %load_lval74 = load i32, i32* @counter, align 4
+  ret i32 %load_lval74
 
 while.stmt:                                       ; preds = %while.cond
   %x1 = alloca i32, align 4
@@ -258,86 +257,4 @@ or.merge61:                                       ; preds = %or.rhs60, %and.merg
 if.then68:                                        ; preds = %or.merge61
   br label %cur3
   br label %merge42
-
-cur74:                                            ; preds = %while.cond76
-  %load_lval125 = load i32, i32* @counter, align 4
-  ret i32 %load_lval125
-
-while.stmt75:                                     ; preds = %while.cond76
-  %load_lval82 = load i32, i32* %k, align 4
-  %mod83 = srem i32 %load_lval82, 2
-  %cmp84 = icmp eq i32 %mod83, 0
-  %zext_to_i3285 = zext i1 %cmp84 to i32
-  %lhs_bool86 = icmp ne i32 %zext_to_i3285, 0
-  br i1 %lhs_bool86, label %and.rhs87, label %and.merge88
-
-while.cond76:                                     ; preds = %merge81, %cur
-  %load_lval77 = load i32, i32* %k, align 4
-  %cmp78 = icmp slt i32 %load_lval77, 5
-  %zext_to_i3279 = zext i1 %cmp78 to i32
-  %to_bool80 = icmp ne i32 %zext_to_i3279, 0
-  br i1 %to_bool80, label %while.stmt75, label %cur74
-
-merge81:                                          ; preds = %merge99, %if.then95
-  %load_lval123 = load i32, i32* %k, align 4
-  %add124 = add i32 %load_lval123, 1
-  store i32 %add124, i32* %k, align 4
-  br label %while.cond76
-
-and.rhs87:                                        ; preds = %while.stmt75
-  %load_lval89 = load i32, i32* @counter, align 4
-  %cmp90 = icmp slt i32 %load_lval89, 20
-  %zext_to_i3291 = zext i1 %cmp90 to i32
-  %rhs_bool92 = icmp ne i32 %zext_to_i3291, 0
-  br label %and.merge88
-
-and.merge88:                                      ; preds = %and.rhs87, %while.stmt75
-  %and_result93 = phi i1 [ false, %while.stmt75 ], [ %rhs_bool92, %and.rhs87 ]
-  %zext_to_i3294 = zext i1 %and_result93 to i32
-  %to_bool97 = icmp ne i32 %zext_to_i3294, 0
-  br i1 %to_bool97, label %if.then95, label %if.else96
-
-if.then95:                                        ; preds = %and.merge88
-  %load_lval98 = load i32, i32* %k, align 4
-  call void @logSum(i32 %load_lval98)
-  br label %merge81
-
-if.else96:                                        ; preds = %and.merge88
-  %load_lval100 = load i32, i32* %k, align 4
-  %mul101 = mul i32 %load_lval100, 2
-  %cmp102 = icmp eq i32 %mul101, 4
-  %zext_to_i32103 = zext i1 %cmp102 to i32
-  %lhs_bool104 = icmp ne i32 %zext_to_i32103, 0
-  br i1 %lhs_bool104, label %or.merge106, label %or.rhs105
-
-merge99:                                          ; preds = %if.else116, %if.then115
-  br label %merge81
-
-or.rhs105:                                        ; preds = %if.else96
-  %load_lval107 = load i32, i32* %sum, align 4
-  %not108 = icmp eq i32 %load_lval107, 0
-  %zext_to_i32109 = zext i1 %not108 to i32
-  %cmp110 = icmp sgt i32 %zext_to_i32109, 100
-  %zext_to_i32111 = zext i1 %cmp110 to i32
-  %rhs_bool112 = icmp ne i32 %zext_to_i32111, 0
-  br label %or.merge106
-
-or.merge106:                                      ; preds = %or.rhs105, %if.else96
-  %or_result113 = phi i1 [ true, %if.else96 ], [ %rhs_bool112, %or.rhs105 ]
-  %zext_to_i32114 = zext i1 %or_result113 to i32
-  %to_bool117 = icmp ne i32 %zext_to_i32114, 0
-  br i1 %to_bool117, label %if.then115, label %if.else116
-
-if.then115:                                       ; preds = %or.merge106
-  %load_lval118 = load i32, i32* @counter, align 4
-  %add119 = add i32 %load_lval118, 1
-  store i32 %add119, i32* @counter, align 4
-  br label %merge99
-
-if.else116:                                       ; preds = %or.merge106
-  %load_lval120 = load i32, i32* @counter, align 4
-  %load_lval121 = load i32, i32* %k, align 4
-  %add122 = add i32 %load_lval120, %load_lval121
-  store i32 %add122, i32* @counter, align 4
-  br label %merge99
 }
