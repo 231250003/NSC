@@ -4,7 +4,7 @@ int f(int x,t){
     return x+t;
 }
 int g(int x,int y,int z){
-    return f(x,t);
+    return f(x,z);
 }
 int main(){
     int t=100;
