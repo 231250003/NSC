@@ -10,7 +10,7 @@ int main(){
         {
             x=x+1;
         }
-        else x=x-1;
+        else x=x+100;
     }
     return x;
 }
