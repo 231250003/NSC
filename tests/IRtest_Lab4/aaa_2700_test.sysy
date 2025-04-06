@@ -12,14 +12,6 @@ int max(int a, int b) {
     else return b;
 }
 
-void logSum(int val) {
-    int t = 0;
-    while (t < val) {
-        t = t + 1;
-        counter = counter + 1;
-    }
-}
-
 int main() {
     int i = 0, j = 0;
     int sum = 0;
@@ -46,6 +38,5 @@ int main() {
         j = 0; // reset for next i
         i = i + 1;
     }
-
     return  counter;
 }
