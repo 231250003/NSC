@@ -1,4 +1,11 @@
 int x = 1, y = 2, z = 3;
+int A[3][4];
+int counter = 0;
+
+int mul(int a, int b) {
+    if (a == 0 || b == 0) return 0;
+    return a * b;
+}
 int main() {
     int i = 0, j = 0;
     int sum = 0;
