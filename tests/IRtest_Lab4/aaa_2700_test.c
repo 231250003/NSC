@@ -1,6 +1,6 @@
 int f(int x){
     if(x>100) return x+2;
-    return g(x+1);
+    return f(x+1);
 }
 int g(int y){
     if(y>100) return y+2;
