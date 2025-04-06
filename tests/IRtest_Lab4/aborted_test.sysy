@@ -3,7 +3,7 @@ int y;
 int main(){
     int t=100;
     int x=5;
-    int y=100l
+    int y=100;
     if(x>=5&&y>0||y/0==0){
        /* if(x<6){
             x=!x+!x+!x;
