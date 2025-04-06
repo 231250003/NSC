@@ -1,6 +1,7 @@
 int x=10;
 void g(){
     x=x+1;
+    return;
 }
 int main(){
     int y=10;
@@ -14,7 +15,6 @@ int main(){
             }
             if(x>100) break;
         }
-
     }
     return x;
 }
