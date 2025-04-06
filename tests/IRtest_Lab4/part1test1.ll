@@ -7,18 +7,25 @@ define i32 @main() {
 mainEntry:
   %load_lval = load i32, i32* @a, align 4
   %cmp = icmp ne i32 %load_lval, 10
-  %load_lval1 = load i32, i32* @a, align 4
-  %cmp2 = icmp ne i32 %load_lval1, 2
-  %left_is_zero = icmp eq i1 %cmp, false
-  %short_circuit = select i1 %left_is_zero, i1 false, i1 %cmp2
-  br i1 %short_circuit, label %if.then, label %merge
+  %lhs_bool = icmp ne i1 %cmp, i32 0
+  br i1 %lhs_bool, label %and.rhs, label %and.merge
 
-merge:                                            ; preds = %if.then, %mainEntry
+merge:                                            ; preds = %if.then, %and.merge
   %load_lval4 = load i32, i32* @a, align 4
   %cmp5 = icmp eq i32 %load_lval4, 4
   br i1 %cmp5, label %if.then6, label %if.else
 
-if.then:                                          ; preds = %mainEntry
+and.rhs:                                          ; preds = %mainEntry
+  %load_lval1 = load i32, i32* @a, align 4
+  %cmp2 = icmp ne i32 %load_lval1, 2
+  %rhs_bool = icmp ne i1 %cmp2, i32 0
+  br label %and.merge
+
+and.merge:                                        ; preds = %and.rhs, %mainEntry
+  %and_result = phi i1 [ false, %mainEntry ], [ %rhs_bool, %and.rhs ]
+  br i1 %and_result, label %if.then, label %merge
+
+if.then:                                          ; preds = %and.merge
   store i32 2, i32* @a, align 4
   br label %merge
 
