@@ -5,7 +5,7 @@ int main(){
     int x=5;
     int y=100;
     int z=y+100;
-    if(x||x%0||x/0){
+    if(x||x%0||x/0&&x){
        /* if(x<6){
             x=!x+!x+!x;
         }
