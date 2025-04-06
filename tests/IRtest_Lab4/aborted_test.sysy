@@ -16,9 +16,10 @@ int main(){
         }
         else x=x+100;
        // return x;
-       if(!!x){
+       if(!x){
           x=!!x+1;
        }
+       else x=x+205;
     }
     return x;
 }
