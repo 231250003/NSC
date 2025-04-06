@@ -19,7 +19,7 @@ public class Main {
             System.err.println("input path is required");
         }*/
           String source = args[0];
-          if(args[0].contains("normaltest0"))  return;
+         // if(args[0].contains("normaltest0"))  return;
          CharStream input = CharStreams.fromFileName(source);
          SysYLexer lexer = new SysYLexer(input);
           lexer.removeErrorListeners();
