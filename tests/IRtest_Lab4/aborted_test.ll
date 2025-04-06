@@ -20,8 +20,8 @@ mainEntry:
   br i1 %lhs_bool, label %or.merge, label %or.rhs
 
 merge:                                            ; preds = %if.then, %or.merge5
-  %load_lval12 = load i32, i32* %x, align 4
-  ret i32 %load_lval12
+  %load_lval16 = load i32, i32* %x, align 4
+  ret i32 %load_lval16
 
 or.rhs:                                           ; preds = %mainEntry
   %load_lval2 = load i32, i32* %x, align 4
@@ -38,18 +38,29 @@ or.merge:                                         ; preds = %or.rhs, %mainEntry
 or.rhs4:                                          ; preds = %or.merge
   %load_lval6 = load i32, i32* %x, align 4
   %div = sdiv i32 %load_lval6, 0
-  %rhs_bool7 = icmp ne i32 %div, 0
-  br label %or.merge5
+  %lhs_bool7 = icmp ne i32 %div, 0
+  br i1 %lhs_bool7, label %and.rhs, label %and.merge
 
-or.merge5:                                        ; preds = %or.rhs4, %or.merge
-  %or_result8 = phi i1 [ true, %or.merge ], [ %rhs_bool7, %or.rhs4 ]
-  %zext_to_i329 = zext i1 %or_result8 to i32
-  %to_bool = icmp ne i32 %zext_to_i329, 0
+or.merge5:                                        ; preds = %and.merge, %or.merge
+  %or_result12 = phi i1 [ true, %or.merge ], [ %rhs_bool11, %and.merge ]
+  %zext_to_i3213 = zext i1 %or_result12 to i32
+  %to_bool = icmp ne i32 %zext_to_i3213, 0
   br i1 %to_bool, label %if.then, label %merge
 
+and.rhs:                                          ; preds = %or.rhs4
+  %load_lval8 = load i32, i32* %x, align 4
+  %rhs_bool9 = icmp ne i32 %load_lval8, 0
+  br label %and.merge
+
+and.merge:                                        ; preds = %and.rhs, %or.rhs4
+  %and_result = phi i1 [ false, %or.rhs4 ], [ %rhs_bool9, %and.rhs ]
+  %zext_to_i3210 = zext i1 %and_result to i32
+  %rhs_bool11 = icmp ne i32 %zext_to_i3210, 0
+  br label %or.merge5
+
 if.then:                                          ; preds = %or.merge5
-  %load_lval10 = load i32, i32* %x, align 4
-  %add11 = add i32 %load_lval10, 1
-  store i32 %add11, i32* %x, align 4
+  %load_lval14 = load i32, i32* %x, align 4
+  %add15 = add i32 %load_lval14, 1
+  store i32 %add15, i32* %x, align 4
   br label %merge
 }
