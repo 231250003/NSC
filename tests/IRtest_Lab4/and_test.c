@@ -4,4 +4,5 @@ int main(){
     if(x>50 || y/0==0){
         return y;
     }
+    return 0;
 }
