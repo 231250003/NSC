@@ -4,8 +4,7 @@ SYSY_DIR="tests/IRtest_Lab4"
 echo "== Batch processing all .sysy files in $SYSY_DIR =="
 
 for sysy_file in "$SYSY_DIR"/*.sysy; do
-    #filename=$(basename "$sysy_file" .sysy)
-    filename=while_test.sysy
+    filename=$(basename "$sysy_file" .sysy)
     c_file="$SYSY_DIR/$filename.c"
     exe_file="$SYSY_DIR/$filename"
     ll_file="$SYSY_DIR/$filename.ll"
