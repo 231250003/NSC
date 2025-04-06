@@ -9,20 +9,16 @@ int main(){
     int y=100;
     int z=y+100;
     if(x||x%0||x/0&&x){
-       /* if(x<6){
-            x=!x+!x+!x;
-        }
         if(x>1)
         {
             x=g(x,x);
             x=x+1;
         }
-        else x=x+100;*/
+        else x=x+100;
        // return x;
        if(!x&&x/0==0){
           x=x+1;
        }
-       
     }
     return x;
 }
