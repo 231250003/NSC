@@ -41,7 +41,6 @@ merge5:                                           ; preds = %merge11, %if.then9
   store i32 %add, i32* @a, align 4
   %load_lval26 = load i32, i32* @a, align 4
   ret i32 %load_lval26
-  ret void
 
 if.then9:                                         ; preds = %merge
   store i32 5, i32* @a, align 4
