@@ -1,5 +1,8 @@
 int x[2003];
 int y;
+int g(int x,int y){
+    return x+1;
+}
 int main(){
     int t=100;
     int x=5;
@@ -11,6 +14,7 @@ int main(){
         }
         if(x>7)
         {
+            g(x,x);
             x=x+1;
         }
         else x=x+100;*/
