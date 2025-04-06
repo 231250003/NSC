@@ -364,7 +364,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     LLVMGetIntTypeWidth(LLVMTypeOf(val)) != 1) {
                 val = LLVMBuildICmp(builder, LLVMIntNE, val, LLVMConstInt(LLVMTypeOf(val), 0, 0), "to_bool");
             }
-            return val;return visit(ctx.exp());
+            return val;
         }
         else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {
             // 处理 <, >, <=, >=
