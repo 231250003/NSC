@@ -9,7 +9,7 @@ mainEntry:
   store i32 10, i32* %y, align 4
   %load_lval = load i32, i32* %x, align 4
   %cmp = icmp sgt i32 %load_lval, 50
-  %lhs_bool = icmp ne i1 %cmp, i32 0
+  %lhs_bool = icmp ne i1 %cmp, false
   br i1 %lhs_bool, label %or.merge, label %or.rhs
 
 merge:                                            ; preds = %if.then, %or.merge
