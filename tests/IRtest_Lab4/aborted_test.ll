@@ -14,8 +14,8 @@ mainEntry:
   br i1 %to_bool, label %if.then, label %merge
 
 merge:                                            ; preds = %merge16, %mainEntry
-  %load_lval25 = load i32, i32* %x, align 4
-  ret i32 %load_lval25
+  %load_lval26 = load i32, i32* %x, align 4
+  ret i32 %load_lval26
 
 if.then:                                          ; preds = %mainEntry
   %load_lval2 = load i32, i32* %x, align 4
@@ -57,7 +57,7 @@ if.then20:                                        ; preds = %merge1
 
 if.else:                                          ; preds = %merge1
   %load_lval24 = load i32, i32* %x, align 4
-  %sub = sub i32 %load_lval24, 1
-  store i32 %sub, i32* %x, align 4
+  %add25 = add i32 %load_lval24, 100
+  store i32 %add25, i32* %x, align 4
   br label %merge16
 }
