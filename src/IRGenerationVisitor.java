@@ -398,7 +398,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind) {
                 lhs = LLVMBuildLoad(builder, lhs, "load_lhs");
             }
-
+            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMIntegerTypeKind &&
+                    LLVMGetIntTypeWidth(LLVMTypeOf(lhs)) == 32) {
+                lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs,
+                        LLVMConstInt(LLVMInt32Type(), 0, 0), "lhs_bool");
+            }
             lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt1Type(), 0, 0), "lhs_bool");
 
             // block 准备
@@ -415,6 +419,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef rhs = visit(ctx.cond(1));
             if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind) {
                 rhs = LLVMBuildLoad(builder, rhs, "load_rhs");
+            }
+            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMIntegerTypeKind &&
+                    LLVMGetIntTypeWidth(LLVMTypeOf(rhs)) == 32) {
+                rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs,
+                        LLVMConstInt(LLVMInt32Type(), 0, 0), "rhs_bool");
             }
             rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt1Type(), 0, 0), "rhs_bool");
             LLVMBuildBr(builder, mergeBlock);
@@ -444,7 +453,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind) {
                 lhs = LLVMBuildLoad(builder, lhs, "load_lhs");
             }
-
+            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMIntegerTypeKind &&
+                    LLVMGetIntTypeWidth(LLVMTypeOf(lhs)) == 32) {
+                lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs,
+                        LLVMConstInt(LLVMInt32Type(), 0, 0), "lhs_bool");
+            }
             lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt1Type(), 0, 0), "lhs_bool");
 
             LLVMBasicBlockRef current = LLVMGetInsertBlock(builder);
@@ -460,6 +473,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef rhs = visit(ctx.cond(1));
             if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind) {
                 rhs = LLVMBuildLoad(builder, rhs, "load_rhs");
+            }
+            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMIntegerTypeKind &&
+                    LLVMGetIntTypeWidth(LLVMTypeOf(rhs)) == 32) {
+                rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs,
+                        LLVMConstInt(LLVMInt32Type(), 0, 0), "rhs_bool");
             }
             rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt1Type(), 0, 0), "rhs_bool");
             LLVMBuildBr(builder, mergeBlock);
