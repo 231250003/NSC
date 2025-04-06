@@ -559,9 +559,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (elseBlock != null) {
                 LLVMPositionBuilderAtEnd(builder, elseBlock);
                 visit(ctx.stmt(1));
-                if(ctx.stmt(0).RETURN()==null) LLVMBuildBr(builder, mergeBlock);
+                if(ctx.stmt(1).RETURN()==null) LLVMBuildBr(builder, mergeBlock);
             }
-            if(ctx.stmt(0).RETURN()==null) LLVMPositionBuilderAtEnd(builder, mergeBlock);
+            LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
         else if(ctx.WHILE()!=null){
             LLVMValueRef function = symbolTable.get_cur_scope_func();
