@@ -1,55 +1,85 @@
-int gArr[10];
-int x = 5;
-int y = 6;
+int x = 1, y = 2, z = 3;
+int A[3][4];
+int counter = 0;
 
-int add(int a, int b) {
-    return a + b;
+int mul(int a, int b) {
+    if (a == 0 || b == 0) return 0;
+    return a * b;
 }
 
-int always_true() {
-    return 1;
+int max(int a, int b) {
+    if(a>b) return a;
+    else return b;
 }
 
-void do_nothing() {}
+void logSum(int val) {
+    int t = 0;
+    while (t < val) {
+        t = t + 1;
+        counter = counter + 1;
+    }
+}
 
 int main() {
-    int i = 0, sum = 0;
-    while (i < 10) {
-        if ((i % 2 == 0 && i != 4) || (i == 7 && !(x > y))) {
-            sum = sum + add(i, x);
-        } else if (i >= 3 && i <= 6) {
-            sum = sum - y;
-        } else {
-            sum = sum + 1;
-        }
+    int i = 0, j = 0;
+    int sum = 0;
+    int x = 5;  // 遮蔽全局变量
 
-        if (!(i != 5 || x == y)) {
-            x = x + 1;
-        } else if ((x < y && y > 3) || !(x <= y)) {
-            x = x - 1;
-        }
+    while (i < 3) {
+        int x = i;  // 重定义变量遮蔽
+        while (j < 4) {
+            if ((x + j) % 2 == 0 && !(i == j)) {
+                sum = sum + mul(i, j);
+            } else if (x != j || i == 0) {
+                sum = sum - 1;
+            } else {
+                sum = sum + 1;
+            }
 
-        while (x < 15 && !(sum > 50)) {
-            x = x + 1;
-            sum = sum + x;
-            if (x == 12) {
+            if ((i + j) > 3 && ((i * j) < 6 || x >= 2)) {
                 break;
             }
+
+            j = j + 1;
         }
 
+        j = 0; // reset for next i
         i = i + 1;
     }
 
-    int j = 0;
-    while (j < 5) {
-        int inner = 0;
-        while (inner < 3) {
-            if ((j + inner) % 2 != 0) {
-                sum = sum + j * inner;
-            }
-            inner = inner + 1;
+    // 再套一层大 while + if/else if/else
+    int k = 0;
+    while (k < 5) {
+        if (k % 2 == 0 && counter < 20) {
+            logSum(k);
+        } else if ((k * 2) == 4 || !(sum > 100)) {
+            counter = counter + 1;
+        } else {
+            counter = counter + k;
         }
-        j = j + 1;
+
+        k = k + 1;
     }
-    return j;
+
+    // 三层嵌套 + && || 测试
+    int m = 0;
+    while (m < 3) {
+        int n = 0;
+        while (n < 3) {
+            int p = 0;
+            while (p < 2) {
+                if ((m == n && n == p) || (m + n + p != 0)) {
+                    sum = sum + 1;
+                } else {
+                    sum = sum - 1;
+                }
+                p = p + 1;
+            }
+            n = n + 1;
+        }
+        m = m + 1;
+    }
+
+
+    return  counter;
 }
