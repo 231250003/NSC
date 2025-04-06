@@ -192,13 +192,13 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 argCount = ctx.funcRParams().param().size();
                 symbolTable.set_r_params(funcName,args);
             }
-           // symbolTable.enterScope();
+            symbolTable.enterScope();
             if( (((FunctionType)(symbolTable.get_name_matched_symbol(funcName).type)).getReturnType() ).toString().equals("void")){
                 LLVMBuildCall(builder, function, args, argCount, "");
-                //symbolTable.exitScope();
+                symbolTable.exitScope();
                 return null;
             }
-         //   symbolTable.exitScope();
+            symbolTable.exitScope();
             return castToI32(LLVMBuildCall(builder, function, args, argCount, funcName));
         }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
@@ -345,8 +345,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 //            }
 //        }
         Symbol s=symbolTable.get_name_matched_symbol(name);
-        LLVMValueRef res = LLVMBuildLoad(builder, s.reference, s.name);
-        return res;
+        return s.reference;
     }
 
     @Override
