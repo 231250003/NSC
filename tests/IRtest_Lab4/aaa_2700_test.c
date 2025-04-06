@@ -21,8 +21,7 @@ int main() {
         if(x<2030)
         {
             while(x>100){
-                if(x) x--;
-               
+                if(x) x=x-1;
                 else x=x-2;
              }
              if(x>100) return x;
