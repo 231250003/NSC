@@ -6,9 +6,7 @@ int main() {
         else if(x>0x100) return 3;
         x=x+1;
         while(x<200){
-            if(x>10&&!x||x>150){
-                break;
-            }
+          
             x=x+1;
             if(x<125) continue;
             x=x+2;
