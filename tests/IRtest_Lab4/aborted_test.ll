@@ -3,12 +3,15 @@ source_filename = "my_module"
 
 @y = global i32 0
 
-define i32 @f(i32 %x) {
+define i32 @f(i32 %x, i32 %t) {
 fEntry:
   %param0_addr = alloca i32, align 4
   store i32 %x, i32* %param0_addr, align 4
+  %param1_addr = alloca i32, align 4
+  store i32 %t, i32* %param1_addr, align 4
   %load_lval = load i32, i32* %param0_addr, align 4
-  %add = add i32 %load_lval, 100
+  %load_lval1 = load i32, i32* %param1_addr, align 4
+  %add = add i32 %load_lval, %load_lval1
   ret i32 %add
 }
 
@@ -21,7 +24,8 @@ gEntry:
   %param2_addr = alloca i32, align 4
   store i32 %z, i32* %param2_addr, align 4
   %load_lval = load i32, i32* %param0_addr, align 4
-  %f = call i32 @f(i32 %load_lval)
+  %load_lval1 = load i32, i32* %param2_addr, align 4
+  %f = call i32 @f(i32 %load_lval, i32 %load_lval1)
   ret i32 %f
 }
 
@@ -44,8 +48,8 @@ mainEntry:
   br i1 %lhs_bool, label %or.merge, label %or.rhs
 
 merge:                                            ; preds = %cur, %or.merge6
-  %load_lval40 = load i32, i32* %x, align 4
-  ret i32 %load_lval40
+  %load_lval42 = load i32, i32* %x, align 4
+  ret i32 %load_lval42
 
 or.rhs:                                           ; preds = %mainEntry
   %load_lval3 = load i32, i32* %x, align 4
@@ -90,9 +94,11 @@ if.then:                                          ; preds = %or.merge6
   br label %while.cond
 
 cur:                                              ; preds = %merge22, %while.cond
-  %load_lval38 = load i32, i32* %y15, align 4
-  %add39 = add i32 %load_lval38, 5
-  store i32 %add39, i32* %x, align 4
+  %load_lval38 = load i32, i32* %x, align 4
+  %load_lval39 = load i32, i32* %y15, align 4
+  %add40 = add i32 %load_lval38, %load_lval39
+  %add41 = add i32 %add40, 5
+  store i32 %add41, i32* %x, align 4
   br label %merge
 
 while.stmt:                                       ; preds = %while.cond
