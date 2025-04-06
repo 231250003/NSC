@@ -3,7 +3,6 @@ int g(int x){
 }
 int main(){
     int x=g(10);
-    if(!x) return 0;
     while(x<100){
         x=x+1;
         if(x>30){
