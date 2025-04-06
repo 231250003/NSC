@@ -13,7 +13,7 @@ int main() {
             if(x<125) continue;
             x=x+2;
             continue;
-            continue;
+            break;
         }
     }
     return x;
