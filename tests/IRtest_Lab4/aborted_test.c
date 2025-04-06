@@ -3,12 +3,12 @@ int y;
 int f(int x){
     return x+100;
 }
-int g(int x,int y){
+int g(int x,int y,int z){
     return f(x);
 }
 int main(){
     int t=100;
-    int x=g(2,4);
+    int x=g(2,4,t);
     int y=100;
     int z=y+100;
     if(x||x%0||x/0&&x){
