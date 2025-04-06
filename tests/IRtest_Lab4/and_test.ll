@@ -4,7 +4,7 @@ source_filename = "my_module"
 @x = global i32 10
 @z = global i32 0
 
-define void @g(i32 %x, i32 %y) {
+define i32 @g(i32 %x, i32 %y) {
 gEntry:
   %param0_addr = alloca i32, align 4
   store i32 %x, i32* %param0_addr, align 4
@@ -16,7 +16,9 @@ gEntry:
   %load_lval1 = load i32, i32* @z, align 4
   %add2 = add i32 %load_lval1, 1
   store i32 %add2, i32* @z, align 4
-  ret void
+  %load_lval3 = load i32, i32* %param1_addr, align 4
+  %add4 = add i32 %load_lval3, 1
+  ret i32 %add4
 }
 
 define i32 @main() {
@@ -52,7 +54,7 @@ cur:                                              ; preds = %if.then12, %while.c
   br label %merge
 
 while.stmt:                                       ; preds = %while.cond
-  %g = call void @g(i32 2, i32 3)
+  %g = call i32 @g(i32 2, i32 3)
   %load_lval5 = load i32, i32* @x, align 4
   %cmp6 = icmp slt i32 %load_lval5, 50
   br i1 %cmp6, label %if.then7, label %merge4
@@ -67,7 +69,7 @@ merge4:                                           ; preds = %if.then7, %while.st
 
 if.then7:                                         ; preds = %while.stmt
   store i32 2, i32* @x, align 4
-  %g8 = call void @g(i32 10, i32 2)
+  %g8 = call i32 @g(i32 10, i32 2)
   br label %while.cond
   br label %merge4
 
