@@ -36,7 +36,7 @@ if.then5:                                         ; preds = %if.then
 
 if.else:                                          ; preds = %if.then
   %load_lval8 = load i32, i32* @x, align 4
-  %cmp9 = icmp sgt i32 %load_lval8, 20
+  %cmp9 = icmp sgt i32 %load_lval8, 200
   %zext_to_i3210 = zext i1 %cmp9 to i32
   %to_bool13 = icmp ne i32 %zext_to_i3210, 0
   br i1 %to_bool13, label %if.then11, label %if.else12
