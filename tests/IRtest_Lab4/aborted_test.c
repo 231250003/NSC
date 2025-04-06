@@ -17,7 +17,7 @@ int main(){
         else x=x+100;
        // return x;
        if(!!x){
-          x=x+1;
+          x=!!x+1;
        }
     }
     return x;
