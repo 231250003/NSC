@@ -1,9 +1,9 @@
 int x=10;
 int z;
-void g(int x,int y){
+int g(int x,int y){
     y=y+1;
     z=z+1;
-    return;
+    return y+1;
 }
 int main(){
     int y=10;
