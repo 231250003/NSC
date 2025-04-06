@@ -13,6 +13,7 @@ fEntry:
   %load_lval1 = load i32, i32* @a, align 4
   %add2 = add i32 %load_lval1, 10
   ret i32 %add2
+  ret void
 }
 
 define i32 @main() {
@@ -30,6 +31,7 @@ cur:                                              ; preds = %while.cond
   %load_lval10 = load i32, i32* @a, align 4
   %add11 = add i32 %load_lval10, 1
   ret i32 %add11
+  ret void
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval4 = load i32, i32* @a, align 4
