@@ -1,4 +1,7 @@
 int a = 1;
+int g(int x){
+return x+!x;
+}
 int main(int x) {
     int b=0;
     while(a<9){
@@ -12,5 +15,6 @@ int main(int x) {
         break;
     }
     x=x+1;
+    if(!g(x)) return x+2;
     return x;
 }
