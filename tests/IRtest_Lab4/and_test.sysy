@@ -7,7 +7,7 @@ int g(int t,int y){
     return y+1;
 }
 int main(){
-    z=y;
+    z=4;
     if(x>5){
         int p=5;
         while(1){
