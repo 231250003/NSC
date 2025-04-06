@@ -8,6 +8,7 @@ int f(int x){
     return x;
 }
 int main() {
+    while(1){
     x=f(200);
     while(1){
         g();
@@ -45,6 +46,8 @@ int main() {
         if(x>10){
             x=x-10;
         }
+    }
+    break;
     }
     return x;
 }
