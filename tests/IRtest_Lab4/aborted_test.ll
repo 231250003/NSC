@@ -49,5 +49,6 @@ mainEntry:
   %load_lval = load i32, i32* %t, align 4
   %g = call i32 @g(i32 2, i32 4, i32 %load_lval)
   store i32 %g, i32* %x, align 4
-  ret i32 2
+  %load_lval1 = load i32, i32* %x, align 4
+  ret i32 %load_lval1
 }
