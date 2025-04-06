@@ -14,8 +14,11 @@ int main(){
             int x=5;
             while(x>0){
                 x=x+5;
-                x=x+100;
                 if(x<100){
+                    y=y+1;
+                    continue;
+                }
+                else if(x<50){
                     y=y+1;
                     continue;
                 }
