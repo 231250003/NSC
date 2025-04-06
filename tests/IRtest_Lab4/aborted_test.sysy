@@ -4,7 +4,7 @@ int main(){
     int y=100;
     if(x>=5){
         if(x<6){
-            x=!x+x;
+            x=!x+!x+!x;
         }
         if(x>7)
         {
