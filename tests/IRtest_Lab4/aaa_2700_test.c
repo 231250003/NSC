@@ -47,21 +47,5 @@ int main() {
         i = i + 1;
     }
 
-    // 再套一层大 while + if/else if/else
-    int k = 0;
-    while (k < 5) {
-        if (k % 2 == 0 && counter < 20) {
-            logSum(k);
-        } else if ((k * 2) == 4 || !(sum > 100)) {
-            counter = counter + 1;
-        } else {
-            counter = counter + k;
-        }
-
-        k = k + 1;
-    }
-
-    // 三层嵌套 + && || 测试
-  
     return  counter;
 }
