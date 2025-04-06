@@ -7,6 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import org.bytedeco.javacpp.BytePointer;
+import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.llvm.LLVM.*;
 import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
@@ -62,7 +65,11 @@ public class Main {
         ParseTree tree = parser.program();
         IRGenerationVisitor visitor = new IRGenerationVisitor(module, builder);
         visitor.visit(tree);
-        LLVMDumpModule(module);
+       // LLVMDumpModule(module);
+        BytePointer error = new BytePointer((Pointer) null);
+        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
+            LLVMDisposeMessage(error);
+        }
         LLVMDisposeBuilder(builder);
         LLVMDisposeModule(module);
     }
