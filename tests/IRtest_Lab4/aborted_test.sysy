@@ -1,5 +1,6 @@
 int x[2003];
 int y;
+/*
 void p(){
     y=y+1;
     return;
@@ -8,8 +9,10 @@ int f(int x,int t){
     p();
     return x+t+y;
 }
+*/
 int g(int x,int y,int z){
-    return f(x,z);
+    y=y+1;
+    return y;
 }
 int main(){
     int t=100;
