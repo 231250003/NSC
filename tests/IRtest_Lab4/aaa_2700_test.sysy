@@ -1,11 +1,57 @@
-int f(int x){
-    if(x>100) return x+2;
-    return f(x+1);
+int gArr[10];
+int x = 5;
+int y = 6;
+
+int add(int a, int b) {
+    return a + b;
 }
-int g(int y){
-    if(y>100) return y+2;
-    return f(y+2);
+
+int always_true() {
+    return 1;
 }
-int main(){
-    return g(1);
+
+void do_nothing() {}
+
+int main() {
+    int i = 0, sum = 0;
+    while (i < 10) {
+        if ((i % 2 == 0 && i != 4) || (i == 7 && !(x > y))) {
+            sum = sum + add(i, x);
+        } else if (i >= 3 && i <= 6) {
+            sum = sum - y;
+        } else {
+            sum = sum + 1;
+        }
+
+        if (!(i != 5 || x == y)) {
+            x = x + 1;
+        } else if ((x < y && y > 3) || !(x <= y)) {
+            x = x - 1;
+        }
+
+        while (x < 15 && !(sum > 50)) {
+            x = x + 1;
+            sum = sum + x;
+            if (x == 12) {
+                break;
+            }
+        }
+
+        i = i + 1;
+    }
+
+    int j = 0;
+    while (j < 5) {
+        int inner = 0;
+        while (inner < 3) {
+            if ((j + inner) % 2 != 0) {
+                sum = sum + j * inner;
+            }
+            inner = inner + 1;
+        }
+        j = j + 1;
+    }
+
+
+    return j;
 }
