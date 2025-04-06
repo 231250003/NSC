@@ -407,7 +407,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind) {
                 rhs = LLVMBuildLoad(builder, rhs, "load_rhs");
             }
-            rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt32Type(), 0, 0), "rhs_bool");
+            rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt1Type(), 0, 0), "rhs_bool");
             LLVMBuildBr(builder, mergeBlock);
             LLVMBasicBlockRef rhsBlockFinal = LLVMGetInsertBlock(builder);
 
@@ -446,12 +446,13 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
             LLVMBuildCondBr(builder, lhs, mergeBlock, rhsBlock);
 
+            // === 右侧块 ===
             LLVMPositionBuilderAtEnd(builder, rhsBlock);
             LLVMValueRef rhs = visit(ctx.cond(1));
             if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind) {
                 rhs = LLVMBuildLoad(builder, rhs, "load_rhs");
             }
-            rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt32Type(), 0, 0), "rhs_bool");
+            rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt1Type(), 0, 0), "rhs_bool");
             LLVMBuildBr(builder, mergeBlock);
             LLVMBasicBlockRef rhsBlockFinal = LLVMGetInsertBlock(builder); // 获取真实终点（用于 phi）
 
