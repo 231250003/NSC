@@ -1,15 +1,24 @@
-int a = 10;
-int f(int x){
-    a=a+1;
-    return a+10;
+int a = 1;
+int x=20;
+int g(int x){
+return x+!x;
 }
 int main() {
+    int x=100;
+    int a=5;
     a=a+1;
-    int t=f(a);
-    while(f(a)<10){
-        if(f(a)>10){
-            return a;
+    int b=0;
+    while(a<9){
+        while(a<10){
+        if(a==77) continue;
+        a=a+1;
+        b=a+1;
+        a=b+1;
+        break;
         }
+        break;
     }
-    return a+1;
+    x=x+1;
+    if(!g(x)) return x+2;
+    return a;
 }
