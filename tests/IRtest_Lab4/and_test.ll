@@ -9,17 +9,24 @@ mainEntry:
   store i32 10, i32* %y, align 4
   %load_lval = load i32, i32* %x, align 4
   %cmp = icmp sgt i32 %load_lval, 50
+  %lhs_bool = icmp ne i1 %cmp, i32 0
+  br i1 %lhs_bool, label %or.merge, label %or.rhs
+
+merge:                                            ; preds = %if.then, %or.merge
+  ret i32 0
+
+or.rhs:                                           ; preds = %mainEntry
   %load_lval1 = load i32, i32* %y, align 4
   %div = sdiv i32 %load_lval1, 0
   %cmp2 = icmp eq i32 %div, 0
-  %left_is_nonzero = icmp ne i1 %cmp, false
-  %short_circuit = select i1 %left_is_nonzero, i1 true, i1 %cmp2
-  br i1 %short_circuit, label %if.then, label %merge
+  %rhs_bool = icmp ne i1 %cmp2, i32 0
+  br label %or.merge
 
-merge:                                            ; preds = %if.then, %mainEntry
-  ret i32 0
+or.merge:                                         ; preds = %or.rhs, %mainEntry
+  %or_result = phi i1 [ true, %mainEntry ], [ %rhs_bool, %or.rhs ]
+  br i1 %or_result, label %if.then, label %merge
 
-if.then:                                          ; preds = %mainEntry
+if.then:                                          ; preds = %or.merge
   %load_lval3 = load i32, i32* %y, align 4
   ret i32 %load_lval3
   br label %merge
