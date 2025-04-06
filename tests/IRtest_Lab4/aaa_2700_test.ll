@@ -18,7 +18,7 @@ mulEntry:
   %lhs_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %lhs_bool, label %or.merge, label %or.rhs
 
-merge:                                            ; preds = %if.then, %or.merge
+merge:                                            ; preds = %or.merge
   %load_lval5 = load i32, i32* %param0_addr, align 4
   %load_lval6 = load i32, i32* %param1_addr, align 4
   %mul = mul i32 %load_lval5, %load_lval6
@@ -39,7 +39,6 @@ or.merge:                                         ; preds = %or.rhs, %mulEntry
 
 if.then:                                          ; preds = %or.merge
   ret i32 0
-  br label %merge
 }
 
 define i32 @max(i32 %a, i32 %b) {
@@ -55,17 +54,15 @@ maxEntry:
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %if.then, label %if.else
 
-merge:                                            ; preds = %if.else, %if.then
+merge:                                            ; No predecessors!
 
 if.then:                                          ; preds = %maxEntry
   %load_lval2 = load i32, i32* %param0_addr, align 4
   ret i32 %load_lval2
-  br label %merge
 
 if.else:                                          ; preds = %maxEntry
   %load_lval3 = load i32, i32* %param1_addr, align 4
   ret i32 %load_lval3
-  br label %merge
 }
 
 define i32 @main() {
