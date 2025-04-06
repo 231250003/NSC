@@ -42,6 +42,32 @@ if.then:                                          ; preds = %or.merge
   br label %merge
 }
 
+define i32 @max(i32 %a, i32 %b) {
+maxEntry:
+  %param0_addr = alloca i32, align 4
+  store i32 %a, i32* %param0_addr, align 4
+  %param1_addr = alloca i32, align 4
+  store i32 %b, i32* %param1_addr, align 4
+  %load_lval = load i32, i32* %param0_addr, align 4
+  %load_lval1 = load i32, i32* %param1_addr, align 4
+  %cmp = icmp sgt i32 %load_lval, %load_lval1
+  %zext_to_i32 = zext i1 %cmp to i32
+  %to_bool = icmp ne i32 %zext_to_i32, 0
+  br i1 %to_bool, label %if.then, label %if.else
+
+merge:                                            ; preds = %if.else, %if.then
+
+if.then:                                          ; preds = %maxEntry
+  %load_lval2 = load i32, i32* %param0_addr, align 4
+  ret i32 %load_lval2
+  br label %merge
+
+if.else:                                          ; preds = %maxEntry
+  %load_lval3 = load i32, i32* %param1_addr, align 4
+  ret i32 %load_lval3
+  br label %merge
+}
+
 define i32 @main() {
 mainEntry:
   %i = alloca i32, align 4
