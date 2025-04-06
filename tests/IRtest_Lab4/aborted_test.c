@@ -9,8 +9,7 @@ int f(int x,int t){
     return x+t+y;
 }
 int g(int x,int y,int z){
-    y=y+1;
-    return y;
+    return f(x,z);
 }
 int main(){
     int t=100;
