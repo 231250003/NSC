@@ -28,7 +28,7 @@ for sysy_file in "$SYSY_DIR"/*.sysy; do
     echo "C Return value: $c_return_value"
 
     # Step 4: 用 make run 生成 .ll 文件
-    make run SRCFILE="$sysy_file" OUTFILE="$ll_file"
+    make -s run SRCFILE="$sysy_file" OUTFILE="$ll_file"
     if [ $? -ne 0 ]; then
         echo "IR generation failed for $exe_file"
         continue
