@@ -35,7 +35,8 @@ mainEntry:
 
 merge:                                            ; preds = %cur, %or.merge
   %load_lval19 = load i32, i32* @x, align 4
-  ret i32 %load_lval19
+  %add = add i32 %load_lval19, 1
+  ret i32 %add
 
 or.rhs:                                           ; preds = %mainEntry
   %load_lval2 = load i32, i32* %y, align 4
