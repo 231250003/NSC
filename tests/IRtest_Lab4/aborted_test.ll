@@ -70,16 +70,16 @@ and.merge:                                        ; preds = %and.rhs, %or.rhs4
   br label %or.merge5
 
 if.then:                                          ; preds = %or.merge5
-  %x14 = alloca i32, align 4
-  store i32 100, i32* %x14, align 4
+  %y14 = alloca i32, align 4
+  store i32 100, i32* %y14, align 4
   %x15 = alloca i32, align 4
   store i32 0, i32* %x15, align 4
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %load_lval23 = load i32, i32* %x14, align 4
+  %load_lval23 = load i32, i32* %x, align 4
   %add24 = add i32 %load_lval23, 1
-  store i32 %add24, i32* %x14, align 4
+  store i32 %add24, i32* %x, align 4
   br label %merge
 
 while.stmt:                                       ; preds = %while.cond
