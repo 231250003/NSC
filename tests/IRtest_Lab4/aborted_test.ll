@@ -9,6 +9,8 @@ mainEntry:
   store i32 100, i32* %t, align 4
   %x = alloca i32, align 4
   store i32 5, i32* %x, align 4
+  %y = alloca i32, align 4
+  store i32 100, i32* %y, align 4
   %load_lval = load i32, i32* %x, align 4
   %cmp = icmp sge i32 %load_lval, 5
   %zext_to_i32 = zext i1 %cmp to i32
@@ -20,7 +22,7 @@ merge:                                            ; preds = %if.then, %or.merge
   ret i32 %load_lval11
 
 and.rhs:                                          ; preds = %mainEntry
-  %load_lval1 = load i32, i32* @y, align 4
+  %load_lval1 = load i32, i32* %y, align 4
   %cmp2 = icmp sgt i32 %load_lval1, 0
   %zext_to_i323 = zext i1 %cmp2 to i32
   %rhs_bool = icmp ne i32 %zext_to_i323, 0
@@ -33,7 +35,7 @@ and.merge:                                        ; preds = %and.rhs, %mainEntry
   br i1 %lhs_bool5, label %or.merge, label %or.rhs
 
 or.rhs:                                           ; preds = %and.merge
-  %load_lval6 = load i32, i32* @y, align 4
+  %load_lval6 = load i32, i32* %y, align 4
   %div = sdiv i32 %load_lval6, 0
   %cmp7 = icmp eq i32 %div, 0
   %zext_to_i328 = zext i1 %cmp7 to i32
