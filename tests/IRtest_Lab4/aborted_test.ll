@@ -21,8 +21,8 @@ merge:                                            ; preds = %if.then, %or.merge
 
 or.rhs:                                           ; preds = %mainEntry
   %load_lval1 = load i32, i32* %x, align 4
-  %div = sdiv i32 %load_lval1, 0
-  %rhs_bool = icmp ne i32 %div, 0
+  %mod = srem i32 %load_lval1, 0
+  %rhs_bool = icmp ne i32 %mod, 0
   br label %or.merge
 
 or.merge:                                         ; preds = %or.rhs, %mainEntry
