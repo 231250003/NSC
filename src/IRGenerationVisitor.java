@@ -2,6 +2,7 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.PointerPointer;
 import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
@@ -384,29 +385,94 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             return LLVMBuildICmp(builder, predicate, left, right, "cmp");
         }
         else if (ctx.AND() != null) {
-            LLVMValueRef left = visit(ctx.cond(0));
-            LLVMValueRef right = visit(ctx.cond(1));
-            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind) {
-                left = LLVMBuildLoad(builder, left, "load_left");
+            LLVMValueRef lhs = visit(ctx.cond(0));
+            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind) {
+                lhs = LLVMBuildLoad(builder, lhs, "load_lhs");
             }
-            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind) {
-                right = LLVMBuildLoad(builder, right, "load_right");
+
+            lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt32Type(), 0, 0), "lhs_bool");
+
+            // block 准备
+            LLVMBasicBlockRef current = LLVMGetInsertBlock(builder);
+            LLVMValueRef function = LLVMGetBasicBlockParent(current);
+            LLVMBasicBlockRef rhsBlock = LLVMAppendBasicBlock(function, "and.rhs");
+            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "and.merge");
+
+            // 如果 lhs 为 true，跳转 rhs；否则跳 merge（结果为 false）
+            LLVMBuildCondBr(builder, lhs, rhsBlock, mergeBlock);
+
+            // ===== rhs block =====
+            LLVMPositionBuilderAtEnd(builder, rhsBlock);
+            LLVMValueRef rhs = visit(ctx.cond(1));
+            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind) {
+                rhs = LLVMBuildLoad(builder, rhs, "load_rhs");
             }
-            LLVMValueRef result = LLVMBuildICmp(builder, LLVMIntEQ, left, LLVMConstInt(LLVMInt1Type(), 0, 0), "left_is_zero");
-            LLVMValueRef short_circuit = LLVMBuildSelect(builder, result, LLVMConstInt(LLVMInt1Type(), 0, 0), right, "short_circuit");
-            return short_circuit;
+            rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt32Type(), 0, 0), "rhs_bool");
+            LLVMBuildBr(builder, mergeBlock);
+            LLVMBasicBlockRef rhsBlockFinal = LLVMGetInsertBlock(builder);
+
+            LLVMPositionBuilderAtEnd(builder, mergeBlock);
+            LLVMValueRef phi = LLVMBuildPhi(builder, LLVMInt1Type(), "and_result");
+
+            LLVMValueRef[] incomingValues = new LLVMValueRef[] {
+                    LLVMConstInt(LLVMInt1Type(), 0, 0),
+                    rhs
+            };
+
+            LLVMBasicBlockRef[] incomingBlocks = new LLVMBasicBlockRef[] {
+                    current,
+                    rhsBlockFinal
+            };
+
+            LLVMAddIncoming(phi,
+                    new PointerPointer<>(incomingValues),
+                    new PointerPointer<>(incomingBlocks),
+                    incomingValues.length);
+            return phi;
         }
         else if (ctx.OR() != null) {
-            LLVMValueRef left = visit(ctx.cond(0));
-            LLVMValueRef right = visit(ctx.cond(1));
-            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind) {
-                left = LLVMBuildLoad(builder, left, "load_left");
+            LLVMValueRef lhs = visit(ctx.cond(0));
+            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind) {
+                lhs = LLVMBuildLoad(builder, lhs, "load_lhs");
             }
-            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind) {
-                right = LLVMBuildLoad(builder, right, "load_right");
+
+            lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt32Type(), 0, 0), "lhs_bool");
+
+            LLVMBasicBlockRef current = LLVMGetInsertBlock(builder);
+            LLVMValueRef function = LLVMGetBasicBlockParent(current);
+
+            LLVMBasicBlockRef rhsBlock = LLVMAppendBasicBlock(function, "or.rhs");
+            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "or.merge");
+
+            LLVMBuildCondBr(builder, lhs, mergeBlock, rhsBlock);
+
+            LLVMPositionBuilderAtEnd(builder, rhsBlock);
+            LLVMValueRef rhs = visit(ctx.cond(1));
+            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind) {
+                rhs = LLVMBuildLoad(builder, rhs, "load_rhs");
             }
-            LLVMValueRef result = LLVMBuildICmp(builder, LLVMIntNE, left, LLVMConstInt(LLVMInt1Type(), 0, 0), "left_is_nonzero");
-            return LLVMBuildSelect(builder, result, LLVMConstInt(LLVMInt1Type(), 1, 0), right, "short_circuit");
+            rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt32Type(), 0, 0), "rhs_bool");
+            LLVMBuildBr(builder, mergeBlock);
+            LLVMBasicBlockRef rhsBlockFinal = LLVMGetInsertBlock(builder); // 获取真实终点（用于 phi）
+
+            LLVMPositionBuilderAtEnd(builder, mergeBlock);
+            LLVMValueRef phi = LLVMBuildPhi(builder, LLVMInt1Type(), "or_result");
+
+            LLVMValueRef[] incomingValues = new LLVMValueRef[] {
+                    LLVMConstInt(LLVMInt1Type(), 1, 0),
+                    rhs
+            };
+            LLVMBasicBlockRef[] incomingBlocks = new LLVMBasicBlockRef[] {
+                    current,
+                    rhsBlockFinal
+            };
+
+            LLVMAddIncoming(phi,
+                    new PointerPointer<>(incomingValues),
+                    new PointerPointer<>(incomingBlocks),
+                    incomingValues.length);
+
+            return phi;
         }
         else return null;
     }
