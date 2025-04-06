@@ -5,6 +5,14 @@ source_filename = "my_module"
 @y = global i32 2
 @z = global i32 3
 
+define void @g() {
+gEntry:
+  %load_lval = load i32, i32* @x, align 4
+  %add = add i32 %load_lval, 1
+  store i32 %add, i32* @x, align 4
+  ret void
+}
+
 define i32 @main() {
 mainEntry:
   %load_lval = load i32, i32* @x, align 4
@@ -83,6 +91,7 @@ while.cond:                                       ; preds = %merge27, %merge27, 
   br i1 %to_bool24, label %while.stmt, label %cur
 
 merge27:                                          ; preds = %if.then31, %while.stmt
+  call void @g()
   %load_lval33 = load i32, i32* @x, align 4
   %add34 = add i32 %load_lval33, 2
   store i32 %add34, i32* @x, align 4
