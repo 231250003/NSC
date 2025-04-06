@@ -26,19 +26,21 @@ mainEntry:
   store i32 %f, i32* %t, align 4
   %load_lval2 = load i32, i32* @a, align 4
   %f3 = call i32 @f(i32 %load_lval2)
-  %cmp = icmp slt i32 %f3, 10
+  %to_bool = icmp ne i32 %f3, 0
+  %cmp = icmp slt i1 %to_bool, true
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %load_lval8 = load i32, i32* @a, align 4
-  %add9 = add i32 %load_lval8, 1
-  ret i32 %add9
+  %load_lval9 = load i32, i32* @a, align 4
+  %add10 = add i32 %load_lval9, 1
+  ret i32 %add10
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval4 = load i32, i32* @a, align 4
   %f5 = call i32 @f(i32 %load_lval4)
-  %cmp6 = icmp sgt i32 %f5, 10
-  br i1 %cmp6, label %if.then, label %merge
+  %to_bool6 = icmp ne i32 %f5, 0
+  %cmp7 = icmp sgt i1 %to_bool6, true
+  br i1 %cmp7, label %if.then, label %merge
 
 while.cond:                                       ; preds = %merge, %mainEntry
   br i1 %cmp, label %while.stmt, label %cur
@@ -47,7 +49,7 @@ merge:                                            ; preds = %if.then, %while.stm
   br label %while.cond
 
 if.then:                                          ; preds = %while.stmt
-  %load_lval7 = load i32, i32* @a, align 4
-  ret i32 %load_lval7
+  %load_lval8 = load i32, i32* @a, align 4
+  ret i32 %load_lval8
   br label %merge
 }
