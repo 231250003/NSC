@@ -12,6 +12,8 @@ int main() {
             x=x+1;
             if(x<125) continue;
             x=x+2;
+            continue;
+            continue;
         }
     }
     return x;
