@@ -9,9 +9,9 @@ int main(){
     int y=100;
     int z=y+100;
     if(x||x%0||x/0&&x){
-        int x=100;
+        int y=100;
         {
-            int x;
+            int x=0;
             while(x>0){
                 x=x+5;
                 x=x+100;
