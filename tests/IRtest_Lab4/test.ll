@@ -24,11 +24,6 @@ mainEntry:
   %load_lval1 = load i32, i32* @a, align 4
   %f = call i32 @f(i32 %load_lval1)
   store i32 %f, i32* %t, align 4
-  %load_lval2 = load i32, i32* @a, align 4
-  %f3 = call i32 @f(i32 %load_lval2)
-  %cmp = icmp slt i32 %f3, 10
-  %zext_to_i32 = zext i1 %cmp to i32
-  %to_bool = icmp ne i32 %zext_to_i32, 0
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
@@ -45,6 +40,11 @@ while.stmt:                                       ; preds = %while.cond
   br i1 %to_bool8, label %if.then, label %merge
 
 while.cond:                                       ; preds = %merge, %mainEntry
+  %load_lval2 = load i32, i32* @a, align 4
+  %f3 = call i32 @f(i32 %load_lval2)
+  %cmp = icmp slt i32 %f3, 10
+  %zext_to_i32 = zext i1 %cmp to i32
+  %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt, label %cur
 
 merge:                                            ; preds = %if.then, %while.stmt
