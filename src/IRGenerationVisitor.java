@@ -158,7 +158,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitConstExp(SysYParser.ConstExpContext ctx) {
         return visit(ctx.exp());
     }
-    
+
     public LLVMValueRef getconstinitvalue(SysYParser.ConstInitValContext ctx) {
         if(ctx.L_BRACE()==null){
             return visit(ctx.constExp());
@@ -355,7 +355,17 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     }
     @Override
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
-        if(ctx.exp()!=null) return visit(ctx.exp());
+        if(ctx.exp()!=null){
+            LLVMValueRef val = visit(ctx.exp());
+            if (LLVMGetTypeKind(LLVMTypeOf(val)) == LLVMPointerTypeKind) {
+                val = LLVMBuildLoad(builder, val, "load_exp");
+            }
+            if (LLVMGetTypeKind(LLVMTypeOf(val)) != LLVMIntegerTypeKind ||
+                    LLVMGetIntTypeWidth(LLVMTypeOf(val)) != 1) {
+                val = LLVMBuildICmp(builder, LLVMIntNE, val, LLVMConstInt(LLVMTypeOf(val), 0, 0), "to_bool");
+            }
+            return val;return visit(ctx.exp());
+        }
         else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {
             // 处理 <, >, <=, >=
             LLVMValueRef left = visit(ctx.cond(0));
