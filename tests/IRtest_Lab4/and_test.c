@@ -12,10 +12,8 @@ int main(){
     if(x>5 || y/2==0){
         int p=5;
         while(1){
-            if(x<50&&p>4){
-                x=x+3;
-                g(10,2);
-                continue;
+            while(z<102){
+                g(10,20);
             }
             if(x>10) break;
         }
