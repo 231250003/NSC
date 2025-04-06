@@ -30,61 +30,63 @@ mainEntry:
   %load_lval1 = load i32, i32* @x, align 4
   %cmp = icmp sgt i32 %load_lval1, 50
   %zext_to_i32 = zext i1 %cmp to i32
-  %lhs_bool = icmp ne i32 %zext_to_i32, i1 false
-  br i1 %lhs_bool, label %or.merge, label %or.rhs
+  %lhs_bool = icmp ne i32 %zext_to_i32, 0
+  %lhs_bool2 = icmp ne i1 %lhs_bool, false
+  br i1 %lhs_bool2, label %or.merge, label %or.rhs
 
 merge:                                            ; preds = %cur, %or.merge
-  %load_lval19 = load i32, i32* @x, align 4
-  ret i32 %load_lval19
+  %load_lval21 = load i32, i32* @x, align 4
+  ret i32 %load_lval21
 
 or.rhs:                                           ; preds = %mainEntry
-  %load_lval2 = load i32, i32* %y, align 4
-  %div = sdiv i32 %load_lval2, 2
-  %cmp3 = icmp eq i32 %div, 0
-  %zext_to_i324 = zext i1 %cmp3 to i32
-  %rhs_bool = icmp ne i32 %zext_to_i324, i1 false
+  %load_lval3 = load i32, i32* %y, align 4
+  %div = sdiv i32 %load_lval3, 2
+  %cmp4 = icmp eq i32 %div, 0
+  %zext_to_i325 = zext i1 %cmp4 to i32
+  %rhs_bool = icmp ne i32 %zext_to_i325, 0
+  %rhs_bool6 = icmp ne i1 %rhs_bool, false
   br label %or.merge
 
 or.merge:                                         ; preds = %or.rhs, %mainEntry
-  %or_result = phi i1 [ true, %mainEntry ], [ %rhs_bool, %or.rhs ]
-  %zext_to_i325 = zext i1 %or_result to i32
-  %to_bool = icmp ne i32 %zext_to_i325, 0
+  %or_result = phi i1 [ true, %mainEntry ], [ %rhs_bool6, %or.rhs ]
+  %zext_to_i327 = zext i1 %or_result to i32
+  %to_bool = icmp ne i32 %zext_to_i327, 0
   br i1 %to_bool, label %if.then, label %merge
 
 if.then:                                          ; preds = %or.merge
   br label %while.cond
 
-cur:                                              ; preds = %if.then17, %while.cond
+cur:                                              ; preds = %if.then19, %while.cond
   br label %merge
 
 while.stmt:                                       ; preds = %while.cond
   %g = call i32 @g(i32 2, i32 3)
-  %load_lval7 = load i32, i32* @x, align 4
-  %cmp8 = icmp slt i32 %load_lval7, 50
-  %zext_to_i329 = zext i1 %cmp8 to i32
-  %to_bool11 = icmp ne i32 %zext_to_i329, 0
-  br i1 %to_bool11, label %if.then10, label %merge6
+  %load_lval9 = load i32, i32* @x, align 4
+  %cmp10 = icmp slt i32 %load_lval9, 50
+  %zext_to_i3211 = zext i1 %cmp10 to i32
+  %to_bool13 = icmp ne i32 %zext_to_i3211, 0
+  br i1 %to_bool13, label %if.then12, label %merge8
 
-while.cond:                                       ; preds = %merge13, %if.then10, %if.then
+while.cond:                                       ; preds = %merge15, %if.then12, %if.then
   br i1 true, label %while.stmt, label %cur
 
-merge6:                                           ; preds = %if.then10, %while.stmt
-  %load_lval14 = load i32, i32* @x, align 4
-  %cmp15 = icmp sgt i32 %load_lval14, 100
-  %zext_to_i3216 = zext i1 %cmp15 to i32
-  %to_bool18 = icmp ne i32 %zext_to_i3216, 0
-  br i1 %to_bool18, label %if.then17, label %merge13
+merge8:                                           ; preds = %if.then12, %while.stmt
+  %load_lval16 = load i32, i32* @x, align 4
+  %cmp17 = icmp sgt i32 %load_lval16, 100
+  %zext_to_i3218 = zext i1 %cmp17 to i32
+  %to_bool20 = icmp ne i32 %zext_to_i3218, 0
+  br i1 %to_bool20, label %if.then19, label %merge15
 
-if.then10:                                        ; preds = %while.stmt
+if.then12:                                        ; preds = %while.stmt
   store i32 2, i32* @x, align 4
-  %g12 = call i32 @g(i32 10, i32 2)
+  %g14 = call i32 @g(i32 10, i32 2)
   br label %while.cond
-  br label %merge6
+  br label %merge8
 
-merge13:                                          ; preds = %if.then17, %merge6
+merge15:                                          ; preds = %if.then19, %merge8
   br label %while.cond
 
-if.then17:                                        ; preds = %merge6
+if.then19:                                        ; preds = %merge8
   br label %cur
-  br label %merge13
+  br label %merge15
 }
