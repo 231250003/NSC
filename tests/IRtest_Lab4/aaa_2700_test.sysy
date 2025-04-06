@@ -28,6 +28,7 @@ int main() {
             break;
         }
     }
+    x=5000;
     if(x>=125){
         if(x<2030)
         {
@@ -47,6 +48,7 @@ int main() {
             x=x-10;
         }
     }
+    x-=100;
     break;
     }
     return x;

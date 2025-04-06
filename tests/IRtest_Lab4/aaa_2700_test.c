@@ -10,7 +10,7 @@ int f(int x){
 int main() {
     while(1){
     x=f(200);
-    while(1){
+    while(x){
         g();
         if(x>=200) break;
     }
@@ -28,6 +28,7 @@ int main() {
             break;
         }
     }
+    x=5000;
     if(x>=125){
         if(x<2030)
         {
@@ -47,6 +48,7 @@ int main() {
             x=x-10;
         }
     }
+    x-=100;
     break;
     }
     return x;
