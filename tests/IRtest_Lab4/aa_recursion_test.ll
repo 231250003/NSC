@@ -56,13 +56,12 @@ mainEntry:
   store i32 undef, i32* %z, align 4
   %p = alloca i32, align 4
   %g = call i32 @g(i32 1, i32 1)
-  %fib = call i32 @fib(i32 %g)
   %load_lval = load i32, i32* %z, align 4
-  %add = add i32 %fib, %load_lval
+  %add = add i32 %g, %load_lval
   store i32 %add, i32* %p, align 4
   %load_lval1 = load i32, i32* %p, align 4
   %g2 = call i32 @g(i32 2, i32 2)
   %add3 = add i32 %load_lval1, %g2
-  %fib4 = call i32 @fib(i32 %add3)
-  ret i32 %fib4
+  %fib = call i32 @fib(i32 %add3)
+  ret i32 %fib
 }
