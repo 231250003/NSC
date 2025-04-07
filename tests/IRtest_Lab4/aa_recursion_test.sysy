@@ -14,5 +14,9 @@ void t(){
 int main() {
     int main=f();
     main=main+10+(g((((f())))));
-    return main+f()+t();
+    f();
+    f();
+    f();
+    f();
+    return main+f()+;
 }
