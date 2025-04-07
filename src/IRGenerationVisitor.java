@@ -543,6 +543,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else if(ctx.IF()!=null){
             LLVMValueRef function = symbolTable.get_cur_scope_func();
+            boolean has_merge_block;
+            if(ctx.con)
             LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "merge");
             LLVMPositionBuilderAtEnd(builder, LLVMGetInsertBlock(builder));
             LLVMValueRef firstCond = visitCond(ctx.cond());
