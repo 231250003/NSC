@@ -6,10 +6,10 @@ int f(){
   return f;
 }
 void x(){
-    return 23;
+    return;
 }
 void t(){
-    return 24;
+    return;
 }
 int main() {
     int main=f();
