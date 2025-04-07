@@ -37,7 +37,7 @@ while.cond:                                       ; preds = %merge40, %mainEntry
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt, label %cur
 
-merge:                                            ; preds = %cur6, %while.stmt
+merge:                                            ; preds = %while.stmt
   %load_lval41 = load i32, i32* %x, align 4
   %cmp42 = icmp sgt i32 %load_lval41, 10
   %zext_to_i3243 = zext i1 %cmp42 to i32
@@ -53,7 +53,6 @@ cur6:                                             ; preds = %if.else33, %while.c
   store i32 %sub38, i32* %x, align 4
   %load_lval39 = load i32, i32* %x, align 4
   ret i32 %load_lval39
-  br label %merge
 
 while.stmt7:                                      ; preds = %while.cond8
   %load_lval14 = load i32, i32* %x, align 4
@@ -69,7 +68,7 @@ while.cond8:                                      ; preds = %merge13, %merge19, 
   %to_bool12 = icmp ne i32 %zext_to_i3211, 0
   br i1 %to_bool12, label %while.stmt7, label %cur6
 
-merge13:                                          ; preds = %merge28, %merge19
+merge13:                                          ; preds = %merge28
   br label %while.cond8
 
 if.then17:                                        ; preds = %while.stmt7
@@ -91,7 +90,6 @@ merge19:                                          ; preds = %if.then23, %if.then
   %sub27 = sub i32 %load_lval26, 1
   store i32 %sub27, i32* %x, align 4
   br label %while.cond8
-  br label %merge13
 
 if.then23:                                        ; preds = %if.then17
   %load_lval25 = load i32, i32* %x, align 4
