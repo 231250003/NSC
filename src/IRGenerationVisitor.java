@@ -185,7 +185,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (function == null) {
                 throw new RuntimeException("Undefined function: " + funcName);
             }
-            PointerPointer<LLVMValueRef> args = null;
+            PointerPointer<LLVMValueRef> args = new PointerPointer<>(0);;
             int argCount = 0;
             symbolTable.enterScope();
             if (ctx.funcRParams() != null) {
