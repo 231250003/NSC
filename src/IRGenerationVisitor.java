@@ -543,10 +543,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else if(ctx.IF()!=null){
             LLVMValueRef function = symbolTable.get_cur_scope_func();
-            boolean has_merge_block=true;
-            if(ctx.stmt(0).RETURN()!=null && (ctx.stmt().size()==1||ctx.stmt(1).RETURN()!=null)) has_merge_block=false;
-            LLVMBasicBlockRef mergeBlock = null;
-            if(has_merge_block) mergeBlock = LLVMAppendBasicBlock(function, "merge");
+            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "merge");
             LLVMPositionBuilderAtEnd(builder, LLVMGetInsertBlock(builder));
             LLVMValueRef firstCond = visitCond(ctx.cond());
             LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, "if.then");
@@ -558,20 +555,16 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(condType) != LLVMIntegerTypeKind || LLVMGetIntTypeWidth(condType) != 1) {
                 firstCond = LLVMBuildICmp(builder, LLVMIntNE, firstCond, LLVMConstInt(condType, 0, 0), "to_bool");
             }
-            if(has_merge_block) LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
-            else{
-                if(elseBlock==null) return null;
-                else  LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock);
-            }
+            LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             visit(ctx.stmt(0));
-            if(has_merge_block) LLVMBuildBr(builder, mergeBlock);
+            LLVMBuildBr(builder, mergeBlock);
             if (elseBlock != null) {
                 LLVMPositionBuilderAtEnd(builder, elseBlock);
                 visit(ctx.stmt(1));
-                if(has_merge_block) LLVMBuildBr(builder, mergeBlock);
+               LLVMBuildBr(builder, mergeBlock);
             }
-            if(has_merge_block)LLVMPositionBuilderAtEnd(builder, mergeBlock);
+            LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
         else if(ctx.WHILE()!=null){
             LLVMValueRef function = symbolTable.get_cur_scope_func();
