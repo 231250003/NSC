@@ -1,9 +1,15 @@
 ; ModuleID = 'my_module'
 source_filename = "my_module"
 
-define i32 @g() {
+@z = global i32 0
+
+define i32 @g(i32 %x, i32 %y) {
 gEntry:
-  ret i32 13
+  %param0_addr = alloca i32, align 4
+  store i32 %x, i32* %param0_addr, align 4
+  %param1_addr = alloca i32, align 4
+  store i32 %y, i32* %param1_addr, align 4
+  ret i32 5
 }
 
 define i32 @fib(i32 %n) {
@@ -43,12 +49,13 @@ if.then:                                          ; preds = %fibEntry
 
 define i32 @main() {
 mainEntry:
-  %n = alloca i32, align 4
-  store i32 15, i32* %n, align 4
-  %g = call i32 @g()
+  %p = alloca i32, align 4
+  %g = call i32 @g(i32 1, i32 1)
   %fib = call i32 @fib(i32 %g)
-  ret i32 %fib
-  %load_lval = load i32, i32* %n, align 4
-  %fib1 = call i32 @fib(i32 %load_lval)
-  ret i32 %fib1
+  store i32 %fib, i32* %p, align 4
+  %load_lval = load i32, i32* %p, align 4
+  %g1 = call i32 @g(i32 2, i32 2)
+  %add = add i32 %load_lval, %g1
+  %fib2 = call i32 @fib(i32 %add)
+  ret i32 %fib2
 }
