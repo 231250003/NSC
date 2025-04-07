@@ -13,7 +13,7 @@ gEntry:
 define i32 @main() {
 mainEntry:
   %x = alloca i32, align 4
-  %g = call i32 @g()
+  %g = call i32 @g(i32 10)
   store i32 %g, i32* %x, align 4
   br label %while.cond
 
