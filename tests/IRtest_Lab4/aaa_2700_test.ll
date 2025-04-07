@@ -11,8 +11,6 @@ gEntry:
   %add = add i32 %load_lval, 1
   store i32 %add, i32* @x, align 4
   ret void
-  %x = alloca i32, align 4
-  store i32 %x, i32* %x, align 4
 }
 
 define i32 @f(i32 %x) {
