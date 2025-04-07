@@ -518,11 +518,14 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitStmt(SysYParser.StmtContext ctx) {
         if (ctx.RETURN() != null) {
             LLVMValueRef returnValue;
-            if(ctx.exp() != null ){
-                returnValue = visit(ctx.exp());
-                if (LLVMGetTypeKind(LLVMTypeOf(returnValue) )== LLVMPointerTypeKind) {
-                    returnValue = LLVMBuildLoad(builder, returnValue, "load_return");
+            if(ctx.exp() != null || symbolTable.get_cur_scope_return_type() instanceof IntType){
+                if(ctx.exp()!=null) {
+                    returnValue = visit(ctx.exp());
+                    if (LLVMGetTypeKind(LLVMTypeOf(returnValue)) == LLVMPointerTypeKind) {
+                        returnValue = LLVMBuildLoad(builder, returnValue, "load_return");
+                    }
                 }
+                else returnValue=zero;
                 LLVMBuildRet(builder, returnValue);
             }
             else   LLVMBuildRetVoid(builder);
