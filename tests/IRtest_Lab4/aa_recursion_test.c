@@ -14,7 +14,7 @@ int fib(int n) {
 }
 
 int main() {
-    int z=0;
+    int z=2;
     int p=(fib(g(1,1)))+z;
     return fib(p+g(2,2));
 }
