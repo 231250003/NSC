@@ -1,6 +1,11 @@
 ; ModuleID = 'my_module'
 source_filename = "my_module"
 
+define i32 @g() {
+gEntry:
+  ret i32 13
+}
+
 define i32 @fib(i32 %n) {
 fibEntry:
   %param0_addr = alloca i32, align 4
@@ -40,7 +45,10 @@ define i32 @main() {
 mainEntry:
   %n = alloca i32, align 4
   store i32 15, i32* %n, align 4
-  %load_lval = load i32, i32* %n, align 4
-  %fib = call i32 @fib(i32 %load_lval)
+  %g = call i32 @g()
+  %fib = call i32 @fib(i32 %g)
   ret i32 %fib
+  %load_lval = load i32, i32* %n, align 4
+  %fib1 = call i32 @fib(i32 %load_lval)
+  ret i32 %fib1
 }
