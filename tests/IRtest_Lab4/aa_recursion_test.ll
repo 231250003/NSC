@@ -62,6 +62,5 @@ mainEntry:
   %load_lval1 = load i32, i32* %p, align 4
   %g2 = call i32 @g(i32 2, i32 2)
   %add3 = add i32 %load_lval1, %g2
-  %fib = call i32 @fib(i32 %add3)
-  ret i32 %fib
+  ret i32 %add3
 }
