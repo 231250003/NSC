@@ -14,8 +14,7 @@ define i32 @f() {
 fEntry:
   %f = alloca i32, align 4
   store i32 10, i32* %f, align 4
-  %load_lval = load i32, i32* %f, align 4
-  ret i32 %load_lval
+  ret void
 }
 
 define void @x() {
@@ -45,6 +44,8 @@ mainEntry:
   %f4 = call i32 @f()
   %f5 = call i32 @f()
   %f6 = call i32 @f()
+  %z = alloca i32, align 4
+  store i32 64, i32* %z, align 4
   %load_lval7 = load i32, i32* %main, align 4
   %f8 = call i32 @f()
   %add9 = add i32 %load_lval7, %f8
