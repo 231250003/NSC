@@ -34,6 +34,6 @@ tEntry:
 
 define i32 @main() {
 mainEntry:
-  %load_lval = load i32 (), i32 ()* @main, align 2147483648
-  ret i32 () %load_lval
+  %f = call i32 @f(i32 10)
+  ret i32 %f
 }
