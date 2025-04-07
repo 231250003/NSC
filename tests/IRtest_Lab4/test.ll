@@ -31,15 +31,16 @@ cur:                                              ; preds = %while.cond
   %add11 = add i32 %load_lval10, 1
   ret i32 %add11
 
-while.stmt:                                       ; preds = %while.cond
+while.stmt:                                       ; preds = %while.stmt, %while.cond
   %load_lval4 = load i32, i32* @a, align 4
   %f5 = call i32 @f(i32 %load_lval4)
   %cmp6 = icmp sgt i32 %f5, 10
   %zext_to_i327 = zext i1 %cmp6 to i32
   %to_bool8 = icmp ne i32 %zext_to_i327, 0
-  br i1 %to_bool8, label %if.then, <null operand!>
+  br i1 %to_bool8, label %if.then, label %while.stmt
+  br label %while.cond
 
-while.cond:                                       ; preds = %if.then, %mainEntry
+while.cond:                                       ; preds = %while.stmt, %mainEntry
   %load_lval2 = load i32, i32* @a, align 4
   %f3 = call i32 @f(i32 %load_lval2)
   %cmp = icmp slt i32 %f3, 10
@@ -50,5 +51,4 @@ while.cond:                                       ; preds = %if.then, %mainEntry
 if.then:                                          ; preds = %while.stmt
   %load_lval9 = load i32, i32* @a, align 4
   ret i32 %load_lval9
-  br label %while.cond
 }
