@@ -3,7 +3,7 @@ int g(int x){
 }
 int f(){
  int f=10;
-  return f;
+  return;
 }
 void x(){
     return;
