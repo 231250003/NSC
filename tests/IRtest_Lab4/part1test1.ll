@@ -35,7 +35,7 @@ if.then:                                          ; preds = %and.merge
   store i32 2, i32* @a, align 4
   br label %merge
 
-merge5:                                           ; preds = %merge11, %if.then9
+merge5:                                           ; preds = %if.then9
   %load_lval25 = load i32, i32* @a, align 4
   %add = add i32 %load_lval25, 1
   store i32 %add, i32* @a, align 4
@@ -53,8 +53,7 @@ if.else:                                          ; preds = %merge
   %to_bool17 = icmp ne i32 %zext_to_i3214, 0
   br i1 %to_bool17, label %if.then15, label %if.else16
 
-merge11:                                          ; preds = %merge18, %if.then15
-  br label %merge5
+merge11:                                          ; preds = %if.then15
 
 if.then15:                                        ; preds = %if.else
   store i32 20, i32* @a, align 4
@@ -67,8 +66,7 @@ if.else16:                                        ; preds = %if.else
   %to_bool24 = icmp ne i32 %zext_to_i3221, 0
   br i1 %to_bool24, label %if.then22, label %if.else23
 
-merge18:                                          ; preds = %if.else23, %if.else23, %if.then22
-  br label %merge11
+merge18:                                          ; preds = %if.else23, %if.then22
 
 if.then22:                                        ; preds = %if.else16
   store i32 7, i32* @a, align 4
@@ -76,6 +74,5 @@ if.then22:                                        ; preds = %if.else16
 
 if.else23:                                        ; preds = %if.else16
   store i32 8, i32* @a, align 4
-  br label %merge18
   br label %merge18
 }
