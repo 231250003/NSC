@@ -71,11 +71,9 @@ public class Main {
         while (func != null && !func.isNull()) {
             LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
             while (block != null && !block.isNull()) {
-                // 对每个 block 做清理操作
                 cleanBasicBlock(block);
                 block = LLVMGetNextBasicBlock(block);
             }
-
             func = LLVMGetNextFunction(func);
         }
         BytePointer error = new BytePointer((Pointer) null);
@@ -101,7 +99,6 @@ public class Main {
     private static void cleanBasicBlock(LLVMBasicBlockRef block) {
         LLVMValueRef instr = LLVMGetFirstInstruction(block);
         boolean reachedTerminator = false;
-
         while (instr != null && !instr.isNull()) {
             LLVMValueRef next = LLVMGetNextInstruction(instr);
 
@@ -113,15 +110,8 @@ public class Main {
                     reachedTerminator = true;
                 }
             }
-
             instr = next;
         }
-
-        // 清理空 block：如果 block 是空的或只包含 terminator，可以跳过，
-        // 但如果是完全空块（没有 terminator），应该从函数中删除
-        LLVMValueRef first = LLVMGetFirstInstruction(block);
-        if (first == null || first.isNull()) {
-            LLVMDeleteBasicBlock(block); // 这必须谨慎，确保没有其他地方跳转到这里
-        }
+       
     }
 }
