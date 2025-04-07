@@ -14,7 +14,7 @@ define i32 @f() {
 fEntry:
   %f = alloca i32, align 4
   store i32 10, i32* %f, align 4
-  ret void
+  ret i32 0
 }
 
 define void @x() {
