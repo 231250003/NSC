@@ -67,7 +67,7 @@ if.else16:                                        ; preds = %if.else
   %to_bool24 = icmp ne i32 %zext_to_i3221, 0
   br i1 %to_bool24, label %if.then22, label %if.else23
 
-merge18:                                          ; preds = %if.else23, %if.then22
+merge18:                                          ; preds = %if.else23, %if.else23, %if.then22
   br label %merge11
 
 if.then22:                                        ; preds = %if.else16
@@ -76,5 +76,6 @@ if.then22:                                        ; preds = %if.else16
 
 if.else23:                                        ; preds = %if.else16
   store i32 8, i32* @a, align 4
+  br label %merge18
   br label %merge18
 }
