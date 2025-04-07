@@ -3,7 +3,7 @@ int f(int x){
   return f+x;
 }
 int main() {
-    int main=f();
+    int main=f(2);
     main=main+10+(f(((10))));
     return main+f();
 }
