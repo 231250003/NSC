@@ -18,5 +18,5 @@ int main() {
     f();
     f();
     f();
-    return main+f()+;
+    return main+f();
 }
