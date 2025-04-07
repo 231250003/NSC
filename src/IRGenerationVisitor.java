@@ -559,8 +559,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             visit(ctx.stmt(0));
             //LLVMBuildBr(builder, mergeBlock);
-            boolean thenHasTerminator = LLVMGetBasicBlockTerminator(thenBlock) != null;
-            if (!thenHasTerminator) {
+            boolean thenTerminated = LLVMGetBasicBlockTerminator(thenBlock) != null;
+            if (!thenTerminated) {
                 LLVMBuildBr(builder, mergeBlock);
             }
             /*if (elseBlock != null) {
@@ -568,16 +568,16 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 visit(ctx.stmt(1));
                LLVMBuildBr(builder, mergeBlock);
             }*/
-            boolean elseHasTerminator = false;
+            boolean elseTerminated = true; // 默认为 true，如果没有 else，就等于被“自动跳转 merge”
             if (elseBlock != null) {
                 LLVMPositionBuilderAtEnd(builder, elseBlock);
                 visit(ctx.stmt(1));
-                elseHasTerminator = LLVMGetBasicBlockTerminator(elseBlock) != null;
-                if (!elseHasTerminator) {
+                elseTerminated = LLVMGetBasicBlockTerminator(elseBlock) != null;
+                if (!elseTerminated) {
                     LLVMBuildBr(builder, mergeBlock);
                 }
             }
-            if (!thenHasTerminator || (elseBlock != null && !elseHasTerminator)) {
+            if (!thenTerminated || !elseTerminated) {
                 LLVMPositionBuilderAtEnd(builder, mergeBlock);
             } else {
                 LLVMDeleteBasicBlock(mergeBlock);
