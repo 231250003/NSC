@@ -619,8 +619,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     LLVMSetInitializer(pointer, zero);
                 } else {
                     pointer = LLVMBuildAlloca(builder, i32Type, symbol.name);
-                    LLVMValueRef undefVal = LLVMGetUndef(i32Type);
-                    LLVMBuildStore(builder, undefVal, pointer);
+                   // LLVMValueRef undefVal = LLVMGetUndef(i32Type);
+                    LLVMBuildStore(builder, LLVMConstInt(i32Type, 64, /* signExtend */ 0), pointer);
                 }
                 symbol.reference = pointer;
             }
