@@ -16,8 +16,8 @@ mainEntry:
   store i32 %f, i32* %main, align 4
   %load_lval = load i32, i32* %main, align 4
   %add = add i32 %load_lval, 10
-  %load_lval1 = load i32 (), i32 ()* @f, align 536870912
-  %add2 = add i32 %add, i32 () %load_lval1
+  %f1 = call i32 @f()
+  %add2 = add i32 %add, %f1
   store i32 %add2, i32* %main, align 4
   %load_lval3 = load i32, i32* %main, align 4
   %f4 = call i32 @f()
