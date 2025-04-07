@@ -11,6 +11,8 @@ gEntry:
   %add = add i32 %load_lval, 1
   store i32 %add, i32* @x, align 4
   ret void
+  %x = alloca i32, align 4
+  store i32 %x, i32* %x, align 4
 }
 
 define i32 @f(i32 %x) {
@@ -24,13 +26,11 @@ fEntry:
   br i1 %to_bool, label %if.then, label %merge
 
 merge:                                            ; preds = %if.then, %fEntry
-  %load_lval1 = load i32, i32* %param0_addr, align 4
-  %sub = sub i32 %load_lval1, 1
-  %f = call i32 @f(i32 %sub)
+  %f = call i32 @f()
   %add = add i32 %f, 10
   store i32 %add, i32* %param0_addr, align 4
-  %load_lval2 = load i32, i32* %param0_addr, align 4
-  ret i32 %load_lval2
+  %load_lval1 = load i32, i32* %param0_addr, align 4
+  ret i32 %load_lval1
 
 if.then:                                          ; preds = %fEntry
   ret i32 0
@@ -46,7 +46,7 @@ cur:                                              ; preds = %merge49, %while.con
   ret i32 %load_lval109
 
 while.stmt:                                       ; preds = %while.cond
-  %f = call i32 @f(i32 200)
+  %f = call i32 @f()
   store i32 %f, i32* @x, align 4
   br label %while.cond3
 
