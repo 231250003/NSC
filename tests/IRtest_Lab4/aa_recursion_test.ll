@@ -23,12 +23,10 @@ fEntry:
 define void @x() {
 xEntry:
   ret void
-  ret void
 }
 
 define void @t() {
 tEntry:
-  ret void
   ret void
 }
 
