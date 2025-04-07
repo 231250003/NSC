@@ -68,7 +68,7 @@ while.cond8:                                      ; preds = %merge13, %merge19, 
   %to_bool12 = icmp ne i32 %zext_to_i3211, 0
   br i1 %to_bool12, label %while.stmt7, label %cur6
 
-merge13:                                          ; preds = %merge28
+merge13:                                          ; No predecessors!
   br label %while.cond8
 
 if.then17:                                        ; preds = %while.stmt7
@@ -97,8 +97,7 @@ if.then23:                                        ; preds = %if.then17
   store i32 %sub, i32* %x, align 4
   br label %merge19
 
-merge28:                                          ; preds = %if.else33, %if.then32
-  br label %merge13
+merge28:                                          ; preds = %if.then32
 
 if.then32:                                        ; preds = %if.else
   %load_lval35 = load i32, i32* %x, align 4
@@ -108,9 +107,8 @@ if.then32:                                        ; preds = %if.else
 
 if.else33:                                        ; preds = %if.else
   br label %cur6
-  br label %merge28
 
-merge40:                                          ; preds = %if.else45, %if.then44
+merge40:                                          ; preds = %if.then44
   br label %while.cond
 
 if.then44:                                        ; preds = %merge
@@ -121,5 +119,4 @@ if.then44:                                        ; preds = %merge
 
 if.else45:                                        ; preds = %merge
   br label %cur
-  br label %merge40
 }
