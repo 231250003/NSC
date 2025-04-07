@@ -55,7 +55,7 @@ mainEntry:
   %z = alloca i32, align 4
   store i32 0, i32* %z, align 4
   %load_lval = load i32, i32* %z, align 4
-  %add = add i32 %load_lval, 10
+  %add = add i32 %load_lval, 2
   store i32 %add, i32* %z, align 4
   %p = alloca i32, align 4
   %g = call i32 @g(i32 1, i32 1)
