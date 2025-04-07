@@ -18,6 +18,18 @@ fEntry:
   ret i32 %load_lval
 }
 
+define void @x() {
+xEntry:
+  ret void
+  ret void
+}
+
+define void @t() {
+tEntry:
+  ret void
+  ret void
+}
+
 define i32 @main() {
 mainEntry:
   %main = alloca i32, align 4
@@ -29,8 +41,12 @@ mainEntry:
   %g = call i32 @g(i32 %f1)
   %add2 = add i32 %add, %g
   store i32 %add2, i32* %main, align 4
-  %load_lval3 = load i32, i32* %main, align 4
+  %f3 = call i32 @f()
   %f4 = call i32 @f()
-  %add5 = add i32 %load_lval3, %f4
-  ret i32 %add5
+  %f5 = call i32 @f()
+  %f6 = call i32 @f()
+  %load_lval7 = load i32, i32* %main, align 4
+  %f8 = call i32 @f()
+  %add9 = add i32 %load_lval7, %f8
+  ret i32 %add9
 }
