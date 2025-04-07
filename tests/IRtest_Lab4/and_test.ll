@@ -14,8 +14,6 @@ fibEntry:
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %if.then, label %if.else
 
-merge:                                            ; No predecessors!
-
 if.then:                                          ; preds = %fibEntry
   %load_lval1 = load i32, i32* %param0_addr, align 4
   ret i32 %load_lval1
