@@ -1,7 +1,7 @@
 int g(int x){
  return x+1;
 }
-int f(){
+int f(int x){
  int f=10;
   return f;
 }
@@ -15,11 +15,11 @@ int main() {
     int main=f();
     int f=20;
     int x=10;
-    main=!2*main%10+10+f+x+(g((((f())))));
-    f();
-    f();
-    f();
-    f();
+    main=!2*main%10+10+f+x+(g((((f(f))))));
+    f(f);
+    f(f);
+    f(f);
+    f(f);
     int z;
-    return main+f();
+    return main+f(f);
 }
