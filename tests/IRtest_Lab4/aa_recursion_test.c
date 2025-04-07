@@ -4,6 +4,6 @@ int f(){
 }
 int main() {
     int main=f();
-    main=main+10+((((f))))();
+    main=main+10+(f());
     return main+f();
 }
