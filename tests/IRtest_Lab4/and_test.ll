@@ -14,9 +14,12 @@ fibEntry:
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %if.then, label %if.else
 
+merge:                                            ; preds = %if.else, %if.then
+
 if.then:                                          ; preds = %fibEntry
   %load_lval1 = load i32, i32* %param0_addr, align 4
   ret i32 %load_lval1
+  br label %merge
 
 if.else:                                          ; preds = %fibEntry
   %load_lval2 = load i32, i32* %param0_addr, align 4
@@ -27,6 +30,7 @@ if.else:                                          ; preds = %fibEntry
   %fib5 = call i32 @fib(i32 %sub4)
   %add = add i32 %fib, %fib5
   ret i32 %add
+  br label %merge
 }
 
 define i32 @g(i32 %t, i32 %y) {
