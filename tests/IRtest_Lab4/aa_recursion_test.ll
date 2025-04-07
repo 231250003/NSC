@@ -52,9 +52,11 @@ if.then:                                          ; preds = %fibEntry
 
 define i32 @main() {
 mainEntry:
+  %z = alloca i32, align 4
+  store i32 0, i32* %z, align 4
   %p = alloca i32, align 4
   %g = call i32 @g(i32 1, i32 1)
-  %load_lval = load i32, i32* @z, align 4
+  %load_lval = load i32, i32* %z, align 4
   %add = add i32 %g, %load_lval
   store i32 %add, i32* %p, align 4
   %load_lval1 = load i32, i32* %p, align 4
