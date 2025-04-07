@@ -98,6 +98,15 @@ public class SymbolTable {
         }
         return null;
     }
+    public Symbol get_name_matched_function(String name) {
+        if (scopeStack.isEmpty()) return null;
+        List<Symbol> Globalscope= scopeStack.get(0);
+            for(int j=0;j<Globalscope.size();j++)
+            {
+                if(Objects.equals(Globalscope.get(j).name, name) ) return Globalscope.get(j);
+            }
+        return null;
+    }
     public void addGlobal(Symbol symbol) {
         List<Symbol> Globalscope= scopeStack.get(0);
         Globalscope.add(symbol);
