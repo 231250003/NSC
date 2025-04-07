@@ -47,11 +47,10 @@ while.cond:                                       ; preds = %merge, %mainEntry
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt, label %cur
 
-merge:                                            ; preds = %if.then, %while.stmt
+merge:                                            ; preds = %while.stmt
   br label %while.cond
 
 if.then:                                          ; preds = %while.stmt
   %load_lval9 = load i32, i32* @a, align 4
   ret i32 %load_lval9
-  br label %merge
 }
