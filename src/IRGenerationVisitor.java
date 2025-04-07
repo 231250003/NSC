@@ -558,10 +558,13 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             visit(ctx.stmt(0));
-            LLVMBuildBr(builder, mergeBlock);
+            if (LLVMGetBasicBlockTerminator(thenBlock)==null) LLVMBuildBr(builder, mergeBlock);
             if (elseBlock != null) {
                 LLVMPositionBuilderAtEnd(builder, elseBlock);
                 visit(ctx.stmt(1));
+                if (LLVMGetBasicBlockTerminator(elseBlock)==null) {
+                    LLVMBuildBr(builder, mergeBlock);
+                }
                LLVMBuildBr(builder, mergeBlock);
             }
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
