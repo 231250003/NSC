@@ -10,10 +10,6 @@ pEntry:
   store i32 %add, i32* @y, align 4
   ret void
   ret void
-  %x = alloca i32, align 4
-  store i32 %x, i32* %x, align 4
-  %t = alloca i32, align 4
-  store i32 %t, i32* %t, align 4
 }
 
 define i32 @f(i32 %x, i32 %t) {
@@ -29,12 +25,6 @@ fEntry:
   %load_lval2 = load i32, i32* @y, align 4
   %add3 = add i32 %add, %load_lval2
   ret i32 %add3
-  %x4 = alloca i32, align 4
-  store i32 %x, i32* %x4, align 4
-  %y = alloca i32, align 4
-  store i32 %y, i32* %y, align 4
-  %z = alloca i32, align 4
-  store i32 %z, i32* %z, align 4
 }
 
 define i32 @g(i32 %x, i32 %y, i32 %z) {
