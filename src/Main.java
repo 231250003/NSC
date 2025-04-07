@@ -67,10 +67,7 @@ public class Main {
         IRGenerationVisitor visitor = new IRGenerationVisitor(module, builder);
         visitor.visit(tree);
        // LLVMDumpModule(module);
-        LLVMPassManagerRef passManager = LLVMCreatePassManager();
-        LLVMAddCFGSimplificationPass(passManager);        // 合并基本块、删除不可达代码、空块
-        LLVMRunPassManager(passManager, module);
-        LLVMDisposePassManager(passManager);
+      
         BytePointer error = new BytePointer((Pointer) null);
         if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
             LLVMDisposeMessage(error);
