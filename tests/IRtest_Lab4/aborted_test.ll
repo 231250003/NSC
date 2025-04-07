@@ -10,6 +10,10 @@ pEntry:
   store i32 %add, i32* @y, align 4
   ret void
   ret void
+  %x = alloca i32, align 4
+  store i32 %x, i32* %x, align 4
+  %t = alloca i32, align 4
+  store i32 %t, i32* %t, align 4
 }
 
 define i32 @f(i32 %x, i32 %t) {
@@ -25,6 +29,12 @@ fEntry:
   %load_lval2 = load i32, i32* @y, align 4
   %add3 = add i32 %add, %load_lval2
   ret i32 %add3
+  %x4 = alloca i32, align 4
+  store i32 %x, i32* %x4, align 4
+  %y = alloca i32, align 4
+  store i32 %y, i32* %y, align 4
+  %z = alloca i32, align 4
+  store i32 %z, i32* %z, align 4
 }
 
 define i32 @g(i32 %x, i32 %y, i32 %z) {
@@ -35,9 +45,7 @@ gEntry:
   store i32 %y, i32* %param1_addr, align 4
   %param2_addr = alloca i32, align 4
   store i32 %z, i32* %param2_addr, align 4
-  %load_lval = load i32, i32* %param0_addr, align 4
-  %load_lval1 = load i32, i32* %param2_addr, align 4
-  %f = call i32 @f(i32 %load_lval, i32 %load_lval1)
+  %f = call i32 @f()
   ret i32 %f
 }
 
@@ -46,9 +54,8 @@ mainEntry:
   %t = alloca i32, align 4
   store i32 100, i32* %t, align 4
   %x = alloca i32, align 4
-  %load_lval = load i32, i32* %t, align 4
-  %g = call i32 @g(i32 2, i32 4, i32 %load_lval)
+  %g = call i32 @g()
   store i32 %g, i32* %x, align 4
-  %load_lval1 = load i32, i32* %x, align 4
-  ret i32 %load_lval1
+  %load_lval = load i32, i32* %x, align 4
+  ret i32 %load_lval
 }
