@@ -18,6 +18,6 @@ int main() {
     f();
     f();
     f();
-    int z=t();
+    int z;
     return main+f();
 }
