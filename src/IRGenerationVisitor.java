@@ -187,18 +187,18 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
             PointerPointer<LLVMValueRef> args = new PointerPointer<>(0);;
             int argCount = 0;
-            symbolTable.enterScope();
-            if (ctx.funcRParams() != null) {
-                args=getFuncRParams(ctx.funcRParams());
-                argCount = ctx.funcRParams().param().size();
-                symbolTable.set_r_params(funcName,args);
-            }
+//            symbolTable.enterScope();
+//            if (ctx.funcRParams() != null) {
+//                args=getFuncRParams(ctx.funcRParams());
+//                argCount = ctx.funcRParams().param().size();
+//                symbolTable.set_r_params(funcName,args);
+//            }
             if( (((FunctionType)(symbolTable.get_name_matched_function(funcName).type)).getReturnType() ).toString().equals("void")){
                 LLVMBuildCall(builder, function, args, argCount, "");
-                symbolTable.exitScope();
+                //symbolTable.exitScope();
                 return null;
             }
-            symbolTable.exitScope();
+            //symbolTable.exitScope();
             return castToI32(LLVMBuildCall(builder, function, args, argCount, funcName));
         }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
@@ -276,9 +276,13 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         for (int i = 0; i < params.size(); i++) {
             LLVMValueRef param = LLVMGetParam(function, i);
             LLVMSetValueName(param, params.get(i).name);
+            LLVMValueRef ptr = LLVMBuildAlloca(builder, LLVMInt32Type(), params.get(i).name);
+            LLVMBuildStore(builder, param, ptr);
+            params.get(i).reference = ptr;
         }
         LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
         LLVMPositionBuilderAtEnd(builder, entry);
+
         FunctionType functionType = new FunctionType(retType, params);
         symbolTable.addGlobal(new Symbol(funcName,functionType,function));
         visit_block(ctx.block(),params);
