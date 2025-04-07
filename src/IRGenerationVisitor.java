@@ -276,9 +276,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         for (int i = 0; i < params.size(); i++) {
             LLVMValueRef param = LLVMGetParam(function, i);
             LLVMSetValueName(param, params.get(i).name);
-            LLVMValueRef ptr = LLVMBuildAlloca(builder, LLVMInt32Type(), params.get(i).name);
-            LLVMBuildStore(builder, param, ptr);
-            params.get(i).reference = ptr;
         }
         LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + "Entry");
         LLVMPositionBuilderAtEnd(builder, entry);

@@ -12,7 +12,7 @@ void t(){
     return;
 }
 int main() {
-    int main=f(6);
+   /* int main=f(6);
     int f=20;
     int x=10;
     f+(1);
@@ -21,6 +21,7 @@ int main() {
     f(f);
     f(f);
     f(f);
-    int z;
-    return main+f(f);
+    int z;*/
+    //return main+f(f);
+    return main;
 }
