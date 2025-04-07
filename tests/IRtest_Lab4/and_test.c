@@ -11,7 +11,7 @@ int g(int t,int y){
     return y+1;
 }
 int main(){
-    z=f(7);
+    z=fib(7);
     z=4;
     int p=5;
     while(1){
