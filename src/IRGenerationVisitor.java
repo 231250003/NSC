@@ -578,10 +578,10 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 }
             }
             if (!thenTerminated || !elseTerminated) {
-                LLVMPositionBuilderAtEnd(builder, mergeBlock);
-            } else {
-                LLVMDeleteBasicBlock(mergeBlock);
-            }
+                LLVMPositionBuilderAtEnd(builder, mergeBlock);}
+//            } else {
+//                LLVMDeleteBasicBlock(mergeBlock);
+//            }
             //LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
         else if(ctx.WHILE()!=null){
