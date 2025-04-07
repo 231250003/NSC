@@ -18,5 +18,6 @@ int main() {
     f();
     f();
     f();
+    int z=t();
     return main+f();
 }
