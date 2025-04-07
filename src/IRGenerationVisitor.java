@@ -569,6 +569,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                LLVMBuildBr(builder, mergeBlock);
             }*/
             boolean elseHasTerminator = false;
+            System.out.print("crxzxs");
             if (elseBlock != null) {
                 LLVMPositionBuilderAtEnd(builder, elseBlock);
                 visit(ctx.stmt(1));
