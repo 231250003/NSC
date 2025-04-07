@@ -5,5 +5,5 @@ int f(int x){
 int main() {
     int main=f(2);
     main=main+10+(f(((10))));
-    return main+f();
+    return main+f(3);
 }
