@@ -71,7 +71,8 @@ public class Main {
         while (func != null && !func.isNull()) {
             LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
             while (block != null && !block.isNull()) {
-                cleanBasicBlock(block);
+                removeRedundantInstructions(module);
+                removeEmptyBlocks(module);          
                 block = LLVMGetNextBasicBlock(block);
             }
             func = LLVMGetNextFunction(func);
@@ -96,22 +97,50 @@ public class Main {
         }
         System.err.printf("%s %s at Line %d.%n", tokenType,tokenText, t.getLine());
     }*/
-    private static void cleanBasicBlock(LLVMBasicBlockRef block) {
-        LLVMValueRef instr = LLVMGetFirstInstruction(block);
-        boolean reachedTerminator = false;
-        while (instr != null && !instr.isNull()) {
-            LLVMValueRef next = LLVMGetNextInstruction(instr);
-
-            if (reachedTerminator) {
-                // 删除 ret / br 后的冗余指令
-                LLVMInstructionEraseFromParent(instr);
-            } else {
-                if (LLVMIsATerminatorInst(instr) != null) {
-                    reachedTerminator = true;
+    public static void removeRedundantInstructions(LLVMModuleRef module) {
+        LLVMValueRef func = LLVMGetFirstFunction(module);
+        while (func != null && !func.isNull()) {
+            LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
+            while (block != null && !block.isNull()) {
+                LLVMValueRef instr = LLVMGetFirstInstruction(block);
+                boolean reachedTerminator = false;
+                while (instr != null && !instr.isNull()) {
+                    LLVMValueRef next = LLVMGetNextInstruction(instr);
+                    if (reachedTerminator) {
+                        LLVMInstructionEraseFromParent(instr);
+                    } else {
+                        if (LLVMIsATerminatorInst(instr) != null) {
+                            reachedTerminator = true;
+                        }
+                    }
+                    instr = next;
                 }
+                block = LLVMGetNextBasicBlock(block);
             }
-            instr = next;
+            func = LLVMGetNextFunction(func);
         }
-       
+    }
+    public static void removeEmptyBlocks(LLVMModuleRef module) {
+        LLVMValueRef func = LLVMGetFirstFunction(module);
+        while (func != null && !func.isNull()) {
+            LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
+            while (block != null && !block.isNull()) {
+                LLVMBasicBlockRef nextBlock = LLVMGetNextBasicBlock(block);
+                LLVMValueRef instr = LLVMGetFirstInstruction(block);
+                boolean isEmpty = true;
+                while (instr != null && !instr.isNull()) {
+                    if (LLVMIsATerminatorInst(instr) != null) {
+                        isEmpty = false;
+                        break;
+                    }
+                    instr = LLVMGetNextInstruction(instr);
+                }
+                if (isEmpty) {
+                    LLVMDeleteBasicBlock(block);
+                }
+                block = nextBlock;
+            }
+            func = LLVMGetNextFunction(func);
+        }
     }
 }
