@@ -188,11 +188,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             PointerPointer<LLVMValueRef> args = new PointerPointer<>(0);;
             int argCount = 0;
 //            symbolTable.enterScope();
-//            if (ctx.funcRParams() != null) {
-//                args=getFuncRParams(ctx.funcRParams());
-//                argCount = ctx.funcRParams().param().size();
+            if (ctx.funcRParams() != null) {
+                args=getFuncRParams(ctx.funcRParams());
+                argCount = ctx.funcRParams().param().size();
 //                symbolTable.set_r_params(funcName,args);
-//            }
+            }
             if( (((FunctionType)(symbolTable.get_name_matched_function(funcName).type)).getReturnType() ).toString().equals("void")){
                 LLVMBuildCall(builder, function, args, argCount, "");
                 //symbolTable.exitScope();
