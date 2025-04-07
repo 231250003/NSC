@@ -67,7 +67,17 @@ public class Main {
         IRGenerationVisitor visitor = new IRGenerationVisitor(module, builder);
         visitor.visit(tree);
        // LLVMDumpModule(module);
+        LLVMValueRef func = LLVMGetFirstFunction(module);
+        while (func != null && !func.isNull()) {
+            LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
+            while (block != null && !block.isNull()) {
+                // 对每个 block 做清理操作
+                cleanBasicBlock(block);
+                block = LLVMGetNextBasicBlock(block);
+            }
 
+            func = LLVMGetNextFunction(func);
+        }
         BytePointer error = new BytePointer((Pointer) null);
         if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
             LLVMDisposeMessage(error);
@@ -88,4 +98,30 @@ public class Main {
         }
         System.err.printf("%s %s at Line %d.%n", tokenType,tokenText, t.getLine());
     }*/
+    private static void cleanBasicBlock(LLVMBasicBlockRef block) {
+        LLVMValueRef instr = LLVMGetFirstInstruction(block);
+        boolean reachedTerminator = false;
+
+        while (instr != null && !instr.isNull()) {
+            LLVMValueRef next = LLVMGetNextInstruction(instr);
+
+            if (reachedTerminator) {
+                // 删除 ret / br 后的冗余指令
+                LLVMInstructionEraseFromParent(instr);
+            } else {
+                if (LLVMIsATerminatorInst(instr) != null) {
+                    reachedTerminator = true;
+                }
+            }
+
+            instr = next;
+        }
+
+        // 清理空 block：如果 block 是空的或只包含 terminator，可以跳过，
+        // 但如果是完全空块（没有 terminator），应该从函数中删除
+        LLVMValueRef first = LLVMGetFirstInstruction(block);
+        if (first == null || first.isNull()) {
+            LLVMDeleteBasicBlock(block); // 这必须谨慎，确保没有其他地方跳转到这里
+        }
+    }
 }
