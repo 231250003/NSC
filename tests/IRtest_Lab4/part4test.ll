@@ -18,11 +18,12 @@ mainEntry:
   %to_bool = icmp ne i32 %zext_to_i321, 0
   br i1 %to_bool, label %if.then, label %merge
 
+merge:                                            ; preds = %if.then, %mainEntry
+  %load_lval3 = load i32, i32* @a, align 4
+  ret i32 %load_lval3
+
 if.then:                                          ; preds = %mainEntry
   %load_lval2 = load i32, i32* @a, align 4
   ret i32 %load_lval2
-
-merge:                                            ; preds = %mainEntry
-  %load_lval3 = load i32, i32* @a, align 4
-  ret i32 %load_lval3
+  br label %merge
 }
