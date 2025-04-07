@@ -4,6 +4,31 @@ source_filename = "my_module"
 @x = global i32 10
 @z = global i32 0
 
+define i32 @fib(i32 %x) {
+fibEntry:
+  %param0_addr = alloca i32, align 4
+  store i32 %x, i32* %param0_addr, align 4
+  %load_lval = load i32, i32* %param0_addr, align 4
+  %cmp = icmp sle i32 %load_lval, 1
+  %zext_to_i32 = zext i1 %cmp to i32
+  %to_bool = icmp ne i32 %zext_to_i32, 0
+  br i1 %to_bool, label %if.then, label %if.else
+
+merge:                                            ; preds = %if.else, %if.then
+
+if.then:                                          ; preds = %fibEntry
+  %load_lval1 = load i32, i32* %param0_addr, align 4
+  ret i32 %load_lval1
+  br label %merge
+
+if.else:                                          ; preds = %fibEntry
+  %fib = call i32 @fib()
+  %fib2 = call i32 @fib()
+  %add = add i32 %fib, %fib2
+  ret i32 %add
+  br label %merge
+}
+
 define i32 @g(i32 %t, i32 %y) {
 gEntry:
   %param0_addr = alloca i32, align 4
@@ -26,6 +51,8 @@ gEntry:
 
 define i32 @main() {
 mainEntry:
+  %fib = call i32 @fib()
+  store i32 %fib, i32* @z, align 4
   store i32 4, i32* @z, align 4
   %p = alloca i32, align 4
   store i32 5, i32* %p, align 4
@@ -50,7 +77,7 @@ cur1:                                             ; preds = %while.cond3
   br i1 %to_bool7, label %if.then, label %merge
 
 while.stmt2:                                      ; preds = %while.cond3
-  %g = call i32 @g(i32 10, i32 20)
+  %g = call i32 @g()
   br label %while.cond3
 
 while.cond3:                                      ; preds = %while.stmt2, %while.stmt
