@@ -14,12 +14,11 @@ fibEntry:
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %if.then, label %if.else
 
-merge:                                            ; preds = %if.else, %if.then
+merge:                                            ; preds = %if.else
 
 if.then:                                          ; preds = %fibEntry
   %load_lval1 = load i32, i32* %param0_addr, align 4
   ret i32 %load_lval1
-  br label %merge
 
 if.else:                                          ; preds = %fibEntry
   %load_lval2 = load i32, i32* %param0_addr, align 4
@@ -91,10 +90,9 @@ while.cond3:                                      ; preds = %while.stmt2, %while
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt2, label %cur1
 
-merge:                                            ; preds = %if.then, %cur1
+merge:                                            ; preds = %cur1
   br label %while.cond
 
 if.then:                                          ; preds = %cur1
   br label %cur
-  br label %merge
 }
