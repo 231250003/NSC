@@ -22,9 +22,13 @@ if.then:                                          ; preds = %fibEntry
   br label %merge
 
 if.else:                                          ; preds = %fibEntry
-  %fib = call i32 @fib()
-  %fib2 = call i32 @fib()
-  %add = add i32 %fib, %fib2
+  %load_lval2 = load i32, i32* %param0_addr, align 4
+  %sub = sub i32 %load_lval2, 1
+  %fib = call i32 @fib(i32 %sub)
+  %load_lval3 = load i32, i32* %param0_addr, align 4
+  %sub4 = sub i32 %load_lval3, 2
+  %fib5 = call i32 @fib(i32 %sub4)
+  %add = add i32 %fib, %fib5
   ret i32 %add
   br label %merge
 }
@@ -51,7 +55,7 @@ gEntry:
 
 define i32 @main() {
 mainEntry:
-  %fib = call i32 @fib()
+  %fib = call i32 @fib(i32 7)
   store i32 %fib, i32* @z, align 4
   store i32 4, i32* @z, align 4
   %p = alloca i32, align 4
@@ -77,7 +81,7 @@ cur1:                                             ; preds = %while.cond3
   br i1 %to_bool7, label %if.then, label %merge
 
 while.stmt2:                                      ; preds = %while.cond3
-  %g = call i32 @g()
+  %g = call i32 @g(i32 10, i32 20)
   br label %while.cond3
 
 while.cond3:                                      ; preds = %while.stmt2, %while.stmt
