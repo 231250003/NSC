@@ -23,5 +23,5 @@ int main() {
     f(f);
     int z;*/
     //return main+f(f);
-    return main;
+    return f(10);
 }

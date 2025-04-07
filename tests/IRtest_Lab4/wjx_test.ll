@@ -13,6 +13,6 @@ fEntry:
 
 define i32 @main() {
 mainEntry:
-  call void @f()
+  call void @f(i32 1)
   ret i32 0
 }
