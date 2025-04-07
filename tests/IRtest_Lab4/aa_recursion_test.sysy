@@ -16,7 +16,7 @@ int main() {
     int f=20;
     int x=10;
     f+(1);
-    main=2*main%10+10+f+x+(g((((f(f(f)))))));
+    main=2*main%10+10+f(1)+f+((f)+(f))+(g((((f(f(f)))))));
     f(f);
     f(f);
     f(f);
