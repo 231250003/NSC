@@ -1,5 +1,6 @@
-int g(){
-   return 2*4+5;
+int z;
+int g(int x,int y){
+   return 2*2+1;
 }
 int fib(int n) {
    if (n <= 1) {
@@ -12,7 +13,6 @@ int fib(int n) {
 }
 
 int main() {
-    int n = 15;
-    return(fib(g()));
-    return fib(n);
+    int p=(fib(g()));
+    return fib(p+g());
 }
