@@ -1,5 +1,6 @@
 int z;
 int g(int x,int y){
+    z=z+1;
    return 2*2+1;
 }
 int fib(int n) {
@@ -13,6 +14,7 @@ int fib(int n) {
 }
 
 int main() {
-    int p=(fib(g(1,1)));
+    int z=0;
+    int p=(fib(g(1,1)))+z;
     return fib(p+g(2,2));
 }
