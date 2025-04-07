@@ -558,13 +558,24 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             visit(ctx.stmt(0));
-            LLVMBuildBr(builder, mergeBlock);
+            boolean thenHasTerminator = LLVMGetBasicBlockTerminator(thenBlock) != null;
+            if (!thenHasTerminator) {
+                LLVMBuildBr(builder, mergeBlock);
+            }
+            boolean elseHasTerminator = false;
             if (elseBlock != null) {
                 LLVMPositionBuilderAtEnd(builder, elseBlock);
                 visit(ctx.stmt(1));
-               LLVMBuildBr(builder, mergeBlock);
+                elseHasTerminator = LLVMGetBasicBlockTerminator(elseBlock) != null;
+                if (!elseHasTerminator) {
+                    LLVMBuildBr(builder, mergeBlock);
+                }
             }
-            LLVMPositionBuilderAtEnd(builder, mergeBlock);
+            if (!thenHasTerminator || (elseBlock != null && !elseHasTerminator)) {
+                LLVMPositionBuilderAtEnd(builder, mergeBlock);
+            } else {
+                LLVMDeleteBasicBlock(mergeBlock);
+            }
         }
         else if(ctx.WHILE()!=null){
             LLVMValueRef function = symbolTable.get_cur_scope_func();
