@@ -24,11 +24,13 @@ fEntry:
   br i1 %to_bool, label %if.then, label %merge
 
 merge:                                            ; preds = %if.then, %fEntry
-  %f = call i32 @f()
+  %load_lval1 = load i32, i32* %param0_addr, align 4
+  %sub = sub i32 %load_lval1, 1
+  %f = call i32 @f(i32 %sub)
   %add = add i32 %f, 10
   store i32 %add, i32* %param0_addr, align 4
-  %load_lval1 = load i32, i32* %param0_addr, align 4
-  ret i32 %load_lval1
+  %load_lval2 = load i32, i32* %param0_addr, align 4
+  ret i32 %load_lval2
 
 if.then:                                          ; preds = %fEntry
   ret i32 0
@@ -44,7 +46,7 @@ cur:                                              ; preds = %merge49, %while.con
   ret i32 %load_lval109
 
 while.stmt:                                       ; preds = %while.cond
-  %f = call i32 @f()
+  %f = call i32 @f(i32 200)
   store i32 %f, i32* @x, align 4
   br label %while.cond3
 
