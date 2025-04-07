@@ -14,9 +14,12 @@ fibEntry:
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %if.then, label %if.else
 
+merge:                                            ; preds = %if.else, %if.then
+
 if.then:                                          ; preds = %fibEntry
   %load_lval1 = load i32, i32* %param0_addr, align 4
   ret i32 %load_lval1
+  br label %merge
 
 if.else:                                          ; preds = %fibEntry
   %load_lval2 = load i32, i32* %param0_addr, align 4
@@ -27,6 +30,7 @@ if.else:                                          ; preds = %fibEntry
   %fib5 = call i32 @fib(i32 %sub4)
   %add = add i32 %fib, %fib5
   ret i32 %add
+  br label %merge
 }
 
 define i32 @g(i32 %t, i32 %y) {
@@ -66,16 +70,15 @@ cur:                                              ; preds = %if.then, %while.con
 while.stmt:                                       ; preds = %while.cond
   br label %while.cond3
 
-while.cond:                                       ; preds = %cur1, %mainEntry
+while.cond:                                       ; preds = %merge, %mainEntry
   br i1 true, label %while.stmt, label %cur
 
-cur1:                                             ; preds = %cur1, %while.cond3
+cur1:                                             ; preds = %while.cond3
   %load_lval4 = load i32, i32* @x, align 4
   %cmp5 = icmp sgt i32 %load_lval4, 10
   %zext_to_i326 = zext i1 %cmp5 to i32
   %to_bool7 = icmp ne i32 %zext_to_i326, 0
-  br i1 %to_bool7, label %if.then, label %cur1
-  br label %while.cond
+  br i1 %to_bool7, label %if.then, label %merge
 
 while.stmt2:                                      ; preds = %while.cond3
   %g = call i32 @g(i32 10, i32 20)
@@ -88,6 +91,10 @@ while.cond3:                                      ; preds = %while.stmt2, %while
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt2, label %cur1
 
+merge:                                            ; preds = %if.then, %cur1
+  br label %while.cond
+
 if.then:                                          ; preds = %cur1
   br label %cur
+  br label %merge
 }
