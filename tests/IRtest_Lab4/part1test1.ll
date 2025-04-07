@@ -18,11 +18,11 @@ and.rhs:                                          ; preds = %mainEntry
   %rhs_bool = icmp ne i32 %zext_to_i323, 0
   br label %and.merge
 
-and.merge:                                        ; preds = %and.rhs, %mainEntry
+and.merge:                                        ; preds = %and.merge, %and.rhs, %mainEntry
   %and_result = phi i1 [ false, %mainEntry ], [ %rhs_bool, %and.rhs ]
   %zext_to_i324 = zext i1 %and_result to i32
   %to_bool = icmp ne i32 %zext_to_i324, 0
-  br i1 %to_bool, label %if.then, <null operand!>
+  br i1 %to_bool, label %if.then, label %and.merge
 
 if.then:                                          ; preds = %and.merge
   store i32 2, i32* @a, align 4
@@ -73,7 +73,6 @@ if.then21:                                        ; preds = %if.else15
 if.else22:                                        ; preds = %if.else15
   store i32 8, i32* @a, align 4
   br label %merge24
-  br label %merge24
 
-merge24:                                          ; preds = %if.else22, %if.else22, %if.then21
+merge24:                                          ; preds = %if.else22, %if.then21
 }
