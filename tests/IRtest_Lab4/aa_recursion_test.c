@@ -13,6 +13,6 @@ int fib(int n) {
 
 int main() {
     int n = 15;
-    return(fib(g()))
+    return(fib(g()));
     return fib(n);
 }
