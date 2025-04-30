@@ -44,7 +44,7 @@ for sysy_file in "$SYSY_DIR"/*.sysy; do
         echo "✅ Return values match."
     else
         echo "❌ Return values differ!"
-    fi 
+    fi
     # Step 7: 使用 RARS 运行 .riscv 汇编文件
     riscv_file="$SYSY_DIR/$filename.riscv"
     if [ -f "$riscv_file" ]; then
