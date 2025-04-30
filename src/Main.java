@@ -15,6 +15,7 @@ import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        System.out.println("crzzz");
         /* if (args.length < 1) {
             System.err.println("input path is required");
         }*/
