@@ -62,6 +62,7 @@ public class LLVMIRToRiscv {
                             opcode == LLVM.LLVMSRem) {
                         LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
+                        System.out.println("crzzz");
                         String reg1 = evaluate(lhs);
                         String reg2 = evaluate(rhs);
                         String destReg = freshReg();
