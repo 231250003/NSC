@@ -65,6 +65,7 @@ public class LLVMIRToRiscv {
                         System.out.println("crzzz");
                         String reg1 = evaluate(lhs);
                         String reg2 = evaluate(rhs);
+                        System.out.println("end-crzzz");
                         String destReg = freshReg();
                         String op;
                         switch (opcode) {
