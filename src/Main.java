@@ -15,7 +15,6 @@ import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        System.out.println("crzzz");
         /* if (args.length < 1) {
             System.err.println("input path is required");
         }*/
@@ -26,7 +25,6 @@ public class Main {
           lexer.removeErrorListeners();
 //        MyErrorListener errorListener=new MyErrorListener(1);
 //        lexer.addErrorListener(errorListener);
-
          CommonTokenStream tokens = new CommonTokenStream(lexer);
 
          SysYParser parser = new SysYParser(tokens);
@@ -82,6 +80,8 @@ public class Main {
         if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
             LLVMDisposeMessage(error);
         }
+        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+"riscv");
+        llvmirToRiscv.to_riscv();
         LLVMDisposeBuilder(builder);
         LLVMDisposeModule(module);
     }

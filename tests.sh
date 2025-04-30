@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SYSY_DIR="tests/IRtest_Lab4"
+SYSY_DIR="tests/lab5_test"
 echo "== Batch processing all .sysy files in $SYSY_DIR =="
 
 for sysy_file in "$SYSY_DIR"/*.sysy; do
