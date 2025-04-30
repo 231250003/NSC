@@ -2,26 +2,35 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class AsmBuilder {
-    private final StringBuilder buffer = new StringBuilder();
+    private final StringBuilder dataSegment = new StringBuilder();
+    private final StringBuilder textSegment = new StringBuilder();
+    private StringBuilder current = textSegment;  // 默认在 text 段
+    public void switchToText() {
+        current = textSegment;
+    }
+
+    public void switchToData() {
+        current = dataSegment;
+    }
 
     public void directive(String dir) {
-        buffer.append("  .").append(dir).append("\n");
+        current.append("  .").append(dir).append("\n");
     }
 
     public void label(String label) {
-        buffer.append(label).append(":\n");
+        current.append(label).append(":\n");
     }
 
     public void comment(String comment) {
-        buffer.append("  # ").append(comment).append("\n");
+        current.append("  # ").append(comment).append("\n");
     }
 
     public void instr(String op, String... args) {
-        buffer.append("  ").append(op);
+        current.append("  ").append(op);
         if (args.length > 0) {
-            buffer.append(" ").append(String.join(", ", args));
+            current.append(" ").append(String.join(", ", args));
         }
-        buffer.append("\n");
+        current.append("\n");
     }
 
     public void li(String dest, long imm) {
@@ -40,9 +49,18 @@ public class AsmBuilder {
         instr(op, dest, lhs, rhs);
     }
 
+    public void word(String label, long value) {
+        switchToData();
+        label(label);
+        instr(".word", String.valueOf(value));
+        switchToText();
+    }
+
     public void writeToFile(String filePath) {
         try (FileWriter fw = new FileWriter(filePath)) {
-            fw.write(buffer.toString());
+            fw.write(dataSegment.toString());
+            fw.write("\n");
+            fw.write(textSegment.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
