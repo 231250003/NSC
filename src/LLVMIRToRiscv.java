@@ -2,8 +2,6 @@ import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
 import java.util.*;
 
-import static com.sun.org.apache.bcel.internal.Const.getOpcodeName;
-
 public class LLVMIRToRiscv {
     String file_path;
     LLVMModuleRef module;
@@ -125,7 +123,6 @@ public class LLVMIRToRiscv {
 //                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
 //                    }
                     else {
-                        System.out.println("Opcode: " + opcode + " = " + getOpcodeName(opcode));
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
