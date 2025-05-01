@@ -62,7 +62,6 @@ public class LLVMIRToRiscv {
                             opcode == LLVM.LLVMSRem) {
                         LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
-                        System.out.println();
                         if(lhs!=null )System.out.println("crzzz");
                         if(rhs!=null) System.out.println("12121");
                         String reg1 = evaluate(lhs);
@@ -114,6 +113,7 @@ public class LLVMIRToRiscv {
 
     private String evaluate(LLVMValueRef val) {
         if (!LLVM.LLVMIsAConstantInt(val).isNull()) {
+            System.out.println("12121231");
             long imm = LLVM.LLVMConstIntGetSExtValue(val);
             String reg = freshReg();
             asm.li(reg, imm);
