@@ -12,7 +12,7 @@ public class StackOnlyRegisterAllocator implements RegisterAllocator {
             varOffset.put(varName, nextOffset);
         }
         // 以 sp 为基准偏移，栈增长方向向下（负偏移）
-        return String.format("%d(sp)", -varOffset.get(varName));
+        return String.format("%d(sp)", varOffset.get(varName));
     }
 
     @Override

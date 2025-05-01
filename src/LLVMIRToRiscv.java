@@ -40,7 +40,6 @@ public class LLVMIRToRiscv {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
 
                     if (opcode == LLVM.LLVMAlloca) {
-                        if(getValueKey(inst)==null) System.out.println("1223213");
                         String addr = allocator.allocate(getValueKey(inst).toString());
                         valueMap.put(inst, addr);
 
