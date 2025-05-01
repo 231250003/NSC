@@ -8,7 +8,7 @@ public class LLVMIRToRiscv {
     AsmBuilder asm = new AsmBuilder();
     RegisterAllocator allocator = new StackOnlyRegisterAllocator();
     Map<LLVMValueRef, String> valueMap = new HashMap<>();  // IR value → stack addr or reg
-
+    Map<LLVMValueRef,String> nameMap=new HashMap<>();
     public LLVMIRToRiscv(LLVMModuleRef moduleRef, String file_path) {
         this.module = moduleRef;
         this.file_path = file_path;
@@ -48,15 +48,26 @@ public class LLVMIRToRiscv {
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
                         String valReg = evaluate(val);
                         String addr = valueMap.get(ptr);
-                        asm.instr("sw", valReg, addr);
-
+                        if(addr!=null){
+                            asm.instr("sw", valReg, addr);
+                        }
+                        else{
+                            String reg=freshReg();
+                            asm.instr("la",reg,nameMap.get(ptr));
+                            asm.instr("sw",valReg,"0("+reg+")");
+                        }
                     } else if (opcode == LLVM.LLVMLoad) {
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 0);
                         String addr = valueMap.get(ptr);
                         String reg = freshReg();
-                        asm.instr("lw", reg, addr);
-                        valueMap.put(inst, addr);  // 可选：也可以保存为 reg
-
+                        if(addr!=null){
+                            asm.instr("lw", reg, addr);
+                            valueMap.put(inst, addr);  // 可选：也可以保存为 reg
+                        }
+                        else{
+                            asm.instr("la",reg,nameMap.get(ptr));
+                            asm.instr("lw",reg,"0("+reg+")");
+                        }
                     } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                             opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
                             opcode == LLVM.LLVMSRem) {
@@ -130,7 +141,7 @@ public class LLVMIRToRiscv {
              global != null && !global.isNull();
              global = LLVM.LLVMGetNextGlobal(global)) {
             String name = LLVM.LLVMGetValueName(global).getString();
-            System.out.println(name);
+            nameMap.put(global,name);
             LLVMValueRef init = LLVM.LLVMGetInitializer(global);
             long val = init.isNull() ? 0 : LLVM.LLVMConstIntGetSExtValue(init);
             asm.directive("data");
