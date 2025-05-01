@@ -62,11 +62,8 @@ public class LLVMIRToRiscv {
                             opcode == LLVM.LLVMSRem) {
                         LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
-                        if(lhs!=null )System.out.println("crzzz");
-                        if(rhs!=null) System.out.println("12121");
                         String reg1 = evaluate(lhs);
                         String reg2 = evaluate(rhs);
-                        System.out.println("end-crzzz");
                         String destReg = freshReg();
                         String op;
                         switch (opcode) {
@@ -134,6 +131,7 @@ public class LLVMIRToRiscv {
              global != null && !global.isNull();
              global = LLVM.LLVMGetNextGlobal(global)) {
             String name = LLVM.LLVMGetValueName(global).getString();
+            System.out.println(name);
             LLVMValueRef init = LLVM.LLVMGetInitializer(global);
             long val = init.isNull() ? 0 : LLVM.LLVMConstIntGetSExtValue(init);
             asm.directive("data");

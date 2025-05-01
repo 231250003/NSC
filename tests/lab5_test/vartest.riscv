@@ -1,5 +1,7 @@
+  .data
 a:
   .word 1
+  .data
 b:
   .word 0
 
