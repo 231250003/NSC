@@ -130,7 +130,15 @@ public class LLVMIRToRiscv {
             String reg = freshReg();
             asm.instr("lw", reg, valueMap.get(val));
             return reg;
-        } else {
+        }
+        else if (LLVM.LLVMIsAGlobalVariable(val) != null) {
+            String reg = freshReg();
+            String name = LLVM.LLVMGetValueName(val).getString();
+            asm.instr("la", reg, name);
+            asm.instr("lw", reg, "0(" + reg + ")");
+            return reg;
+        }
+        else {
             throw new RuntimeException("Unsupported operand: " + val);
         }
     }
