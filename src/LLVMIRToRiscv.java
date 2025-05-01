@@ -25,7 +25,7 @@ public class LLVMIRToRiscv {
             asm.label("main");
 
             // Prologue
-            int stackSize = 128;  // 预留足够空间，或使用 allocator.getStackSize() 替换
+            int stackSize = 128;
             asm.instr("addi", "sp", "sp", "-" + stackSize);
 
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
@@ -114,7 +114,7 @@ public class LLVMIRToRiscv {
                     }
                     else if (opcode == LLVM.LLVMZExt) {
                         LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
-                        String srcReg = evaluate(operand); // 获取原始寄存器（如 i1）
+                        String srcReg = evaluate(operand);
                         String destReg = freshReg();
                         asm.mv(destReg, srcReg);
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
