@@ -62,7 +62,6 @@ public class LLVMIRToRiscv {
                         String reg = freshReg();
                         if(addr!=null){
                             asm.instr("lw", reg, addr);
-                            valueMap.put(inst, addr);  // 可选：也可以保存为 reg
                         }
                         else{
                             asm.instr("la",reg,nameMap.get(ptr));
