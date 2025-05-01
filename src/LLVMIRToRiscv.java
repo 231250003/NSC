@@ -63,7 +63,8 @@ public class LLVMIRToRiscv {
                         LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
                         System.out.println();
-                        System.out.println("crzzz");
+                        if(lhs!=null )System.out.println("crzzz");
+                        if(rhs!=null) System.out.println("12121");
                         String reg1 = evaluate(lhs);
                         String reg2 = evaluate(rhs);
                         System.out.println("end-crzzz");
