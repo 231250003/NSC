@@ -40,6 +40,7 @@ public class LLVMIRToRiscv {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
 
                     if (opcode == LLVM.LLVMAlloca) {
+                        if(getValueKey(inst)==null) System.out.println("1223213");
                         String addr = allocator.allocate(getValueKey(inst).toString());
                         valueMap.put(inst, addr);
 
@@ -111,7 +112,6 @@ public class LLVMIRToRiscv {
     private String evaluate(LLVMValueRef val) {
         LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(val);
         if (constInt != null && !constInt.isNull()){
-            System.out.println("not null");
             long imm = LLVM.LLVMConstIntGetSExtValue(constInt);
             String reg = freshReg();
             asm.li(reg, imm);
