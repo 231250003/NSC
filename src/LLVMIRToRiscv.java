@@ -136,6 +136,7 @@ public class LLVMIRToRiscv {
             String name = LLVM.LLVMGetValueName(global).getString();
             LLVMValueRef init = LLVM.LLVMGetInitializer(global);
             long val = init.isNull() ? 0 : LLVM.LLVMConstIntGetSExtValue(init);
+            asm.directive("data");
             asm.word(name, val);
         }
         asm.switchToText();

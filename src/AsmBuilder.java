@@ -50,10 +50,8 @@ public class AsmBuilder {
     }
 
     public void word(String label, long value) {
-        switchToData();
         label(label);
         instr(".word", String.valueOf(value));
-        switchToText();
     }
 
     public void writeToFile(String filePath) {
