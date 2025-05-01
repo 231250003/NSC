@@ -41,9 +41,9 @@ for sysy_file in "$SYSY_DIR"/*.sysy; do
 
     # Step 6: 比较两个返回值
     if [ "$c_return_value" -eq "$ll_return_value" ]; then
-        echo "✅ Return values match."
+        echo "✅ C vs LLVMIR Return values match."
     else
-        echo "❌ Return values differ!"
+        echo "❌ C vs LLVMIR Return values differ!"
     fi
     # Step 7: 使用 RARS 运行 .riscv 汇编文件
     riscv_file="$SYSY_DIR/$filename.riscv"
