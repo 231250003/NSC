@@ -61,14 +61,14 @@ public class LLVMIRToRiscv {
                         if(addr!=null){
                             asm.instr("lw", reg, addr);
                             //valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
-                            String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                            asm.instr("sw",reg,lval_addr);
-                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
                         }
                         else{
                             asm.instr("la",reg,(LLVM.LLVMGetValueName(ptr).getString()));
                             asm.instr("lw",reg,"0("+reg+")");
                         }
+                        String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                        asm.instr("sw",reg,lval_addr);
+                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
                     } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                             opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
                             opcode == LLVM.LLVMSRem) {
@@ -140,7 +140,6 @@ public class LLVMIRToRiscv {
             return reg;
         }
         else {
-            System.out.println(LLVM.LLVMGetValueName(val).getString());
             String valStr = LLVM.LLVMPrintValueToString(val).getString();
             int kind = LLVM.LLVMGetValueKind(val);
             System.err.println("Unsupported operand:");
