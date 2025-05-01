@@ -35,7 +35,7 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
-
+                    System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
 
                     if (opcode == LLVM.LLVMAlloca) {
