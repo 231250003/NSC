@@ -112,12 +112,10 @@ public class LLVMIRToRiscv {
     }
 
     private String evaluate(LLVMValueRef val) {
-        System.out.println("val = " + val);
-        System.out.println("val name = " + LLVM.LLVMGetValueName(val));
-        System.out.println("val kind = " + LLVM.LLVMGetValueKind(val));
-        if (!LLVM.LLVMIsAConstantInt(val).isNull()) {
+        LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(val);
+        if (constInt != null && !constInt.isNull()){
             System.out.println("not null");
-            long imm = LLVM.LLVMConstIntGetSExtValue(val);
+            long imm = LLVM.LLVMConstIntGetSExtValue(constInt);
             String reg = freshReg();
             asm.li(reg, imm);
             return reg;
