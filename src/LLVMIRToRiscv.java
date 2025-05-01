@@ -41,7 +41,7 @@ public class LLVMIRToRiscv {
                     if (opcode == LLVM.LLVMAlloca) {
                         String addr = allocator.allocate(getValueKey(inst).toString());
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
-
+                        System.out.println((LLVM.LLVMGetValueName(inst).getString());
                     } else if (opcode == LLVM.LLVMStore) {
                         LLVMValueRef val = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
