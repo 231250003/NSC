@@ -39,13 +39,12 @@ public class LLVMIRToRiscv {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
 
                     if (opcode == LLVM.LLVMAlloca) {
-                        String addr = allocator.allocate(getValueKey(inst).toString());
+                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     } else if (opcode == LLVM.LLVMStore) {
                         LLVMValueRef val = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
                         String valReg = evaluate(val);
-                        System.out.println(LLVM.LLVMGetValueName(ptr).getString());
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
                         if(addr!=null){
                             asm.instr("sw", valReg, addr);
@@ -61,7 +60,7 @@ public class LLVMIRToRiscv {
                         String reg = freshReg();
                         if(addr!=null){
                             asm.instr("lw", reg, addr);
-                            valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
+                            //valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
                         }
                         else{
                             asm.instr("la",reg,(LLVM.LLVMGetValueName(ptr).getString()));
