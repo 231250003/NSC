@@ -35,7 +35,6 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
 
                     if (opcode == LLVM.LLVMAlloca) {
@@ -122,6 +121,43 @@ public class LLVMIRToRiscv {
 //                        asm.instr("sw", destReg, addr);
 //                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
 //                    }
+                    else if (opcode == LLVM.LLVMICmp) {
+                        int pred = LLVM.LLVMGetICmpPredicate(inst);  // 获取谓词
+                        LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
+                        LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
+                        String reg1 = evaluate(lhs);
+                        String reg2 = evaluate(rhs);
+                        String destReg = freshReg();
+                        switch (pred) {
+                            case LLVM.LLVMIntEQ:
+                                asm.instr("xor", destReg, reg1, reg2);
+                                asm.seqz(destReg, destReg);
+                                break;
+                            case LLVM.LLVMIntNE:
+                                asm.instr("xor", destReg, reg1, reg2);
+                                asm.snez(destReg, destReg);
+                                break;
+                            case LLVM.LLVMIntSLT:
+                                asm.slt(destReg, reg1, reg2);
+                                break;
+                            case LLVM.LLVMIntSLE:
+                                asm.sgt(destReg, reg1, reg2);
+                                asm.seqz(destReg, destReg);
+                                break;
+                            case LLVM.LLVMIntSGT:
+                                asm.sgt(destReg, reg1, reg2);
+                                break;
+                            case LLVM.LLVMIntSGE:
+                                asm.slt(destReg, reg1, reg2);
+                                asm.seqz(destReg, destReg);
+                                break;
+                            default:
+                                throw new RuntimeException("Unsupported icmp predicate: " + pred);
+                        }
+                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                        asm.instr("sw", destReg, addr);
+                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                    }
                     else {
                         System.out.println(inst);
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);

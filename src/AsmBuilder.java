@@ -53,7 +53,21 @@ public class AsmBuilder {
         label(label);
         instr(".word", String.valueOf(value));
     }
+    public void seqz(String dest, String src) {
+        instr("seqz", dest, src);
+    }
 
+    public void snez(String dest, String src) {
+        instr("snez", dest, src);
+    }
+
+    public void slt(String dest, String lhs, String rhs) {
+        instr("slt", dest, lhs, rhs);
+    }
+
+    public void sgt(String dest, String lhs, String rhs) {
+        instr("sgt", dest, lhs, rhs);
+    }
     public void writeToFile(String filePath) {
         try (FileWriter fw = new FileWriter(filePath)) {
             fw.write(dataSegment.toString());
