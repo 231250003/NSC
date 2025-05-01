@@ -124,9 +124,9 @@ public class LLVMIRToRiscv {
             String reg = freshReg();
             asm.li(reg, imm);
             return reg;
-        } else if (valueMap.containsKey(val)) {
+        } else if (valueMap.containsKey(LLVM.LLVMGetValueName(val).getString())) {
             String reg = freshReg();
-            asm.instr("lw", reg, valueMap.get(val));
+            asm.instr("lw", reg, valueMap.get(LLVM.LLVMGetValueName(val).getString()));
             return reg;
         }
         else if (LLVM.LLVMIsAGlobalVariable(val) != null) {
