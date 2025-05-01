@@ -112,7 +112,17 @@ public class LLVMIRToRiscv {
                         asm.writeToFile(file_path);
                         return;
 
-                    } else {
+                    }
+                    else if (opcode == LLVM.LLVMZExt) {
+                        LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
+                        String srcReg = evaluate(operand); // 获取原始寄存器（如 i1）
+                        String destReg = freshReg();
+                        asm.mv(destReg, srcReg);
+                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                        asm.instr("sw", destReg, addr);
+                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                    }
+                    else {
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
