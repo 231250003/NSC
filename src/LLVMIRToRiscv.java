@@ -112,15 +112,15 @@ public class LLVMIRToRiscv {
                         return;
 
                     }
-//                    else if (opcode == LLVM.LLVMZExt) {
-//                        LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
-//                        String srcReg = evaluate(operand); // 获取原始寄存器（如 i1）
-//                        String destReg = freshReg();
-//                        asm.mv(destReg, srcReg);
-//                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-//                        asm.instr("sw", destReg, addr);
-//                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
-//                    }
+                    else if (opcode == LLVM.LLVMZExt) {
+                        LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
+                        String srcReg = evaluate(operand); // 获取原始寄存器（如 i1）
+                        String destReg = freshReg();
+                        asm.mv(destReg, srcReg);
+                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                        asm.instr("sw", destReg, addr);
+                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                    }
                     else if (opcode == LLVM.LLVMICmp) {
                         int pred = LLVM.LLVMGetICmpPredicate(inst);  // 获取谓词
                         LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
