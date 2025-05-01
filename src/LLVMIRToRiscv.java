@@ -121,7 +121,6 @@ public class LLVMIRToRiscv {
     }
 
     private String evaluate(LLVMValueRef val) {
-        System.out.println(LLVM.LLVMGetValueName(val).getString());
         LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(val);
         if (constInt != null && !constInt.isNull()){
             long imm = LLVM.LLVMConstIntGetSExtValue(constInt);
@@ -141,6 +140,7 @@ public class LLVMIRToRiscv {
             return reg;
         }
         else {
+            System.out.println(LLVM.LLVMGetValueName(val).getString());
             String valStr = LLVM.LLVMPrintValueToString(val).getString();
             int kind = LLVM.LLVMGetValueKind(val);
             System.err.println("Unsupported operand:");
