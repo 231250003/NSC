@@ -2,6 +2,8 @@ import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
 import java.util.*;
 
+import static com.sun.org.apache.bcel.internal.Const.getOpcodeName;
+
 public class LLVMIRToRiscv {
     String file_path;
     LLVMModuleRef module;
@@ -113,16 +115,17 @@ public class LLVMIRToRiscv {
                         return;
 
                     }
-                    else if (opcode == LLVM.LLVMZExt) {
-                        LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
-                        String srcReg = evaluate(operand); // 获取原始寄存器（如 i1）
-                        String destReg = freshReg();
-                        asm.mv(destReg, srcReg);
-                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        asm.instr("sw", destReg, addr);
-                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
-                    }
+//                    else if (opcode == LLVM.LLVMZExt) {
+//                        LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
+//                        String srcReg = evaluate(operand); // 获取原始寄存器（如 i1）
+//                        String destReg = freshReg();
+//                        asm.mv(destReg, srcReg);
+//                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+//                        asm.instr("sw", destReg, addr);
+//                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+//                    }
                     else {
+                        System.out.println("Opcode: " + opcode + " = " + getOpcodeName(opcode));
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
