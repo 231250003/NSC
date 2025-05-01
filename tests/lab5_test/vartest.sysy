@@ -8,5 +8,5 @@ int main(){
     int q=!10;
     //b = c + a + 1+!!cccc;
     //const int d = 10+ a + b + c + d+0x10+z+p+q+dddd;
-    return a + b + c + d+0x10+z+p+q+dddd;
+    return a + b + c +0x10+z+p+q+dddd;
 }

@@ -6,6 +6,7 @@ int main(){
     z=(2+5%3);
     int p=-2;
     int q=!10;
-    const int d = 10+ a + b + c + d+0x10+z+p+q+dddd;
+    //b = c + a + 1+!!cccc;
+    //const int d = 10+ a + b + c + d+0x10+z+p+q+dddd;
     return a + b + c + d+0x10+z+p+q+dddd;
 }
