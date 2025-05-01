@@ -139,7 +139,12 @@ public class LLVMIRToRiscv {
             return reg;
         }
         else {
-            throw new RuntimeException("Unsupported operand: " + val);
+            String valStr = LLVM.LLVMPrintValueToString(val).getString();
+            int kind = LLVM.LLVMGetValueKind(val);
+            System.err.println("Unsupported operand:");
+            System.err.println("LLVM ValueKind: " + kind);
+            System.err.println("LLVM Value: " + valStr);
+            throw new RuntimeException("Unsupported operand: " + valStr);
         }
     }
 
