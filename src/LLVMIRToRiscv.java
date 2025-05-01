@@ -116,6 +116,7 @@ public class LLVMIRToRiscv {
         System.out.println("val name = " + LLVM.LLVMGetValueName(val));
         System.out.println("val kind = " + LLVM.LLVMGetValueKind(val));
         if (!LLVM.LLVMIsAConstantInt(val).isNull()) {
+            System.out.println("not null");
             long imm = LLVM.LLVMConstIntGetSExtValue(val);
             String reg = freshReg();
             asm.li(reg, imm);
