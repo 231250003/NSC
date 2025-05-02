@@ -6,8 +6,8 @@ public class LLVMIRToRiscv {
     String file_path;
     LLVMModuleRef module;
     AsmBuilder asm = new AsmBuilder();
-    RegisterAllocator allocator = new StackOnlyRegisterAllocator();
-    //RegisterAllocator allocator;
+    //RegisterAllocator allocator = new StackOnlyRegisterAllocator();
+    RegisterAllocator allocator;
     Map<String, String> valueMap = new HashMap<>();  // IR value → stack addr or reg
     public LLVMIRToRiscv(LLVMModuleRef moduleRef, String file_path) {
         this.module = moduleRef;
@@ -43,7 +43,11 @@ public class LLVMIRToRiscv {
         for (String var : firstUse.keySet()) {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var)));
         }
-        allocator = new LinearScanRegisterAllocator(intervals, List.of("s0", "s1", "s2"));
+        List<String> reg=new ArrayList<>();
+        for(int i=5;i<32;i++){
+            reg.add("x"+i);
+        }
+        allocator = new LinearScanRegisterAllocator(intervals, reg);
         //allocator=new StackOnlyRegisterAllocator();
         asm.directive("text");
         asm.directive("globl main");
