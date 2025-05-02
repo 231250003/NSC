@@ -56,7 +56,7 @@ for sysy_file in "$SYSY_DIR"/*.sysy; do
                 echo "✅ C vs RISC-V return values match."
           else
                 echo "❌ C vs RISC-V return values differ!"
-           java -jar ../rars.jar "$riscv_file" ic
+          java -jar ../rars.jar "$riscv_file" ic
           fi
     else
           echo "RISC-V assembly file not found: $riscv_file"
