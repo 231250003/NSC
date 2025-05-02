@@ -69,6 +69,7 @@ public class LLVMIRToRiscv {
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
+                    lineNum++;
                     if (opcode == LLVM.LLVMAlloca) {
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
@@ -213,7 +214,6 @@ public class LLVMIRToRiscv {
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
-                lineNum++;
             }
         }
     }
