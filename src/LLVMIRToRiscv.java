@@ -87,17 +87,17 @@ public class LLVMIRToRiscv {
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
                         if(addr==null) {
                             String reg = freshReg();
-                            asm.instr("lw", reg, addr);
-                            //valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
+                            asm.instr("la",reg,(LLVM.LLVMGetValueName(ptr).getString()));
+                            asm.instr("lw",reg,"0("+reg+")");
                         }
                         else if(addr.contains("sp")){
                             String reg = freshReg();
-                            asm.instr("la",reg,(LLVM.LLVMGetValueName(ptr).getString()));
-                            asm.instr("lw",reg,"0("+reg+")");
                             String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                            asm.instr("lw",reg,addr);
                             if(lval_addr.contains("sp")) asm.instr("sw",reg,lval_addr);
                             else asm.instr("mv",lval_addr,reg);
                             valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+                            //valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
                         }
                         else{
                             String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
