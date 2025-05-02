@@ -140,8 +140,8 @@ public class LLVMIRToRiscv {
                                 throw new RuntimeException("Unsupported binop");
                         }
                         asm.op2(op, destReg, reg1, reg2);
-                        System.out.println(getValueKey(inst).toString());
-                        String addr = allocator.allocate(getValueKey(inst).toString());
+                        System.out.println(LLVM.LLVMGetValueName(inst).getString());
+                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         if(addr.contains("sp")) asm.instr("sw", destReg, addr);
                         else asm.instr("mv",addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
@@ -262,10 +262,6 @@ public class LLVMIRToRiscv {
 
     private String freshReg() {
         return "t" + (regCount++ % 7);
-    }
-
-    private static LLVMValueRef getValueKey(LLVMValueRef value) {
-        return value; // 可拓展为使用 name 或 id 做 key
     }
 
     private int regCount = 0;
