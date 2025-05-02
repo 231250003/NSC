@@ -18,38 +18,33 @@ main:
 mainEntry:
   la t0, a
   lw t0, 0(t0)
-  mv x2, t0
+  mv x0, t0
   li t1, 1
-  add t2, x2, t1
-  mv x5, t2
+  add t2, x0, t1
+  mv x1, t2
   la t0, cccc
   lw t0, 0(t0)
-  mv x6, t0
+  mv x3, t0
   li t1, 0
-  xor t2, x6, t1
+  xor t2, x3, t1
   seqz t2, t2
-  mv x7, t2
-  mv t0, x7
-  sw t0, 4(sp)
-  lw t1, 4(sp)
-  li t2, 0
-  xor t0, t1, t2
-  seqz t0, t0
-  sw t0, 8(sp)
-  lw t1, 8(sp)
-  mv t2, t1
-  sw t2, 12(sp)
-  lw t0, 12(sp)
-  add t1, x5, t0
-  sw t1, 16(sp)
-  lw t2, 16(sp)
+  mv x4, t2
+  mv t0, x4
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x9, t2
+  mv t0, x9
+  mv x10, t0
+  add t1, x1, x10
+  mv x11, t1
+  la t2, b
+  sw x11, 0(t2)
   la t0, b
-  sw t2, 0(t0)
-  la t1, b
-  lw t1, 0(t1)
-  sw t1, 20(sp)
-  lw t2, 20(sp)
-  mv a0, t2
+  lw t0, 0(t0)
+  mv x12, t0
+  mv a0, x12
   li a7, 93
   ecall
   addi sp, sp, 512
