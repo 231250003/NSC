@@ -48,6 +48,7 @@ public class LLVMIRToRiscv {
             reg_list.add("x"+i);
         }
         allocator = new LinearScanRegisterAllocator(intervals, reg_list);
+        allocator=new StackOnlyRegisterAllocator();
         //allocator=new StackOnlyRegisterAllocator();
         asm.directive("text");
         asm.directive("globl main");
