@@ -50,6 +50,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
     public void expireOldIntervals(int currentLine) {
         active.removeIf(interval -> {
             if (interval.end >= currentLine) return false;
+            System.out.println("crzzz");
             String loc = varToLocation.get(interval.varName);
             if (!loc.contains("sp")) {
                 registers.add(loc);
