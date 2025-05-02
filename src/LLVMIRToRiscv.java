@@ -84,6 +84,7 @@ public class LLVMIRToRiscv {
                     } else if (opcode == LLVM.LLVMLoad) {
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 0);
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
+                        if(addr==null)System.out.println("12131432432");
                         if(addr.contains("sp")){
                             String reg = freshReg();
                             if(addr!=null){
