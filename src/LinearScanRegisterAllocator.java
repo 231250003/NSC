@@ -20,9 +20,9 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
     @Override
     public void processInstruction(int lineNumber, String instruction) {
         expireOldIntervals(lineNumber);
-
+        System.out.println(lineNumber);
+        System.out.println("variable:");
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
-            System.out.println("variable:");
             System.out.println(var);
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
