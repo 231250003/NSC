@@ -27,7 +27,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
 //        System.out.println(lineNumber);
 //        System.out.println("variable:");
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
-            //System.out.println(var);
+            System.out.println(var);
             if(var.equals("load_lval")) System.out.println("crz");
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
