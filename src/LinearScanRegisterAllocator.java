@@ -5,7 +5,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
     private final Map<String, Interval> varToInterval;
     private final List<String> registers;
     private final Map<String, String> varToLocation = new HashMap<>();
-    private final List<Interval> active = new ArrayList<>();
+    //private final List<Interval> active = new ArrayList<>();
     private final Map<String, Integer> varOffset = new HashMap<>();
     private int nextOffset = 0;
 
@@ -35,8 +35,8 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
             if (!registers.isEmpty()) {
                 String reg = registers.remove(0);
                 varToLocation.put(var, reg);
-                active.add(interval);
-                active.sort(Comparator.comparingInt(i -> i.end));
+//                active.add(interval);
+//                active.sort(Comparator.comparingInt(i -> i.end));
             } else {
                 if (!varOffset.containsKey(var)) {
                     nextOffset += 4;
@@ -48,6 +48,15 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
     }
 
     public void expireOldIntervals(int currentLine) {
+        for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
+            String var = entry.getKey();
+            Interval interval = entry.getValue();
+            if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
+                System.out.println("crzz");
+                registers.add(varToLocation.get(var));
+                varToLocation.remove(var);
+            }
+        }
 //        active.removeIf(interval -> {
 //            if (interval.end >= currentLine) return false;
 //            String loc = varToLocation.get(interval.varName);
