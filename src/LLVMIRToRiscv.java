@@ -1,29 +1,56 @@
 import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
 import java.util.*;
-
+import java.util.regex.*;
 public class LLVMIRToRiscv {
     String file_path;
     LLVMModuleRef module;
     AsmBuilder asm = new AsmBuilder();
-    RegisterAllocator allocator = new StackOnlyRegisterAllocator();
+    //RegisterAllocator allocator = new StackOnlyRegisterAllocator();
+    RegisterAllocator allocator;
     Map<String, String> valueMap = new HashMap<>();  // IR value → stack addr or reg
     public LLVMIRToRiscv(LLVMModuleRef moduleRef, String file_path) {
         this.module = moduleRef;
         this.file_path = file_path;
     }
-
+    public static Set<String> extractVariables(String line) {
+        Set<String> variables = new HashSet<>();
+        Pattern pattern = Pattern.compile("%[a-zA-Z0-9_\\.]+");
+        Matcher matcher = pattern.matcher(line);
+        while (matcher.find()) {
+            variables.add(matcher.group());
+        }
+        return variables;
+    }
     public void to_riscv() {
+        int lineNum=0;
         emitGlobalVariables();
+        Map<String, Integer> firstUse = new HashMap<>();
+        Map<String, Integer> lastUse = new HashMap<>();
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    String line = LLVM.LLVMPrintValueToString(inst).getString();
+                    for (String var : extractVariables(line)) {
+                        firstUse.putIfAbsent(var, lineNum);
+                        lastUse.put(var, lineNum);
+                    }
+                    lineNum++;
+                }
+            }
+        }
+        List<Interval> intervals = new ArrayList<>();
+        for (String var : firstUse.keySet()) {
+            intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var)));
+        }
+        allocator = new LinearScanRegisterAllocator(intervals, List.of("s0", "s1", "s2"));
         asm.directive("text");
         asm.directive("globl main");
-
+        lineNum=0;
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             String funcName = LLVM.LLVMGetValueName(func).getString();
             if (!"main".equals(funcName)) continue;
-
             asm.label("main");
-
             // Prologue
             int stackSize = 512;
             asm.instr("addi", "sp", "sp", "-" + stackSize);
@@ -36,7 +63,7 @@ public class LLVMIRToRiscv {
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-
+                    allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
                     if (opcode == LLVM.LLVMAlloca) {
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
@@ -46,7 +73,8 @@ public class LLVMIRToRiscv {
                         String valReg = evaluate(val);
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
                         if(addr!=null){
-                            asm.instr("sw", valReg, addr);
+                            if(addr.contains("sp")) asm.instr("sw", valReg, addr);
+                            else asm.instr("mv",addr,valReg);
                         }
                         else{
                             String reg=freshReg();
@@ -56,18 +84,27 @@ public class LLVMIRToRiscv {
                     } else if (opcode == LLVM.LLVMLoad) {
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 0);
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
-                        String reg = freshReg();
-                        if(addr!=null){
-                            asm.instr("lw", reg, addr);
-                            //valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
+                        if(addr.contains("sp")){
+                            String reg = freshReg();
+                            if(addr!=null){
+                                asm.instr("lw", reg, addr);
+                                //valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
+                            }
+                            else{
+                                asm.instr("la",reg,(LLVM.LLVMGetValueName(ptr).getString()));
+                                asm.instr("lw",reg,"0("+reg+")");
+                            }
+                            String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                            if(lval_addr.contains("sp")) asm.instr("sw",reg,lval_addr);
+                            else asm.instr("mv",lval_addr,reg);
+                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
                         }
                         else{
-                            asm.instr("la",reg,(LLVM.LLVMGetValueName(ptr).getString()));
-                            asm.instr("lw",reg,"0("+reg+")");
+                            String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                            if(lval_addr.contains("sp")) asm.instr("sw",addr,lval_addr);
+                            else asm.instr("mv",lval_addr,addr);
+                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
                         }
-                        String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        asm.instr("sw",reg,lval_addr);
-                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
                     } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                             opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
                             opcode == LLVM.LLVMSRem) {
@@ -98,9 +135,9 @@ public class LLVMIRToRiscv {
                         }
                         asm.op2(op, destReg, reg1, reg2);
                         String addr = allocator.allocate(getValueKey(inst).toString());
-                        asm.instr("sw", destReg, addr);
+                        if(addr.contains("sp")) asm.instr("sw", destReg, addr);
+                        else asm.instr("mv",addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
-
                     } else if (opcode == LLVM.LLVMRet) {
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
                         String reg = evaluate(retVal);
@@ -118,7 +155,8 @@ public class LLVMIRToRiscv {
                         String destReg = freshReg();
                         asm.mv(destReg, srcReg);
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        asm.instr("sw", destReg, addr);
+                        if(addr.contains("sp")) asm.instr("sw", destReg, addr);
+                        else asm.instr("mv",addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     }
                     else if (opcode == LLVM.LLVMICmp) {
@@ -163,6 +201,7 @@ public class LLVMIRToRiscv {
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
+                lineNum++;
             }
         }
     }
@@ -175,9 +214,12 @@ public class LLVMIRToRiscv {
             asm.li(reg, imm);
             return reg;
         } else if (valueMap.containsKey(LLVM.LLVMGetValueName(val).getString())) {
-            String reg = freshReg();
-            asm.instr("lw", reg, valueMap.get(LLVM.LLVMGetValueName(val).getString()));
-            return reg;
+            if(valueMap.get(LLVM.LLVMGetValueName(val).getString()).contains("sp")) {
+                String reg = freshReg();
+                asm.instr("lw", reg, valueMap.get(LLVM.LLVMGetValueName(val).getString()));
+                return reg;
+            }
+            else return valueMap.get(LLVM.LLVMGetValueName(val).getString());
         }
         else if (LLVM.LLVMIsAGlobalVariable(val) != null) {
             String reg = freshReg();

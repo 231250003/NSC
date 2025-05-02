@@ -19,4 +19,8 @@ public class StackOnlyRegisterAllocator implements RegisterAllocator {
     public int getStackSize() {
         return nextOffset;
     }
+    @Override
+    public void processInstruction(int lineNumber, String instruction){
+        return;
+    }
 }
