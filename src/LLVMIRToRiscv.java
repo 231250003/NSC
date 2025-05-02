@@ -140,7 +140,7 @@ public class LLVMIRToRiscv {
                                 throw new RuntimeException("Unsupported binop");
                         }
                         asm.op2(op, destReg, reg1, reg2);
-                        System.out.println(LLVM.LLVMGetValueName(inst).getString());
+                        //System.out.println(LLVM.LLVMGetValueName(inst).getString());
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         if(addr.contains("sp")) asm.instr("sw", destReg, addr);
                         else asm.instr("mv",addr,destReg);
