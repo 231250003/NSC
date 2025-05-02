@@ -44,7 +44,7 @@ public class LLVMIRToRiscv {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var)));
         }
         List<String> reg_list=new ArrayList<>();
-        for(int i=5;i<32;i++){
+        for(int i=10;i<32;i++){
             reg_list.add("x"+i);
         }
         allocator = new LinearScanRegisterAllocator(intervals, reg_list);
@@ -265,7 +265,7 @@ public class LLVMIRToRiscv {
     }
 
     private String freshReg() {
-        return "t" + (regCount++ % 7);
+        return "t" + (regCount++ % 3);
     }
 
     private int regCount = 0;
