@@ -54,7 +54,6 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
             if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
                 registers.add(varToLocation.get(var));
                 varToLocation.remove(var);
-                System.out.println("crzzzz");
             }
         }
 //        active.removeIf(interval -> {
