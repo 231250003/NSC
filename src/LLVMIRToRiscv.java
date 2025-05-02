@@ -43,7 +43,8 @@ public class LLVMIRToRiscv {
         for (String var : firstUse.keySet()) {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var)));
         }
-        allocator = new LinearScanRegisterAllocator(intervals, List.of("s0", "s1", "s2"));
+        //allocator = new LinearScanRegisterAllocator(intervals, List.of("s0", "s1", "s2"));
+        allocator=new StackOnlyRegisterAllocator();
         asm.directive("text");
         asm.directive("globl main");
         lineNum=0;
