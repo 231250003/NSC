@@ -92,6 +92,8 @@ public class LLVMIRToRiscv {
                             String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                             if(lval_addr.contains("sp")) asm.instr("sw",reg,lval_addr);
                             else asm.instr("mv",lval_addr,reg);
+                            System.out.println("LLVMTOIR");
+                            System.out.println(LLVM.LLVMGetValueName(inst).getString());
                             valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
                         }
                         else if(addr.contains("sp")){
