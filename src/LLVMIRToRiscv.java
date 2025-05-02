@@ -229,6 +229,7 @@ public class LLVMIRToRiscv {
             return reg;
         }
         else {
+            System.out.println(LLVM.LLVMGetValueName(val).getString());
             String valStr = LLVM.LLVMPrintValueToString(val).getString();
             int kind = LLVM.LLVMGetValueKind(val);
             System.err.println("Unsupported operand:");
