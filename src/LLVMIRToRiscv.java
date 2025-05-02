@@ -18,7 +18,7 @@ public class LLVMIRToRiscv {
         Pattern pattern = Pattern.compile("%[a-zA-Z0-9_\\.]+");
         Matcher matcher = pattern.matcher(line);
         while (matcher.find()) {
-            variables.add(matcher.group());
+            variables.add(matcher.group().substring(1));
         }
         return variables;
     }
@@ -86,8 +86,8 @@ public class LLVMIRToRiscv {
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 0);
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
                         if(addr==null) {
-                            System.out.println("LLVMTOIR");
-                            System.out.println(LLVM.LLVMGetValueName(inst).getString());
+                            //System.out.println("LLVMTOIR");
+                            //System.out.println(LLVM.LLVMGetValueName(inst).getString());
                             String reg = freshReg();
                             asm.instr("la",reg,(LLVM.LLVMGetValueName(ptr).getString()));
                             asm.instr("lw",reg,"0("+reg+")");
