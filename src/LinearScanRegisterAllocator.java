@@ -49,10 +49,11 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
 
     public void expireOldIntervals(int currentLine) {
         for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
+            System.out.println("crzz");
+
             String var = entry.getKey();
             Interval interval = entry.getValue();
             if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
-                System.out.println("crzz");
                 registers.add(varToLocation.get(var));
                 varToLocation.remove(var);
             }
