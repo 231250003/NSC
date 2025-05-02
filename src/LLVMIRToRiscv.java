@@ -204,7 +204,8 @@ public class LLVMIRToRiscv {
                                 throw new RuntimeException("Unsupported icmp predicate: " + pred);
                         }
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        asm.instr("sw", destReg, addr);
+                        if(addr.contains("sp"))asm.instr("sw", destReg, addr);
+                        else asm.instr("mv", addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     }
                     else {
