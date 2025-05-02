@@ -13,6 +13,10 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
         this.registers = new ArrayList<>(registers);
         this.varToInterval = new HashMap<>();
         for (Interval interval : allIntervals) {
+            System.out.println("interval");
+            System.out.println(interval.varName);
+            System.out.println(interval.start);
+            System.out.println(interval.end);
             varToInterval.put(interval.varName, interval);
         }
     }
@@ -20,8 +24,8 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
     @Override
     public void processInstruction(int lineNumber, String instruction) {
         expireOldIntervals(lineNumber);
-        System.out.println(lineNumber);
-        System.out.println("variable:");
+//        System.out.println(lineNumber);
+//        System.out.println("variable:");
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
             System.out.println(var);
             Interval interval = varToInterval.get(var);
