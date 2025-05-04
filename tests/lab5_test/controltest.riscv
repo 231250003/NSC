@@ -56,16 +56,16 @@ while.cond:
 merge:
   j while.cond
 if.then:
-  mv x26, x4
-  li t2, 1
-  add t0, x26, t2
-  mv x27, t0
-  mv x4, x27
+  mv x26, x1
+  mv x27, x4
+  sub t2, x26, x27
+  mv x28, t2
+  mv x1, x28
   j merge
 if.else:
-  mv x29, x4
-  mv x30, x1
-  sub t1, x29, x30
-  mv x31, t1
-  mv x4, x31
+  mv x30, x4
+  mv x31, x1
+  sub t0, x30, x31
+  mv x3, t0
+  mv x4, x3
   j merge
