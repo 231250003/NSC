@@ -6,9 +6,8 @@ int main() {
     int b = y;
     while (b > 0) {
            if (a > b) {
-                          //a = a - b;
-                          b=b+1;
-                      }
+                  a = a - b;
+           }
             else {
                 b = b - a;
             }
