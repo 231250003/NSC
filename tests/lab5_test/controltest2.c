@@ -12,11 +12,14 @@ int main() {
               }
              else break;
         }
+        while(b>35){
         if(b>70){
             b=b-5;
             continue;
         }
         b=b-10;
+        }
+        b=b-3;
     }
     int result = a;
 	return result;
