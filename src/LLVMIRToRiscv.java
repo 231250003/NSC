@@ -157,7 +157,6 @@ public class LLVMIRToRiscv {
                         asm.li("a7", 93);  // syscall exit
                         asm.instr("ecall");
                         asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
-                        asm.writeToFile(file_path);
                     }
                     else if (opcode == LLVM.LLVMZExt) {
                         LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
@@ -231,6 +230,7 @@ public class LLVMIRToRiscv {
                 }
             }
         }
+        asm.writeToFile(file_path);
     }
 
     private String evaluate(LLVMValueRef val) {
