@@ -14,6 +14,8 @@ int main() {
     }
     while (b+a>20) {
         if(a>=a) return 1;
+        if(a==a) return 2;
+        else return 3;
         while(a>10){
             if(a>40){
              a=a-5;
