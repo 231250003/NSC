@@ -23,18 +23,6 @@ public class LLVMIRToRiscv {
         return variables;
     }
     public void to_riscv() {
-        LLVMValueRef func1 = LLVM.LLVMGetNamedFunction(module, "main");
-        System.out.println("Function: " +  LLVM.LLVMGetValueName(func1).getString());
-
-        int blockCount = 0;
-        for (LLVMBasicBlockRef bb =  LLVM.LLVMGetFirstBasicBlock(func1);
-             bb != null && !bb.isNull();
-             bb =  LLVM.LLVMGetNextBasicBlock(bb)) {
-            String name =  LLVM.LLVMPrintValueToString( LLVM.LLVMBasicBlockAsValue(bb)).getString();
-            System.out.println("  Basic block: " + name);
-            blockCount++;
-        }
-        System.out.println("Total basic blocks: " + blockCount);
         int lineNum=0;
         emitGlobalVariables();
         Map<String, Integer> firstUse = new HashMap<>();
@@ -64,6 +52,18 @@ public class LLVMIRToRiscv {
         asm.directive("text");
         asm.directive("globl main");
         lineNum=0;
+        LLVMValueRef func1 = LLVM.LLVMGetNamedFunction(module, "main");
+        System.out.println("Function: " +  LLVM.LLVMGetValueName(func1).getString());
+
+        int blockCount = 0;
+        for (LLVMBasicBlockRef bb =  LLVM.LLVMGetFirstBasicBlock(func1);
+             bb != null && !bb.isNull();
+             bb =  LLVM.LLVMGetNextBasicBlock(bb)) {
+            String name =  LLVM.LLVMPrintValueToString( LLVM.LLVMBasicBlockAsValue(bb)).getString();
+            System.out.println("  Basic block: " + name);
+            blockCount++;
+        }
+        System.out.println("Total basic blocks: " + blockCount);
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             String funcName = LLVM.LLVMGetValueName(func).getString();
             if (!"main".equals(funcName)) continue;
