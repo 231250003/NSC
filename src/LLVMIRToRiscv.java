@@ -213,16 +213,16 @@ public class LLVMIRToRiscv {
                             String loop_label = LLVM.LLVMGetValueName(dest).getString();
                             asm.j(loop_label);
                         } else if (numOperands == 3) {
-                            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                            //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                             LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
-                            LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 1);
-                            LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 2);
+                            LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
+                            LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
                             String condReg = evaluate(cond);
                             String trueLabel = LLVM.LLVMGetValueName(ifTrue).getString();
                             String falseLabel = LLVM.LLVMGetValueName(ifFalse).getString();
-                            System.out.println( LLVM.LLVMGetValueName(cond).getString());
-                            System.out.println(trueLabel);
-                            System.out.println(falseLabel);
+//                            System.out.println( LLVM.LLVMGetValueName(cond).getString());
+//                            System.out.println(trueLabel);
+//                            System.out.println(falseLabel);
                             asm.bnez(condReg, trueLabel);
                             asm.j(falseLabel);
                         }
