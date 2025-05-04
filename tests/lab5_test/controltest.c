@@ -1,19 +1,16 @@
 int main() {
-    int i = 0;
-    int j = 0;
-    while (i < 3) {
-        j = 0;
-        while (j < 5) {
-            if (j == 2) {
-                j = j + 1;
-                continue;
-            }
-            if (j == 4) {
-                break;
-            }
-            j = j + 1;
+    int x = 0;
+    int y = 0;
+    while (x < 10) {
+        if (x % 2 == 0) {
+            x = x + 1;
+            continue;
         }
-        i = i + 1;
+        if (x == 7) {
+            break;
+        }
+        y = y + x;
+        x = x + 1;
     }
-    return i + j;
+    return y;
 }
