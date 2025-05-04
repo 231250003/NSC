@@ -39,6 +39,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
                     nextOffset += 4;
                     varOffset.put(var, nextOffset);
                 }
+                varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
             }
         }
     }
