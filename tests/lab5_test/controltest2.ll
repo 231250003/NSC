@@ -121,7 +121,7 @@ cur38:                                            ; preds = %while.cond40
 while.stmt39:                                     ; preds = %while.cond40
   %b45 = alloca i32, align 4
   store i32 30, i32* %b45, align 4
-  %load_lval46 = load i32, i32* %b45, align 4
+  %load_lval46 = load i32, i32* %b, align 4
   %sub47 = sub i32 %load_lval46, 10
   ret i32 %sub47
 
@@ -136,13 +136,13 @@ merge48:                                          ; preds = %merge57
   br label %while.cond40
 
 if.then52:                                        ; No predecessors!
-  %load_lval55 = load i32, i32* %b45, align 4
+  %load_lval55 = load i32, i32* %b, align 4
   %sub56 = sub i32 %load_lval55, 5
-  store i32 %sub56, i32* %b45, align 4
+  store i32 %sub56, i32* %b, align 4
   br label %while.cond40
 
 if.else53:                                        ; No predecessors!
-  %load_lval58 = load i32, i32* %b45, align 4
+  %load_lval58 = load i32, i32* %b, align 4
   %cmp59 = icmp sgt i32 %load_lval58, 50
   %zext_to_i3260 = zext i1 %cmp59 to i32
   %to_bool63 = icmp ne i32 %zext_to_i3260, 0
@@ -152,13 +152,13 @@ merge57:                                          ; preds = %merge66, %if.then61
   br label %merge48
 
 if.then61:                                        ; preds = %if.else53
-  %load_lval64 = load i32, i32* %b45, align 4
+  %load_lval64 = load i32, i32* %b, align 4
   %sub65 = sub i32 %load_lval64, 7
-  store i32 %sub65, i32* %b45, align 4
+  store i32 %sub65, i32* %b, align 4
   br label %merge57
 
 if.else62:                                        ; preds = %if.else53
-  %load_lval67 = load i32, i32* %b45, align 4
+  %load_lval67 = load i32, i32* %b, align 4
   %cmp68 = icmp sgt i32 %load_lval67, 30
   %zext_to_i3269 = zext i1 %cmp68 to i32
   %to_bool72 = icmp ne i32 %zext_to_i3269, 0
@@ -168,9 +168,9 @@ merge66:                                          ; preds = %if.then70
   br label %merge57
 
 if.then70:                                        ; preds = %if.else62
-  %load_lval73 = load i32, i32* %b45, align 4
+  %load_lval73 = load i32, i32* %b, align 4
   %sub74 = sub i32 %load_lval73, 1
-  store i32 %sub74, i32* %b45, align 4
+  store i32 %sub74, i32* %b, align 4
   br label %merge66
 
 if.else71:                                        ; preds = %if.else62
