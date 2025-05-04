@@ -24,6 +24,9 @@ int main() {
         while(b>35){
             {
                 int b=30;
+                {
+                    return b;
+                }
             }
             return b-10;
             if(b>70){
