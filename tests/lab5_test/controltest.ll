@@ -16,40 +16,22 @@ mainEntry:
 
 cur:                                              ; preds = %while.cond
   %result = alloca i32, align 4
-  %load_lval13 = load i32, i32* %a, align 4
-  store i32 %load_lval13, i32* %result, align 4
-  %load_lval14 = load i32, i32* %result, align 4
-  ret i32 %load_lval14
+  %load_lval5 = load i32, i32* %a, align 4
+  store i32 %load_lval5, i32* %result, align 4
+  %load_lval6 = load i32, i32* %result, align 4
+  ret i32 %load_lval6
 
 while.stmt:                                       ; preds = %while.cond
-  %load_lval3 = load i32, i32* %a, align 4
-  %load_lval4 = load i32, i32* %b, align 4
-  %cmp5 = icmp sgt i32 %load_lval3, %load_lval4
-  %zext_to_i326 = zext i1 %cmp5 to i32
-  %to_bool7 = icmp ne i32 %zext_to_i326, 0
-  br i1 %to_bool7, label %if.then, label %if.else
+  %load_lval3 = load i32, i32* %b, align 4
+  %load_lval4 = load i32, i32* %a, align 4
+  %sub = sub i32 %load_lval3, %load_lval4
+  store i32 %sub, i32* %b, align 4
+  br label %while.cond
 
-while.cond:                                       ; preds = %merge, %mainEntry
+while.cond:                                       ; preds = %while.stmt, %mainEntry
   %load_lval2 = load i32, i32* %b, align 4
   %cmp = icmp sgt i32 %load_lval2, 0
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt, label %cur
-
-merge:                                            ; preds = %if.else, %if.then
-  br label %while.cond
-
-if.then:                                          ; preds = %while.stmt
-  %load_lval8 = load i32, i32* %a, align 4
-  %load_lval9 = load i32, i32* %b, align 4
-  %sub = sub i32 %load_lval8, %load_lval9
-  store i32 %sub, i32* %a, align 4
-  br label %merge
-
-if.else:                                          ; preds = %while.stmt
-  %load_lval10 = load i32, i32* %b, align 4
-  %load_lval11 = load i32, i32* %a, align 4
-  %sub12 = sub i32 %load_lval10, %load_lval11
-  store i32 %sub12, i32* %b, align 4
-  br label %merge
 }
