@@ -20,6 +20,7 @@ int main() {
             }
             else if(b>50) b=b-7;
             else if(b>30) b=b-1;
+            else return 10;
             }
         b=b-3;
         a=a+1;
