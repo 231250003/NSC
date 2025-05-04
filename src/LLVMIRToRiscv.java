@@ -58,7 +58,8 @@ public class LLVMIRToRiscv {
             blockCount++;
         }
         if(blockCount>1){
-            allocator=new LinearScanRegisterAllocator(intervals,reg_list);
+            reg_list.remove("x8");
+            allocator=new ControlFlowRegisterAllocator(intervals,reg_list,asm);
         }
         asm.directive("text");
         asm.directive("globl main");

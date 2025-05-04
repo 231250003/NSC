@@ -8,13 +8,14 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
     //private final List<Interval> active = new ArrayList<>();
     private final Map<String, Integer> varOffset = new HashMap<>();
     private int nextOffset = 0;
-
-    public ControlFlowRegisterAllocator(List<Interval> allIntervals, List<String> registers) {
+    private  AsmBuilder asmBuilder;
+    public ControlFlowRegisterAllocator(List<Interval> allIntervals, List<String> registers,AsmBuilder asmBuilder) {
         this.registers = new ArrayList<>(registers);
         this.varToInterval = new HashMap<>();
         for (Interval interval : allIntervals) {
             varToInterval.put(interval.varName, interval);
         }
+        this.asmBuilder=asmBuilder;
     }
 
     @Override
@@ -39,6 +40,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
                     varOffset.put(var, nextOffset);
                 }
                 varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
+                asmBuilder.instr("sw","x8",varToLocation.get(var));
             }
         }
     }
