@@ -28,22 +28,44 @@ cur:
   li a7, 93
   ecall
 while.stmt:
-  mv x13, x4
-  mv x14, x1
-  sub t2, x13, x14
+  mv x13, x1
+  mv x14, x4
+  sgt t2, x13, x14
   mv x15, t2
-  mv x4, x15
-  j while.cond
+  mv t0, x15
+  mv x16, t0
+  li t1, 0
+  xor t2, x16, t1
+  snez t2, t2
+  mv x17, t2
+  bnez x17, if.else
+  j if.then
 while.cond:
-  mv x16, x4
+  mv x20, x4
   li t0, 0
-  sgt t1, x16, t0
-  mv x17, t1
-  mv t2, x17
-  mv x18, t2
+  sgt t1, x20, t0
+  mv x21, t1
+  mv t2, x21
+  mv x22, t2
   li t0, 0
-  xor t1, x18, t0
+  xor t1, x22, t0
   snez t1, t1
-  mv x19, t1
-  bnez x19, cur
+  mv x23, t1
+  bnez x23, cur
   j while.stmt
+merge:
+  j while.cond
+if.then:
+  mv x26, x4
+  mv x27, x1
+  sub t2, x26, x27
+  mv x28, t2
+  mv x4, x28
+  j merge
+if.else:
+  mv x30, x4
+  mv x31, x1
+  sub t0, x30, x31
+  mv x3, t0
+  mv x4, x3
+  j merge
