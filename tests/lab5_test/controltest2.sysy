@@ -4,6 +4,7 @@ int y = 98;
 int main() {
     int a = x;
     int b = y;
+    a=x+y;
     while (b+a>20) {
         while(a>10){
             if(a>40){
