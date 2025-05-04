@@ -117,8 +117,8 @@ cur19:
   xor t2, x26, t1
   snez t2, t2
   mv x27, t2
-  bnez x27, if.then62
-  j merge56
+  bnez x27, if.then63
+  j merge57
 while.stmt20:
   mv x31, x4
   li t0, 70
@@ -158,11 +158,11 @@ if.else31:
   mv x20, x4
   li t0, 50
   sgt t1, x20, t0
-  mv x21, t1
-  mv t2, x21
-  mv x22, t2
+  mv x22, t1
+  mv t2, x22
+  mv x21, t2
   li t0, 0
-  xor t1, x22, t0
+  xor t1, x21, t0
   snez t1, t1
   mv x24, t1
   bnez x24, if.then39
@@ -188,7 +188,7 @@ if.else40:
   snez t2, t2
   mv x9, t2
   bnez x9, if.then48
-  j merge44
+  j if.else49
 merge44:
   j merge35
 if.then48:
@@ -198,12 +198,18 @@ if.then48:
   mv x17, t1
   mv x4, x17
   j merge44
-merge56:
-  j while.cond
-if.then62:
-  mv x14, x1
+if.else49:
   li t2, 10
-  sub t0, x14, t2
-  mv x15, t0
-  mv x1, x15
-  j merge56
+  mv a0, t2
+  addi sp, sp, 512
+  li a7, 93
+  ecall
+merge57:
+  j while.cond
+if.then63:
+  mv x15, x1
+  li t0, 10
+  sub t1, x15, t0
+  mv x18, t1
+  mv x1, x18
+  j merge57
