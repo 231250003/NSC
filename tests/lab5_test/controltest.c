@@ -1,16 +1,17 @@
 int main() {
-    int x = 0;
-    int y = 0;
-    while (x < 10) {
-        if (x % 2 == 0) {
-            x = x + 1;
-            continue;
+    int a = 0;
+    int b = 0;
+    while (a < 4) {
+        if (a == 1) {
+            b = b + 2;
+        } else {
+            if (b < 3) {
+                b = b + 1;
+            } else {
+                b = b - 1;
+            }
         }
-        if (x == 7) {
-            break;
-        }
-        y = y + x;
-        x = x + 1;
+        a = a + 1;
     }
-    return y;
+    return b;
 }
