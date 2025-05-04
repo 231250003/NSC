@@ -27,6 +27,7 @@ public class LLVMIRToRiscv {
         emitGlobalVariables();
         Map<String, Integer> firstUse = new HashMap<>();
         Map<String, Integer> lastUse = new HashMap<>();
+        Map<String,Integer> used_num=new HashMap<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
@@ -34,6 +35,7 @@ public class LLVMIRToRiscv {
                     for (String var : extractVariables(line)) {
                         firstUse.putIfAbsent(var, lineNum);
                         lastUse.put(var, lineNum);
+                        used_num.put(var, used_num.getOrDefault(var, 0) + 1);
                     }
                     lineNum++;
                 }
@@ -41,7 +43,7 @@ public class LLVMIRToRiscv {
         }
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
-            intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var)));
+            intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var),used_num.get(var)));
         }
         List<String> reg_list=new ArrayList<>();
         for(int i=0;i<32;i++){
@@ -53,10 +55,11 @@ public class LLVMIRToRiscv {
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func1);
              bb != null && !bb.isNull();
              bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-            String name = LLVM.LLVMPrintValueToString(LLVM.LLVMBasicBlockAsValue(bb)).getString();
             blockCount++;
         }
-        if(blockCount>1)allocator=new StackOnlyRegisterAllocator();
+        if(blockCount>1){
+            allocator=new ControlFlowRegisterAllocator(intervals,reg_list);
+        }
         asm.directive("text");
         asm.directive("globl main");
         lineNum=0;
