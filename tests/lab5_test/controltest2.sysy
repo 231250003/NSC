@@ -6,7 +6,9 @@ int main() {
     int b = y;
     while (b+a>20) {
         if (a > b+10) {
-            a = a - b;
+           if(a+b>10) a = a - b;
+           else if(a>10) a=a-20;
+           else b=b-5;
         } else {
             b = b - a;
         }
