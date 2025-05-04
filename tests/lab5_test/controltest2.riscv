@@ -29,96 +29,110 @@ cur:
   ecall
 while.stmt:
   mv x13, x1
-  mv x14, x4
-  li t2, 10
-  add t0, x14, t2
-  mv x15, t0
-  slt t1, x13, x15
-  mv x16, t1
-  mv t2, x16
-  mv x17, t2
-  li t0, 0
-  xor t1, x17, t0
-  snez t1, t1
-  mv x18, t1
-  bnez x18, if.then
-  j if.else
+  li t2, 0
+  xor t0, x13, t2
+  snez t0, t0
+  mv x14, t0
+  bnez x14, if.then
+  j merge
 while.cond:
-  mv x21, x4
-  mv x22, x1
-  add t2, x21, x22
-  mv x23, t2
-  li t0, 20
-  sgt t1, x23, t0
-  mv x24, t1
-  mv t2, x24
-  mv x25, t2
-  li t0, 0
-  xor t1, x25, t0
-  snez t1, t1
-  mv x26, t1
-  bnez x26, while.stmt
+  mv x17, x4
+  mv x18, x1
+  add t1, x17, x18
+  mv x19, t1
+  li t2, 20
+  sgt t0, x19, t2
+  mv x20, t0
+  mv t1, x20
+  mv x21, t1
+  li t2, 0
+  xor t0, x21, t2
+  snez t0, t0
+  mv x22, t0
+  bnez x22, while.stmt
   j cur
 merge:
-  j while.cond
-if.then:
-  mv x29, x1
-  mv x30, x4
-  add t2, x29, x30
-  mv x31, t2
-  li t0, 50
-  sgt t1, x31, t0
-  mv x3, t1
-  mv t2, x3
-  mv x8, t2
-  li t0, 0
-  xor t1, x8, t0
-  snez t1, t1
-  mv x11, t1
-  bnez x11, if.then16
-  j if.else17
-if.else:
-  mv x14, x4
-  mv x15, x1
-  sub t2, x14, x15
-  mv x13, t2
-  mv x4, x13
-  j merge
-merge10:
-  j merge
-if.then16:
-  mv x17, x1
-  mv x18, x4
-  sub t0, x17, x18
-  mv x20, t0
-  mv x1, x20
-  j merge10
-if.else17:
-  mv x21, x1
+  mv x25, x1
+  mv x26, x4
   li t1, 10
-  sgt t2, x21, t1
-  mv x22, t2
-  mv t0, x22
-  mv x23, t0
-  li t1, 0
-  xor t2, x23, t1
-  snez t2, t2
-  mv x24, t2
-  bnez x24, if.then25
-  j if.else26
-merge21:
-  j merge10
-if.then25:
-  mv x28, x1
-  li t0, 20
-  sub t1, x28, t0
-  mv x27, t1
-  mv x1, x27
-  j merge21
-if.else26:
-  mv x29, x4
-  li t2, 5
-  sub t0, x29, t2
+  add t2, x26, t1
+  mv x27, t2
+  slt t0, x25, x27
+  mv x28, t0
+  mv t1, x28
+  mv x29, t1
+  li t2, 0
+  xor t0, x29, t2
+  snez t0, t0
   mv x30, t0
-  mv x4, x30
-  j merge21
+  bnez x30, if.then12
+  j if.else
+if.then:
+  li t1, 100
+  mv a0, t1
+  addi sp, sp, 512
+  li a7, 93
+  ecall
+merge6:
+  j while.cond
+if.then12:
+  mv x8, x1
+  mv x11, x4
+  add t2, x8, x11
+  mv x10, t2
+  li t0, 50
+  sgt t1, x10, t0
+  mv x12, t1
+  mv t2, x12
+  mv x13, t2
+  li t0, 0
+  xor t1, x13, t0
+  snez t1, t1
+  mv x16, t1
+  bnez x16, if.then20
+  j if.else21
+if.else:
+  mv x17, x4
+  mv x18, x1
+  sub t2, x17, x18
+  mv x19, t2
+  mv x4, x19
+  j merge6
+merge14:
+  j merge6
+if.then20:
+  mv x21, x1
+  mv x22, x4
+  sub t0, x21, x22
+  mv x24, t0
+  mv x1, x24
+  j merge14
+if.else21:
+  mv x26, x1
+  li t1, 10
+  sgt t2, x26, t1
+  mv x27, t2
+  mv t0, x27
+  mv x25, t0
+  li t1, 0
+  xor t2, x25, t1
+  snez t2, t2
+  mv x28, t2
+  bnez x28, if.then29
+  j if.else30
+merge25:
+  j merge14
+if.then29:
+  mv x3, x1
+  li t0, 20
+  sub t1, x3, t0
+  mv x31, t1
+  mv x1, x31
+  j merge25
+if.else30:
+  mv x8, x4
+  li t2, 5
+  sub t0, x8, t2
+  mv x11, t0
+  mv x4, x11
+  j merge25
