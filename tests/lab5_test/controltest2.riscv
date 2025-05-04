@@ -64,14 +64,61 @@ merge:
 if.then:
   mv x29, x1
   mv x30, x4
-  sub t2, x29, x30
+  add t2, x29, x30
   mv x31, t2
-  mv x1, x31
-  j merge
+  li t0, 10
+  sgt t1, x31, t0
+  mv x3, t1
+  mv t2, x3
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x11, t1
+  bnez x11, if.then16
+  j if.else17
 if.else:
-  mv x8, x4
-  mv x11, x1
-  sub t0, x8, x11
-  mv x10, t0
-  mv x4, x10
+  mv x14, x4
+  mv x15, x1
+  sub t2, x14, x15
+  mv x13, t2
+  mv x4, x13
   j merge
+merge10:
+  j merge
+if.then16:
+  mv x17, x1
+  mv x18, x4
+  sub t0, x17, x18
+  mv x20, t0
+  mv x1, x20
+  j merge10
+if.else17:
+  mv x21, x1
+  li t1, 10
+  sgt t2, x21, t1
+  mv x22, t2
+  mv t0, x22
+  mv x23, t0
+  li t1, 0
+  xor t2, x23, t1
+  snez t2, t2
+  mv x24, t2
+  bnez x24, if.then25
+  j if.else26
+merge21:
+  j merge10
+if.then25:
+  mv x28, x1
+  li t0, 20
+  sub t1, x28, t0
+  mv x27, t1
+  mv x1, x27
+  j merge21
+if.else26:
+  mv x29, x4
+  li t2, 5
+  sub t0, x29, t2
+  mv x30, t0
+  mv x4, x30
+  j merge21
