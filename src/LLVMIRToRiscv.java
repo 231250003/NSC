@@ -48,7 +48,15 @@ public class LLVMIRToRiscv {
             if(i!=0&&i!=2&&i!=5&&i!=6&&i!=7) reg_list.add("x"+i);
         }
         allocator = new LinearScanRegisterAllocator(intervals, reg_list);
-       // allocator=new StackOnlyRegisterAllocator();
+        LLVMValueRef func1 = LLVM.LLVMGetNamedFunction(module, "main");
+        int blockCount = 0;
+        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func1);
+             bb != null && !bb.isNull();
+             bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+            String name = LLVM.LLVMPrintValueToString(LLVM.LLVMBasicBlockAsValue(bb)).getString();
+            blockCount++;
+        }
+        if(blockCount>1)allocator=new StackOnlyRegisterAllocator();
         asm.directive("text");
         asm.directive("globl main");
         lineNum=0;
