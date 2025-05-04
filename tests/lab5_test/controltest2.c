@@ -26,7 +26,9 @@ int main() {
                 int b=30;
                 {
                     while(1){
-                    return b;
+                        if(b<20)return b;
+                        else b=b-7;
+                        break;
                     }
                 }
             }
