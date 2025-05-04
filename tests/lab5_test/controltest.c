@@ -4,13 +4,17 @@ int y = 98;
 int main() {
     int a = x;
     int b = y;
-    while (b != 0) {
-        if (a > b) {
-            a = a - b;
-        } else {
-            b = b - a;
+    int x = 10;
+    int y = 5;
+    if (x > 0) {
+       x=a;
+        if (y > 0) {
+            x=x-1;
+            y=y-2;
         }
+        x=x+10;
+        a=a-4;
     }
-    int result = a;
+    int result = x;
 	return result;
 }
