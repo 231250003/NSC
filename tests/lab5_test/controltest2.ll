@@ -16,15 +16,15 @@ mainEntry:
 
 cur:                                              ; preds = %while.cond
   %result = alloca i32, align 4
-  %load_lval35 = load i32, i32* %a, align 4
-  store i32 %load_lval35, i32* %result, align 4
-  %load_lval36 = load i32, i32* %result, align 4
-  ret i32 %load_lval36
+  %load_lval47 = load i32, i32* %a, align 4
+  store i32 %load_lval47, i32* %result, align 4
+  %load_lval48 = load i32, i32* %result, align 4
+  ret i32 %load_lval48
 
 while.stmt:                                       ; preds = %while.cond
   br label %while.cond6
 
-while.cond:                                       ; preds = %cur16, %mainEntry
+while.cond:                                       ; preds = %merge37, %mainEntry
   %load_lval2 = load i32, i32* %b, align 4
   %load_lval3 = load i32, i32* %a, align 4
   %add = add i32 %load_lval2, %load_lval3
@@ -66,7 +66,16 @@ cur16:                                            ; preds = %while.cond18
   %load_lval33 = load i32, i32* %b, align 4
   %sub34 = sub i32 %load_lval33, 3
   store i32 %sub34, i32* %b, align 4
-  br label %while.cond
+  %load_lval35 = load i32, i32* %a, align 4
+  %add36 = add i32 %load_lval35, 1
+  store i32 %add36, i32* %a, align 4
+  %load_lval38 = load i32, i32* %a, align 4
+  %load_lval39 = load i32, i32* %b, align 4
+  %add40 = add i32 %load_lval38, %load_lval39
+  %cmp41 = icmp sgt i32 %add40, 50
+  %zext_to_i3242 = zext i1 %cmp41 to i32
+  %to_bool44 = icmp ne i32 %zext_to_i3242, 0
+  br i1 %to_bool44, label %if.then43, label %merge37
 
 while.stmt17:                                     ; preds = %while.cond18
   %load_lval24 = load i32, i32* %b, align 4
@@ -93,4 +102,13 @@ if.then27:                                        ; preds = %while.stmt17
   %sub30 = sub i32 %load_lval29, 5
   store i32 %sub30, i32* %b, align 4
   br label %while.cond18
+
+merge37:                                          ; preds = %if.then43, %cur16
+  br label %while.cond
+
+if.then43:                                        ; preds = %cur16
+  %load_lval45 = load i32, i32* %a, align 4
+  %sub46 = sub i32 %load_lval45, 10
+  store i32 %sub46, i32* %a, align 4
+  br label %merge37
 }
