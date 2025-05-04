@@ -6,47 +6,45 @@ main:
 mainEntry:
   li t0, 0
   mv x1, t0
+  li t1, 0
+  mv x3, t1
   j while.cond
 cur:
-  mv x4, x1
-  mv a0, x4
+  mv x8, x1
+  mv x9, x3
+  add t2, x8, x9
+  mv x10, t2
+  mv a0, x10
   addi sp, sp, 512
   li a7, 93
   ecall
 while.stmt:
-  mv x8, x1
-  li t1, 5
-  xor t2, x8, t1
-  seqz t2, t2
-  mv x9, t2
-  mv t0, x9
-  mv x10, t0
-  li t1, 0
-  xor t2, x10, t1
-  snez t2, t2
-  mv x11, t2
-  bnez x11, if.then
-  j if.else
-while.cond:
-  mv x14, x1
-  li t0, 10
-  slt t1, x14, t0
-  mv x15, t1
-  mv t2, x15
-  mv x16, t2
   li t0, 0
-  xor t1, x16, t0
-  snez t1, t1
-  mv x17, t1
-  bnez x17, while.stmt
+  mv x3, t0
+  j while.cond3
+while.cond:
+  mv x12, x1
+  li t1, 3
+  slt t2, x12, t1
+  mv x13, t2
+  mv t0, x13
+  mv x14, t0
+  li t1, 0
+  xor t2, x14, t1
+  snez t2, t2
+  mv x15, t2
+  bnez x15, while.stmt
   j cur
-merge:
+cur1:
+  mv x18, x1
+  li t0, 1
+  add t1, x18, t0
+  mv x19, t1
+  mv x1, x19
   j while.cond
-if.then:
-  j cur
-if.else:
-  mv x20, x1
-  li t2, 3
+while.stmt2:
+  mv x20, x3
+  li t2, 2
   xor t0, x20, t2
   seqz t0, t0
   mv x21, t0
@@ -56,21 +54,48 @@ if.else:
   xor t0, x22, t2
   snez t0, t0
   mv x23, t0
-  bnez x23, if.then9
-  j if.else10
-merge5:
+  bnez x23, if.then
   j merge
-if.then9:
-  mv x27, x1
-  li t1, 2
-  add t2, x27, t1
-  mv x28, t2
-  mv x1, x28
-  j merge5
-if.else10:
-  mv x30, x1
-  li t0, 1
-  add t1, x30, t0
-  mv x31, t1
-  mv x1, x31
-  j merge5
+while.cond3:
+  mv x26, x3
+  li t1, 5
+  slt t2, x26, t1
+  mv x27, t2
+  mv t0, x27
+  mv x28, t0
+  li t1, 0
+  xor t2, x28, t1
+  snez t2, t2
+  mv x29, t2
+  bnez x29, while.stmt2
+  j cur1
+merge:
+  mv x9, x3
+  li t0, 4
+  xor t1, x9, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x10, t2
+  li t0, 0
+  xor t1, x10, t0
+  snez t1, t1
+  mv x12, t1
+  bnez x12, if.then17
+  j merge13
+if.then:
+  mv x17, x3
+  li t2, 1
+  add t0, x17, t2
+  mv x15, t0
+  mv x3, x15
+  j while.cond3
+merge13:
+  mv x16, x3
+  li t1, 1
+  add t2, x16, t1
+  mv x18, t2
+  mv x3, x18
+  j while.cond3
+if.then17:
+  j cur1
