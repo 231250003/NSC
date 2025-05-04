@@ -17,7 +17,7 @@ mainEntry:
   %not = icmp eq i32 %load_lval3, 0
   %zext_to_i32 = zext i1 %not to i32
   %add = add i32 %load_lval2, %zext_to_i32
-  %add4 = add i32 %add, 0
+  %add4 = add i32 %add, 1
   ret i32 %add4
 
 cur:                                              ; preds = %if.then, %while.cond

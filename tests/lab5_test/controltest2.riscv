@@ -28,7 +28,7 @@ mainEntry:
   mv x12, t1
   add t2, x9, x12
   mv x13, t2
-  li t0, 0
+  li t0, 1
   add t1, x13, t0
   mv x14, t1
   mv a0, x14
