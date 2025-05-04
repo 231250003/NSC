@@ -10,32 +10,42 @@ y:
 main:
   addi sp, sp, -512
 mainEntry:
-  la t0, x
-  lw t0, 0(t0)
-  sw t0, 8(sp)
-  lw t1, 8(sp)
-  sw t1, 4(sp)
-  la t2, y
-  lw t2, 0(t2)
-  sw t2, 16(sp)
-  lw t0, 16(sp)
-  sw t0, 12(sp)
+  li t0, 56
+  sw t0, 4(sp)
+  j while.cond
+cur:
   lw t1, 4(sp)
-  sw t1, 20(sp)
-  lw t2, 20(sp)
-  li t0, 1
-  add t1, t2, t0
-  sw t1, 24(sp)
-  lw t2, 24(sp)
-  sw t2, 4(sp)
-  lw t0, 4(sp)
-  sw t0, 32(sp)
-  lw t1, 32(sp)
-  sw t1, 28(sp)
-  lw t2, 28(sp)
-  sw t2, 36(sp)
-  lw t0, 36(sp)
-  mv a0, t0
+  sw t1, 8(sp)
+  lw t2, 8(sp)
+  mv a0, t2
   addi sp, sp, 512
   li a7, 93
   ecall
+while.stmt:
+  lw t0, 4(sp)
+  sw t0, 12(sp)
+  lw t1, 12(sp)
+  li t2, 1
+  add t0, t1, t2
+  sw t0, 16(sp)
+  lw t1, 16(sp)
+  sw t1, 4(sp)
+  j while.cond
+while.cond:
+  lw t2, 4(sp)
+  sw t2, 20(sp)
+  lw t0, 20(sp)
+  li t1, 98
+  slt t2, t0, t1
+  sw t2, 24(sp)
+  lw t0, 24(sp)
+  mv t1, t0
+  sw t1, 28(sp)
+  lw t2, 28(sp)
+  li t0, 0
+  xor t1, t2, t0
+  snez t1, t1
+  sw t1, 32(sp)
+  lw t2, 32(sp)
+  bnez t2, cur
+  j while.stmt
