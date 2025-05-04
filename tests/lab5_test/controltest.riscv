@@ -8,46 +8,64 @@ mainEntry:
   mv x1, t0
   li t1, 0
   mv x3, t1
-  mv x4, x1
-  li t2, 0
-  xor t0, x4, t2
-  seqz t0, t0
-  mv x8, t0
-  mv t1, x8
-  mv x9, t1
-  li t2, 0
-  xor t0, x9, t2
-  snez t0, t0
-  mv x10, t0
-  bnez x10, if.then
-  j merge
-merge:
+  j while.cond
+cur:
+  li t2, 5
+  mv x8, t2
+  j while.cond7
+while.stmt:
+  mv x10, x1
+  mv x11, x3
+  add t0, x10, x11
+  mv x12, t0
+  mv x1, x12
   mv x13, x3
-  mv a0, x13
+  li t1, 1
+  add t2, x13, t1
+  mv x14, t2
+  mv x3, x14
+  j while.cond
+while.cond:
+  mv x15, x3
+  li t0, 3
+  slt t1, x15, t0
+  mv x16, t1
+  mv t2, x16
+  mv x17, t2
+  li t0, 0
+  xor t1, x17, t0
+  snez t1, t1
+  mv x18, t1
+  bnez x18, while.stmt
+  j cur
+cur5:
+  mv x21, x1
+  mv a0, x21
   addi sp, sp, 512
   li a7, 93
   ecall
-if.then:
-  j while.cond
-cur:
-  j merge
-while.stmt:
-  mv x15, x3
-  li t1, 1
-  add t2, x15, t1
-  mv x16, t2
-  mv x3, x16
-  j while.cond
-while.cond:
-  mv x17, x3
-  li t0, 5
-  slt t1, x17, t0
-  mv x18, t1
-  mv t2, x18
-  mv x19, t2
-  li t0, 0
-  xor t1, x19, t0
-  snez t1, t1
-  mv x20, t1
-  bnez x20, while.stmt
-  j cur
+while.stmt6:
+  mv x22, x1
+  mv x23, x8
+  add t2, x22, x23
+  mv x24, t2
+  mv x1, x24
+  mv x25, x8
+  li t0, 1
+  sub t1, x25, t0
+  mv x26, t1
+  mv x8, x26
+  j while.cond7
+while.cond7:
+  mv x27, x8
+  li t2, 0
+  sgt t0, x27, t2
+  mv x28, t0
+  mv t1, x28
+  mv x29, t1
+  li t2, 0
+  xor t0, x29, t2
+  snez t0, t0
+  mv x30, t0
+  bnez x30, while.stmt6
+  j cur5
