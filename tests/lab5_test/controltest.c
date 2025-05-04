@@ -6,13 +6,6 @@ int main() {
     int b = y;
     while (a<98) {
         a=a+1;
-           if (a > b) {
-                  //a = a - b;
-                  a=a+1;
-           }
-          /*  else {
-                b = b - a;
-            }*/
     }
     int result = a;
 	return result;
