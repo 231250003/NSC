@@ -22,7 +22,7 @@ int main() {
              else break;
         }
         while(b>35){
-            return b+10;
+            return b-10;
             if(b>70){
                 b=b-5;
                 continue;
