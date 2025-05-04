@@ -209,6 +209,23 @@ public class LLVMIRToRiscv {
                         else asm.instr("mv", addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     }
+                    else if (opcode == LLVM.LLVMBr) {
+                        int numOperands = LLVM.LLVMGetNumOperands(inst);
+                        if (numOperands == 1) {
+                            LLVMValueRef dest = LLVM.LLVMGetOperand(inst, 0);
+                            String loop_label = LLVM.LLVMGetValueName(dest).getString();
+                            asm.j(loop_label);
+                        } else if (numOperands == 3) {
+                            LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
+                            LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 1);
+                            LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 2);
+                            String condReg = evaluate(cond);
+                            String trueLabel = LLVM.LLVMGetValueName(ifTrue).getString();
+                            String falseLabel = LLVM.LLVMGetValueName(ifFalse).getString();
+                            asm.bnez(condReg, trueLabel);
+                            asm.j(falseLabel);
+                        }
+                    }
                     else {
                         System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);

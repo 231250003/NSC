@@ -68,6 +68,12 @@ public class AsmBuilder {
     public void sgt(String dest, String lhs, String rhs) {
         instr("sgt", dest, lhs, rhs);
     }
+    public void j(String label) {
+        instr("j", label);
+    }
+    public void bnez(String reg, String label) {
+        instr("bnez", reg, label);
+    }
     public void writeToFile(String filePath) {
         try (FileWriter fw = new FileWriter(filePath)) {
             fw.write(dataSegment.toString());
