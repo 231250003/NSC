@@ -27,3 +27,46 @@ cur:
   li a7, 93
   ecall
   addi sp, sp, 512
+while.stmt:
+  mv x13, x1
+  mv x14, x4
+  sgt t2, x13, x14
+  mv x15, t2
+  mv t0, x15
+  mv x16, t0
+  li t1, 0
+  xor t2, x16, t1
+  snez t2, t2
+  mv x17, t2
+  bnez x17, if.else
+  j if.then
+while.cond:
+  mv x20, x4
+  li t0, 0
+  xor t1, x20, t0
+  snez t1, t1
+  mv x21, t1
+  mv t2, x21
+  mv x22, t2
+  li t0, 0
+  xor t1, x22, t0
+  snez t1, t1
+  mv x23, t1
+  bnez x23, cur
+  j while.stmt
+merge:
+  j while.cond
+if.then:
+  mv x26, x1
+  mv x27, x4
+  sub t2, x26, x27
+  mv x28, t2
+  mv x1, x28
+  j merge
+if.else:
+  mv x30, x4
+  mv x31, x1
+  sub t0, x30, x31
+  mv x3, t0
+  mv x4, x3
+  j merge
