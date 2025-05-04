@@ -61,7 +61,7 @@ public class LLVMIRToRiscv {
             asm.instr("addi", "sp", "sp", "-" + stackSize);
 
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                System.out.println("crz");
+                System.out.println("crzzz");
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(label.isEmpty() ? "mainEntry" : label);
 
