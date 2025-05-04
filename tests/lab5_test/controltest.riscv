@@ -43,8 +43,7 @@ while.stmt:
 while.cond:
   mv x20, x4
   li t0, 0
-  xor t1, x20, t0
-  snez t1, t1
+  sgt t1, x20, t0
   mv x21, t1
   mv t2, x21
   mv x22, t2
