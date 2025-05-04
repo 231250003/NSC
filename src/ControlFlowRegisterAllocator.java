@@ -39,8 +39,6 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
                     nextOffset += 4;
                     varOffset.put(var, nextOffset);
                 }
-                varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
-                asmBuilder.instr("sw","x8",varToLocation.get(var));
             }
         }
     }
@@ -57,6 +55,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
                     varOffset.put(var, nextOffset);
                 }
                 varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
+                asmBuilder.instr("sw","x8",varToLocation.get(var));
             }
         }
 //        active.removeIf(interval -> {
