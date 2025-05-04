@@ -281,7 +281,7 @@ public class LLVMIRToRiscv {
     }
 
     private String freshReg() {
-        return "t" + (regCount++ % 7);
+        return "t" + (regCount++ % 3);
     }
 
     private int regCount = 0;
