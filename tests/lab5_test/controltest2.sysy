@@ -25,7 +25,9 @@ int main() {
             {
                 int b=30;
                 {
+                    while(1){
                     return b;
+                    }
                 }
             }
             return b-10;
