@@ -4,14 +4,15 @@ int y = 98;
 int main() {
     int a = x;
     int b = y;
-    while (b > 0) {
+    while (a<98) {
+        a=a+1;
            if (a > b) {
                   //a = a - b;
                   a=a+1;
            }
-            else {
+          /*  else {
                 b = b - a;
-            }
+            }*/
     }
     int result = a;
 	return result;
