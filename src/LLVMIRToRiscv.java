@@ -215,10 +215,8 @@ public class LLVMIRToRiscv {
                         } else if (numOperands == 3) {
                             //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                             LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
-//                            LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
-//                            LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
-                            LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 1);
-                            LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 2);
+                            LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
+                            LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
                             String condReg = evaluate(cond);
                             String trueLabel = LLVM.LLVMGetValueName(ifTrue).getString();
                             String falseLabel = LLVM.LLVMGetValueName(ifFalse).getString();
