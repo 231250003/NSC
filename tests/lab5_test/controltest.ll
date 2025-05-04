@@ -16,10 +16,10 @@ mainEntry:
 
 cur:                                              ; preds = %while.cond
   %result = alloca i32, align 4
-  %load_lval13 = load i32, i32* %a, align 4
-  store i32 %load_lval13, i32* %result, align 4
-  %load_lval14 = load i32, i32* %result, align 4
-  ret i32 %load_lval14
+  %load_lval11 = load i32, i32* %a, align 4
+  store i32 %load_lval11, i32* %result, align 4
+  %load_lval12 = load i32, i32* %result, align 4
+  ret i32 %load_lval12
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval3 = load i32, i32* %a, align 4
@@ -41,15 +41,14 @@ merge:                                            ; preds = %if.else, %if.then
 
 if.then:                                          ; preds = %while.stmt
   %load_lval8 = load i32, i32* %a, align 4
-  %load_lval9 = load i32, i32* %b, align 4
-  %sub = sub i32 %load_lval8, %load_lval9
-  store i32 %sub, i32* %a, align 4
+  %add = add i32 %load_lval8, 1
+  store i32 %add, i32* %a, align 4
   br label %merge
 
 if.else:                                          ; preds = %while.stmt
-  %load_lval10 = load i32, i32* %b, align 4
-  %load_lval11 = load i32, i32* %a, align 4
-  %sub12 = sub i32 %load_lval10, %load_lval11
-  store i32 %sub12, i32* %b, align 4
+  %load_lval9 = load i32, i32* %b, align 4
+  %load_lval10 = load i32, i32* %a, align 4
+  %sub = sub i32 %load_lval9, %load_lval10
+  store i32 %sub, i32* %b, align 4
   br label %merge
 }
