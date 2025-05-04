@@ -5,6 +5,7 @@ int main() {
     int a = x;
     int b = y;
     while (b+a>20) {
+        if(a) return 100;
         if (a < b+10) {
            if(a+b>50) a = a - b;
            else if(a>10) a=a-20;
