@@ -120,8 +120,8 @@ cur38:                                            ; preds = %while.cond40
 
 while.stmt39:                                     ; preds = %while.cond40
   %load_lval45 = load i32, i32* %b, align 4
-  %add46 = add i32 %load_lval45, 10
-  ret i32 %add46
+  %sub46 = sub i32 %load_lval45, 10
+  ret i32 %sub46
 
 while.cond40:                                     ; preds = %merge47, %if.then51, %cur22
   %load_lval41 = load i32, i32* %b, align 4
