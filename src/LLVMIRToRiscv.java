@@ -59,18 +59,6 @@ public class LLVMIRToRiscv {
             // Prologue
             int stackSize = 512;
             asm.instr("addi", "sp", "sp", "-" + stackSize);
-            LLVMValueRef func1 = LLVM.LLVMGetNamedFunction(module, "main");
-            System.out.println("Function: " +  LLVM.LLVMGetValueName(func1).getString());
-
-            int blockCount = 0;
-            for (LLVMBasicBlockRef bb =  LLVM.LLVMGetFirstBasicBlock(func1);
-                 bb != null && !bb.isNull();
-                 bb =  LLVM.LLVMGetNextBasicBlock(bb)) {
-                String name =  LLVM.LLVMPrintValueToString( LLVM.LLVMBasicBlockAsValue(bb)).getString();
-                System.out.println("  Basic block: " + name);
-                blockCount++;
-            }
-            System.out.println("Total basic blocks: " + blockCount);
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                // System.out.println("crzzzzzzzz");
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
@@ -170,8 +158,6 @@ public class LLVMIRToRiscv {
                         asm.instr("ecall");
                         asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
                         asm.writeToFile(file_path);
-                        return;
-
                     }
                     else if (opcode == LLVM.LLVMZExt) {
                         LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
