@@ -1,12 +1,15 @@
 int main() {
-    int i = 0;
-    int acc = 0;
-    while (i < 6) {
-        acc = acc + i;
-        if (acc > 10) {
-            break;
+    int x = 0;
+    int y = 0;
+    while (x < 8) {
+        if (x == 2) {
+            y = y + 3;
+        } else if (x == 4) {
+            y = y - 1;
+        } else {
+            y = y + 1;
         }
-        i = i + 1;
+        x = x + 1;
     }
-    return acc;
+    return y;
 }
