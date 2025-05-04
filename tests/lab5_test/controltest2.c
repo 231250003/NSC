@@ -4,7 +4,7 @@ int y = 98;
 int main() {
     int a = x;
     int b = y;
-    return a+!b+!0;
+    if(!(a==56)) return a+!b+!0;
     while(1){
         a=a-2;
         if(a==45) break;
