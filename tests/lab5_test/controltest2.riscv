@@ -33,7 +33,7 @@ while.stmt:
   li t2, 10
   add t0, x14, t2
   mv x15, t0
-  sgt t1, x13, x15
+  slt t1, x13, x15
   mv x16, t1
   mv t2, x16
   mv x17, t2
@@ -66,7 +66,7 @@ if.then:
   mv x30, x4
   add t2, x29, x30
   mv x31, t2
-  li t0, 10
+  li t0, 50
   sgt t1, x31, t0
   mv x3, t1
   mv t2, x3

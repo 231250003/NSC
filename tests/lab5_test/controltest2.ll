@@ -25,7 +25,7 @@ while.stmt:                                       ; preds = %while.cond
   %load_lval4 = load i32, i32* %a, align 4
   %load_lval5 = load i32, i32* %b, align 4
   %add6 = add i32 %load_lval5, 10
-  %cmp7 = icmp sgt i32 %load_lval4, %add6
+  %cmp7 = icmp slt i32 %load_lval4, %add6
   %zext_to_i328 = zext i1 %cmp7 to i32
   %to_bool9 = icmp ne i32 %zext_to_i328, 0
   br i1 %to_bool9, label %if.then, label %if.else
@@ -46,7 +46,7 @@ if.then:                                          ; preds = %while.stmt
   %load_lval11 = load i32, i32* %a, align 4
   %load_lval12 = load i32, i32* %b, align 4
   %add13 = add i32 %load_lval11, %load_lval12
-  %cmp14 = icmp sgt i32 %add13, 10
+  %cmp14 = icmp sgt i32 %add13, 50
   %zext_to_i3215 = zext i1 %cmp14 to i32
   %to_bool18 = icmp ne i32 %zext_to_i3215, 0
   br i1 %to_bool18, label %if.then16, label %if.else17
