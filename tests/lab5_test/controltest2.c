@@ -6,7 +6,7 @@ int main() {
     int b = y;
     a=x+y;
     while (b+a>20) {
-        if(a!=98) return 1;
+        if(a!=56) return 1;
         else return a+b;
         while(a>10){
             if(a>40){
