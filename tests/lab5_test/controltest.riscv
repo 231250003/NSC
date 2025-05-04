@@ -36,62 +36,58 @@ cur:
 while.stmt:
   lw t2, 4(sp)
   sw t2, 32(sp)
-  lw t0, 12(sp)
-  sw t0, 36(sp)
-  lw t1, 32(sp)
-  lw t2, 36(sp)
-  sgt t0, t1, t2
-  sw t0, 40(sp)
-  lw t1, 40(sp)
-  mv t2, t1
+  lw t0, 32(sp)
+  li t1, 1
+  add t2, t0, t1
+  sw t2, 36(sp)
+  lw t0, 36(sp)
+  sw t0, 4(sp)
+  lw t1, 4(sp)
+  sw t1, 40(sp)
+  lw t2, 12(sp)
   sw t2, 44(sp)
-  lw t0, 44(sp)
-  li t1, 0
-  xor t2, t0, t1
-  snez t2, t2
+  lw t0, 40(sp)
+  lw t1, 44(sp)
+  sgt t2, t0, t1
   sw t2, 48(sp)
   lw t0, 48(sp)
-  bnez t0, if.else
-  j if.then
-while.cond:
-  lw t1, 12(sp)
+  mv t1, t0
   sw t1, 52(sp)
   lw t2, 52(sp)
   li t0, 0
-  sgt t1, t2, t0
+  xor t1, t2, t0
+  snez t1, t1
   sw t1, 56(sp)
   lw t2, 56(sp)
-  mv t0, t2
+  bnez t2, merge
+  j if.then
+while.cond:
+  lw t0, 4(sp)
   sw t0, 60(sp)
   lw t1, 60(sp)
-  li t2, 0
-  xor t0, t1, t2
-  snez t0, t0
+  li t2, 98
+  slt t0, t1, t2
   sw t0, 64(sp)
   lw t1, 64(sp)
-  bnez t1, cur
+  mv t2, t1
+  sw t2, 68(sp)
+  lw t0, 68(sp)
+  li t1, 0
+  xor t2, t0, t1
+  snez t2, t2
+  sw t2, 72(sp)
+  lw t0, 72(sp)
+  bnez t0, cur
   j while.stmt
 merge:
   j while.cond
 if.then:
-  lw t2, 4(sp)
-  sw t2, 68(sp)
-  lw t0, 68(sp)
-  li t1, 1
-  add t2, t0, t1
-  sw t2, 72(sp)
-  lw t0, 72(sp)
-  sw t0, 4(sp)
-  j merge
-if.else:
-  lw t1, 12(sp)
+  lw t1, 4(sp)
   sw t1, 76(sp)
-  lw t2, 4(sp)
-  sw t2, 80(sp)
-  lw t0, 76(sp)
-  lw t1, 80(sp)
-  sub t2, t0, t1
-  sw t2, 84(sp)
-  lw t0, 84(sp)
-  sw t0, 12(sp)
+  lw t2, 76(sp)
+  li t0, 1
+  add t1, t2, t0
+  sw t1, 80(sp)
+  lw t2, 80(sp)
+  sw t2, 4(sp)
   j merge
