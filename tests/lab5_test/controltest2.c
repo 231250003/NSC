@@ -5,18 +5,18 @@ int main() {
     int a = x;
     int b = y;
     while (b+a>20) {
-        //if(!(a+b)) break;
-        if (a < b+10) {
-           if(a+b>50) {
-            a = a - b;
-            continue;
-           }
-           if(b>5) b=b+1;
-           if(a>10) a=a-20;
-           else b=b-5;
-        } else {
-            b = b - a;
+        while(a>10){
+            if(a>40){
+             a=a-5;
+                        break;
+              }
+             else break;
         }
+        if(b>70){
+            b=b-5;
+            continue;
+        }
+        b=b-10;
     }
     int result = a;
 	return result;
