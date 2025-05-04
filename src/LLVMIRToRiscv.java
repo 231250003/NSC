@@ -210,7 +210,7 @@ public class LLVMIRToRiscv {
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     }
                     else {
-                        System.out.println(inst);
+                        System.out.println(LLVM.LLVMGetValueName(inst).getString());
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
