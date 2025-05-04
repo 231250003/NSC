@@ -219,6 +219,7 @@ public class LLVMIRToRiscv {
                             String condReg = evaluate(cond);
                             String trueLabel = LLVM.LLVMGetValueName(ifTrue).getString();
                             String falseLabel = LLVM.LLVMGetValueName(ifFalse).getString();
+                            System.out.println(cond);
                             System.out.println(trueLabel);
                             System.out.println(falseLabel);
                             asm.bnez(condReg, trueLabel);
