@@ -57,15 +57,15 @@ if.then8:                                         ; preds = %if.else
 
 cur13:                                            ; preds = %while.cond15
   %result = alloca i32, align 4
-  %load_lval90 = load i32, i32* %a, align 4
-  store i32 %load_lval90, i32* %result, align 4
-  %load_lval91 = load i32, i32* %result, align 4
-  ret i32 %load_lval91
+  %load_lval93 = load i32, i32* %a, align 4
+  store i32 %load_lval93, i32* %result, align 4
+  %load_lval94 = load i32, i32* %result, align 4
+  ret i32 %load_lval94
 
 while.stmt14:                                     ; preds = %while.cond15
   br label %while.cond24
 
-while.cond15:                                     ; preds = %merge80, %cur
+while.cond15:                                     ; preds = %merge83, %cur
   %load_lval16 = load i32, i32* %b, align 4
   %load_lval17 = load i32, i32* %a, align 4
   %add18 = add i32 %load_lval16, %load_lval17
@@ -104,83 +104,94 @@ if.else34:                                        ; preds = %while.stmt23
   br label %cur22
 
 cur38:                                            ; preds = %while.cond40
-  %load_lval76 = load i32, i32* %b, align 4
-  %sub77 = sub i32 %load_lval76, 3
-  store i32 %sub77, i32* %b, align 4
-  %load_lval78 = load i32, i32* %a, align 4
-  %add79 = add i32 %load_lval78, 1
-  store i32 %add79, i32* %a, align 4
+  %load_lval79 = load i32, i32* %b, align 4
+  %sub80 = sub i32 %load_lval79, 3
+  store i32 %sub80, i32* %b, align 4
   %load_lval81 = load i32, i32* %a, align 4
-  %load_lval82 = load i32, i32* %b, align 4
-  %add83 = add i32 %load_lval81, %load_lval82
-  %cmp84 = icmp sgt i32 %add83, 50
-  %zext_to_i3285 = zext i1 %cmp84 to i32
-  %to_bool87 = icmp ne i32 %zext_to_i3285, 0
-  br i1 %to_bool87, label %if.then86, label %merge80
+  %add82 = add i32 %load_lval81, 1
+  store i32 %add82, i32* %a, align 4
+  %load_lval84 = load i32, i32* %a, align 4
+  %load_lval85 = load i32, i32* %b, align 4
+  %add86 = add i32 %load_lval84, %load_lval85
+  %cmp87 = icmp sgt i32 %add86, 50
+  %zext_to_i3288 = zext i1 %cmp87 to i32
+  %to_bool90 = icmp ne i32 %zext_to_i3288, 0
+  br i1 %to_bool90, label %if.then89, label %merge83
 
 while.stmt39:                                     ; preds = %while.cond40
   %b45 = alloca i32, align 4
   store i32 30, i32* %b45, align 4
-  %load_lval46 = load i32, i32* %b45, align 4
-  ret i32 %load_lval46
+  br label %while.cond48
 
-while.cond40:                                     ; preds = %merge49, %if.then53, %cur22
+while.cond40:                                     ; preds = %merge52, %if.then56, %cur22
   %load_lval41 = load i32, i32* %b, align 4
   %cmp42 = icmp sgt i32 %load_lval41, 35
   %zext_to_i3243 = zext i1 %cmp42 to i32
   %to_bool44 = icmp ne i32 %zext_to_i3243, 0
   br i1 %to_bool44, label %while.stmt39, label %cur38
 
-merge49:                                          ; preds = %merge58
+cur46:                                            ; preds = %while.cond48
+  %load_lval50 = load i32, i32* %b, align 4
+  %sub51 = sub i32 %load_lval50, 10
+  ret i32 %sub51
+
+while.stmt47:                                     ; preds = %while.cond48
+  %load_lval49 = load i32, i32* %b45, align 4
+  ret i32 %load_lval49
+
+while.cond48:                                     ; preds = %while.stmt39
+  br i1 true, label %while.stmt47, label %cur46
+
+merge52:                                          ; preds = %merge61
   br label %while.cond40
 
-if.then53:                                        ; No predecessors!
-  %load_lval56 = load i32, i32* %b, align 4
-  %sub57 = sub i32 %load_lval56, 5
-  store i32 %sub57, i32* %b, align 4
-  br label %while.cond40
-
-if.else54:                                        ; No predecessors!
+if.then56:                                        ; No predecessors!
   %load_lval59 = load i32, i32* %b, align 4
-  %cmp60 = icmp sgt i32 %load_lval59, 50
-  %zext_to_i3261 = zext i1 %cmp60 to i32
-  %to_bool64 = icmp ne i32 %zext_to_i3261, 0
-  br i1 %to_bool64, label %if.then62, label %if.else63
+  %sub60 = sub i32 %load_lval59, 5
+  store i32 %sub60, i32* %b, align 4
+  br label %while.cond40
 
-merge58:                                          ; preds = %merge67, %if.then62
-  br label %merge49
+if.else57:                                        ; No predecessors!
+  %load_lval62 = load i32, i32* %b, align 4
+  %cmp63 = icmp sgt i32 %load_lval62, 50
+  %zext_to_i3264 = zext i1 %cmp63 to i32
+  %to_bool67 = icmp ne i32 %zext_to_i3264, 0
+  br i1 %to_bool67, label %if.then65, label %if.else66
 
-if.then62:                                        ; preds = %if.else54
-  %load_lval65 = load i32, i32* %b, align 4
-  %sub66 = sub i32 %load_lval65, 7
-  store i32 %sub66, i32* %b, align 4
-  br label %merge58
+merge61:                                          ; preds = %merge70, %if.then65
+  br label %merge52
 
-if.else63:                                        ; preds = %if.else54
+if.then65:                                        ; preds = %if.else57
   %load_lval68 = load i32, i32* %b, align 4
-  %cmp69 = icmp sgt i32 %load_lval68, 30
-  %zext_to_i3270 = zext i1 %cmp69 to i32
-  %to_bool73 = icmp ne i32 %zext_to_i3270, 0
-  br i1 %to_bool73, label %if.then71, label %if.else72
+  %sub69 = sub i32 %load_lval68, 7
+  store i32 %sub69, i32* %b, align 4
+  br label %merge61
 
-merge67:                                          ; preds = %if.then71
-  br label %merge58
+if.else66:                                        ; preds = %if.else57
+  %load_lval71 = load i32, i32* %b, align 4
+  %cmp72 = icmp sgt i32 %load_lval71, 30
+  %zext_to_i3273 = zext i1 %cmp72 to i32
+  %to_bool76 = icmp ne i32 %zext_to_i3273, 0
+  br i1 %to_bool76, label %if.then74, label %if.else75
 
-if.then71:                                        ; preds = %if.else63
-  %load_lval74 = load i32, i32* %b, align 4
-  %sub75 = sub i32 %load_lval74, 1
-  store i32 %sub75, i32* %b, align 4
-  br label %merge67
+merge70:                                          ; preds = %if.then74
+  br label %merge61
 
-if.else72:                                        ; preds = %if.else63
+if.then74:                                        ; preds = %if.else66
+  %load_lval77 = load i32, i32* %b, align 4
+  %sub78 = sub i32 %load_lval77, 1
+  store i32 %sub78, i32* %b, align 4
+  br label %merge70
+
+if.else75:                                        ; preds = %if.else66
   ret i32 10
 
-merge80:                                          ; preds = %if.then86, %cur38
+merge83:                                          ; preds = %if.then89, %cur38
   br label %while.cond15
 
-if.then86:                                        ; preds = %cur38
-  %load_lval88 = load i32, i32* %a, align 4
-  %sub89 = sub i32 %load_lval88, 10
-  store i32 %sub89, i32* %a, align 4
-  br label %merge80
+if.then89:                                        ; preds = %cur38
+  %load_lval91 = load i32, i32* %a, align 4
+  %sub92 = sub i32 %load_lval91, 10
+  store i32 %sub92, i32* %a, align 4
+  br label %merge83
 }
