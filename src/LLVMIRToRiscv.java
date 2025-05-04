@@ -53,7 +53,6 @@ public class LLVMIRToRiscv {
         asm.directive("globl main");
         lineNum=0;
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
-            System.out.println("crzzz");
             String funcName = LLVM.LLVMGetValueName(func).getString();
             if (!"main".equals(funcName)) continue;
             asm.label("main");
@@ -62,6 +61,7 @@ public class LLVMIRToRiscv {
             asm.instr("addi", "sp", "sp", "-" + stackSize);
 
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                System.out.println("crzzzzzzzz");
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(label.isEmpty() ? "mainEntry" : label);
 
