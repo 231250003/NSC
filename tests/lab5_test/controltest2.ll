@@ -27,7 +27,7 @@ cur:                                              ; preds = %while.cond
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval7 = load i32, i32* %a, align 4
-  %cmp8 = icmp ne i32 %load_lval7, 98
+  %cmp8 = icmp ne i32 %load_lval7, 56
   %zext_to_i329 = zext i1 %cmp8 to i32
   %to_bool10 = icmp ne i32 %zext_to_i329, 0
   br i1 %to_bool10, label %if.then, label %if.else

@@ -38,7 +38,7 @@ cur:
   ecall
 while.stmt:
   mv x16, x1
-  li t2, 98
+  li t2, 56
   xor t0, x16, t2
   snez t0, t0
   mv x17, t0
