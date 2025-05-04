@@ -13,7 +13,7 @@ int main() {
          }
     }
     while (b+a>20) {
-      
+
         while(a>10){
             if(a>40){
              a=a-5;
@@ -22,7 +22,7 @@ int main() {
              else break;
         }
         while(b>35){
-            return b;
+            return b+10;
             if(b>70){
                 b=b-5;
                 continue;
