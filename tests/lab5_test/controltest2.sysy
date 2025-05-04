@@ -4,6 +4,7 @@ int y = 98;
 int main() {
     int a = x;
     int b = y;
+    if(a!=56) return -1;
     while (b+a>20) {
         if(a!=56) return 1;
         else return !a+b;
