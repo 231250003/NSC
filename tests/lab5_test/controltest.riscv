@@ -41,5 +41,5 @@ while.cond:
   snez t1, t1
   sw t1, 32(sp)
   lw t2, 32(sp)
-  bnez t2, cur
-  j while.stmt
+  bnez t2, while.stmt
+  j cur
