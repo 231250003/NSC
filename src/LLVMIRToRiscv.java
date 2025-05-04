@@ -154,9 +154,9 @@ public class LLVMIRToRiscv {
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
                         String reg = evaluate(retVal);
                         asm.mv("a0", reg);
+                        asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
                         asm.li("a7", 93);  // syscall exit
                         asm.instr("ecall");
-                        asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
                     }
                     else if (opcode == LLVM.LLVMZExt) {
                         LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
