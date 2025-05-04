@@ -18,8 +18,8 @@ int main() {
                 b=b-5;
                 continue;
             }
-            else if(b>50) b=b-10;
-            else if(b>30) b=b-5;
+            else if(b>50) b=b-7;
+            else if(b>30) b=b-1;
             }
         b=b-3;
         a=a+1;
