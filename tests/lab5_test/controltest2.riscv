@@ -30,45 +30,48 @@ cur:
 while.stmt:
   mv x13, x1
   mv x14, x4
-  sgt t2, x13, x14
-  mv x15, t2
-  mv t0, x15
-  mv x16, t0
-  li t1, 0
-  xor t2, x16, t1
-  snez t2, t2
+  li t2, 10
+  add t0, x14, t2
+  mv x15, t0
+  sgt t1, x13, x15
+  mv x16, t1
+  mv t2, x16
   mv x17, t2
-  bnez x17, if.then
+  li t0, 0
+  xor t1, x17, t0
+  snez t1, t1
+  mv x18, t1
+  bnez x18, if.then
   j if.else
 while.cond:
-  mv x20, x4
-  mv x21, x1
-  add t0, x20, x21
-  mv x22, t0
-  li t1, 20
-  sgt t2, x22, t1
+  mv x21, x4
+  mv x22, x1
+  add t2, x21, x22
   mv x23, t2
-  mv t0, x23
-  mv x24, t0
-  li t1, 0
-  xor t2, x24, t1
-  snez t2, t2
+  li t0, 20
+  sgt t1, x23, t0
+  mv x24, t1
+  mv t2, x24
   mv x25, t2
-  bnez x25, while.stmt
+  li t0, 0
+  xor t1, x25, t0
+  snez t1, t1
+  mv x26, t1
+  bnez x26, while.stmt
   j cur
 merge:
   j while.cond
 if.then:
-  mv x28, x1
-  mv x29, x4
-  sub t0, x28, x29
-  mv x30, t0
-  mv x1, x30
+  mv x29, x1
+  mv x30, x4
+  sub t2, x29, x30
+  mv x31, t2
+  mv x1, x31
   j merge
 if.else:
-  mv x3, x4
-  mv x8, x1
-  sub t1, x3, x8
-  mv x11, t1
-  mv x4, x11
+  mv x8, x4
+  mv x11, x1
+  sub t0, x8, x11
+  mv x10, t0
+  mv x4, x10
   j merge
