@@ -171,7 +171,7 @@ merge35:
   j merge26
 if.then39:
   mv x27, x4
-  li t2, 10
+  li t2, 7
   sub t0, x27, t2
   mv x31, t0
   mv x4, x31
@@ -193,7 +193,7 @@ merge44:
   j merge35
 if.then48:
   mv x13, x4
-  li t0, 5
+  li t0, 1
   sub t1, x13, t0
   mv x17, t1
   mv x4, x17

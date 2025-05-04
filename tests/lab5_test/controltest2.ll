@@ -116,7 +116,7 @@ merge35:                                          ; preds = %merge44, %if.then39
 
 if.then39:                                        ; preds = %if.else31
   %load_lval42 = load i32, i32* %b, align 4
-  %sub43 = sub i32 %load_lval42, 10
+  %sub43 = sub i32 %load_lval42, 7
   store i32 %sub43, i32* %b, align 4
   br label %merge35
 
@@ -132,7 +132,7 @@ merge44:                                          ; preds = %if.then48, %if.else
 
 if.then48:                                        ; preds = %if.else40
   %load_lval50 = load i32, i32* %b, align 4
-  %sub51 = sub i32 %load_lval50, 5
+  %sub51 = sub i32 %load_lval50, 1
   store i32 %sub51, i32* %b, align 4
   br label %merge44
 
