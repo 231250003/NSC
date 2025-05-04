@@ -213,6 +213,7 @@ public class LLVMIRToRiscv {
                             String loop_label = LLVM.LLVMGetValueName(dest).getString();
                             asm.j(loop_label);
                         } else if (numOperands == 3) {
+                            System.out.println("crxzzx");
                             LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
                             LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 1);
                             LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 2);
