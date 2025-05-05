@@ -45,7 +45,7 @@ public class LLVMIRToRiscv {
         }
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
-            System.out.println(used_num.get(var));
+           // System.out.println(used_num.get(var));
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var),used_num.get(var)));
         }
         List<String> reg_list=new ArrayList<>();
