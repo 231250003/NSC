@@ -33,6 +33,7 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
                     for (String var : extractVariables(line)) {
+                        System.out.println(line);
                         firstUse.putIfAbsent(var, lineNum);
                         lastUse.put(var, lineNum);
                         used_num.put(var, used_num.getOrDefault(var, 0) + 1);

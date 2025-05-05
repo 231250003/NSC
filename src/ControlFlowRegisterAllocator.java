@@ -18,10 +18,10 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
         this.asmBuilder=asmBuilder;
         List<Map.Entry<String, Interval>> sortedEntries = new ArrayList<>(varToInterval.entrySet());
         sortedEntries.sort((e1, e2) -> Integer.compare(e2.getValue().used_num, e1.getValue().used_num));
-        for(int i=0;i<sortedEntries.size();i++){
-            System.out.println(sortedEntries.get(i).getKey());
-            System.out.println(sortedEntries.get(i).getValue().used_num);
-        }
+//        for(int i=0;i<sortedEntries.size();i++){
+//            System.out.println(sortedEntries.get(i).getKey());
+//            System.out.println(sortedEntries.get(i).getValue().used_num);
+//        }
     }
 
     @Override
@@ -30,8 +30,8 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
 //        System.out.println(lineNumber);
 //        System.out.println("variable:");
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
-            System.out.println("crzzz");
-            System.out.println(var);
+//            System.out.println("crzzz");
+//            System.out.println(var);
 //            if(var.equals("load_lval")) System.out.println("crz");
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
