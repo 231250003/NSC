@@ -1,727 +1,267 @@
-  .data
-x:
-  .word 1
-  .data
-y:
-  .word 2
-  .data
-z:
-  .word 3
-  .data
-a:
-  .word 4
-  .data
-b:
-  .word 5
-  .data
-c:
-  .word 6
-  .data
-d:
-  .word 7
-  .data
-e:
-  .word 8
-  .data
-f:
-  .word 9
-  .data
-g:
-  .word 10
-  .data
-h:
-  .word 11
-  .data
-i:
-  .word 12
-  .data
-j:
-  .word 13
-  .data
-k:
-  .word 14
-  .data
-l:
-  .word 15
-  .data
-m:
-  .word 16
-  .data
-n:
-  .word 17
-  .data
-o:
-  .word 18
-  .data
-p:
-  .word 19
-  .data
-q:
-  .word 20
+; ModuleID = 'my_module'
+source_filename = "my_module"
 
-  .text
-  .globl main
-main:
-  addi sp, sp, -512
+@x = global i32 1
+@y = global i32 2
+@z = global i32 3
+@a = global i32 4
+@b = global i32 5
+@c = global i32 6
+@d = global i32 7
+@e = global i32 8
+@f = global i32 9
+@g = global i32 10
+@h = global i32 11
+@i = global i32 12
+@j = global i32 13
+@k = global i32 14
+@l = global i32 15
+@m = global i32 16
+@n = global i32 17
+@o = global i32 18
+@p = global i32 19
+@q = global i32 20
+
+define i32 @main() {
 mainEntry:
-  li t0, 1
-  sw t0, 4(sp)
-  li t1, 2
-  sw t1, 8(sp)
-  li t2, 3
-  sw t2, 12(sp)
-  li t0, 4
-  sw t0, 16(sp)
-  li t1, 5
-  sw t1, 20(sp)
-  li t2, 6
-  sw t2, 24(sp)
-  li t0, 7
-  sw t0, 28(sp)
-  li t1, 8
-  sw t1, 32(sp)
-  li t2, 9
-  sw t2, 36(sp)
-  li t0, 10
-  sw t0, 40(sp)
-  li t1, 11
-  sw t1, 44(sp)
-  li t2, 12
-  sw t2, 48(sp)
-  li t0, 13
-  sw t0, 52(sp)
-  li t1, 14
-  sw t1, 56(sp)
-  li t2, 15
-  sw t2, 60(sp)
-  li t0, 16
-  sw t0, 64(sp)
-  li t1, 17
-  sw t1, 68(sp)
-  li t2, 18
-  sw t2, 72(sp)
-  li t0, 19
-  sw t0, 76(sp)
-  li t1, 20
-  sw t1, 80(sp)
-  la t2, x
-  lw t2, 0(t2)
-  sw t2, 84(sp)
-  lw t0, 84(sp)
-  li t1, 1
-  add t2, t0, t1
-  sw t2, 88(sp)
-  lw t0, 88(sp)
-  la t1, x
-  sw t0, 0(t1)
-  la t2, y
-  lw t2, 0(t2)
-  sw t2, 92(sp)
-  lw t0, 92(sp)
-  li t1, 2
-  add t2, t0, t1
-  sw t2, 96(sp)
-  lw t0, 96(sp)
-  la t1, y
-  sw t0, 0(t1)
-  la t2, z
-  lw t2, 0(t2)
-  sw t2, 100(sp)
-  lw t0, 100(sp)
-  li t1, 3
-  add t2, t0, t1
-  sw t2, 104(sp)
-  lw t0, 104(sp)
-  la t1, z
-  sw t0, 0(t1)
-  la t2, a
-  lw t2, 0(t2)
-  sw t2, 108(sp)
-  lw t0, 108(sp)
-  li t1, 4
-  add t2, t0, t1
-  sw t2, 112(sp)
-  lw t0, 112(sp)
-  la t1, a
-  sw t0, 0(t1)
-  la t2, b
-  lw t2, 0(t2)
-  sw t2, 116(sp)
-  lw t0, 116(sp)
-  li t1, 5
-  add t2, t0, t1
-  sw t2, 120(sp)
-  lw t0, 120(sp)
-  la t1, b
-  sw t0, 0(t1)
-  la t2, c
-  lw t2, 0(t2)
-  sw t2, 124(sp)
-  lw t0, 124(sp)
-  li t1, 6
-  add t2, t0, t1
-  sw t2, 128(sp)
-  lw t0, 128(sp)
-  la t1, c
-  sw t0, 0(t1)
-  la t2, d
-  lw t2, 0(t2)
-  sw t2, 132(sp)
-  lw t0, 132(sp)
-  li t1, 7
-  add t2, t0, t1
-  sw t2, 136(sp)
-  lw t0, 136(sp)
-  la t1, d
-  sw t0, 0(t1)
-  la t2, e
-  lw t2, 0(t2)
-  sw t2, 140(sp)
-  lw t0, 140(sp)
-  li t1, 8
-  add t2, t0, t1
-  sw t2, 144(sp)
-  lw t0, 144(sp)
-  la t1, e
-  sw t0, 0(t1)
-  la t2, f
-  lw t2, 0(t2)
-  sw t2, 148(sp)
-  lw t0, 148(sp)
-  li t1, 9
-  add t2, t0, t1
-  sw t2, 152(sp)
-  lw t0, 152(sp)
-  la t1, f
-  sw t0, 0(t1)
-  la t2, g
-  lw t2, 0(t2)
-  sw t2, 156(sp)
-  lw t0, 156(sp)
-  li t1, 10
-  add t2, t0, t1
-  sw t2, 160(sp)
-  lw t0, 160(sp)
-  la t1, g
-  sw t0, 0(t1)
-  la t2, h
-  lw t2, 0(t2)
-  sw t2, 164(sp)
-  lw t0, 164(sp)
-  li t1, 11
-  add t2, t0, t1
-  sw t2, 168(sp)
-  lw t0, 168(sp)
-  la t1, h
-  sw t0, 0(t1)
-  la t2, i
-  lw t2, 0(t2)
-  sw t2, 172(sp)
-  lw t0, 172(sp)
-  li t1, 12
-  add t2, t0, t1
-  sw t2, 176(sp)
-  lw t0, 176(sp)
-  la t1, i
-  sw t0, 0(t1)
-  la t2, j
-  lw t2, 0(t2)
-  sw t2, 180(sp)
-  lw t0, 180(sp)
-  li t1, 13
-  add t2, t0, t1
-  sw t2, 184(sp)
-  lw t0, 184(sp)
-  la t1, j
-  sw t0, 0(t1)
-  la t2, k
-  lw t2, 0(t2)
-  sw t2, 188(sp)
-  lw t0, 188(sp)
-  li t1, 14
-  add t2, t0, t1
-  sw t2, 192(sp)
-  lw t0, 192(sp)
-  la t1, k
-  sw t0, 0(t1)
-  la t2, l
-  lw t2, 0(t2)
-  sw t2, 196(sp)
-  lw t0, 196(sp)
-  li t1, 15
-  add t2, t0, t1
-  sw t2, 200(sp)
-  lw t0, 200(sp)
-  la t1, l
-  sw t0, 0(t1)
-  la t2, m
-  lw t2, 0(t2)
-  sw t2, 204(sp)
-  lw t0, 204(sp)
-  li t1, 16
-  add t2, t0, t1
-  sw t2, 208(sp)
-  lw t0, 208(sp)
-  la t1, m
-  sw t0, 0(t1)
-  la t2, n
-  lw t2, 0(t2)
-  sw t2, 212(sp)
-  lw t0, 212(sp)
-  li t1, 17
-  add t2, t0, t1
-  sw t2, 216(sp)
-  lw t0, 216(sp)
-  la t1, n
-  sw t0, 0(t1)
-  la t2, o
-  lw t2, 0(t2)
-  sw t2, 220(sp)
-  lw t0, 220(sp)
-  li t1, 18
-  add t2, t0, t1
-  sw t2, 224(sp)
-  lw t0, 224(sp)
-  la t1, o
-  sw t0, 0(t1)
-  la t2, p
-  lw t2, 0(t2)
-  sw t2, 228(sp)
-  lw t0, 228(sp)
-  li t1, 19
-  add t2, t0, t1
-  sw t2, 232(sp)
-  lw t0, 232(sp)
-  la t1, p
-  sw t0, 0(t1)
-  la t2, q
-  lw t2, 0(t2)
-  sw t2, 236(sp)
-  lw t0, 236(sp)
-  li t1, 20
-  add t2, t0, t1
-  sw t2, 240(sp)
-  lw t0, 240(sp)
-  la t1, q
-  sw t0, 0(t1)
-  lw t2, 4(sp)
-  sw t2, 244(sp)
-  lw t0, 244(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 248(sp)
-  lw t0, 248(sp)
-  sw t0, 4(sp)
-  lw t1, 8(sp)
-  sw t1, 252(sp)
-  lw t2, 252(sp)
-  li t0, 2
-  mul t1, t2, t0
-  sw t1, 256(sp)
-  lw t2, 256(sp)
-  sw t2, 8(sp)
-  lw t0, 12(sp)
-  sw t0, 260(sp)
-  lw t1, 260(sp)
-  li t2, 2
-  mul t0, t1, t2
-  sw t0, 264(sp)
-  lw t1, 264(sp)
-  sw t1, 12(sp)
-  lw t2, 16(sp)
-  sw t2, 268(sp)
-  lw t0, 268(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 272(sp)
-  lw t0, 272(sp)
-  sw t0, 16(sp)
-  lw t1, 20(sp)
-  sw t1, 276(sp)
-  lw t2, 276(sp)
-  li t0, 2
-  mul t1, t2, t0
-  sw t1, 280(sp)
-  lw t2, 280(sp)
-  sw t2, 20(sp)
-  lw t0, 24(sp)
-  sw t0, 284(sp)
-  lw t1, 284(sp)
-  li t2, 2
-  mul t0, t1, t2
-  sw t0, 288(sp)
-  lw t1, 288(sp)
-  sw t1, 24(sp)
-  lw t2, 28(sp)
-  sw t2, 292(sp)
-  lw t0, 292(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 296(sp)
-  lw t0, 296(sp)
-  sw t0, 28(sp)
-  lw t1, 32(sp)
-  sw t1, 300(sp)
-  lw t2, 300(sp)
-  li t0, 2
-  mul t1, t2, t0
-  sw t1, 304(sp)
-  lw t2, 304(sp)
-  sw t2, 32(sp)
-  lw t0, 36(sp)
-  sw t0, 308(sp)
-  lw t1, 308(sp)
-  li t2, 2
-  mul t0, t1, t2
-  sw t0, 312(sp)
-  lw t1, 312(sp)
-  sw t1, 36(sp)
-  lw t2, 40(sp)
-  sw t2, 316(sp)
-  lw t0, 316(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 320(sp)
-  lw t0, 320(sp)
-  sw t0, 40(sp)
-  lw t1, 44(sp)
-  sw t1, 324(sp)
-  lw t2, 324(sp)
-  li t0, 2
-  mul t1, t2, t0
-  sw t1, 328(sp)
-  lw t2, 328(sp)
-  sw t2, 44(sp)
-  lw t0, 48(sp)
-  sw t0, 332(sp)
-  lw t1, 332(sp)
-  li t2, 2
-  mul t0, t1, t2
-  sw t0, 336(sp)
-  lw t1, 336(sp)
-  sw t1, 48(sp)
-  lw t2, 52(sp)
-  sw t2, 340(sp)
-  lw t0, 340(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 344(sp)
-  lw t0, 344(sp)
-  sw t0, 52(sp)
-  lw t1, 56(sp)
-  sw t1, 348(sp)
-  lw t2, 348(sp)
-  li t0, 2
-  mul t1, t2, t0
-  sw t1, 352(sp)
-  lw t2, 352(sp)
-  sw t2, 56(sp)
-  lw t0, 60(sp)
-  sw t0, 356(sp)
-  lw t1, 356(sp)
-  li t2, 2
-  mul t0, t1, t2
-  sw t0, 360(sp)
-  lw t1, 360(sp)
-  sw t1, 60(sp)
-  lw t2, 64(sp)
-  sw t2, 364(sp)
-  lw t0, 364(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 368(sp)
-  lw t0, 368(sp)
-  sw t0, 64(sp)
-  lw t1, 68(sp)
-  sw t1, 372(sp)
-  lw t2, 372(sp)
-  li t0, 2
-  mul t1, t2, t0
-  sw t1, 376(sp)
-  lw t2, 376(sp)
-  sw t2, 68(sp)
-  lw t0, 72(sp)
-  sw t0, 380(sp)
-  lw t1, 380(sp)
-  li t2, 2
-  mul t0, t1, t2
-  sw t0, 384(sp)
-  lw t1, 384(sp)
-  sw t1, 72(sp)
-  lw t2, 76(sp)
-  sw t2, 388(sp)
-  lw t0, 388(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 392(sp)
-  lw t0, 392(sp)
-  sw t0, 76(sp)
-  lw t1, 80(sp)
-  sw t1, 396(sp)
-  lw t2, 396(sp)
-  li t0, 2
-  mul t1, t2, t0
-  sw t1, 400(sp)
-  lw t2, 400(sp)
-  sw t2, 80(sp)
-  lw t0, 4(sp)
-  sw t0, 404(sp)
-  lw t1, 8(sp)
-  sw t1, 408(sp)
-  lw t2, 404(sp)
-  lw t0, 408(sp)
-  add t1, t2, t0
-  sw t1, 412(sp)
-  lw t2, 12(sp)
-  sw t2, 416(sp)
-  lw t0, 412(sp)
-  lw t1, 416(sp)
-  add t2, t0, t1
-  sw t2, 420(sp)
-  lw t0, 16(sp)
-  sw t0, 424(sp)
-  lw t1, 420(sp)
-  lw t2, 424(sp)
-  add t0, t1, t2
-  sw t0, 428(sp)
-  lw t1, 20(sp)
-  sw t1, 432(sp)
-  lw t2, 428(sp)
-  lw t0, 432(sp)
-  add t1, t2, t0
-  sw t1, 436(sp)
-  lw t2, 24(sp)
-  sw t2, 440(sp)
-  lw t0, 436(sp)
-  lw t1, 440(sp)
-  add t2, t0, t1
-  sw t2, 444(sp)
-  lw t0, 28(sp)
-  sw t0, 448(sp)
-  lw t1, 444(sp)
-  lw t2, 448(sp)
-  add t0, t1, t2
-  sw t0, 452(sp)
-  lw t1, 32(sp)
-  sw t1, 456(sp)
-  lw t2, 452(sp)
-  lw t0, 456(sp)
-  add t1, t2, t0
-  sw t1, 460(sp)
-  lw t2, 36(sp)
-  sw t2, 464(sp)
-  lw t0, 460(sp)
-  lw t1, 464(sp)
-  add t2, t0, t1
-  sw t2, 468(sp)
-  lw t0, 40(sp)
-  sw t0, 472(sp)
-  lw t1, 468(sp)
-  lw t2, 472(sp)
-  add t0, t1, t2
-  sw t0, 476(sp)
-  lw t1, 44(sp)
-  sw t1, 480(sp)
-  lw t2, 476(sp)
-  lw t0, 480(sp)
-  add t1, t2, t0
-  sw t1, 484(sp)
-  lw t2, 48(sp)
-  sw t2, 488(sp)
-  lw t0, 484(sp)
-  lw t1, 488(sp)
-  add t2, t0, t1
-  sw t2, 492(sp)
-  lw t0, 52(sp)
-  sw t0, 496(sp)
-  lw t1, 492(sp)
-  lw t2, 496(sp)
-  add t0, t1, t2
-  sw t0, 500(sp)
-  lw t1, 56(sp)
-  sw t1, 504(sp)
-  lw t2, 500(sp)
-  lw t0, 504(sp)
-  add t1, t2, t0
-  sw t1, 508(sp)
-  lw t2, 60(sp)
-  sw t2, 512(sp)
-  lw t0, 508(sp)
-  lw t1, 512(sp)
-  add t2, t0, t1
-  sw t2, 516(sp)
-  lw t0, 64(sp)
-  sw t0, 520(sp)
-  lw t1, 516(sp)
-  lw t2, 520(sp)
-  add t0, t1, t2
-  sw t0, 524(sp)
-  lw t1, 68(sp)
-  sw t1, 528(sp)
-  lw t2, 524(sp)
-  lw t0, 528(sp)
-  add t1, t2, t0
-  sw t1, 532(sp)
-  lw t2, 72(sp)
-  sw t2, 536(sp)
-  lw t0, 532(sp)
-  lw t1, 536(sp)
-  add t2, t0, t1
-  sw t2, 540(sp)
-  lw t0, 76(sp)
-  sw t0, 544(sp)
-  lw t1, 540(sp)
-  lw t2, 544(sp)
-  add t0, t1, t2
-  sw t0, 548(sp)
-  lw t1, 80(sp)
-  sw t1, 552(sp)
-  lw t2, 548(sp)
-  lw t0, 552(sp)
-  add t1, t2, t0
-  sw t1, 556(sp)
-  la t2, x
-  lw t2, 0(t2)
-  sw t2, 560(sp)
-  lw t0, 556(sp)
-  lw t1, 560(sp)
-  add t2, t0, t1
-  sw t2, 564(sp)
-  la t0, y
-  lw t0, 0(t0)
-  sw t0, 568(sp)
-  lw t1, 564(sp)
-  lw t2, 568(sp)
-  add t0, t1, t2
-  sw t0, 572(sp)
-  la t1, z
-  lw t1, 0(t1)
-  sw t1, 576(sp)
-  lw t2, 572(sp)
-  lw t0, 576(sp)
-  add t1, t2, t0
-  sw t1, 580(sp)
-  la t2, a
-  lw t2, 0(t2)
-  sw t2, 584(sp)
-  lw t0, 580(sp)
-  lw t1, 584(sp)
-  add t2, t0, t1
-  sw t2, 588(sp)
-  la t0, b
-  lw t0, 0(t0)
-  sw t0, 592(sp)
-  lw t1, 588(sp)
-  lw t2, 592(sp)
-  add t0, t1, t2
-  sw t0, 596(sp)
-  la t1, c
-  lw t1, 0(t1)
-  sw t1, 600(sp)
-  lw t2, 596(sp)
-  lw t0, 600(sp)
-  add t1, t2, t0
-  sw t1, 604(sp)
-  la t2, d
-  lw t2, 0(t2)
-  sw t2, 608(sp)
-  lw t0, 604(sp)
-  lw t1, 608(sp)
-  add t2, t0, t1
-  sw t2, 612(sp)
-  la t0, e
-  lw t0, 0(t0)
-  sw t0, 616(sp)
-  lw t1, 612(sp)
-  lw t2, 616(sp)
-  add t0, t1, t2
-  sw t0, 620(sp)
-  la t1, f
-  lw t1, 0(t1)
-  sw t1, 624(sp)
-  lw t2, 620(sp)
-  lw t0, 624(sp)
-  add t1, t2, t0
-  sw t1, 628(sp)
-  la t2, g
-  lw t2, 0(t2)
-  sw t2, 632(sp)
-  lw t0, 628(sp)
-  lw t1, 632(sp)
-  add t2, t0, t1
-  sw t2, 636(sp)
-  la t0, h
-  lw t0, 0(t0)
-  sw t0, 640(sp)
-  lw t1, 636(sp)
-  lw t2, 640(sp)
-  add t0, t1, t2
-  sw t0, 644(sp)
-  la t1, i
-  lw t1, 0(t1)
-  sw t1, 648(sp)
-  lw t2, 644(sp)
-  lw t0, 648(sp)
-  add t1, t2, t0
-  sw t1, 652(sp)
-  la t2, j
-  lw t2, 0(t2)
-  sw t2, 656(sp)
-  lw t0, 652(sp)
-  lw t1, 656(sp)
-  add t2, t0, t1
-  sw t2, 660(sp)
-  la t0, k
-  lw t0, 0(t0)
-  sw t0, 664(sp)
-  lw t1, 660(sp)
-  lw t2, 664(sp)
-  add t0, t1, t2
-  sw t0, 668(sp)
-  la t1, l
-  lw t1, 0(t1)
-  sw t1, 672(sp)
-  lw t2, 668(sp)
-  lw t0, 672(sp)
-  add t1, t2, t0
-  sw t1, 676(sp)
-  la t2, m
-  lw t2, 0(t2)
-  sw t2, 680(sp)
-  lw t0, 676(sp)
-  lw t1, 680(sp)
-  add t2, t0, t1
-  sw t2, 684(sp)
-  la t0, n
-  lw t0, 0(t0)
-  sw t0, 688(sp)
-  lw t1, 684(sp)
-  lw t2, 688(sp)
-  add t0, t1, t2
-  sw t0, 692(sp)
-  la t1, o
-  lw t1, 0(t1)
-  sw t1, 696(sp)
-  lw t2, 692(sp)
-  lw t0, 696(sp)
-  add t1, t2, t0
-  sw t1, 700(sp)
-  la t2, p
-  lw t2, 0(t2)
-  sw t2, 704(sp)
-  lw t0, 700(sp)
-  lw t1, 704(sp)
-  add t2, t0, t1
-  sw t2, 708(sp)
-  la t0, q
-  lw t0, 0(t0)
-  sw t0, 712(sp)
-  lw t1, 708(sp)
-  lw t2, 712(sp)
-  add t0, t1, t2
-  sw t0, 716(sp)
-  lw t1, 716(sp)
-  mv a0, t1
-  addi sp, sp, 512
-  li a7, 93
-  ecall
+  %x1 = alloca i32, align 4
+  store i32 1, i32* %x1, align 4
+  %x2 = alloca i32, align 4
+  store i32 2, i32* %x2, align 4
+  %x3 = alloca i32, align 4
+  store i32 3, i32* %x3, align 4
+  %x4 = alloca i32, align 4
+  store i32 4, i32* %x4, align 4
+  %x5 = alloca i32, align 4
+  store i32 5, i32* %x5, align 4
+  %x6 = alloca i32, align 4
+  store i32 6, i32* %x6, align 4
+  %x7 = alloca i32, align 4
+  store i32 7, i32* %x7, align 4
+  %x8 = alloca i32, align 4
+  store i32 8, i32* %x8, align 4
+  %x9 = alloca i32, align 4
+  store i32 9, i32* %x9, align 4
+  %x10 = alloca i32, align 4
+  store i32 10, i32* %x10, align 4
+  %x11 = alloca i32, align 4
+  store i32 11, i32* %x11, align 4
+  %x12 = alloca i32, align 4
+  store i32 12, i32* %x12, align 4
+  %x13 = alloca i32, align 4
+  store i32 13, i32* %x13, align 4
+  %x14 = alloca i32, align 4
+  store i32 14, i32* %x14, align 4
+  %x15 = alloca i32, align 4
+  store i32 15, i32* %x15, align 4
+  %x16 = alloca i32, align 4
+  store i32 16, i32* %x16, align 4
+  %x17 = alloca i32, align 4
+  store i32 17, i32* %x17, align 4
+  %x18 = alloca i32, align 4
+  store i32 18, i32* %x18, align 4
+  %x19 = alloca i32, align 4
+  store i32 19, i32* %x19, align 4
+  %x20 = alloca i32, align 4
+  store i32 20, i32* %x20, align 4
+  %load_lval = load i32, i32* @x, align 4
+  %add = add i32 %load_lval, 1
+  store i32 %add, i32* @x, align 4
+  %load_lval1 = load i32, i32* @y, align 4
+  %add2 = add i32 %load_lval1, 2
+  store i32 %add2, i32* @y, align 4
+  %load_lval3 = load i32, i32* @z, align 4
+  %add4 = add i32 %load_lval3, 3
+  store i32 %add4, i32* @z, align 4
+  %load_lval5 = load i32, i32* @a, align 4
+  %add6 = add i32 %load_lval5, 4
+  store i32 %add6, i32* @a, align 4
+  %load_lval7 = load i32, i32* @b, align 4
+  %add8 = add i32 %load_lval7, 5
+  store i32 %add8, i32* @b, align 4
+  %load_lval9 = load i32, i32* @c, align 4
+  %add10 = add i32 %load_lval9, 6
+  store i32 %add10, i32* @c, align 4
+  %load_lval11 = load i32, i32* @d, align 4
+  %add12 = add i32 %load_lval11, 7
+  store i32 %add12, i32* @d, align 4
+  %load_lval13 = load i32, i32* @e, align 4
+  %add14 = add i32 %load_lval13, 8
+  store i32 %add14, i32* @e, align 4
+  %load_lval15 = load i32, i32* @f, align 4
+  %add16 = add i32 %load_lval15, 9
+  store i32 %add16, i32* @f, align 4
+  %load_lval17 = load i32, i32* @g, align 4
+  %add18 = add i32 %load_lval17, 10
+  store i32 %add18, i32* @g, align 4
+  %load_lval19 = load i32, i32* @h, align 4
+  %add20 = add i32 %load_lval19, 11
+  store i32 %add20, i32* @h, align 4
+  %load_lval21 = load i32, i32* @i, align 4
+  %add22 = add i32 %load_lval21, 12
+  store i32 %add22, i32* @i, align 4
+  %load_lval23 = load i32, i32* @j, align 4
+  %add24 = add i32 %load_lval23, 13
+  store i32 %add24, i32* @j, align 4
+  %load_lval25 = load i32, i32* @k, align 4
+  %add26 = add i32 %load_lval25, 14
+  store i32 %add26, i32* @k, align 4
+  %load_lval27 = load i32, i32* @l, align 4
+  %add28 = add i32 %load_lval27, 15
+  store i32 %add28, i32* @l, align 4
+  %load_lval29 = load i32, i32* @m, align 4
+  %add30 = add i32 %load_lval29, 16
+  store i32 %add30, i32* @m, align 4
+  %load_lval31 = load i32, i32* @n, align 4
+  %add32 = add i32 %load_lval31, 17
+  store i32 %add32, i32* @n, align 4
+  %load_lval33 = load i32, i32* @o, align 4
+  %add34 = add i32 %load_lval33, 18
+  store i32 %add34, i32* @o, align 4
+  %load_lval35 = load i32, i32* @p, align 4
+  %add36 = add i32 %load_lval35, 19
+  store i32 %add36, i32* @p, align 4
+  %load_lval37 = load i32, i32* @q, align 4
+  %add38 = add i32 %load_lval37, 20
+  store i32 %add38, i32* @q, align 4
+  %load_lval39 = load i32, i32* %x1, align 4
+  %mul = mul i32 %load_lval39, 2
+  store i32 %mul, i32* %x1, align 4
+  %load_lval40 = load i32, i32* %x2, align 4
+  %mul41 = mul i32 %load_lval40, 2
+  store i32 %mul41, i32* %x2, align 4
+  %load_lval42 = load i32, i32* %x3, align 4
+  %mul43 = mul i32 %load_lval42, 2
+  store i32 %mul43, i32* %x3, align 4
+  %load_lval44 = load i32, i32* %x4, align 4
+  %mul45 = mul i32 %load_lval44, 2
+  store i32 %mul45, i32* %x4, align 4
+  %load_lval46 = load i32, i32* %x5, align 4
+  %mul47 = mul i32 %load_lval46, 2
+  store i32 %mul47, i32* %x5, align 4
+  %load_lval48 = load i32, i32* %x6, align 4
+  %mul49 = mul i32 %load_lval48, 2
+  store i32 %mul49, i32* %x6, align 4
+  %load_lval50 = load i32, i32* %x7, align 4
+  %mul51 = mul i32 %load_lval50, 2
+  store i32 %mul51, i32* %x7, align 4
+  %load_lval52 = load i32, i32* %x8, align 4
+  %mul53 = mul i32 %load_lval52, 2
+  store i32 %mul53, i32* %x8, align 4
+  %load_lval54 = load i32, i32* %x9, align 4
+  %mul55 = mul i32 %load_lval54, 2
+  store i32 %mul55, i32* %x9, align 4
+  %load_lval56 = load i32, i32* %x10, align 4
+  %mul57 = mul i32 %load_lval56, 2
+  store i32 %mul57, i32* %x10, align 4
+  %load_lval58 = load i32, i32* %x11, align 4
+  %mul59 = mul i32 %load_lval58, 2
+  store i32 %mul59, i32* %x11, align 4
+  %load_lval60 = load i32, i32* %x12, align 4
+  %mul61 = mul i32 %load_lval60, 2
+  store i32 %mul61, i32* %x12, align 4
+  %load_lval62 = load i32, i32* %x13, align 4
+  %mul63 = mul i32 %load_lval62, 2
+  store i32 %mul63, i32* %x13, align 4
+  %load_lval64 = load i32, i32* %x14, align 4
+  %mul65 = mul i32 %load_lval64, 2
+  store i32 %mul65, i32* %x14, align 4
+  %load_lval66 = load i32, i32* %x15, align 4
+  %mul67 = mul i32 %load_lval66, 2
+  store i32 %mul67, i32* %x15, align 4
+  %load_lval68 = load i32, i32* %x16, align 4
+  %mul69 = mul i32 %load_lval68, 2
+  store i32 %mul69, i32* %x16, align 4
+  %load_lval70 = load i32, i32* %x17, align 4
+  %mul71 = mul i32 %load_lval70, 2
+  store i32 %mul71, i32* %x17, align 4
+  %load_lval72 = load i32, i32* %x18, align 4
+  %mul73 = mul i32 %load_lval72, 2
+  store i32 %mul73, i32* %x18, align 4
+  %load_lval74 = load i32, i32* %x19, align 4
+  %mul75 = mul i32 %load_lval74, 2
+  store i32 %mul75, i32* %x19, align 4
+  %load_lval76 = load i32, i32* %x20, align 4
+  %mul77 = mul i32 %load_lval76, 2
+  store i32 %mul77, i32* %x20, align 4
+  %load_lval78 = load i32, i32* %x1, align 4
+  %load_lval79 = load i32, i32* %x2, align 4
+  %add80 = add i32 %load_lval78, %load_lval79
+  %load_lval81 = load i32, i32* %x3, align 4
+  %add82 = add i32 %add80, %load_lval81
+  %load_lval83 = load i32, i32* %x4, align 4
+  %add84 = add i32 %add82, %load_lval83
+  %load_lval85 = load i32, i32* %x5, align 4
+  %add86 = add i32 %add84, %load_lval85
+  %load_lval87 = load i32, i32* %x6, align 4
+  %add88 = add i32 %add86, %load_lval87
+  %load_lval89 = load i32, i32* %x7, align 4
+  %add90 = add i32 %add88, %load_lval89
+  %load_lval91 = load i32, i32* %x8, align 4
+  %add92 = add i32 %add90, %load_lval91
+  %load_lval93 = load i32, i32* %x9, align 4
+  %add94 = add i32 %add92, %load_lval93
+  %load_lval95 = load i32, i32* %x10, align 4
+  %add96 = add i32 %add94, %load_lval95
+  %load_lval97 = load i32, i32* %x11, align 4
+  %add98 = add i32 %add96, %load_lval97
+  %load_lval99 = load i32, i32* %x12, align 4
+  %add100 = add i32 %add98, %load_lval99
+  %load_lval101 = load i32, i32* %x13, align 4
+  %add102 = add i32 %add100, %load_lval101
+  %load_lval103 = load i32, i32* %x14, align 4
+  %add104 = add i32 %add102, %load_lval103
+  %load_lval105 = load i32, i32* %x15, align 4
+  %add106 = add i32 %add104, %load_lval105
+  %load_lval107 = load i32, i32* %x16, align 4
+  %add108 = add i32 %add106, %load_lval107
+  %load_lval109 = load i32, i32* %x17, align 4
+  %add110 = add i32 %add108, %load_lval109
+  %load_lval111 = load i32, i32* %x18, align 4
+  %add112 = add i32 %add110, %load_lval111
+  %load_lval113 = load i32, i32* %x19, align 4
+  %add114 = add i32 %add112, %load_lval113
+  %load_lval115 = load i32, i32* %x20, align 4
+  %add116 = add i32 %add114, %load_lval115
+  %load_lval117 = load i32, i32* @x, align 4
+  %add118 = add i32 %add116, %load_lval117
+  %load_lval119 = load i32, i32* @y, align 4
+  %add120 = add i32 %add118, %load_lval119
+  %load_lval121 = load i32, i32* @z, align 4
+  %add122 = add i32 %add120, %load_lval121
+  %load_lval123 = load i32, i32* @a, align 4
+  %add124 = add i32 %add122, %load_lval123
+  %load_lval125 = load i32, i32* @b, align 4
+  %add126 = add i32 %add124, %load_lval125
+  %load_lval127 = load i32, i32* @c, align 4
+  %add128 = add i32 %add126, %load_lval127
+  %load_lval129 = load i32, i32* @d, align 4
+  %add130 = add i32 %add128, %load_lval129
+  %load_lval131 = load i32, i32* @e, align 4
+  %add132 = add i32 %add130, %load_lval131
+  %load_lval133 = load i32, i32* @f, align 4
+  %add134 = add i32 %add132, %load_lval133
+  %load_lval135 = load i32, i32* @g, align 4
+  %add136 = add i32 %add134, %load_lval135
+  %load_lval137 = load i32, i32* @h, align 4
+  %add138 = add i32 %add136, %load_lval137
+  %load_lval139 = load i32, i32* @i, align 4
+  %add140 = add i32 %add138, %load_lval139
+  %load_lval141 = load i32, i32* @j, align 4
+  %add142 = add i32 %add140, %load_lval141
+  %load_lval143 = load i32, i32* @k, align 4
+  %add144 = add i32 %add142, %load_lval143
+  %load_lval145 = load i32, i32* @l, align 4
+  %add146 = add i32 %add144, %load_lval145
+  %load_lval147 = load i32, i32* @m, align 4
+  %add148 = add i32 %add146, %load_lval147
+  %load_lval149 = load i32, i32* @n, align 4
+  %add150 = add i32 %add148, %load_lval149
+  %load_lval151 = load i32, i32* @o, align 4
+  %add152 = add i32 %add150, %load_lval151
+  %load_lval153 = load i32, i32* @p, align 4
+  %add154 = add i32 %add152, %load_lval153
+  %load_lval155 = load i32, i32* @q, align 4
+  %add156 = add i32 %add154, %load_lval155
+  ret i32 %add156
+}
