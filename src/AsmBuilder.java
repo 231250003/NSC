@@ -27,16 +27,16 @@ public class AsmBuilder {
 
     public void instr(String op, String... args) {
         boolean flag=false;
-        if(op.equals("lw")){
-            flag=true;
-            String dest = args[0];
-            String addr = args[1];
-            int parenIndex = addr.indexOf('(');
-            String offset = addr.substring(0, parenIndex).trim();
-            String base = addr.substring(parenIndex + 1, addr.length() - 1).trim();
-            op = "LOAD_WORD(";
-            args = new String[]{dest, base, offset};
-        }
+//        if(op.equals("lw")){
+//            flag=true;
+//            String dest = args[0];
+//            String addr = args[1];
+//            int parenIndex = addr.indexOf('(');
+//            String offset = addr.substring(0, parenIndex).trim();
+//            String base = addr.substring(parenIndex + 1, addr.length() - 1).trim();
+//            op = "LOAD_WORD(";
+//            args = new String[]{dest, base, offset};
+//        }
         current.append("  ").append(op);
         if (args.length > 0) {
              current.append(" ").append(String.join(", ", args));
@@ -86,11 +86,11 @@ public class AsmBuilder {
     public void bnez(String reg, String label) {
         instr("bnez", reg, label);
     }
-    public void macro() {
-        String macroDef =".macro LOAD_WORD(%rd, %rs, %imm)\n" +
-                "    lw %rd, %imm(%rs) \n"+".end_macro\n";
-        textSegment.insert(0, macroDef);
-    }
+//    public void macro() {
+//        String macroDef =".macro LOAD_WORD(%rd, %rs, %imm)\n" +
+//                "    lw %rd, %imm(%rs) \n"+".end_macro\n";
+//        textSegment.insert(0, macroDef);
+//    }
     public void writeToFile(String filePath) {
         try (FileWriter fw = new FileWriter(filePath)) {
             fw.write(dataSegment.toString());

@@ -20,42 +20,42 @@ main:
   addi sp, sp, -512
 mainEntry:
   la t0, a
-  LOAD_WORD t0, 0(t0)
+  LOAD_WORD( t0, t0, 0)
   sw t0, 4(sp)
-  LOAD_WORD t1, 4(sp)
+  LOAD_WORD( t1, sp, 4)
   li t2, 1
   add t0, t1, t2
   sw t0, 8(sp)
   la t1, cccc
-  LOAD_WORD t1, 0(t1)
+  LOAD_WORD( t1, t1, 0)
   sw t1, 12(sp)
-  LOAD_WORD t2, 12(sp)
+  LOAD_WORD( t2, sp, 12)
   li t0, 0
   xor t1, t2, t0
   seqz t1, t1
   sw t1, 16(sp)
-  LOAD_WORD t2, 16(sp)
+  LOAD_WORD( t2, sp, 16)
   mv t0, t2
   sw t0, 20(sp)
-  LOAD_WORD t1, 20(sp)
+  LOAD_WORD( t1, sp, 20)
   li t2, 0
   xor t0, t1, t2
   seqz t0, t0
   sw t0, 24(sp)
-  LOAD_WORD t1, 24(sp)
+  LOAD_WORD( t1, sp, 24)
   mv t2, t1
   sw t2, 28(sp)
-  LOAD_WORD t0, 8(sp)
-  LOAD_WORD t1, 28(sp)
+  LOAD_WORD( t0, sp, 8)
+  LOAD_WORD( t1, sp, 28)
   add t2, t0, t1
   sw t2, 32(sp)
-  LOAD_WORD t0, 32(sp)
+  LOAD_WORD( t0, sp, 32)
   la t1, b
   sw t0, 0(t1)
   la t2, b
-  LOAD_WORD t2, 0(t2)
+  LOAD_WORD( t2, t2, 0)
   sw t2, 36(sp)
-  LOAD_WORD t0, 36(sp)
+  LOAD_WORD( t0, sp, 36)
   mv a0, t0
   addi sp, sp, 512
   li a7, 93
