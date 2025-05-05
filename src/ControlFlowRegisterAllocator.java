@@ -14,7 +14,6 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
         this.varToInterval = new HashMap<>();
         for (Interval interval : allIntervals) {
             varToInterval.put(interval.varName, interval);
-            System.out.println(interval.used_num);
         }
         this.asmBuilder=asmBuilder;
         List<Map.Entry<String, Interval>> sortedEntries = new ArrayList<>(varToInterval.entrySet());
