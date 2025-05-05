@@ -73,7 +73,7 @@ public class LLVMIRToRiscv {
             }
         }
         for (LLVMBasicBlockRef bb : blocksWithBr) {
-            int finalLineNum= 0;
+            int finalLineNum=block_last_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
             for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                 String line = LLVM.LLVMPrintValueToString(inst).getString();
                 if (line.contains("br") && !line.contains(",")) {
