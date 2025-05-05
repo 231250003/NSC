@@ -18,10 +18,10 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
         this.asmBuilder=asmBuilder;
         List<Map.Entry<String, Interval>> sortedEntries = new ArrayList<>(varToInterval.entrySet());
         sortedEntries.sort((e1, e2) -> Integer.compare(e2.getValue().used_num, e1.getValue().used_num));
-        for(int i=0;i<sortedEntries.size();i++){
-            System.out.println(sortedEntries.get(i).getKey());
-            System.out.println(sortedEntries.get(i).getValue().used_num);
-        }
+//        for(int i=0;i<sortedEntries.size();i++){
+//            System.out.println(sortedEntries.get(i).getKey());
+//            System.out.println(sortedEntries.get(i).getValue().used_num);
+//        }
     }
 
     @Override
@@ -39,6 +39,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
                     .limit(27)
                     .anyMatch(entry -> entry.getKey().equals(var))) {
                 String reg = registers.remove(0);
+                System.out.println("crzzz");
                 varToLocation.put(var, reg);
 //                active.add(interval);
 //                active.sort(Comparator.comparingInt(i -> i.end));
