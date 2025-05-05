@@ -84,8 +84,8 @@ if.else:
   mv x27, x4
   mv x29, x1
   sub t1, x27, x29
-  mv x8, t1
-  mv x4, x8
+  mv x4, t1
+  mv x4, x4
   j merge
 merge13:
   mv x22, x1
@@ -94,9 +94,9 @@ merge13:
   li a7, 93
   ecall
 if.then19:
-  mv x25, x1
+  mv x23, x1
   li t2, 1
-  add t0, x25, t2
-  mv x28, t0
-  mv x1, x28
+  add t0, x23, t2
+  mv x26, t0
+  mv x1, x26
   j merge13
