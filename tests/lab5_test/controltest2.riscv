@@ -5,454 +5,419 @@ x:
 y:
   .word 98
 
-.macro LOAD_WORD(%rd, %rs, %imm)
-    lw %rd, %imm(%rs) 
-.end_macro
   .text
   .globl main
 main:
   addi sp, sp, -512
 mainEntry:
   la t0, x
-  LOAD_WORD( t0, t0, 0)
-  sw t0, 8(sp)
-  LOAD_WORD( t1, sp, 8)
-  sw t1, 4(sp)
-  la t2, y
-  LOAD_WORD( t2, t2, 0)
-  sw t2, 16(sp)
-  LOAD_WORD( t0, sp, 16)
-  sw t0, 12(sp)
-  LOAD_WORD( t1, sp, 4)
-  sw t1, 20(sp)
-  LOAD_WORD( t2, sp, 20)
-  li t0, 0
-  xor t1, t2, t0
-  seqz t1, t1
-  sw t1, 24(sp)
-  LOAD_WORD( t2, sp, 24)
-  mv t0, t2
-  sw t0, 28(sp)
-  LOAD_WORD( t1, sp, 12)
-  sw t1, 32(sp)
-  LOAD_WORD( t2, sp, 28)
-  LOAD_WORD( t0, sp, 32)
-  add t1, t2, t0
-  sw t1, 36(sp)
-  LOAD_WORD( t2, sp, 36)
-  li t0, 10
-  slt t1, t2, t0
-  seqz t1, t1
-  sw t1, 40(sp)
-  LOAD_WORD( t2, sp, 40)
-  mv t0, t2
-  sw t0, 44(sp)
-  LOAD_WORD( t1, sp, 44)
+  lw t0, 0(t0)
+  mv x3, t0
+  mv x1, x3
+  la t1, y
+  lw t1, 0(t1)
+  mv x8, t1
+  mv x4, x8
+  mv x9, x1
   li t2, 0
-  xor t0, t1, t2
-  snez t0, t0
-  sw t0, 48(sp)
-  LOAD_WORD( t1, sp, 48)
-  bnez t1, if.then
+  xor t0, x9, t2
+  seqz t0, t0
+  mv x10, t0
+  mv t1, x10
+  mv x11, t1
+  mv x12, x4
+  add t2, x11, x12
+  mv x13, t2
+  li t0, 10
+  slt t1, x13, t0
+  seqz t1, t1
+  mv x14, t1
+  mv t2, x14
+  mv x15, t2
+  li t0, 0
+  xor t1, x15, t0
+  snez t1, t1
+  mv x16, t1
+  bnez x16, if.then
   j merge
 merge:
   j while.cond
 if.then:
-  LOAD_WORD( t2, sp, 4)
-  sw t2, 52(sp)
-  LOAD_WORD( t0, sp, 52)
-  li t1, 10
-  sgt t2, t0, t1
-  seqz t2, t2
-  sw t2, 56(sp)
-  LOAD_WORD( t0, sp, 56)
-  mv t1, t0
-  sw t1, 60(sp)
-  LOAD_WORD( t2, sp, 60)
-  li t0, 0
-  xor t1, t2, t0
-  snez t1, t1
-  sw t1, 64(sp)
-  LOAD_WORD( t2, sp, 64)
-  bnez t2, if.then9
+  mv x17, x1
+  li t2, 10
+  sgt t0, x17, t2
+  seqz t0, t0
+  mv x18, t0
+  mv t1, x18
+  mv x19, t1
+  li t2, 0
+  xor t0, x19, t2
+  snez t0, t0
+  mv x20, t0
+  bnez x20, if.then9
   j merge5
 merge5:
   j merge
 if.then9:
-  li t0, 2
-  mv a0, t0
+  li t1, 2
+  mv a0, t1
   addi sp, sp, 512
   li a7, 93
   ecall
 cur:
   j while.cond30
 while.stmt:
-  LOAD_WORD( t1, sp, 4)
-  sw t1, 68(sp)
-  LOAD_WORD( t2, sp, 68)
-  li t0, 2
-  sub t1, t2, t0
-  sw t1, 72(sp)
-  LOAD_WORD( t2, sp, 72)
-  sw t2, 4(sp)
-  LOAD_WORD( t0, sp, 4)
-  sw t0, 76(sp)
-  LOAD_WORD( t1, sp, 76)
-  li t2, 45
-  xor t0, t1, t2
-  seqz t0, t0
-  sw t0, 80(sp)
-  LOAD_WORD( t1, sp, 80)
-  mv t2, t1
-  sw t2, 84(sp)
-  LOAD_WORD( t0, sp, 84)
+  mv x21, x1
+  li t2, 2
+  sub t0, x21, t2
+  mv x22, t0
+  mv x1, x22
+  mv x23, x1
+  li t1, 45
+  xor t2, x23, t1
+  seqz t2, t2
+  mv x24, t2
+  mv t0, x24
+  mv x25, t0
   li t1, 0
-  xor t2, t0, t1
+  xor t2, x25, t1
   snez t2, t2
-  sw t2, 88(sp)
-  LOAD_WORD( t0, sp, 88)
-  bnez t0, if.then16
+  mv x26, t2
+  bnez x26, if.then16
   j if.else
 while.cond:
-  li t1, -1
-  bnez t1, while.stmt
+  li t0, -1
+  bnez t0, while.stmt
   j cur
 merge12:
   j while.cond
 if.then16:
   j cur
 if.else:
-  LOAD_WORD( t2, sp, 4)
-  sw t2, 92(sp)
-  LOAD_WORD( t0, sp, 92)
+  mv x27, x1
   li t1, 48
-  xor t2, t0, t1
+  xor t2, x27, t1
   seqz t2, t2
-  sw t2, 96(sp)
-  LOAD_WORD( t0, sp, 96)
-  mv t1, t0
-  sw t1, 100(sp)
-  LOAD_WORD( t2, sp, 100)
-  li t0, 0
-  xor t1, t2, t0
-  snez t1, t1
-  sw t1, 104(sp)
-  LOAD_WORD( t2, sp, 104)
-  bnez t2, if.then22
+  mv x28, t2
+  mv t0, x28
+  mv x29, t0
+  li t1, 0
+  xor t2, x29, t1
+  snez t2, t2
+  mv x30, t2
+  bnez x30, if.then22
   j merge18
 merge18:
   j merge12
 if.then22:
-  LOAD_WORD( t0, sp, 12)
-  sw t0, 108(sp)
-  LOAD_WORD( t1, sp, 108)
-  li t2, 3
-  sub t0, t1, t2
-  sw t0, 112(sp)
-  LOAD_WORD( t1, sp, 112)
+  mv x31, x4
+  sw x1, 4(sp)
+  li t0, 3
+  sub t1, x31, t0
+  mv x1, t1
+  mv x4, x1
+  sw x4, 8(sp)
+  lw t2, 4(sp)
+  mv x4, t2
+  li t0, 1
+  add t1, x4, t0
   sw t1, 12(sp)
-  LOAD_WORD( t2, sp, 4)
-  sw t2, 116(sp)
-  LOAD_WORD( t0, sp, 116)
-  li t1, 1
-  add t2, t0, t1
-  sw t2, 120(sp)
-  LOAD_WORD( t0, sp, 120)
-  sw t0, 4(sp)
+  lw t2, 12(sp)
+  sw t2, 4(sp)
   j merge18
 cur28:
-  LOAD_WORD( t1, sp, 4)
-  sw t1, 128(sp)
-  LOAD_WORD( t2, sp, 128)
-  sw t2, 124(sp)
-  LOAD_WORD( t0, sp, 124)
-  sw t0, 132(sp)
-  LOAD_WORD( t1, sp, 132)
-  mv a0, t1
+  lw t0, 4(sp)
+  sw t0, 20(sp)
+  lw t1, 20(sp)
+  sw t1, 16(sp)
+  lw t2, 16(sp)
+  sw t2, 24(sp)
+  lw t0, 24(sp)
+  mv a0, t0
   addi sp, sp, 512
   li a7, 93
   ecall
 while.stmt29:
   j while.cond39
 while.cond30:
-  LOAD_WORD( t2, sp, 12)
-  sw t2, 136(sp)
-  LOAD_WORD( t0, sp, 4)
-  sw t0, 140(sp)
-  LOAD_WORD( t1, sp, 136)
-  LOAD_WORD( t2, sp, 140)
-  add t0, t1, t2
-  sw t0, 144(sp)
-  LOAD_WORD( t1, sp, 144)
-  li t2, 20
-  sgt t0, t1, t2
-  sw t0, 148(sp)
-  LOAD_WORD( t1, sp, 148)
-  mv t2, t1
-  sw t2, 152(sp)
-  LOAD_WORD( t0, sp, 152)
-  li t1, 0
-  xor t2, t0, t1
-  snez t2, t2
-  sw t2, 156(sp)
-  LOAD_WORD( t0, sp, 156)
-  bnez t0, while.stmt29
+  lw t1, 8(sp)
+  sw t1, 28(sp)
+  lw t2, 4(sp)
+  sw t2, 32(sp)
+  lw t0, 28(sp)
+  lw t1, 32(sp)
+  add t2, t0, t1
+  sw t2, 36(sp)
+  lw t0, 36(sp)
+  li t1, 20
+  sgt t2, t0, t1
+  sw t2, 40(sp)
+  lw t0, 40(sp)
+  mv t1, t0
+  sw t1, 44(sp)
+  lw t2, 44(sp)
+  li t0, 0
+  xor t1, t2, t0
+  snez t1, t1
+  sw t1, 48(sp)
+  lw t2, 48(sp)
+  bnez t2, while.stmt29
   j cur28
 cur37:
   j while.cond55
 while.stmt38:
-  LOAD_WORD( t1, sp, 4)
-  sw t1, 160(sp)
-  LOAD_WORD( t2, sp, 160)
-  li t0, 40
+  lw t0, 4(sp)
+  sw t0, 52(sp)
+  lw t1, 52(sp)
+  li t2, 40
+  sgt t0, t1, t2
+  sw t0, 56(sp)
+  lw t1, 56(sp)
+  mv t2, t1
+  sw t2, 60(sp)
+  lw t0, 60(sp)
+  li t1, 0
+  xor t2, t0, t1
+  snez t2, t2
+  sw t2, 64(sp)
+  lw t0, 64(sp)
+  bnez t0, if.then48
+  j if.else49
+while.cond39:
+  lw t1, 4(sp)
+  sw t1, 68(sp)
+  lw t2, 68(sp)
+  li t0, 10
   sgt t1, t2, t0
-  sw t1, 164(sp)
-  LOAD_WORD( t2, sp, 164)
+  sw t1, 72(sp)
+  lw t2, 72(sp)
   mv t0, t2
-  sw t0, 168(sp)
-  LOAD_WORD( t1, sp, 168)
+  sw t0, 76(sp)
+  lw t1, 76(sp)
   li t2, 0
   xor t0, t1, t2
   snez t0, t0
-  sw t0, 172(sp)
-  LOAD_WORD( t1, sp, 172)
-  bnez t1, if.then48
-  j if.else49
-while.cond39:
-  LOAD_WORD( t2, sp, 4)
-  sw t2, 176(sp)
-  LOAD_WORD( t0, sp, 176)
-  li t1, 10
-  sgt t2, t0, t1
-  sw t2, 180(sp)
-  LOAD_WORD( t0, sp, 180)
-  mv t1, t0
-  sw t1, 184(sp)
-  LOAD_WORD( t2, sp, 184)
-  li t0, 0
-  xor t1, t2, t0
-  snez t1, t1
-  sw t1, 188(sp)
-  LOAD_WORD( t2, sp, 188)
-  bnez t2, while.stmt38
+  sw t0, 80(sp)
+  lw t1, 80(sp)
+  bnez t1, while.stmt38
   j cur37
 merge44:
   j while.cond39
 if.then48:
-  LOAD_WORD( t0, sp, 4)
-  sw t0, 192(sp)
-  LOAD_WORD( t1, sp, 192)
-  li t2, 5
-  sub t0, t1, t2
-  sw t0, 196(sp)
-  LOAD_WORD( t1, sp, 196)
-  sw t1, 4(sp)
+  lw t2, 4(sp)
+  sw t2, 84(sp)
+  lw t0, 84(sp)
+  li t1, 5
+  sub t2, t0, t1
+  sw t2, 88(sp)
+  lw t0, 88(sp)
+  sw t0, 4(sp)
   j cur37
 if.else49:
   j cur37
 cur53:
-  LOAD_WORD( t2, sp, 12)
-  sw t2, 200(sp)
-  LOAD_WORD( t0, sp, 200)
-  li t1, 3
-  sub t2, t0, t1
-  sw t2, 204(sp)
-  LOAD_WORD( t0, sp, 204)
-  sw t0, 12(sp)
-  LOAD_WORD( t1, sp, 4)
-  sw t1, 208(sp)
-  LOAD_WORD( t2, sp, 208)
-  li t0, 1
-  add t1, t2, t0
-  sw t1, 212(sp)
-  LOAD_WORD( t2, sp, 212)
-  sw t2, 4(sp)
-  LOAD_WORD( t0, sp, 4)
-  sw t0, 216(sp)
-  LOAD_WORD( t1, sp, 12)
-  sw t1, 220(sp)
-  LOAD_WORD( t2, sp, 216)
-  LOAD_WORD( t0, sp, 220)
-  add t1, t2, t0
-  sw t1, 224(sp)
-  LOAD_WORD( t2, sp, 224)
-  li t0, 50
-  sgt t1, t2, t0
-  sw t1, 228(sp)
-  LOAD_WORD( t2, sp, 228)
-  mv t0, t2
-  sw t0, 232(sp)
-  LOAD_WORD( t1, sp, 232)
-  li t2, 0
-  xor t0, t1, t2
-  snez t0, t0
-  sw t0, 236(sp)
-  LOAD_WORD( t1, sp, 236)
-  bnez t1, if.then113
-  j merge107
-while.stmt54:
-  li t2, 30
-  sw t2, 240(sp)
-  j while.cond63
-while.cond55:
-  LOAD_WORD( t0, sp, 12)
-  sw t0, 244(sp)
-  LOAD_WORD( t1, sp, 244)
-  li t2, 35
+  lw t1, 8(sp)
+  sw t1, 92(sp)
+  lw t2, 92(sp)
+  li t0, 3
+  sub t1, t2, t0
+  sw t1, 96(sp)
+  lw t2, 96(sp)
+  sw t2, 8(sp)
+  lw t0, 4(sp)
+  sw t0, 100(sp)
+  lw t1, 100(sp)
+  li t2, 1
+  add t0, t1, t2
+  sw t0, 104(sp)
+  lw t1, 104(sp)
+  sw t1, 4(sp)
+  lw t2, 4(sp)
+  sw t2, 108(sp)
+  lw t0, 8(sp)
+  sw t0, 112(sp)
+  lw t1, 108(sp)
+  lw t2, 112(sp)
+  add t0, t1, t2
+  sw t0, 116(sp)
+  lw t1, 116(sp)
+  li t2, 50
   sgt t0, t1, t2
-  sw t0, 248(sp)
-  LOAD_WORD( t1, sp, 248)
+  sw t0, 120(sp)
+  lw t1, 120(sp)
   mv t2, t1
-  sw t2, 252(sp)
-  LOAD_WORD( t0, sp, 252)
+  sw t2, 124(sp)
+  lw t0, 124(sp)
   li t1, 0
   xor t2, t0, t1
   snez t2, t2
-  sw t2, 256(sp)
-  LOAD_WORD( t0, sp, 256)
-  bnez t0, while.stmt54
+  sw t2, 128(sp)
+  lw t0, 128(sp)
+  bnez t0, if.then113
+  j merge107
+while.stmt54:
+  li t1, 30
+  sw t1, 132(sp)
+  j while.cond63
+while.cond55:
+  lw t2, 8(sp)
+  sw t2, 136(sp)
+  lw t0, 136(sp)
+  li t1, 35
+  sgt t2, t0, t1
+  sw t2, 140(sp)
+  lw t0, 140(sp)
+  mv t1, t0
+  sw t1, 144(sp)
+  lw t2, 144(sp)
+  li t0, 0
+  xor t1, t2, t0
+  snez t1, t1
+  sw t1, 148(sp)
+  lw t2, 148(sp)
+  bnez t2, while.stmt54
   j cur53
 cur61:
-  LOAD_WORD( t1, sp, 12)
-  sw t1, 260(sp)
-  LOAD_WORD( t2, sp, 260)
-  li t0, 10
-  sub t1, t2, t0
-  sw t1, 264(sp)
-  LOAD_WORD( t2, sp, 264)
-  mv a0, t2
+  lw t0, 8(sp)
+  sw t0, 152(sp)
+  lw t1, 152(sp)
+  li t2, 10
+  sub t0, t1, t2
+  sw t0, 156(sp)
+  lw t1, 156(sp)
+  mv a0, t1
   addi sp, sp, 512
   li a7, 93
   ecall
 while.stmt62:
-  LOAD_WORD( t0, sp, 240)
-  sw t0, 268(sp)
-  LOAD_WORD( t1, sp, 268)
-  li t2, 20
-  slt t0, t1, t2
-  sw t0, 272(sp)
-  LOAD_WORD( t1, sp, 272)
-  mv t2, t1
-  sw t2, 276(sp)
-  LOAD_WORD( t0, sp, 276)
-  li t1, 0
-  xor t2, t0, t1
-  snez t2, t2
-  sw t2, 280(sp)
-  LOAD_WORD( t0, sp, 280)
-  bnez t0, if.then68
+  lw t2, 132(sp)
+  sw t2, 160(sp)
+  lw t0, 160(sp)
+  li t1, 20
+  slt t2, t0, t1
+  sw t2, 164(sp)
+  lw t0, 164(sp)
+  mv t1, t0
+  sw t1, 168(sp)
+  lw t2, 168(sp)
+  li t0, 0
+  xor t1, t2, t0
+  snez t1, t1
+  sw t1, 172(sp)
+  lw t2, 172(sp)
+  bnez t2, if.then68
   j if.else69
 while.cond63:
-  li t1, -1
-  bnez t1, while.stmt62
+  li t0, -1
+  bnez t0, while.stmt62
   j cur61
 merge64:
   j cur61
 if.then68:
-  LOAD_WORD( t2, sp, 240)
-  sw t2, 284(sp)
-  LOAD_WORD( t0, sp, 284)
-  mv a0, t0
+  lw t1, 132(sp)
+  sw t1, 176(sp)
+  lw t2, 176(sp)
+  mv a0, t2
   addi sp, sp, 512
   li a7, 93
   ecall
 if.else69:
-  LOAD_WORD( t1, sp, 240)
-  sw t1, 288(sp)
-  LOAD_WORD( t2, sp, 288)
-  li t0, 7
-  sub t1, t2, t0
-  sw t1, 292(sp)
-  LOAD_WORD( t2, sp, 292)
-  sw t2, 240(sp)
+  lw t0, 132(sp)
+  sw t0, 180(sp)
+  lw t1, 180(sp)
+  li t2, 7
+  sub t0, t1, t2
+  sw t0, 184(sp)
+  lw t1, 184(sp)
+  sw t1, 132(sp)
   j merge64
 merge76:
   j while.cond55
 if.then80:
-  LOAD_WORD( t0, sp, 12)
-  sw t0, 296(sp)
-  LOAD_WORD( t1, sp, 296)
-  li t2, 5
-  sub t0, t1, t2
-  sw t0, 300(sp)
-  LOAD_WORD( t1, sp, 300)
-  sw t1, 12(sp)
+  lw t2, 8(sp)
+  sw t2, 188(sp)
+  lw t0, 188(sp)
+  li t1, 5
+  sub t2, t0, t1
+  sw t2, 192(sp)
+  lw t0, 192(sp)
+  sw t0, 8(sp)
   j while.cond55
 if.else81:
-  LOAD_WORD( t2, sp, 12)
-  sw t2, 304(sp)
-  LOAD_WORD( t0, sp, 304)
-  li t1, 50
-  sgt t2, t0, t1
-  sw t2, 308(sp)
-  LOAD_WORD( t0, sp, 308)
-  mv t1, t0
-  sw t1, 312(sp)
-  LOAD_WORD( t2, sp, 312)
-  li t0, 0
-  xor t1, t2, t0
-  snez t1, t1
-  sw t1, 316(sp)
-  LOAD_WORD( t2, sp, 316)
-  bnez t2, if.then89
+  lw t1, 8(sp)
+  sw t1, 196(sp)
+  lw t2, 196(sp)
+  li t0, 50
+  sgt t1, t2, t0
+  sw t1, 200(sp)
+  lw t2, 200(sp)
+  mv t0, t2
+  sw t0, 204(sp)
+  lw t1, 204(sp)
+  li t2, 0
+  xor t0, t1, t2
+  snez t0, t0
+  sw t0, 208(sp)
+  lw t1, 208(sp)
+  bnez t1, if.then89
   j if.else90
 merge85:
   j merge76
 if.then89:
-  LOAD_WORD( t0, sp, 12)
-  sw t0, 320(sp)
-  LOAD_WORD( t1, sp, 320)
-  li t2, 7
-  sub t0, t1, t2
-  sw t0, 324(sp)
-  LOAD_WORD( t1, sp, 324)
-  sw t1, 12(sp)
+  lw t2, 8(sp)
+  sw t2, 212(sp)
+  lw t0, 212(sp)
+  li t1, 7
+  sub t2, t0, t1
+  sw t2, 216(sp)
+  lw t0, 216(sp)
+  sw t0, 8(sp)
   j merge85
 if.else90:
-  LOAD_WORD( t2, sp, 12)
-  sw t2, 328(sp)
-  LOAD_WORD( t0, sp, 328)
-  li t1, 30
-  sgt t2, t0, t1
-  sw t2, 332(sp)
-  LOAD_WORD( t0, sp, 332)
-  mv t1, t0
-  sw t1, 336(sp)
-  LOAD_WORD( t2, sp, 336)
-  li t0, 0
-  xor t1, t2, t0
-  snez t1, t1
-  sw t1, 340(sp)
-  LOAD_WORD( t2, sp, 340)
-  bnez t2, if.then98
+  lw t1, 8(sp)
+  sw t1, 220(sp)
+  lw t2, 220(sp)
+  li t0, 30
+  sgt t1, t2, t0
+  sw t1, 224(sp)
+  lw t2, 224(sp)
+  mv t0, t2
+  sw t0, 228(sp)
+  lw t1, 228(sp)
+  li t2, 0
+  xor t0, t1, t2
+  snez t0, t0
+  sw t0, 232(sp)
+  lw t1, 232(sp)
+  bnez t1, if.then98
   j if.else99
 merge94:
   j merge85
 if.then98:
-  LOAD_WORD( t0, sp, 12)
-  sw t0, 344(sp)
-  LOAD_WORD( t1, sp, 344)
-  li t2, 1
-  sub t0, t1, t2
-  sw t0, 348(sp)
-  LOAD_WORD( t1, sp, 348)
-  sw t1, 12(sp)
+  lw t2, 8(sp)
+  sw t2, 236(sp)
+  lw t0, 236(sp)
+  li t1, 1
+  sub t2, t0, t1
+  sw t2, 240(sp)
+  lw t0, 240(sp)
+  sw t0, 8(sp)
   j merge94
 if.else99:
-  li t2, 10
-  mv a0, t2
+  li t1, 10
+  mv a0, t1
   addi sp, sp, 512
   li a7, 93
   ecall
 merge107:
   j while.cond30
 if.then113:
-  LOAD_WORD( t0, sp, 4)
-  sw t0, 352(sp)
-  LOAD_WORD( t1, sp, 352)
-  li t2, 10
-  sub t0, t1, t2
-  sw t0, 356(sp)
-  LOAD_WORD( t1, sp, 356)
-  sw t1, 4(sp)
+  lw t2, 4(sp)
+  sw t2, 244(sp)
+  lw t0, 244(sp)
+  li t1, 10
+  sub t2, t0, t1
+  sw t2, 248(sp)
+  lw t0, 248(sp)
+  sw t0, 4(sp)
   j merge107
