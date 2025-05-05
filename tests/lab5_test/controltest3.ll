@@ -1,13 +1,18 @@
-; ModuleID = 'my_module'
-source_filename = "my_module"
 
-define i32 @main() {
+  .text
+  .globl main
+main:
+  addi sp, sp, -512
 mainEntry:
-  %a = alloca i32, align 4
-  store i32 1, i32* %a, align 4
-  %load_lval = load i32, i32* %a, align 4
-  %add = add i32 %load_lval, 1
-  store i32 %add, i32* %a, align 4
-  %load_lval1 = load i32, i32* %a, align 4
-  ret i32 %load_lval1
-}
+  li t0, 1
+  mv x1, t0
+  mv x3, x1
+  li t1, 1
+  add t2, x3, t1
+  mv x4, t2
+  mv x1, x4
+  mv x8, x1
+  mv a0, x8
+  addi sp, sp, 512
+  li a7, 93
+  ecall
