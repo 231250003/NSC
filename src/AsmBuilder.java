@@ -26,7 +26,7 @@ public class AsmBuilder {
     }
 
     public void instr(String op, String... args) {
-        if(op.equals("lw")) op="lb";
+        if(op.equals("lw")) op="lbu";
         current.append("  ").append(op);
         if (args.length > 0) {
             current.append(" ").append(String.join(", ", args));
