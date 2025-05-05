@@ -9,7 +9,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
     private final Map<String, Integer> varOffset = new HashMap<>();
     private int nextOffset = 0;
     AsmBuilder asm;
-
+    public static List<String[]> spill_instr=new ArrayList<>();
     public LinearScanRegisterAllocator(List<Interval> allIntervals, List<String> registers,AsmBuilder asmBuilder) {
         this.registers = new ArrayList<>(registers);
         this.varToInterval = new HashMap<>();
@@ -23,6 +23,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
     public void processInstruction(int lineNumber, String instruction) {
         //expireOldIntervals(lineNumber);
         Map<String,Integer> used_reg_list=new HashMap<>();
+        spill_instr=new ArrayList<>();
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
@@ -49,7 +50,8 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                     }
                     varToLocation.put(var_spill_name, String.format("%d(sp)", varOffset.get(var_spill_name)));
                     LLVMIRToRiscv.valueMap.put(var_spill_name,varToLocation.get(var_spill_name));
-                    asm.instr("sw",spill_reg,varToLocation.get(var_spill_name));
+                    spill_instr.add(new String[]{"sw",spill_reg,varToLocation.get(var_spill_name)});
+                    //asm.instr("sw",spill_reg,varToLocation.get(var_spill_name));
                     used_reg_list.put(spill_reg,1);
                     if (varOffset.containsKey(var)) {
                         asm.instr("lw", spill_reg, String.format("%d(sp)", varOffset.get(var)));
