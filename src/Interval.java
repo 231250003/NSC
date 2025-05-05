@@ -7,6 +7,6 @@ class Interval {
         this.varName = varName;
         this.start = start;
         this.end = end;
-        this.used_num=0;
+        this.used_num=used_num;
     }
 }
