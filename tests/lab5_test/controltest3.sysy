@@ -4,6 +4,7 @@ int y = 98;
 int main() {
     int a = x;
     int b = y;
+    /*
     while (b != 0) {
            if (a > b) {
                a = a - b;
@@ -11,6 +12,8 @@ int main() {
                b = b - a;
            }
        }
-    //if(a!=!x+3) a=a+1;
+       */
+     a=14;
+    if(a!=!x+3) a=a+1;
 	return a;
 }
