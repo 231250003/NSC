@@ -66,6 +66,7 @@ public class LLVMIRToRiscv {
                 }
                 blockVars.put(bb, varsInBlock);
                 block_last_num.put(LLVM.LLVMGetBasicBlockName(bb).getString(),lineNum);
+                System.out.println(lineNum);
             }
         }
         for (LLVMBasicBlockRef bb : blocksWithBr) {
