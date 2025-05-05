@@ -26,7 +26,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
     }
 
     public void processInstruction(int lineNumber, String instruction) {
-        //expireOldIntervals(lineNumber);
+        expireOldIntervals(lineNumber);
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
@@ -45,14 +45,14 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
     }
 
     public void expireOldIntervals(int currentLine) {
-//        for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
-//            String var = entry.getKey();
-//            Interval interval = entry.getValue();
-//            if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
-//                registers.add(varToLocation.get(var));
-//                varToLocation.remove(var);
-//            }
-//        }
+        for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
+            String var = entry.getKey();
+            Interval interval = entry.getValue();
+            if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
+                registers.add(varToLocation.get(var));
+                varToLocation.remove(var);
+            }
+        }
     }
 
     @Override
