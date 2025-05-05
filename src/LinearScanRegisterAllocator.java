@@ -22,6 +22,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
     @Override
     public void processInstruction(int lineNumber, String instruction) {
         expireOldIntervals(lineNumber);
+        Map<String,Integer> used_reg_list=new HashMap<>();
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
@@ -32,7 +33,6 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                 int var_end_line=interval.end;
                 String spill_reg="";
                 String var_spill_name=var;
-                Map<String,Integer> used_reg_list=new HashMap<>();
                 for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
                     String key = entry.getKey();
                     Interval value = entry.getValue();
