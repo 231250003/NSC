@@ -20,7 +20,7 @@ cur:                                              ; preds = %while.cond
   %not = icmp eq i32 %load_lval15, 0
   %zext_to_i3216 = zext i1 %not to i32
   %add = add i32 %zext_to_i3216, 3
-  %cmp17 = icmp eq i32 %load_lval14, %add
+  %cmp17 = icmp ne i32 %load_lval14, %add
   %zext_to_i3218 = zext i1 %cmp17 to i32
   %to_bool20 = icmp ne i32 %zext_to_i3218, 0
   br i1 %to_bool20, label %if.then19, label %merge13

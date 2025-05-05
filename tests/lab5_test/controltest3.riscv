@@ -34,7 +34,7 @@ cur:
   add t1, x14, t0
   mv x15, t1
   xor t2, x9, x15
-  seqz t2, t2
+  snez t2, t2
   mv x18, t2
   mv t0, x18
   mv x21, t0
