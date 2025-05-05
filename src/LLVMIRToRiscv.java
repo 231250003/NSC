@@ -28,83 +28,21 @@ public class LLVMIRToRiscv {
         Map<String, Integer> firstUse = new HashMap<>();
         Map<String, Integer> lastUse = new HashMap<>();
         Map<String,Integer> used_num=new HashMap<>();
-//        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
-//            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
-//                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-//                    String line = LLVM.LLVMPrintValueToString(inst).getString();
-//                    if(line.contains("br")&&(!line.contains(",")))continue;
-//                    else if(line.contains("br")&&line.contains(",")) line=line.substring(0, line.indexOf(","));
-//                    for (String var : extractVariables(line)) {
-//                        firstUse.putIfAbsent(var, lineNum);
-//                        lastUse.put(var, lineNum);
-//                        used_num.put(var, used_num.getOrDefault(var, 0) + 1);
-//                    }
-//                    lineNum++;
-//                }
-//            }
-//        }
-        Map<LLVMBasicBlockRef, Integer> blockStartLine = new HashMap<>();
-        Map<LLVMBasicBlockRef, Integer> blockEndLine = new HashMap<>();
-        Map<String, LLVMBasicBlockRef> labelToBlock = new HashMap<>();
-        Map<LLVMBasicBlockRef, List<LLVMBasicBlockRef>> incomingBlocks = new HashMap<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
-            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                blockStartLine.put(bb, lineNum);
-                String label = LLVM.LLVMGetBasicBlockName(bb).getString(); // 需要你写一个获取基本块 label 的函数
-                labelToBlock.put(label, bb);
-
-                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    lineNum++;
-                }
-                blockEndLine.put(bb, lineNum - 1);  // 当前 block 的最后一行
-            }
-        }
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
-            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                LLVMValueRef term = LLVM.LLVMGetBasicBlockTerminator(bb);
-                if (term != null && LLVM.LLVMIsABranchInst(term) != null) {
-                    int numSuccessors = LLVM.LLVMGetNumSuccessors(term);
-                    for (int i = 0; i < numSuccessors; i++) {
-                        LLVMBasicBlockRef target = LLVM.LLVMGetSuccessor(term, i);
-                        incomingBlocks.computeIfAbsent(target, k -> new ArrayList<>()).add(bb);
-                    }
-                }
-            }
-        }
-        lineNum = 0;
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
-            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                int blockStart = lineNum;
-
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
-                    if (line.contains("br") && !line.contains(",")) continue;
-                    else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
-
+                    if(line.contains("br")&&(!line.contains(",")))continue;
+                    else if(line.contains("br")&&line.contains(",")) line=line.substring(0, line.indexOf(","));
                     for (String var : extractVariables(line)) {
                         firstUse.putIfAbsent(var, lineNum);
+                        lastUse.put(var, lineNum);
                         used_num.put(var, used_num.getOrDefault(var, 0) + 1);
                     }
                     lineNum++;
                 }
-                int maxEnd = blockEndLine.get(bb);
-                if (incomingBlocks.containsKey(bb)) {
-                    for (LLVMBasicBlockRef pred : incomingBlocks.get(bb)) {
-                        int predEnd = blockEndLine.get(pred);
-                        if (predEnd > maxEnd) maxEnd = predEnd;
-                    }
-                }
-                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    String line = LLVM.LLVMPrintValueToString(inst).getString();
-                    if (line.contains("br") && !line.contains(",")) continue;
-                    else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
-                    for (String var : extractVariables(line)) {
-                        lastUse.put(var, maxEnd);
-                    }
-                }
             }
         }
-
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var),used_num.get(var)));
