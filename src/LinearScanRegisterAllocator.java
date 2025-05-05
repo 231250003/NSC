@@ -48,8 +48,9 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                         varOffset.put(var_spill_name, nextOffset);
                     }
                     varToLocation.put(var_spill_name, String.format("%d(sp)", varOffset.get(var_spill_name)));
+                    if(nextOffset!=4){
                     LLVMIRToRiscv.valueMap.put(var_spill_name,varToLocation.get(var_spill_name));
-                    asm.instr("sw",spill_reg,varToLocation.get(var_spill_name));
+                    asm.instr("sw",spill_reg,varToLocation.get(var_spill_name));}
 //                    System.out.println(var);
 //                    System.out.println(var_spill_name);
 //                    System.out.println(spill_reg);
