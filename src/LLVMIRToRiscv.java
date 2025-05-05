@@ -88,6 +88,7 @@ public class LLVMIRToRiscv {
                     if (opcode == LLVM.LLVMAlloca) {
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                        LinearScanRegisterAllocator.varToLocation.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     } else if (opcode == LLVM.LLVMStore) {
                         LLVMValueRef val = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
@@ -115,6 +116,8 @@ public class LLVMIRToRiscv {
                             if(lval_addr.contains("sp")) asm.instr("sw",reg,lval_addr);
                             else asm.instr("mv",lval_addr,reg);
                             valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+                            LinearScanRegisterAllocator.varToLocation.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+
                         }
                         else if(addr.contains("sp")){
                             String reg = freshReg();
@@ -123,6 +126,8 @@ public class LLVMIRToRiscv {
                             if(lval_addr.contains("sp")) asm.instr("sw",reg,lval_addr);
                             else asm.instr("mv",lval_addr,reg);
                             valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+                            LinearScanRegisterAllocator.varToLocation.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+
                             //valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
                         }
                         else{
@@ -130,6 +135,7 @@ public class LLVMIRToRiscv {
                             if(lval_addr.contains("sp")) asm.instr("sw",addr,lval_addr);
                             else asm.instr("mv",lval_addr,addr);
                             valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+                            LinearScanRegisterAllocator.varToLocation.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
                         }
                     } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                             opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
@@ -165,6 +171,8 @@ public class LLVMIRToRiscv {
                         if(addr.contains("sp")) asm.instr("sw", destReg, addr);
                         else asm.instr("mv",addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                        LinearScanRegisterAllocator.varToLocation.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+
                     } else if (opcode == LLVM.LLVMRet) {
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
                         String reg = evaluate(retVal);
@@ -182,6 +190,7 @@ public class LLVMIRToRiscv {
                         if(addr.contains("sp")) asm.instr("sw", destReg, addr);
                         else asm.instr("mv",addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                        LinearScanRegisterAllocator.varToLocation.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     }
                     else if (opcode == LLVM.LLVMICmp) {
                         int pred = LLVM.LLVMGetICmpPredicate(inst);  // 获取谓词
@@ -220,6 +229,7 @@ public class LLVMIRToRiscv {
                         if(addr.contains("sp"))asm.instr("sw", destReg, addr);
                         else asm.instr("mv", addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                        LinearScanRegisterAllocator.varToLocation.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     }
                     else if (opcode == LLVM.LLVMBr) {
                         int numOperands = LLVM.LLVMGetNumOperands(inst);

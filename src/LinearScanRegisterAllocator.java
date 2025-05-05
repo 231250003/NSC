@@ -4,7 +4,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
 
     private final Map<String, Interval> varToInterval;
     private final List<String> registers;
-    private final Map<String, String> varToLocation = new HashMap<>();
+    public static Map<String, String> varToLocation = new HashMap<>();
     //private final List<Interval> active = new ArrayList<>();
     private final Map<String, Integer> varOffset = new HashMap<>();
     private int nextOffset = 0;
