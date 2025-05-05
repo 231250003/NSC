@@ -42,27 +42,7 @@ int main() {
     int x19 = 19;
     int x20 = 20;
 
-    // Perform some operations on global variables
-    x = x + 1;
-    y = y + 2;
-    z = z + 3;
-    a = a + 4;
-    b = b + 5;
-    c = c + 6;
-    d = d + 7;
-    e = e + 8;
-    f = f + 9;
-    g = g + 10;
-    h = h + 11;
-    i = i + 12;
-    j = j + 13;
-    k = k + 14;
-    l = l + 15;
-    m = m + 16;
-    n = n + 17;
-    o = o + 18;
-    p = p + 19;
-    q = q + 20;
+
 
     // Perform some operations on local variables
     x1 = x1 * 2;
@@ -86,6 +66,5 @@ int main() {
     x19 = x19 * 2;
     x20 = x20 * 2;
 
-    return x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20
-    + x + y + z + a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q;
+    return x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20;
 }
