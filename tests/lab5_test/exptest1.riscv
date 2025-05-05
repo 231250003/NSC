@@ -1,6 +1,7 @@
 
- LOAD_WORD(%rd, %rs, %imm)
+.macro LOAD_WORD(%rd, %rs, %imm)
     lw %rd, %imm(%rs) 
+.end_macro
   .text
   .globl main
 main:
