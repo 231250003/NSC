@@ -51,10 +51,14 @@ mainEntry:
   mv x30, x11
   add t1, x29, x30
   mv x31, t1
+  sw x18, 4(sp)
   mv x18, x12
+  sw x17, 8(sp)
   add t2, x31, x18
   mv x17, t2
+  sw x16, 12(sp)
   mv x16, x13
+  sw x15, 16(sp)
   add t0, x17, x16
   mv x15, t0
   sw x14, 20(sp)
