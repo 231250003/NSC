@@ -104,11 +104,9 @@ mainEntry:
   sw t0, 20(sp)
   li t1, 20
   sw t1, 24(sp)
-  sw x31, 28(sp)
   la t2, x
   lw t2, 0(t2)
   mv x31, t2
-  sw x29, 32(sp)
   li t0, 1
   add t1, x31, t0
   mv x29, t1
