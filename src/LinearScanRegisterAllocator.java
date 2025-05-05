@@ -32,10 +32,11 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                 int var_end_line=interval.end;
                 String spill_reg="";
                 String var_spill_name=var;
+                Map<String,Integer> used_reg_list=new HashMap<>();
                 for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
                     String key = entry.getKey();
                     Interval value = entry.getValue();
-                    if(varToLocation.get(key)!=null&&(!varToLocation.get(key).contains("sp"))&&value.end>var_end_line){
+                    if(varToLocation.get(key)!=null&&(!varToLocation.get(key).contains("sp"))&&value.end>var_end_line&&used_reg_list.get(varToLocation.get(key))==null){
                         spill_reg=varToLocation.get(key);
                         var_end_line=value.end;
                         var_spill_name=key;
@@ -47,7 +48,8 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                         varOffset.put(var_spill_name, nextOffset);
                     }
                     varToLocation.put(var_spill_name, String.format("%d(sp)", varOffset.get(var_spill_name)));
-                    //asm.instr("sw",spill_reg,varToLocation.get(var_spill_name));
+                    asm.instr("sw",spill_reg,varToLocation.get(var_spill_name));
+                    used_reg_list.put(spill_reg,1);
                     if (varOffset.containsKey(var)) {
                         asm.instr("lw", spill_reg, String.format("%d(sp)", varOffset.get(var)));
                     }
