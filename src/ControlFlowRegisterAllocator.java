@@ -49,6 +49,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
             String var = entry.getKey();
             Interval interval = entry.getValue();
             if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
+                String reg=varToLocation.get(var);
                 registers.add(varToLocation.get(var));
                 varToLocation.remove(var);
                 if (!varOffset.containsKey(var)) {
@@ -56,7 +57,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
                     varOffset.put(var, nextOffset);
                 }
                 varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
-                asmBuilder.instr("sw","x8",varToLocation.get(var));
+                asmBuilder.instr("sw",reg,varToLocation.get(var));
             }
         }
 //        active.removeIf(interval -> {
