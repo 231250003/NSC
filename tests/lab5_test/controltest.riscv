@@ -2,7 +2,7 @@
   .text
   .globl main
 main:
-  addi sp, sp, -512
+  addi sp, sp, -4096
 mainEntry:
   li t0, 0
   mv x1, t0
@@ -12,7 +12,7 @@ mainEntry:
 cur:
   mv x9, x3
   mv a0, x9
-  addi sp, sp, 512
+  addi sp, sp, 4096
   li a7, 93
   ecall
 while.stmt:
