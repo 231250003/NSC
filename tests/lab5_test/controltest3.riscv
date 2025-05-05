@@ -88,6 +88,7 @@ if.else:
   mv x4, x31
   j merge
 merge13:
+  sw x1, 4(sp)
   lw t2, 4(sp)
   mv x1, t2
   mv a0, x1
