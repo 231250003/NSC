@@ -12,6 +12,5 @@ int main() {
            }
        }
     if(a!=!x+3) a=a+1;
-    int result = a;
-	return result;
+	return a;
 }
