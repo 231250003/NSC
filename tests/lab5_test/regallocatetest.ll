@@ -70,17 +70,5 @@ mainEntry:
   %add23 = add i32 %add21, %load_lval22
   %load_lval24 = load i32, i32* %x14, align 4
   %add25 = add i32 %add23, %load_lval24
-  %load_lval26 = load i32, i32* %x15, align 4
-  %add27 = add i32 %add25, %load_lval26
-  %load_lval28 = load i32, i32* %x16, align 4
-  %add29 = add i32 %add27, %load_lval28
-  %load_lval30 = load i32, i32* %x17, align 4
-  %add31 = add i32 %add29, %load_lval30
-  %load_lval32 = load i32, i32* %x18, align 4
-  %add33 = add i32 %add31, %load_lval32
-  %load_lval34 = load i32, i32* %x19, align 4
-  %add35 = add i32 %add33, %load_lval34
-  %load_lval36 = load i32, i32* %x20, align 4
-  %add37 = add i32 %add35, %load_lval36
-  ret i32 %add37
+  ret i32 %add25
 }

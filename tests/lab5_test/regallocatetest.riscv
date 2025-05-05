@@ -32,19 +32,19 @@ mainEntry:
   mv x29, t0
   li t1, 14
   mv x31, t1
+  sw x31, 4(sp)
   li t2, 15
-  sw t2, 4(sp)
+  mv x31, t2
   li t0, 16
-  sw t0, 8(sp)
+  mv x31, t0
   li t1, 17
-  sw t1, 12(sp)
+  mv x31, t1
   li t2, 18
-  sw t2, 16(sp)
+  mv x31, t2
   li t0, 19
-  sw t0, 20(sp)
+  mv x31, t0
   li t1, 20
-  sw t1, 24(sp)
-  sw x31, 28(sp)
+  mv x31, t1
   mv x31, x1
   mv x1, x3
   add t2, x31, x1
@@ -85,31 +85,7 @@ mainEntry:
   mv x11, x31
   add t2, x15, x11
   mv x23, t2
-  lw t0, 4(sp)
-  mv x1, t0
-  add t1, x23, x1
-  mv x17, t1
-  lw t2, 8(sp)
-  mv x25, t2
-  add t0, x17, x25
-  mv x13, t0
-  lw t1, 12(sp)
-  mv x9, t1
-  add t2, x13, x9
-  mv x27, t2
-  lw t0, 16(sp)
-  mv x19, t0
-  add t1, x27, x19
-  mv x3, t1
-  lw t2, 20(sp)
-  mv x29, t2
-  add t0, x3, x29
-  mv x31, t0
-  lw t1, 24(sp)
-  mv x21, t1
-  add t2, x31, x21
-  mv x15, t2
-  mv a0, x15
+  mv a0, x23
   addi sp, sp, 512
   li a7, 93
   ecall
