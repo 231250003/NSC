@@ -5,8 +5,8 @@ x:
 y:
   .word 98
 
-  .macro LOAD_WORD rd, offset, rs1
-    lw \rd, \offset(\rs1)
+  .macro LOAD_WORD rd, addr
+    lw \rd, \addr
   .endm
 
   .text
