@@ -21,6 +21,16 @@ mainEntry:
   store i32 8, i32* %x8, align 4
   %x9 = alloca i32, align 4
   store i32 9, i32* %x9, align 4
+  %x10 = alloca i32, align 4
+  store i32 10, i32* %x10, align 4
+  %x11 = alloca i32, align 4
+  store i32 11, i32* %x11, align 4
+  %x12 = alloca i32, align 4
+  store i32 12, i32* %x12, align 4
+  %x13 = alloca i32, align 4
+  store i32 13, i32* %x13, align 4
+  %x14 = alloca i32, align 4
+  store i32 14, i32* %x14, align 4
   %load_lval = load i32, i32* %x1, align 4
   %load_lval1 = load i32, i32* %x2, align 4
   %add = add i32 %load_lval, %load_lval1
@@ -38,5 +48,15 @@ mainEntry:
   %add13 = add i32 %add11, %load_lval12
   %load_lval14 = load i32, i32* %x9, align 4
   %add15 = add i32 %add13, %load_lval14
-  ret i32 %add15
+  %load_lval16 = load i32, i32* %x10, align 4
+  %add17 = add i32 %add15, %load_lval16
+  %load_lval18 = load i32, i32* %x11, align 4
+  %add19 = add i32 %add17, %load_lval18
+  %load_lval20 = load i32, i32* %x12, align 4
+  %add21 = add i32 %add19, %load_lval20
+  %load_lval22 = load i32, i32* %x13, align 4
+  %add23 = add i32 %add21, %load_lval22
+  %load_lval24 = load i32, i32* %x14, align 4
+  %add25 = add i32 %add23, %load_lval24
+  ret i32 %add25
 }
