@@ -31,18 +31,6 @@ mainEntry:
   store i32 13, i32* %x13, align 4
   %x14 = alloca i32, align 4
   store i32 14, i32* %x14, align 4
-  %x15 = alloca i32, align 4
-  store i32 15, i32* %x15, align 4
-  %x16 = alloca i32, align 4
-  store i32 16, i32* %x16, align 4
-  %x17 = alloca i32, align 4
-  store i32 17, i32* %x17, align 4
-  %x18 = alloca i32, align 4
-  store i32 18, i32* %x18, align 4
-  %x19 = alloca i32, align 4
-  store i32 19, i32* %x19, align 4
-  %x20 = alloca i32, align 4
-  store i32 20, i32* %x20, align 4
   %load_lval = load i32, i32* %x1, align 4
   %load_lval1 = load i32, i32* %x2, align 4
   %add = add i32 %load_lval, %load_lval1
