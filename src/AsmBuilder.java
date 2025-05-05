@@ -76,10 +76,9 @@ public class AsmBuilder {
     }
     public void macro() {
         String macroDef =
-                "  .macro LOAD_WORD rd, offset, rs1\n" +
-                        "    lw \\rd, \\offset(\\rs1)\n" +
+                "  .macro LOAD_WORD rd, addr\n" +
+                        "    lw \\rd, \\addr\n" +
                         "  .endm\n\n";
-
         textSegment.insert(0, macroDef);
     }
     public void writeToFile(String filePath) {
