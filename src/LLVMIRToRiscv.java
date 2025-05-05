@@ -32,8 +32,10 @@ public class LLVMIRToRiscv {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
+                    if(line.contains("br")&&(!line.contains(",")))continue;
+                    else if(line.contains("br")&&line.contains(",")) line=line.substring(0, line.indexOf(","));
                     for (String var : extractVariables(line)) {
-                        System.out.println(line);
+                        //System.out.println(line);
                         firstUse.putIfAbsent(var, lineNum);
                         lastUse.put(var, lineNum);
                         used_num.put(var, used_num.getOrDefault(var, 0) + 1);
@@ -42,6 +44,7 @@ public class LLVMIRToRiscv {
                 }
             }
         }
+
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var),used_num.get(var)));
