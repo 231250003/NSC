@@ -26,7 +26,6 @@ public class AsmBuilder {
     }
 
     public void instr(String op, String... args) {
-        if(op.equals("lw")) op="lbu";
         current.append("  ").append(op);
         if (args.length > 0) {
             current.append(" ").append(String.join(", ", args));
@@ -74,6 +73,10 @@ public class AsmBuilder {
     }
     public void bnez(String reg, String label) {
         instr("bnez", reg, label);
+    }
+    public void macro() {
+        String macroDef =" .macro print_newline\nli a7, 11 \nli a0, 10 \necall\n .end_macro\n";
+        textSegment.insert(0, macroDef);
     }
     public void writeToFile(String filePath) {
         try (FileWriter fw = new FileWriter(filePath)) {

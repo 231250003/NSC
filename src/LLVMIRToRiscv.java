@@ -63,9 +63,10 @@ public class LLVMIRToRiscv {
         if(blockCount>1){
             allocator=new LinearScanRegisterAllocator(intervals,reg_list,asm);
         }
-        allocator=new StackOnlyRegisterAllocator();
+        //allocator=new StackOnlyRegisterAllocator();
         asm.directive("text");
         asm.directive("globl main");
+        asm.macro();
         lineNum=0;
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             String funcName = LLVM.LLVMGetValueName(func).getString();
