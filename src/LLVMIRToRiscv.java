@@ -49,8 +49,8 @@ public class LLVMIRToRiscv {
         }
         List<String> reg_list=new ArrayList<>();
         for(int i=0;i<32;i++){
-            //if(i!=0&&i!=2&&i!=5&&i!=6&&i!=7) reg_list.add("x"+i);
-            if(i==10&&i==11&&i==12) reg_list.add("x"+i);
+            if(i!=0&&i!=2&&i!=5&&i!=6&&i!=7) reg_list.add("x"+i);
+            //if(i==10&&i==11&&i==12) reg_list.add("x"+i);
         }
         allocator = new LinearScanRegisterAllocator(intervals, reg_list,asm);
         LLVMValueRef func1 = LLVM.LLVMGetNamedFunction(module, "main");
