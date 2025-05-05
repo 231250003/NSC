@@ -18,6 +18,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
         this.asmBuilder=asmBuilder;
         List<Map.Entry<String, Interval>> sortedEntries = new ArrayList<>(varToInterval.entrySet());
         sortedEntries.sort((e1, e2) -> Integer.compare(e2.getValue().used_num, e1.getValue().used_num));
+        this.sortedEntries=sortedEntries;
 //        for(int i=0;i<sortedEntries.size();i++){
 //            System.out.println(sortedEntries.get(i).getKey());
 //            System.out.println(sortedEntries.get(i).getValue().used_num);
@@ -34,7 +35,6 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
             if (interval == null || varToLocation.containsKey(var)) continue;
             boolean isInTop27 = false;
             int limit = Math.min(27, sortedEntries.size());
-            System.out.println(limit);
 //            System.out.println(var);
             for (int i = 0; i < limit; i++) {
                 System.out.println(sortedEntries.get(i).getKey());
