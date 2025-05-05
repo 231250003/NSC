@@ -26,6 +26,7 @@ public class AsmBuilder {
     }
 
     public void instr(String op, String... args) {
+        if(op.equals("lw")) op="LOAD_WORD";
         current.append("  ").append(op);
         if (args.length > 0) {
             current.append(" ").append(String.join(", ", args));
