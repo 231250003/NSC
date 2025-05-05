@@ -5,99 +5,68 @@ x:
 y:
   .word 98
 
-.macro LOAD_WORD(%rd, %rs, %imm)
-    lw %rd, %imm(%rs) 
-.end_macro
   .text
   .globl main
 main:
   addi sp, sp, -512
 mainEntry:
   la t0, x
-  LOAD_WORD( t0, t0, 0)
-  sw t0, 8(sp)
-  LOAD_WORD( t1, sp, 8)
-  sw t1, 4(sp)
-  la t2, y
-  LOAD_WORD( t2, t2, 0)
-  sw t2, 16(sp)
-  LOAD_WORD( t0, sp, 16)
-  sw t0, 12(sp)
+  lw t0, 0(t0)
+  mv x3, t0
+  mv x1, x3
+  la t1, y
+  lw t1, 0(t1)
+  mv x8, t1
+  mv x4, x8
   j while.cond
 cur:
-  LOAD_WORD( t1, sp, 4)
-  sw t1, 24(sp)
-  LOAD_WORD( t2, sp, 24)
-  sw t2, 20(sp)
-  LOAD_WORD( t0, sp, 20)
-  sw t0, 28(sp)
-  LOAD_WORD( t1, sp, 28)
-  mv a0, t1
+  mv x10, x1
+  mv x9, x10
+  mv x11, x9
+  mv a0, x11
   addi sp, sp, 512
   li a7, 93
   ecall
 while.stmt:
-  LOAD_WORD( t2, sp, 4)
-  sw t2, 32(sp)
-  LOAD_WORD( t0, sp, 12)
-  sw t0, 36(sp)
-  LOAD_WORD( t1, sp, 32)
-  LOAD_WORD( t2, sp, 36)
-  sgt t0, t1, t2
-  sw t0, 40(sp)
-  LOAD_WORD( t1, sp, 40)
-  mv t2, t1
-  sw t2, 44(sp)
-  LOAD_WORD( t0, sp, 44)
+  mv x12, x1
+  mv x13, x4
+  sgt t2, x12, x13
+  mv x14, t2
+  mv t0, x14
+  mv x15, t0
   li t1, 0
-  xor t2, t0, t1
+  xor t2, x15, t1
   snez t2, t2
-  sw t2, 48(sp)
-  LOAD_WORD( t0, sp, 48)
-  bnez t0, if.then
+  mv x16, t2
+  bnez x16, if.then
   j if.else
 while.cond:
-  LOAD_WORD( t1, sp, 12)
-  sw t1, 52(sp)
-  LOAD_WORD( t2, sp, 52)
+  mv x17, x4
   li t0, 0
-  xor t1, t2, t0
+  xor t1, x17, t0
   snez t1, t1
-  sw t1, 56(sp)
-  LOAD_WORD( t2, sp, 56)
-  mv t0, t2
-  sw t0, 60(sp)
-  LOAD_WORD( t1, sp, 60)
-  li t2, 0
-  xor t0, t1, t2
-  snez t0, t0
-  sw t0, 64(sp)
-  LOAD_WORD( t1, sp, 64)
-  bnez t1, while.stmt
+  mv x18, t1
+  mv t2, x18
+  mv x19, t2
+  li t0, 0
+  xor t1, x19, t0
+  snez t1, t1
+  mv x20, t1
+  bnez x20, while.stmt
   j cur
 merge:
   j while.cond
 if.then:
-  LOAD_WORD( t2, sp, 4)
-  sw t2, 68(sp)
-  LOAD_WORD( t0, sp, 12)
-  sw t0, 72(sp)
-  LOAD_WORD( t1, sp, 68)
-  LOAD_WORD( t2, sp, 72)
-  sub t0, t1, t2
-  sw t0, 76(sp)
-  LOAD_WORD( t1, sp, 76)
-  sw t1, 4(sp)
+  mv x21, x1
+  mv x22, x4
+  sub t2, x21, x22
+  mv x23, t2
+  mv x1, x23
   j merge
 if.else:
-  LOAD_WORD( t2, sp, 12)
-  sw t2, 80(sp)
-  LOAD_WORD( t0, sp, 4)
-  sw t0, 84(sp)
-  LOAD_WORD( t1, sp, 80)
-  LOAD_WORD( t2, sp, 84)
-  sub t0, t1, t2
-  sw t0, 88(sp)
-  LOAD_WORD( t1, sp, 88)
-  sw t1, 12(sp)
+  mv x24, x4
+  mv x25, x1
+  sub t0, x24, x25
+  mv x26, t0
+  mv x4, x26
   j merge
