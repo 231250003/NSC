@@ -11,11 +11,8 @@ b:
 cccc:
   .word 0
 
- .macro print_newline
-li a7, 11 
-li a0, 10 
-ecall
- .end_macro
+ LOAD_WORD(%rd, %rs, %imm)
+    lw %rd, %imm(%rs) 
   .text
   .globl main
 main:

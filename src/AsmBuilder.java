@@ -75,8 +75,8 @@ public class AsmBuilder {
         instr("bnez", reg, label);
     }
     public void macro() {
-        String macroDef =" LOAD_WORD(%rd, %rs, %imm)\n" +
-                "    lw %rd, %imm(%rs) \n";
+        String macroDef =".macro LOAD_WORD(%rd, %rs, %imm)\n" +
+                "    lw %rd, %imm(%rs) \n"+".end_macro\n";
         textSegment.insert(0, macroDef);
     }
     public void writeToFile(String filePath) {
