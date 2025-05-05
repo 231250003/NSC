@@ -43,11 +43,6 @@ public class LLVMIRToRiscv {
                 }
             }
         }
-        for (Map.Entry<String, Integer> entry : used_num.entrySet()) {
-            String key = entry.getKey();
-            Integer value = entry.getValue();
-            System.out.println("Key: " + key + ", Value: " + value);
-        }
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var),used_num.get(var)));
