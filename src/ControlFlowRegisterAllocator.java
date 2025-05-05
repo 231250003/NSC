@@ -42,6 +42,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
                     break;
                 }
             }
+            System.out.println("end of line");
             if (!registers.isEmpty()&&isInTop27) {
                 String reg = registers.remove(0);
                 varToLocation.put(var, reg);
