@@ -1,27 +1,6 @@
 ; ModuleID = 'my_module'
 source_filename = "my_module"
 
-@x = global i32 1
-@y = global i32 2
-@z = global i32 3
-@a = global i32 4
-@b = global i32 5
-@c = global i32 6
-@d = global i32 7
-@e = global i32 8
-@f = global i32 9
-@g = global i32 10
-@h = global i32 11
-@i = global i32 12
-@j = global i32 13
-@k = global i32 14
-@l = global i32 15
-@m = global i32 16
-@n = global i32 17
-@o = global i32 18
-@p = global i32 19
-@q = global i32 20
-
 define i32 @main() {
 mainEntry:
   %x1 = alloca i32, align 4
