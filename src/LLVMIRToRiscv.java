@@ -51,7 +51,7 @@ public class LLVMIRToRiscv {
         for(int i=0;i<32;i++){
             if(i!=0&&i!=2&&i!=5&&i!=6&&i!=7) reg_list.add("x"+i);
         }
-        allocator = new LinearScanRegisterAllocator(intervals, reg_list);
+        allocator = new LinearScanRegisterAllocator(intervals, reg_list,asm);
         LLVMValueRef func1 = LLVM.LLVMGetNamedFunction(module, "main");
         int blockCount = 0;
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func1);
@@ -60,7 +60,7 @@ public class LLVMIRToRiscv {
             blockCount++;
         }
         if(blockCount>1){
-            allocator=new ControlFlowRegisterAllocator(intervals,reg_list,asm);
+            allocator=new LinearScanRegisterAllocator(intervals,reg_list,asm);
         }
         asm.directive("text");
         asm.directive("globl main");
