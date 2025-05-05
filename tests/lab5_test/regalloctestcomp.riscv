@@ -59,6 +59,10 @@ p:
 q:
   .word 20
 
+  .macro LOAD_WORD rd, addr
+    lw \rd, \addr
+  .endm
+
   .text
   .globl main
 main:
