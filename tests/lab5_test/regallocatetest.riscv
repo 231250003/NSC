@@ -1,4 +1,8 @@
 
+  .macro LOAD_WORD rd, offset, rs1
+    lw \rd, \offset(\rs1)
+  .endm
+
   .text
   .globl main
 main:
