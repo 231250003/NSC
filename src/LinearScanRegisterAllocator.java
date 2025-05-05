@@ -56,7 +56,6 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                     }
                     varToLocation.put(var,spill_reg);
                     LLVMIRToRiscv.valueMap.put(var,spill_reg);
-
                 }
                 else
                 {

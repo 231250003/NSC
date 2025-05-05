@@ -61,7 +61,6 @@ public class LLVMIRToRiscv {
             blockCount++;
         }
         if(blockCount>1){
-
             allocator=new LinearScanRegisterAllocator(intervals,reg_list,asm);
         }
         //allocator=new StackOnlyRegisterAllocator();
@@ -85,7 +84,7 @@ public class LLVMIRToRiscv {
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-                   // allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
+                   allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
                     lineNum++;
                     if (opcode == LLVM.LLVMAlloca) {
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
@@ -250,11 +249,6 @@ public class LLVMIRToRiscv {
                         System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
-                }
-                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
-                     inst != null && !inst.isNull();
-                     inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
                 }
             }
         }
