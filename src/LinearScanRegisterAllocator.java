@@ -21,6 +21,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
 
     @Override
     public void processInstruction(int lineNumber, String instruction) {
+        System.out.println("crs");
         expireOldIntervals(lineNumber);
         Map<String,Integer> used_reg_list=new HashMap<>();
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
@@ -49,7 +50,8 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                     }
                     varToLocation.put(var_spill_name, String.format("%d(sp)", varOffset.get(var_spill_name)));
                     asm.instr("sw",spill_reg,varToLocation.get(var_spill_name));
-                    System.out.println(spill_reg);
+                    System.out.println(var);
+                    System.out.println(var_spill_name);
                     used_reg_list.put(spill_reg,1);
                     if (varOffset.containsKey(var)) {
                         asm.instr("lw", spill_reg, String.format("%d(sp)", varOffset.get(var)));
