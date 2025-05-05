@@ -21,7 +21,6 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
 
     @Override
     public void processInstruction(int lineNumber, String instruction) {
-        System.out.println("crs");
         expireOldIntervals(lineNumber);
         Map<String,Integer> used_reg_list=new HashMap<>();
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
