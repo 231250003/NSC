@@ -111,12 +111,10 @@ merge18:
   j merge12
 if.then22:
   mv x31, x4
-  sw x1, 4(sp)
   li t0, 3
   sub t1, x31, t0
   mv x1, t1
   mv x4, x1
-  sw x4, 8(sp)
   lw t2, 4(sp)
   mv x4, t2
   li t0, 1
