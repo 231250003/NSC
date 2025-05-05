@@ -8,7 +8,7 @@ public class LLVMIRToRiscv {
     AsmBuilder asm = new AsmBuilder();
     //RegisterAllocator allocator = new StackOnlyRegisterAllocator();
     RegisterAllocator allocator;
-    Map<String, String> valueMap = new HashMap<>();  // IR value → stack addr or reg
+    static Map<String, String> valueMap = new HashMap<>();  // IR value → stack addr or reg
     public LLVMIRToRiscv(LLVMModuleRef moduleRef, String file_path) {
         this.module = moduleRef;
         this.file_path = file_path;
