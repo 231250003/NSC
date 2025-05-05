@@ -15,12 +15,7 @@ int main() {
     int x12 = 12;
     int x13 = 13;
     int x14 = 14;
-    int x15 = 15;
-    int x16 = 16;
-    int x17 = 17;
-    int x18 = 18;
-    int x19 = 19;
-    int x20 = 20;
+
 
 
     return x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 ;
