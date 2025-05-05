@@ -114,9 +114,11 @@ if.then22:
   li t0, 3
   sub t1, x31, t0
   mv x1, t1
+  sw x1, 4(sp)
   mv x4, x1
   lw t2, 4(sp)
   mv x4, t2
+  sw x4, 8(sp)
   li t0, 1
   add t1, x4, t0
   sw t1, 12(sp)
