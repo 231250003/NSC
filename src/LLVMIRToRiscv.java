@@ -35,7 +35,6 @@ public class LLVMIRToRiscv {
                     if(line.contains("br")&&(!line.contains(",")))continue;
                     else if(line.contains("br")&&line.contains(",")) line=line.substring(0, line.indexOf(","));
                     for (String var : extractVariables(line)) {
-                        System.out.println(line);
                         firstUse.putIfAbsent(var, lineNum);
                         lastUse.put(var, lineNum);
                         used_num.put(var, used_num.getOrDefault(var, 0) + 1);
