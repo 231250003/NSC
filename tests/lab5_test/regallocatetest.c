@@ -1,23 +1,3 @@
-int x = 1;
-int y = 2;
-int z = 3;
-int a = 4;
-int b = 5;
-int c = 6;
-int d = 7;
-int e = 8;
-int f = 9;
-int g = 10;
-int h = 11;
-int i = 12;
-int j = 13;
-int k = 14;
-int l = 15;
-int m = 16;
-int n = 17;
-int o = 18;
-int p = 19;
-int q = 20;
 
 int main() {
     // Local variables
@@ -41,9 +21,6 @@ int main() {
     int x18 = 18;
     int x19 = 19;
     int x20 = 20;
-
-
-
 
 
     return x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20;
