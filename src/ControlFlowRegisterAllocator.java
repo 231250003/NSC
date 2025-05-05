@@ -39,7 +39,6 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
                     .limit(27)
                     .anyMatch(entry -> entry.getKey().equals(var))) {
                 String reg = registers.remove(0);
-                System.out.println("crzzz");
                 varToLocation.put(var, reg);
 //                active.add(interval);
 //                active.sort(Comparator.comparingInt(i -> i.end));

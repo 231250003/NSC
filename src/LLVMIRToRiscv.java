@@ -59,9 +59,9 @@ public class LLVMIRToRiscv {
              bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             blockCount++;
         }
-        if(blockCount>1){
-            allocator=new ControlFlowRegisterAllocator(intervals,reg_list,asm);
-        }
+//        if(blockCount>1){
+//            allocator=new ControlFlowRegisterAllocator(intervals,reg_list,asm);
+//        }
         asm.directive("text");
         asm.directive("globl main");
         lineNum=0;
