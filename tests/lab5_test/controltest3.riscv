@@ -11,130 +11,130 @@ main:
   addi sp, sp, -512
 mainEntry:
   la t0, x
-  lb t0, 0(t0)
+  lbu t0, 0(t0)
   sw t0, 8(sp)
-  lb t1, 8(sp)
+  lbu t1, 8(sp)
   sw t1, 4(sp)
   la t2, y
-  lb t2, 0(t2)
+  lbu t2, 0(t2)
   sw t2, 16(sp)
-  lb t0, 16(sp)
+  lbu t0, 16(sp)
   sw t0, 12(sp)
   j while.cond
 cur:
-  lb t1, 4(sp)
+  lbu t1, 4(sp)
   sw t1, 20(sp)
   la t2, x
-  lb t2, 0(t2)
+  lbu t2, 0(t2)
   sw t2, 24(sp)
-  lb t0, 24(sp)
+  lbu t0, 24(sp)
   li t1, 0
   xor t2, t0, t1
   seqz t2, t2
   sw t2, 28(sp)
-  lb t0, 28(sp)
+  lbu t0, 28(sp)
   mv t1, t0
   sw t1, 32(sp)
-  lb t2, 32(sp)
+  lbu t2, 32(sp)
   li t0, 3
   add t1, t2, t0
   sw t1, 36(sp)
-  lb t2, 20(sp)
-  lb t0, 36(sp)
+  lbu t2, 20(sp)
+  lbu t0, 36(sp)
   xor t1, t2, t0
   snez t1, t1
   sw t1, 40(sp)
-  lb t2, 40(sp)
+  lbu t2, 40(sp)
   mv t0, t2
   sw t0, 44(sp)
-  lb t1, 44(sp)
+  lbu t1, 44(sp)
   li t2, 0
   xor t0, t1, t2
   snez t0, t0
   sw t0, 48(sp)
-  lb t1, 48(sp)
+  lbu t1, 48(sp)
   bnez t1, if.then19
   j merge13
 while.stmt:
-  lb t2, 4(sp)
+  lbu t2, 4(sp)
   sw t2, 52(sp)
-  lb t0, 12(sp)
+  lbu t0, 12(sp)
   sw t0, 56(sp)
-  lb t1, 52(sp)
-  lb t2, 56(sp)
+  lbu t1, 52(sp)
+  lbu t2, 56(sp)
   sgt t0, t1, t2
   sw t0, 60(sp)
-  lb t1, 60(sp)
+  lbu t1, 60(sp)
   mv t2, t1
   sw t2, 64(sp)
-  lb t0, 64(sp)
+  lbu t0, 64(sp)
   li t1, 0
   xor t2, t0, t1
   snez t2, t2
   sw t2, 68(sp)
-  lb t0, 68(sp)
+  lbu t0, 68(sp)
   bnez t0, if.then
   j if.else
 while.cond:
-  lb t1, 12(sp)
+  lbu t1, 12(sp)
   sw t1, 72(sp)
-  lb t2, 72(sp)
+  lbu t2, 72(sp)
   li t0, 0
   xor t1, t2, t0
   snez t1, t1
   sw t1, 76(sp)
-  lb t2, 76(sp)
+  lbu t2, 76(sp)
   mv t0, t2
   sw t0, 80(sp)
-  lb t1, 80(sp)
+  lbu t1, 80(sp)
   li t2, 0
   xor t0, t1, t2
   snez t0, t0
   sw t0, 84(sp)
-  lb t1, 84(sp)
+  lbu t1, 84(sp)
   bnez t1, while.stmt
   j cur
 merge:
   j while.cond
 if.then:
-  lb t2, 4(sp)
+  lbu t2, 4(sp)
   sw t2, 88(sp)
-  lb t0, 12(sp)
+  lbu t0, 12(sp)
   sw t0, 92(sp)
-  lb t1, 88(sp)
-  lb t2, 92(sp)
+  lbu t1, 88(sp)
+  lbu t2, 92(sp)
   sub t0, t1, t2
   sw t0, 96(sp)
-  lb t1, 96(sp)
+  lbu t1, 96(sp)
   sw t1, 4(sp)
   j merge
 if.else:
-  lb t2, 12(sp)
+  lbu t2, 12(sp)
   sw t2, 100(sp)
-  lb t0, 4(sp)
+  lbu t0, 4(sp)
   sw t0, 104(sp)
-  lb t1, 100(sp)
-  lb t2, 104(sp)
+  lbu t1, 100(sp)
+  lbu t2, 104(sp)
   sub t0, t1, t2
   sw t0, 108(sp)
-  lb t1, 108(sp)
+  lbu t1, 108(sp)
   sw t1, 12(sp)
   j merge
 merge13:
-  lb t2, 4(sp)
+  lbu t2, 4(sp)
   sw t2, 112(sp)
-  lb t0, 112(sp)
+  lbu t0, 112(sp)
   mv a0, t0
   addi sp, sp, 512
   li a7, 93
   ecall
 if.then19:
-  lb t1, 4(sp)
+  lbu t1, 4(sp)
   sw t1, 116(sp)
-  lb t2, 116(sp)
+  lbu t2, 116(sp)
   li t0, 1
   add t1, t2, t0
   sw t1, 120(sp)
-  lb t2, 120(sp)
+  lbu t2, 120(sp)
   sw t2, 4(sp)
   j merge13
