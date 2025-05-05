@@ -1,4 +1,9 @@
 
+ .macro print_newline
+li a7, 11 
+li a0, 10 
+ecall
+ .end_macro
   .text
   .globl main
 main:
