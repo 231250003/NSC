@@ -30,18 +30,19 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
 //        System.out.println(lineNumber);
 //        System.out.println("variable:");
         for (String var : LLVMIRToRiscv.extractVariables(instruction)) {
-//            System.out.println("crzzz");
-//            System.out.println(var);
-//            if(var.equals("load_lval")) System.out.println("crz");
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
-            if (!registers.isEmpty()&&sortedEntries.stream()
-                    .limit(27)
-                    .anyMatch(entry -> entry.getKey().equals(var))) {
+            boolean isInTop27 = false;
+            int limit = Math.min(27, sortedEntries.size());
+            for (int i = 0; i < limit; i++) {
+                if (sortedEntries.get(i).getKey().equals(var)) {
+                    isInTop27 = true;
+                    break;
+                }
+            }
+            if (!registers.isEmpty()&&isInTop27) {
                 String reg = registers.remove(0);
                 varToLocation.put(var, reg);
-//                active.add(interval);
-//                active.sort(Comparator.comparingInt(i -> i.end));
             } else {
                 if (!varOffset.containsKey(var)) {
                     nextOffset += 4;
