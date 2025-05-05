@@ -36,13 +36,11 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
             boolean isInTop27 = false;
             int limit = Math.min(27, sortedEntries.size());
             for (int i = 0; i < limit; i++) {
-                System.out.println(sortedEntries.get(i).getValue().used_num);
                 if (sortedEntries.get(i).getKey().equals(var)) {
                     isInTop27 = true;
                     break;
                 }
             }
-            System.out.println("end of line");
             if (!registers.isEmpty()&&isInTop27) {
                 String reg = registers.remove(0);
                 varToLocation.put(var, reg);
