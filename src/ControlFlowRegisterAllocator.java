@@ -5,7 +5,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
     private final Map<String, Interval> varToInterval;
     private final List<String> registers;
     private final Map<String, String> varToLocation = new HashMap<>();
-    //private final List<Interval> active = new ArrayList<>();
+    List<Map.Entry<String, Interval>> sortedEntries=new ArrayList<>();
     private final Map<String, Integer> varOffset = new HashMap<>();
     private int nextOffset = 0;
     private  AsmBuilder asmBuilder;
@@ -16,6 +16,8 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
             varToInterval.put(interval.varName, interval);
         }
         this.asmBuilder=asmBuilder;
+        List<Map.Entry<String, Interval>> sortedEntries = new ArrayList<>(varToInterval.entrySet());
+        sortedEntries.sort((e1, e2) -> Integer.compare(e2.getValue().used_num, e1.getValue().used_num));
     }
 
     @Override
@@ -29,7 +31,9 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
 
-            if (!registers.isEmpty()) {
+            if (!registers.isEmpty()&&sortedEntries.stream()
+                    .limit(27)
+                    .anyMatch(entry -> entry.getKey().equals(var))) {
                 String reg = registers.remove(0);
                 varToLocation.put(var, reg);
 //                active.add(interval);
@@ -45,21 +49,21 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
     }
 
     public void expireOldIntervals(int currentLine) {
-        for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
-            String var = entry.getKey();
-            Interval interval = entry.getValue();
-            if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
-                String reg=varToLocation.get(var);
-                registers.add(varToLocation.get(var));
-                varToLocation.remove(var);
-                if (!varOffset.containsKey(var)) {
-                    nextOffset += 4;
-                    varOffset.put(var, nextOffset);
-                }
-                varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
-                asmBuilder.instr("sw",reg,varToLocation.get(var));
-            }
-        }
+//        for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
+//            String var = entry.getKey();
+//            Interval interval = entry.getValue();
+//            if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
+//                String reg=varToLocation.get(var);
+//                registers.add(varToLocation.get(var));
+//                varToLocation.remove(var);
+//                if (!varOffset.containsKey(var)) {
+//                    nextOffset += 4;
+//                    varOffset.put(var, nextOffset);
+//                }
+//                varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
+//                asmBuilder.instr("sw",reg,varToLocation.get(var));
+//            }
+//        }
 //        active.removeIf(interval -> {
 //            if (interval.end >= currentLine) return false;
 //            String loc = varToLocation.get(interval.varName);
