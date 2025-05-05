@@ -54,7 +54,10 @@ public class LLVMIRToRiscv {
                     if (line.contains("br")) {
                         blocksWithBr.add(bb);
                     }
-                    if (line.contains("br") && !line.contains(",")) continue;
+                    if (line.contains("br") && !line.contains(",")) {
+                        lineNum++;
+                        continue;
+                    }
                     else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
                     for (String var : extractVariables(line)) {
                         firstUse.putIfAbsent(var, lineNum);
@@ -63,7 +66,6 @@ public class LLVMIRToRiscv {
                         varsInBlock.add(var);
                     }
                     lineNum++;
-                    System.out.println(line);
                 }
                 blockVars.put(bb, varsInBlock);
                 block_last_num.put(LLVM.LLVMGetBasicBlockName(bb).getString(),lineNum);
