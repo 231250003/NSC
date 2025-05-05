@@ -248,15 +248,6 @@ public class LLVMIRToRiscv {
                         System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
-                    String a="";
-                    String b="";
-                    String c="";
-                    for(int i=0;i<LinearScanRegisterAllocator.spill_instr.size();i++){
-                        a=LinearScanRegisterAllocator.spill_instr.get(i)[0];
-                        b=LinearScanRegisterAllocator.spill_instr.get(i)[1];
-                        c=LinearScanRegisterAllocator.spill_instr.get(i)[2];
-                        asm.instr(a,b,c);
-                    }
                 }
             }
         }
