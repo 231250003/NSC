@@ -78,14 +78,12 @@ public class LLVMIRToRiscv {
                 String line = LLVM.LLVMPrintValueToString(inst).getString();
                 if (line.contains("br") && !line.contains(",")) {
                     for(String var : extractVariables(line)){
-                        System.out.println("cccccc");
                         if(finalLineNum<block_last_num.get(var)) finalLineNum=block_last_num.get(var);
                     }
                 }
                 else if (line.contains("br") && line.contains(",")) {
                     line = line.substring(line.indexOf(",")+1);
                     for(String var : extractVariables(line)){
-                        System.out.println("crzzzz");
                         if(finalLineNum<block_last_num.get(var)) finalLineNum=block_last_num.get(var);
                     }
                 }
