@@ -45,6 +45,7 @@ public class LLVMIRToRiscv {
 //        }
         Set<LLVMBasicBlockRef> blocksWithBr = new HashSet<>();
         Map<LLVMBasicBlockRef, Set<String>> blockVars = new HashMap<>();
+        Map<String,Integer> block_last_num = new HashMap<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 Set<String> varsInBlock = new HashSet<>();
@@ -64,10 +65,25 @@ public class LLVMIRToRiscv {
                     lineNum++;
                 }
                 blockVars.put(bb, varsInBlock);
+                block_last_num.put(LLVM.LLVMGetBasicBlockName(bb).getString(),lineNum);
             }
         }
-        int finalLineNum = lineNum - 1;
         for (LLVMBasicBlockRef bb : blocksWithBr) {
+            int finalLineNum= 0;
+            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+                String line = LLVM.LLVMPrintValueToString(inst).getString();
+                if (line.contains("br") && !line.contains(",")) {
+                    for(String var : extractVariables(line)){
+                        if(finalLineNum<block_last_num.get(var)) finalLineNum=block_last_num.get(var);
+                    }
+                }
+                else if (line.contains("br") && line.contains(",")) {
+                    line = line.substring(line.indexOf(",")+1);
+                    for(String var : extractVariables(line)){
+                        if(finalLineNum<block_last_num.get(var)) finalLineNum=block_last_num.get(var);
+                    }
+                }
+            }
             for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
                 lastUse.put(var, finalLineNum);
             }
