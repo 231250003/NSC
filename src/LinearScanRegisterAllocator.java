@@ -42,7 +42,6 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                     }
                 }
                 if(!spill_reg.isEmpty()){
-                    System.out.println("1211212");
                     if (!varOffset.containsKey(var_spill_name)) {
                         nextOffset += 4;
                         varOffset.put(var_spill_name, nextOffset);
@@ -50,6 +49,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                     varToLocation.put(var_spill_name, String.format("%d(sp)", varOffset.get(var_spill_name)));
                     asm.instr("sw",spill_reg,varToLocation.get(var_spill_name));
                     if (varOffset.containsKey(var)) {
+                        System.out.println("czzzzz");
                         asm.instr("lw", spill_reg, String.format("%d(sp)", varOffset.get(var)));
                     }
                     varToLocation.put(var,spill_reg);
