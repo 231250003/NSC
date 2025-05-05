@@ -22,51 +22,51 @@ mainEntry:
 cur:
   mv x10, x1
   mv x9, x10
-  mv x13, x9
-  mv a0, x13
+  mv x11, x9
+  mv a0, x11
   addi sp, sp, 512
   li a7, 93
   ecall
 while.stmt:
-  mv x15, x1
-  mv x16, x4
-  sgt t2, x15, x16
-  mv x17, t2
-  mv t0, x17
-  mv x18, t0
+  mv x12, x1
+  mv x13, x4
+  sgt t2, x12, x13
+  mv x14, t2
+  mv t0, x14
+  mv x15, t0
   li t1, 0
-  xor t2, x18, t1
+  xor t2, x15, t1
   snez t2, t2
-  mv x19, t2
-  bnez x19, if.then
+  mv x16, t2
+  bnez x16, if.then
   j if.else
 while.cond:
-  mv x20, x4
+  mv x17, x4
+  li t0, 0
+  xor t1, x17, t0
+  snez t1, t1
+  mv x18, t1
+  mv t2, x18
+  mv x20, t2
   li t0, 0
   xor t1, x20, t0
   snez t1, t1
-  mv x21, t1
-  mv t2, x21
-  mv x23, t2
-  li t0, 0
-  xor t1, x23, t0
-  snez t1, t1
-  mv x26, t1
-  bnez x26, while.stmt
+  mv x23, t1
+  bnez x23, while.stmt
   j cur
 merge:
   j while.cond
 if.then:
-  mv x29, x1
-  mv x31, x4
-  sub t2, x29, x31
-  mv x10, t2
-  mv x1, x10
+  mv x25, x1
+  mv x27, x4
+  sub t2, x25, x27
+  mv x28, t2
+  mv x1, x28
   j merge
 if.else:
-  mv x20, x4
-  mv x21, x1
-  sub t0, x20, x21
-  mv x25, t0
-  mv x4, x25
+  mv x11, x4
+  mv x17, x1
+  sub t0, x11, x17
+  mv x21, t0
+  mv x4, x21
   j merge
