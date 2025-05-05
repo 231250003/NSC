@@ -89,7 +89,7 @@ public class LLVMIRToRiscv {
                 }
             }
             for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
-                lastUse.put(var, finalLineNum+5);
+                if(finalLineNum>lastUse.get(var)) lastUse.put(var, finalLineNum);
             }
         }
         List<Interval> intervals = new ArrayList<>();
