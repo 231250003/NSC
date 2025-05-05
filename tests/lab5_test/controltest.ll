@@ -1,117 +1,63 @@
+; ModuleID = 'my_module'
+source_filename = "my_module"
 
-  .text
-  .globl main
-main:
-  addi sp, sp, -512
+define i32 @main() {
 mainEntry:
-  li t0, 0
-  sw t0, 4(sp)
-  li t1, 0
-  sw t1, 8(sp)
-  j while.cond
-cur:
-  lw t2, 8(sp)
-  sw t2, 12(sp)
-  lw t0, 12(sp)
-  mv a0, t0
-  addi sp, sp, 512
-  li a7, 93
-  ecall
-while.stmt:
-  lw t1, 4(sp)
-  sw t1, 16(sp)
-  lw t2, 16(sp)
-  li t0, 2
-  xor t1, t2, t0
-  seqz t1, t1
-  sw t1, 20(sp)
-  lw t2, 20(sp)
-  mv t0, t2
-  sw t0, 24(sp)
-  lw t1, 24(sp)
-  li t2, 0
-  xor t0, t1, t2
-  snez t0, t0
-  sw t0, 28(sp)
-  lw t1, 28(sp)
-  bnez t1, if.then
-  j if.else
-while.cond:
-  lw t2, 4(sp)
-  sw t2, 32(sp)
-  lw t0, 32(sp)
-  li t1, 8
-  slt t2, t0, t1
-  sw t2, 36(sp)
-  lw t0, 36(sp)
-  mv t1, t0
-  sw t1, 40(sp)
-  lw t2, 40(sp)
-  li t0, 0
-  xor t1, t2, t0
-  snez t1, t1
-  sw t1, 44(sp)
-  lw t2, 44(sp)
-  bnez t2, while.stmt
-  j cur
-merge:
-  lw t0, 4(sp)
-  sw t0, 48(sp)
-  lw t1, 48(sp)
-  li t2, 1
-  add t0, t1, t2
-  sw t0, 52(sp)
-  lw t1, 52(sp)
-  sw t1, 4(sp)
-  j while.cond
-if.then:
-  lw t2, 8(sp)
-  sw t2, 56(sp)
-  lw t0, 56(sp)
-  li t1, 3
-  add t2, t0, t1
-  sw t2, 60(sp)
-  lw t0, 60(sp)
-  sw t0, 8(sp)
-  j merge
-if.else:
-  lw t1, 4(sp)
-  sw t1, 64(sp)
-  lw t2, 64(sp)
-  li t0, 4
-  xor t1, t2, t0
-  seqz t1, t1
-  sw t1, 68(sp)
-  lw t2, 68(sp)
-  mv t0, t2
-  sw t0, 72(sp)
-  lw t1, 72(sp)
-  li t2, 0
-  xor t0, t1, t2
-  snez t0, t0
-  sw t0, 76(sp)
-  lw t1, 76(sp)
-  bnez t1, if.then10
-  j if.else11
-merge6:
-  j merge
-if.then10:
-  lw t2, 8(sp)
-  sw t2, 80(sp)
-  lw t0, 80(sp)
-  li t1, 1
-  sub t2, t0, t1
-  sw t2, 84(sp)
-  lw t0, 84(sp)
-  sw t0, 8(sp)
-  j merge6
-if.else11:
-  lw t1, 8(sp)
-  sw t1, 88(sp)
-  lw t2, 88(sp)
-  li t0, 1
-  add t1, t2, t0
-  sw t1, 92(sp)
-  lw t2, 92(sp)
-  sw t2, 8(sp)
-  j merge6
+  %x = alloca i32, align 4
+  store i32 0, i32* %x, align 4
+  %y = alloca i32, align 4
+  store i32 0, i32* %y, align 4
+  br label %while.cond
+
+cur:                                              ; preds = %while.cond
+  %load_lval18 = load i32, i32* %y, align 4
+  ret i32 %load_lval18
+
+while.stmt:                                       ; preds = %while.cond
+  %load_lval1 = load i32, i32* %x, align 4
+  %cmp2 = icmp eq i32 %load_lval1, 2
+  %zext_to_i323 = zext i1 %cmp2 to i32
+  %to_bool4 = icmp ne i32 %zext_to_i323, 0
+  br i1 %to_bool4, label %if.then, label %if.else
+
+while.cond:                                       ; preds = %merge, %mainEntry
+  %load_lval = load i32, i32* %x, align 4
+  %cmp = icmp slt i32 %load_lval, 8
+  %zext_to_i32 = zext i1 %cmp to i32
+  %to_bool = icmp ne i32 %zext_to_i32, 0
+  br i1 %to_bool, label %while.stmt, label %cur
+
+merge:                                            ; preds = %merge6, %if.then
+  %load_lval16 = load i32, i32* %x, align 4
+  %add17 = add i32 %load_lval16, 1
+  store i32 %add17, i32* %x, align 4
+  br label %while.cond
+
+if.then:                                          ; preds = %while.stmt
+  %load_lval5 = load i32, i32* %y, align 4
+  %add = add i32 %load_lval5, 3
+  store i32 %add, i32* %y, align 4
+  br label %merge
+
+if.else:                                          ; preds = %while.stmt
+  %load_lval7 = load i32, i32* %x, align 4
+  %cmp8 = icmp eq i32 %load_lval7, 4
+  %zext_to_i329 = zext i1 %cmp8 to i32
+  %to_bool12 = icmp ne i32 %zext_to_i329, 0
+  br i1 %to_bool12, label %if.then10, label %if.else11
+
+merge6:                                           ; preds = %if.else11, %if.then10
+  br label %merge
+
+if.then10:                                        ; preds = %if.else
+  %load_lval13 = load i32, i32* %y, align 4
+  %sub = sub i32 %load_lval13, 1
+  store i32 %sub, i32* %y, align 4
+  br label %merge6
+
+if.else11:                                        ; preds = %if.else
+  %load_lval14 = load i32, i32* %y, align 4
+  %add15 = add i32 %load_lval14, 1
+  store i32 %add15, i32* %y, align 4
+  br label %merge6
+}
