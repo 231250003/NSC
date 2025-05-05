@@ -58,11 +58,8 @@ if.else:                                          ; preds = %while.stmt
   br label %merge
 
 merge13:                                          ; preds = %if.then19, %cur
-  %result = alloca i32, align 4
   %load_lval23 = load i32, i32* %a, align 4
-  store i32 %load_lval23, i32* %result, align 4
-  %load_lval24 = load i32, i32* %result, align 4
-  ret i32 %load_lval24
+  ret i32 %load_lval23
 
 if.then19:                                        ; preds = %cur
   %load_lval21 = load i32, i32* %a, align 4
