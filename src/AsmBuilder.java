@@ -26,11 +26,22 @@ public class AsmBuilder {
     }
 
     public void instr(String op, String... args) {
-        if(op.equals("lw")) op="LOAD_WORD";
+        boolean flag=false;
+        if(op.equals("lw")){
+            flag=true;
+            String dest = args[0];
+            String addr = args[1];
+            int parenIndex = addr.indexOf('(');
+            String offset = addr.substring(0, parenIndex).trim();
+            String base = addr.substring(parenIndex + 1, addr.length() - 1).trim();
+            op = "LOAD_WORD(";
+            args = new String[]{dest, base, offset};
+        }
         current.append("  ").append(op);
         if (args.length > 0) {
-            current.append(" ").append(String.join(", ", args));
+             current.append(" ").append(String.join(", ", args));
         }
+        if(flag)current.append(")");
         current.append("\n");
     }
 
