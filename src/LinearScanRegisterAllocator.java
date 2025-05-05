@@ -44,7 +44,6 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                 }
                 if(!spill_reg.isEmpty()){
                     if (!varOffset.containsKey(var_spill_name)) {
-                        System.out.println("crzzzzz");
                         nextOffset += 4;
                         varOffset.put(var_spill_name, nextOffset);
                     }
