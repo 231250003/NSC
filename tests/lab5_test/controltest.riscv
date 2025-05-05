@@ -47,26 +47,26 @@ while.cond:
   snez t1, t1
   mv x21, t1
   mv t2, x21
-  mv x22, t2
+  mv x23, t2
   li t0, 0
-  xor t1, x22, t0
+  xor t1, x23, t0
   snez t1, t1
-  mv x23, t1
-  bnez x23, while.stmt
+  mv x26, t1
+  bnez x26, while.stmt
   j cur
 merge:
   j while.cond
 if.then:
-  mv x24, x1
-  mv x25, x4
-  sub t2, x24, x25
-  mv x26, t2
-  mv x1, x26
+  mv x29, x1
+  mv x31, x4
+  sub t2, x29, x31
+  mv x10, t2
+  mv x1, x10
   j merge
 if.else:
-  mv x27, x4
-  mv x28, x1
-  sub t0, x27, x28
-  mv x10, t0
-  mv x4, x10
+  mv x20, x4
+  mv x21, x1
+  sub t0, x20, x21
+  mv x25, t0
+  mv x4, x25
   j merge
