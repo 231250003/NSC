@@ -15,9 +15,11 @@ mainEntry:
 
 if.then:                                          ; preds = %mainEntry
   %load_lval2 = load i32, i32* @x, align 4
-  ret i32 %load_lval2
+  %load_lval3 = load i32, i32* @y, align 4
+  %add = add i32 %load_lval2, %load_lval3
+  ret i32 %add
 
 if.else:                                          ; preds = %mainEntry
-  %load_lval3 = load i32, i32* @y, align 4
-  ret i32 %load_lval3
+  %load_lval4 = load i32, i32* @y, align 4
+  ret i32 %load_lval4
 }
