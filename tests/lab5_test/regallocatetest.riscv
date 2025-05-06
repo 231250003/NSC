@@ -2,7 +2,7 @@
   .text
   .globl main
 main:
-  addi sp, sp, -1536
+  addi sp, sp, -2044
 mainEntry:
   li t0, 1
   mv x1, t0
@@ -73,6 +73,6 @@ mainEntry:
   add t2, x25, x26
   mv x10, t2
   mv a0, x10
-  addi sp, sp, 1536
+  addi sp, sp, 2044
   li a7, 93
   ecall
