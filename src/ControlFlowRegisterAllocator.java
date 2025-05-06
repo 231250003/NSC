@@ -31,7 +31,7 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
         for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
             String var = entry.getKey();
             Interval interval = entry.getValue();
-            if(interval.start<lineNumber&&interval.end>lineNumber) vars.add(var);
+            if(interval.start<=lineNumber&&interval.end>=lineNumber) vars.add(var);
         }
         for (String var : vars) {
             Interval interval = varToInterval.get(var);
