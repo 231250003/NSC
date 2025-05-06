@@ -326,6 +326,7 @@ public class LLVMIRToRiscv {
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
+                NewControlFlowRegisterAllocator.post_process_block();
             }
         }
         asm.writeToFile(file_path);
