@@ -51,14 +51,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 lastUse.put(var, lineNum);
                 used_num.put(var, used_num.getOrDefault(var, 0) + 1);
             }
-            if(line.contains("=")) {
-                line = line.substring(0, line.indexOf("="));
-                for (String var : LLVMIRToRiscv.extractVariables(line)) {
-                    changed_variable.add(var);
-                    System.out.println(var);
-                    break;
-                }
-            }
             lineNum++;
         }
         List<Interval> intervals = new ArrayList<>();
@@ -72,6 +64,14 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
     public  void processInstruction(int lineNumber, String instruction) {
         expireOldIntervals(lineNumber);
         Set<String> vars=LLVMIRToRiscv.extractVariables(instruction);
+        if(instruction.contains("=")) {
+            String instruction2 = instruction.substring(0, instruction.indexOf("="));
+            for (String var : LLVMIRToRiscv.extractVariables(instruction2)) {
+                changed_variable.add(var);
+                System.out.println(var);
+                break;
+            }
+        }
         for (String var : vars) {
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
