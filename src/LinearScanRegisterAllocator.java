@@ -37,7 +37,6 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                 String spill_reg="";
                 String var_spill_name=var;
                 for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
-                    System.out.println("crzzz linear");
                     String key = entry.getKey();
                     Interval value = entry.getValue();
                     if(varToLocation.get(key)!=null&&(!varToLocation.get(key).contains("sp"))&&value.end>var_end_line&&used_reg_list.get(varToLocation.get(key))==null){
