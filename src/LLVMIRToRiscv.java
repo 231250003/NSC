@@ -46,9 +46,11 @@ public class LLVMIRToRiscv {
         Set<LLVMBasicBlockRef> blocksWithBr = new HashSet<>();
         Map<LLVMBasicBlockRef, Set<String>> blockVars = new HashMap<>();
         Map<String,Integer> block_last_num = new HashMap<>();
+        Map<String,Integer> block_first_num = new HashMap<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 Set<String> varsInBlock = new HashSet<>();
+                block_first_num.put(LLVM.LLVMGetBasicBlockName(bb).getString(),lineNum);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
                     if (line.contains("br")) {
@@ -93,6 +95,27 @@ public class LLVMIRToRiscv {
                 if (finalLineNum > lastUse.get(var)) lastUse.put(var, finalLineNum);
             }
         }
+//        for (LLVMBasicBlockRef bb : blocksWithBr) {
+//            int first_line_num = block_first_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+//            for (LLVMBasicBlockRef bb2 : blocksWithBr) {
+//                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+//                    String line = LLVM.LLVMPrintValueToString(inst).getString();
+//                    String line2;
+//                    if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
+//                    else line2=line;
+//                    Set<String> var=extractVariables(line2);
+//                    if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())>finalLineNum){
+//                        finalLineNum=block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
+//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
+//                        System.out.println("crzzzz");
+//                    }
+//                }
+//            }
+//            for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
+//                if (finalLineNum > lastUse.get(var)) lastUse.put(var, finalLineNum);
+//            }
+//        }
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var),used_num.get(var)));
