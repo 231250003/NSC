@@ -50,16 +50,16 @@ mainEntry:
   mv x16, t1
   sw x15, 44(sp)
   sw x16, 48(sp)
-  sw 36(sp), 36(sp)
-  sw 4(sp), 4(sp)
-  sw 8(sp), 8(sp)
-  sw 12(sp), 12(sp)
-  sw 24(sp), 24(sp)
-  sw 28(sp), 28(sp)
-  sw 40(sp), 40(sp)
-  sw 20(sp), 20(sp)
-  sw 32(sp), 32(sp)
-  sw 16(sp), 16(sp)
+  sw x13, 36(sp)
+  sw x1, 4(sp)
+  sw x3, 8(sp)
+  sw x4, 12(sp)
+  sw x10, 24(sp)
+  sw x11, 28(sp)
+  sw x14, 40(sp)
+  sw x9, 20(sp)
+  sw x12, 32(sp)
+  sw x8, 16(sp)
   lw t2, 48(sp)
   bnez t2, if.then
   j merge
@@ -82,8 +82,8 @@ if.then:
   mv x9, t2
   sw x9, 64(sp)
   sw x8, 60(sp)
-  sw 52(sp), 52(sp)
-  sw 56(sp), 56(sp)
+  sw x3, 52(sp)
+  sw x4, 56(sp)
   lw t0, 64(sp)
   bnez t0, if.then9
   j merge5
@@ -122,10 +122,10 @@ while.stmt:
   mv x11, t1
   sw x11, 88(sp)
   sw x10, 84(sp)
-  sw 72(sp), 72(sp)
-  sw 76(sp), 76(sp)
-  sw 80(sp), 80(sp)
-  sw 68(sp), 68(sp)
+  sw x4, 72(sp)
+  sw x8, 76(sp)
+  sw x9, 80(sp)
+  sw x1, 68(sp)
   lw t2, 88(sp)
   bnez t2, if.then16
   j if.else
@@ -154,8 +154,8 @@ if.else:
   mv x9, t0
   sw x9, 104(sp)
   sw x8, 100(sp)
-  sw 92(sp), 92(sp)
-  sw 96(sp), 96(sp)
+  sw x3, 92(sp)
+  sw x4, 96(sp)
   lw t1, 104(sp)
   bnez t1, if.then22
   j merge18
@@ -178,9 +178,9 @@ if.then22:
   sw x9, 116(sp)
   sw x10, 4(sp)
   sw x10, 120(sp)
-  sw 112(sp), 112(sp)
-  sw 116(sp), 116(sp)
-  sw 108(sp), 108(sp)
+  sw x4, 112(sp)
+  sw x9, 116(sp)
+  sw x3, 108(sp)
   j merge18
 cur28:
   lw t2, 4(sp)
@@ -190,7 +190,7 @@ cur28:
   mv x8, x1
   sw x1, 124(sp)
   sw x8, 132(sp)
-  sw 128(sp), 128(sp)
+  sw x4, 128(sp)
   lw t0, 132(sp)
   mv a0, t0
   addi sp, sp, 2044
@@ -220,10 +220,10 @@ while.cond30:
   mv x12, t2
   sw x11, 152(sp)
   sw x12, 156(sp)
-  sw 148(sp), 148(sp)
-  sw 144(sp), 144(sp)
-  sw 136(sp), 136(sp)
-  sw 140(sp), 140(sp)
+  sw x10, 148(sp)
+  sw x9, 144(sp)
+  sw x1, 136(sp)
+  sw x8, 140(sp)
   lw t0, 156(sp)
   bnez t0, while.stmt29
   j cur28
@@ -245,8 +245,8 @@ while.stmt38:
   mv x9, t0
   sw x8, 168(sp)
   sw x9, 172(sp)
-  sw 164(sp), 164(sp)
-  sw 160(sp), 160(sp)
+  sw x4, 164(sp)
+  sw x1, 160(sp)
   lw t1, 172(sp)
   bnez t1, if.then48
   j if.else49
@@ -266,8 +266,8 @@ while.cond39:
   mv x9, t1
   sw x9, 188(sp)
   sw x8, 184(sp)
-  sw 180(sp), 180(sp)
-  sw 176(sp), 176(sp)
+  sw x4, 180(sp)
+  sw x3, 176(sp)
   lw t2, 188(sp)
   bnez t2, while.stmt38
   j cur37
@@ -282,7 +282,7 @@ if.then48:
   sw x3, 192(sp)
   sw x4, 4(sp)
   sw x4, 196(sp)
-  sw 192(sp), 192(sp)
+  sw x3, 192(sp)
   j cur37
 if.else49:
   j cur37
@@ -324,14 +324,14 @@ cur53:
   mv x16, t1
   sw x15, 232(sp)
   sw x16, 236(sp)
-  sw 212(sp), 212(sp)
-  sw 228(sp), 228(sp)
-  sw 204(sp), 204(sp)
-  sw 220(sp), 220(sp)
-  sw 216(sp), 216(sp)
-  sw 208(sp), 208(sp)
-  sw 200(sp), 200(sp)
-  sw 224(sp), 224(sp)
+  sw x10, 212(sp)
+  sw x14, 228(sp)
+  sw x4, 204(sp)
+  sw x12, 220(sp)
+  sw x11, 216(sp)
+  sw x9, 208(sp)
+  sw x3, 200(sp)
+  sw x13, 224(sp)
   lw t2, 236(sp)
   bnez t2, if.then113
   j merge107
@@ -356,8 +356,8 @@ while.cond55:
   mv x9, t0
   sw x8, 252(sp)
   sw x9, 256(sp)
-  sw 244(sp), 244(sp)
-  sw 248(sp), 248(sp)
+  sw x1, 244(sp)
+  sw x4, 248(sp)
   lw t1, 256(sp)
   bnez t1, while.stmt54
   j cur53
@@ -390,8 +390,8 @@ while.stmt62:
   mv x9, t2
   sw x8, 276(sp)
   sw x9, 280(sp)
-  sw 272(sp), 272(sp)
-  sw 268(sp), 268(sp)
+  sw x4, 272(sp)
+  sw x1, 268(sp)
   lw t0, 280(sp)
   bnez t0, if.then68
   j if.else69
@@ -419,7 +419,7 @@ if.else69:
   sw x1, 288(sp)
   sw x4, 240(sp)
   sw x4, 292(sp)
-  sw 288(sp), 288(sp)
+  sw x1, 288(sp)
   j merge64
 merge76:
   j while.cond55
@@ -432,7 +432,7 @@ if.then80:
   sw x3, 296(sp)
   sw x4, 12(sp)
   sw x4, 300(sp)
-  sw 296(sp), 296(sp)
+  sw x3, 296(sp)
   j while.cond55
 if.else81:
   lw t1, 12(sp)
@@ -450,8 +450,8 @@ if.else81:
   mv x9, t0
   sw x8, 312(sp)
   sw x9, 316(sp)
-  sw 308(sp), 308(sp)
-  sw 304(sp), 304(sp)
+  sw x4, 308(sp)
+  sw x1, 304(sp)
   lw t1, 316(sp)
   bnez t1, if.then89
   j if.else90
@@ -466,7 +466,7 @@ if.then89:
   sw x3, 320(sp)
   sw x4, 12(sp)
   sw x4, 324(sp)
-  sw 320(sp), 320(sp)
+  sw x3, 320(sp)
   j merge85
 if.else90:
   lw t2, 12(sp)
@@ -484,8 +484,8 @@ if.else90:
   mv x9, t1
   sw x8, 336(sp)
   sw x9, 340(sp)
-  sw 328(sp), 328(sp)
-  sw 332(sp), 332(sp)
+  sw x3, 328(sp)
+  sw x4, 332(sp)
   lw t2, 340(sp)
   bnez t2, if.then98
   j if.else99
@@ -500,7 +500,7 @@ if.then98:
   sw x3, 344(sp)
   sw x4, 12(sp)
   sw x4, 348(sp)
-  sw 344(sp), 344(sp)
+  sw x3, 344(sp)
   j merge94
 if.else99:
   li t0, 10
@@ -519,5 +519,5 @@ if.then113:
   sw x3, 352(sp)
   sw x4, 4(sp)
   sw x4, 356(sp)
-  sw 352(sp), 352(sp)
+  sw x3, 352(sp)
   j merge107
