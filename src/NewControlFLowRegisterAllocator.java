@@ -9,12 +9,16 @@ import java.util.*;
 class NewControlFlowRegisterAllocator implements RegisterAllocator{
 
     private static final Map<String, Interval> varToInterval=new HashMap<>();
-    private static final List<String> registers=new ArrayList<>();
+    private static List<String> total_registers;
+    private static List<String> freed_register;
     private static  Map<String, String> varToLocation = new HashMap<>();
     private static final Map<String, Integer> varOffset = new HashMap<>();
     private static  Set<String> changed_variable=new HashSet<>();
     private static int nextOffset = 0;
-    public NewControlFlowRegisterAllocator(){}
+    public NewControlFlowRegisterAllocator(List<String> reg_list){
+        total_registers=new ArrayList<>(reg_list);
+        freed_register=new ArrayList<>(reg_list);
+    }
     public static void init(LLVMModuleRef module) {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
@@ -74,8 +78,8 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         for (String var : vars) {
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
-            if (!registers.isEmpty()) {
-                String reg = registers.remove(0);
+            if (!freed_register.isEmpty()) {
+                String reg = freed_register.remove(0);
                 varToLocation.put(var, reg);
             } else {
                 varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
@@ -89,7 +93,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             String var = entry.getKey();
             Interval interval = entry.getValue();
             if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
-                registers.add(varToLocation.get(var));
+                freed_register.add(varToLocation.get(var));
                 if(changed_variable.contains(var)) LLVMIRToRiscv.asm.instr("sw",varToLocation.get(var),String.format("%d(sp)", varOffset.get(var)));
                 varToLocation.remove(var);
                 varToLocation.put(var,String.format("%d(sp)", varOffset.get(var)));
@@ -107,6 +111,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         }
         varToLocation=new HashMap<>();
         changed_variable=new HashSet<>();
+        freed_register=new ArrayList<>(total_registers);
     }
     @Override
     public String allocate(String varName) {

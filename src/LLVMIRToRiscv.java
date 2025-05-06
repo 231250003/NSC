@@ -134,7 +134,7 @@ public class LLVMIRToRiscv {
             blockCount++;
         }
         if(blockCount>1){
-            allocator=new NewControlFlowRegisterAllocator();
+            allocator=new NewControlFlowRegisterAllocator(reg_list);
             NewControlFlowRegisterAllocator.init(module);
         }
         asm.directive("text");
