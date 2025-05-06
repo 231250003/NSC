@@ -5,12 +5,12 @@ int main() {
     int a = x;
     int b = y;
     while (b != 0) {
-           if (a > b) {
-               a = a - b;
-           } else {
-               b = b - a;
-           }
-       }
-    if(a!=!x+3) a=a+1;
-	return a;
+        if (a > b) {
+            a = a - b;
+        } else {
+            b = b - a;
+        }
+    }
+    int result = a;
+	return result;
 }
