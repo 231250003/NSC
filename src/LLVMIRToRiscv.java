@@ -57,7 +57,7 @@ public class LLVMIRToRiscv {
                         blocksWithBr.add(bb);
                     }
                     if (line.contains("br") && !line.contains(",")) {
-                        //lineNum++;
+                        lineNum++;
                         continue;
                     }
                     else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
@@ -95,27 +95,27 @@ public class LLVMIRToRiscv {
                 if (finalLineNum > lastUse.get(var)) lastUse.put(var, finalLineNum);
             }
         }
-//        for (LLVMBasicBlockRef bb : blocksWithBr) {
-//            int first_line_num = block_first_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
-//            for (LLVMBasicBlockRef bb2 : blocksWithBr) {
-//                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-//                    String line = LLVM.LLVMPrintValueToString(inst).getString();
-//                    String line2;
-//                    if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
-//                    else line2=line;
-//                    Set<String> var=extractVariables(line2);
-//                    if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())>finalLineNum){
-//                        finalLineNum=block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
+        for (LLVMBasicBlockRef bb : blocksWithBr) {
+            int first_line_num = block_first_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+            for (LLVMBasicBlockRef bb2 : blocksWithBr) {
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    String line = LLVM.LLVMPrintValueToString(inst).getString();
+                    String line2;
+                    if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
+                    else line2=line;
+                    Set<String> var=extractVariables(line2);
+                    if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())<first_line_num){
+                        first_line_num=block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
 //                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
 //                        System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
 //                        System.out.println("crzzzz");
-//                    }
-//                }
-//            }
-//            for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
-//                if (finalLineNum > lastUse.get(var)) lastUse.put(var, finalLineNum);
-//            }
-//        }
+                    }
+                }
+            }
+            for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
+                if (first_line_num < firstUse.get(var)) firstUse.put(var, first_line_num);
+            }
+        }
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var),used_num.get(var)));
