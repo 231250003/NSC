@@ -54,6 +54,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             if(line.contains("=")) {
                 for (String var : LLVMIRToRiscv.extractVariables(line)) {
                     changed_variable.add(var);
+                    System.out.println(var);
                     break;
                 }
             }
@@ -99,7 +100,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         for (Map.Entry<String, String> entry : varToLocation.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-           if(changed_variable.contains(key)&&!value.contains("sp")){
+           if(changed_variable.contains(key)&& (!value.contains("sp"))){
                LLVMIRToRiscv.valueMap.put(key,String.format("%d(sp)", varOffset.get(key)));
                LLVMIRToRiscv.asm.instr("sw",varToLocation.get(key),String.format("%d(sp)", varOffset.get(key)));
            }
