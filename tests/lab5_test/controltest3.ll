@@ -1,102 +1,69 @@
-  .data
-x:
-  .word 56
-  .data
-y:
-  .word 98
+; ModuleID = 'my_module'
+source_filename = "my_module"
 
-  .text
-  .globl main
-main:
-  addi sp, sp, -512
+@x = global i32 56
+@y = global i32 98
+
+define i32 @main() {
 mainEntry:
-  la t0, x
-  lw t0, 0(t0)
-  mv x3, t0
-  mv x1, x3
-  la t1, y
-  lw t1, 0(t1)
-  mv x8, t1
-  mv x4, x8
-  j while.cond
-cur:
-  mv x9, x1
-  la t2, x
-  lw t2, 0(t2)
-  mv x10, t2
-  li t0, 0
-  xor t1, x10, t0
-  seqz t1, t1
-  mv x11, t1
-  mv t2, x11
-  mv x12, t2
-  li t0, 3
-  add t1, x12, t0
-  mv x13, t1
-  xor t2, x9, x13
-  snez t2, t2
-  mv x14, t2
-  mv t0, x14
-  mv x15, t0
-  li t1, 0
-  xor t2, x15, t1
-  snez t2, t2
-  mv x16, t2
-  bnez x16, if.then19
-  j merge13
-while.stmt:
-  mv x17, x1
-  mv x18, x4
-  sgt t0, x17, x18
-  mv x19, t0
-  mv t1, x19
-  mv x20, t1
-  li t2, 0
-  xor t0, x20, t2
-  snez t0, t0
-  mv x21, t0
-  bnez x21, if.then
-  j if.else
-while.cond:
-  mv x22, x4
-  li t1, 0
-  xor t2, x22, t1
-  snez t2, t2
-  mv x23, t2
-  mv t0, x23
-  mv x24, t0
-  li t1, 0
-  xor t2, x24, t1
-  snez t2, t2
-  mv x25, t2
-  bnez x25, while.stmt
-  j cur
-merge:
-  j while.cond
-if.then:
-  mv x26, x1
-  mv x27, x4
-  sub t0, x26, x27
-  mv x28, t0
-  mv x1, x28
-  j merge
-if.else:
-  mv x29, x4
-  mv x30, x1
-  sub t1, x29, x30
-  mv x31, t1
-  mv x4, x31
-  j merge
-merge13:
-  mv x23, x1
-  mv a0, x23
-  addi sp, sp, 512
-  li a7, 93
-  ecall
-if.then19:
-  mv x25, x1
-  li t2, 1
-  add t0, x25, t2
-  mv x3, t0
-  mv x1, x3
-  j merge13
+  %a = alloca i32, align 4
+  %load_lval = load i32, i32* @x, align 4
+  store i32 %load_lval, i32* %a, align 4
+  %b = alloca i32, align 4
+  %load_lval1 = load i32, i32* @y, align 4
+  store i32 %load_lval1, i32* %b, align 4
+  br label %while.cond
+
+cur:                                              ; preds = %while.cond
+  %load_lval14 = load i32, i32* %a, align 4
+  %load_lval15 = load i32, i32* @x, align 4
+  %not = icmp eq i32 %load_lval15, 0
+  %zext_to_i3216 = zext i1 %not to i32
+  %add = add i32 %zext_to_i3216, 3
+  %cmp17 = icmp ne i32 %load_lval14, %add
+  %zext_to_i3218 = zext i1 %cmp17 to i32
+  %to_bool20 = icmp ne i32 %zext_to_i3218, 0
+  br i1 %to_bool20, label %if.then19, label %merge13
+
+while.stmt:                                       ; preds = %while.cond
+  %load_lval3 = load i32, i32* %a, align 4
+  %load_lval4 = load i32, i32* %b, align 4
+  %cmp5 = icmp sgt i32 %load_lval3, %load_lval4
+  %zext_to_i326 = zext i1 %cmp5 to i32
+  %to_bool7 = icmp ne i32 %zext_to_i326, 0
+  br i1 %to_bool7, label %if.then, label %if.else
+
+while.cond:                                       ; preds = %merge, %mainEntry
+  %load_lval2 = load i32, i32* %b, align 4
+  %cmp = icmp ne i32 %load_lval2, 0
+  %zext_to_i32 = zext i1 %cmp to i32
+  %to_bool = icmp ne i32 %zext_to_i32, 0
+  br i1 %to_bool, label %while.stmt, label %cur
+
+merge:                                            ; preds = %if.else, %if.then
+  br label %while.cond
+
+if.then:                                          ; preds = %while.stmt
+  %load_lval8 = load i32, i32* %a, align 4
+  %load_lval9 = load i32, i32* %b, align 4
+  %sub = sub i32 %load_lval8, %load_lval9
+  store i32 %sub, i32* %a, align 4
+  br label %merge
+
+if.else:                                          ; preds = %while.stmt
+  %load_lval10 = load i32, i32* %b, align 4
+  %load_lval11 = load i32, i32* %a, align 4
+  %sub12 = sub i32 %load_lval10, %load_lval11
+  store i32 %sub12, i32* %b, align 4
+  br label %merge
+
+merge13:                                          ; preds = %if.then19, %cur
+  %load_lval23 = load i32, i32* %a, align 4
+  ret i32 %load_lval23
+
+if.then19:                                        ; preds = %cur
+  %load_lval21 = load i32, i32* %a, align 4
+  %add22 = add i32 %load_lval21, 1
+  store i32 %add22, i32* %a, align 4
+  br label %merge13
+}
