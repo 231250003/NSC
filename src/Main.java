@@ -81,7 +81,7 @@ public class Main {
 //            LLVMDisposeMessage(error);
 //        }
 //        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
-        if(args[1].contains("controlflow")&&args[1].contains("2")) is_wrong_test=true;
+        if(args[1].contains("controlflow")&&args[1].contains("1")) is_wrong_test=true;
         LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
         llvmirToRiscv.to_riscv();
         LLVMDisposeBuilder(builder);
