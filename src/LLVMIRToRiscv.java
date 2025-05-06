@@ -57,7 +57,7 @@ public class LLVMIRToRiscv {
                         blocksWithBr.add(bb);
                     }
                     if (line.contains("br") && !line.contains(",")) {
-                        lineNum++;
+                        //lineNum++;
                         continue;
                     }
                     else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
