@@ -33,6 +33,7 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
                 String reg = registers.remove(0);
                 varToLocation.put(var, reg);
             } else {
+                System.out.println("crzzzz");
                 int var_end_line=interval.end;
                 String spill_reg="";
                 String var_spill_name=var;
