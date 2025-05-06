@@ -48,6 +48,7 @@ public class LLVMIRToRiscv {
         Map<String,Integer> block_last_num = new HashMap<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                System.out.println((LLVM.LLVMGetBasicBlockName(bb).getString()));
                 Set<String> varsInBlock = new HashSet<>();
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
