@@ -55,7 +55,7 @@ public class LLVMIRToRiscv {
                         blocksWithBr.add(bb);
                     }
                     if (line.contains("br") && !line.contains(",")) {
-                        //lineNum++;
+                        lineNum++;
                         continue;
                     }
                     else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
@@ -72,6 +72,7 @@ public class LLVMIRToRiscv {
                 //System.out.println(lineNum);
             }
         }
+        System.out.println(lineNum);
         for (LLVMBasicBlockRef bb : blocksWithBr) {
             int finalLineNum=block_last_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
             for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
@@ -300,6 +301,7 @@ public class LLVMIRToRiscv {
                 }
             }
         }
+        System.out.println(lineNum);
         asm.writeToFile(file_path);
     }
 
