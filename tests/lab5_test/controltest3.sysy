@@ -1,6 +1,23 @@
 int x = 56;
 int y = 98;
-
+int z = 3;
+int a = 4;
+int b = 5;
+int c = 6;
+int d = 7;
+int e = 8;
+int f = 9;
+int g = 10;
+int h = 11;
+int i = 12;
+int j = 13;
+int k = 14;
+int l = 15;
+int m = 16;
+int n = 17;
+int o = 18;
+int p = 19;
+int q = 20;
 int main() {
     int a = x;
     int b = y;
