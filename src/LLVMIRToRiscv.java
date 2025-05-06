@@ -152,7 +152,6 @@ public class LLVMIRToRiscv {
                 if(blockCount>1) {
                     lineNum=0;
                     NewControlFlowRegisterAllocator.preprocess_block(bb);
-                    System.out.println("crzzzz");
                 }
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(label.isEmpty() ? "mainEntry" : label);
