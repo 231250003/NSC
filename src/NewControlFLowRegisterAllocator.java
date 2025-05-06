@@ -64,7 +64,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         for (Interval interval : intervals) {
             varToInterval.put(interval.varName, interval);
         }
-        System.out.println(lineNum);
     }
     public  void processInstruction(int lineNumber, String instruction) {
         expireOldIntervals(lineNumber);
@@ -99,6 +98,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                         var_end_line=value.end;
                         var_spill_name=key;
                     }
+                    System.out.println("crzzzz");
                 }
                 if(!spill_reg.isEmpty()){
                     varToLocation.put(var_spill_name, String.format("%d(sp)", varOffset.get(var_spill_name)));
