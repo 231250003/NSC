@@ -82,7 +82,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 String reg = freed_register.remove(0);
                 varToLocation.put(var, reg);
             } else {
-                varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
+                if((!instruction.contains("br")) &&(!instruction.contains("ret")))varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
                 LLVMIRToRiscv.valueMap.put(var,varToLocation.get(var));
             }
         }
