@@ -63,6 +63,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         }
         for (Interval interval : intervals) {
             varToInterval.put(interval.varName, interval);
+            System.out.println(interval.end);
         }
     }
     public  void processInstruction(int lineNumber, String instruction) {
