@@ -8,7 +8,7 @@ y:
   .text
   .globl main
 main:
-  addi sp, sp, -1536
+  addi sp, sp, -2000
 mainEntry:
   la t0, x
   lw t0, 0(t0)
@@ -24,7 +24,7 @@ cur:
   mv x13, x14
   mv x15, x13
   mv a0, x15
-  addi sp, sp, 1536
+  addi sp, sp, 2000
   li a7, 93
   ecall
 while.stmt:
