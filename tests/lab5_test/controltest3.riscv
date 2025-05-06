@@ -12,121 +12,40 @@ main:
 mainEntry:
   la t0, x
   lw t0, 0(t0)
-  mv x3, t0
-  mv x1, x3
-  sw x1, 4(sp)
-  sw x3, 8(sp)
+  mv x1, t0
   la t1, y
   lw t1, 0(t1)
-  mv x8, t1
-  mv x4, x8
-  sw x4, 12(sp)
-  sw x8, 16(sp)
-  j while.cond
-cur:
-  mv x3, x1
-  la t2, x
-  lw t2, 0(t2)
+  mv x3, t1
+  sgt t2, x1, x3
   mv x4, t2
-  li t0, 0
-  xor t1, x4, t0
-  seqz t1, t1
-  mv x8, t1
-  sw x4, 24(sp)
-  mv t2, x8
-  mv x9, t2
-  sw x8, 28(sp)
-  li t0, 3
-  add t1, x9, t0
-  mv x10, t1
-  sw x9, 32(sp)
-  xor t2, x3, x10
-  snez t2, t2
-  mv x11, t2
-  sw x10, 36(sp)
-  sw x3, 20(sp)
-  mv t0, x11
-  mv x12, t0
-  sw x11, 40(sp)
-  li t1, 0
-  xor t2, x12, t1
-  snez t2, t2
-  mv x13, t2
-  sw x12, 44(sp)
-  bnez x13, if.then19
-  j merge13
-  sw x13, 48(sp)
-while.stmt:
-  mv x3, x1
-  mv x8, x4
-  sgt t0, x3, x8
-  mv x9, t0
-  sw x8, 56(sp)
-  sw x3, 52(sp)
-  mv t1, x9
-  mv x10, t1
-  sw x9, 60(sp)
-  li t2, 0
-  xor t0, x10, t2
-  snez t0, t0
-  mv x11, t0
-  sw x10, 64(sp)
-  bnez x11, if.then
-  j if.else
-  sw x11, 68(sp)
-while.cond:
-  mv x3, x4
-  li t1, 0
-  xor t2, x3, t1
-  snez t2, t2
-  mv x4, t2
-  sw x3, 72(sp)
+  sw x1, 4(sp)
+  sw x3, 8(sp)
   mv t0, x4
   mv x8, t0
-  sw x4, 76(sp)
+  sw x4, 12(sp)
   li t1, 0
   xor t2, x8, t1
   snez t2, t2
   mv x9, t2
-  sw x8, 80(sp)
-  bnez x9, while.stmt
-  j cur
-  sw x9, 84(sp)
-merge:
-  j while.cond
+  sw x8, 16(sp)
+  bnez x9, if.then
+  j if.else
+  sw x9, 20(sp)
 if.then:
-  mv x3, x1
-  mv x8, x4
-  sub t0, x3, x8
-  mv x9, t0
-  sw x3, 88(sp)
-  sw x8, 92(sp)
-  mv x1, x9
-  sw x9, 96(sp)
-  j merge
-if.else:
-  mv x3, x4
-  mv x4, x1
-  sub t1, x3, x4
-  mv x9, t1
-  sw x4, 104(sp)
-  sw x3, 100(sp)
-  mv x4, x9
-  sw x9, 108(sp)
-  j merge
-merge13:
-  mv x1, x1
+  la t0, x
+  lw t0, 0(t0)
+  mv x1, t0
   mv a0, x1
   addi sp, sp, 2044
   li a7, 93
   ecall
-  sw x1, 112(sp)
-if.then19:
-  mv x3, x1
-  li t2, 1
-  add t0, x3, t2
-  mv x4, t0
-  sw x3, 116(sp)
-  mv x1, x4
-  sw x4, 120(sp)
-  j merge13
+  sw x1, 24(sp)
+if.else:
+  la t1, y
+  lw t1, 0(t1)
+  mv x1, t1
+  mv a0, x1
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+  sw x1, 28(sp)

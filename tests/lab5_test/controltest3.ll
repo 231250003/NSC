@@ -6,64 +6,18 @@ source_filename = "my_module"
 
 define i32 @main() {
 mainEntry:
-  %a = alloca i32, align 4
   %load_lval = load i32, i32* @x, align 4
-  store i32 %load_lval, i32* %a, align 4
-  %b = alloca i32, align 4
   %load_lval1 = load i32, i32* @y, align 4
-  store i32 %load_lval1, i32* %b, align 4
-  br label %while.cond
-
-cur:                                              ; preds = %while.cond
-  %load_lval14 = load i32, i32* %a, align 4
-  %load_lval15 = load i32, i32* @x, align 4
-  %not = icmp eq i32 %load_lval15, 0
-  %zext_to_i3216 = zext i1 %not to i32
-  %add = add i32 %zext_to_i3216, 3
-  %cmp17 = icmp ne i32 %load_lval14, %add
-  %zext_to_i3218 = zext i1 %cmp17 to i32
-  %to_bool20 = icmp ne i32 %zext_to_i3218, 0
-  br i1 %to_bool20, label %if.then19, label %merge13
-
-while.stmt:                                       ; preds = %while.cond
-  %load_lval3 = load i32, i32* %a, align 4
-  %load_lval4 = load i32, i32* %b, align 4
-  %cmp5 = icmp sgt i32 %load_lval3, %load_lval4
-  %zext_to_i326 = zext i1 %cmp5 to i32
-  %to_bool7 = icmp ne i32 %zext_to_i326, 0
-  br i1 %to_bool7, label %if.then, label %if.else
-
-while.cond:                                       ; preds = %merge, %mainEntry
-  %load_lval2 = load i32, i32* %b, align 4
-  %cmp = icmp ne i32 %load_lval2, 0
+  %cmp = icmp sgt i32 %load_lval, %load_lval1
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
-  br i1 %to_bool, label %while.stmt, label %cur
+  br i1 %to_bool, label %if.then, label %if.else
 
-merge:                                            ; preds = %if.else, %if.then
-  br label %while.cond
+if.then:                                          ; preds = %mainEntry
+  %load_lval2 = load i32, i32* @x, align 4
+  ret i32 %load_lval2
 
-if.then:                                          ; preds = %while.stmt
-  %load_lval8 = load i32, i32* %a, align 4
-  %load_lval9 = load i32, i32* %b, align 4
-  %sub = sub i32 %load_lval8, %load_lval9
-  store i32 %sub, i32* %a, align 4
-  br label %merge
-
-if.else:                                          ; preds = %while.stmt
-  %load_lval10 = load i32, i32* %b, align 4
-  %load_lval11 = load i32, i32* %a, align 4
-  %sub12 = sub i32 %load_lval10, %load_lval11
-  store i32 %sub12, i32* %b, align 4
-  br label %merge
-
-merge13:                                          ; preds = %if.then19, %cur
-  %load_lval23 = load i32, i32* %a, align 4
-  ret i32 %load_lval23
-
-if.then19:                                        ; preds = %cur
-  %load_lval21 = load i32, i32* %a, align 4
-  %add22 = add i32 %load_lval21, 1
-  store i32 %add22, i32* %a, align 4
-  br label %merge13
+if.else:                                          ; preds = %mainEntry
+  %load_lval3 = load i32, i32* @y, align 4
+  ret i32 %load_lval3
 }
