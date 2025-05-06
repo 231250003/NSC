@@ -8,7 +8,7 @@ y:
   .text
   .globl main
 main:
-  addi sp, sp, -1024
+  addi sp, sp, -2048
 mainEntry:
   la t0, x
   lw t0, 0(t0)
@@ -61,7 +61,7 @@ merge5:
 if.then9:
   li t1, 2
   mv a0, t1
-  addi sp, sp, 1024
+  addi sp, sp, 2048
   li a7, 93
   ecall
 cur:
@@ -126,7 +126,7 @@ cur28:
   mv x17, x19
   mv x20, x17
   mv a0, x20
-  addi sp, sp, 1024
+  addi sp, sp, 2048
   li a7, 93
   ecall
 while.stmt29:
@@ -235,7 +235,7 @@ cur61:
   sub t0, x4, t2
   mv x12, t0
   mv a0, x12
-  addi sp, sp, 1024
+  addi sp, sp, 2048
   li a7, 93
   ecall
 while.stmt62:
@@ -260,7 +260,7 @@ merge64:
 if.then68:
   mv x28, x1
   mv a0, x28
-  addi sp, sp, 1024
+  addi sp, sp, 2048
   li a7, 93
   ecall
 if.else69:
@@ -326,7 +326,7 @@ if.then98:
 if.else99:
   li t1, 10
   mv a0, t1
-  addi sp, sp, 1024
+  addi sp, sp, 2048
   li a7, 93
   ecall
 merge107:
