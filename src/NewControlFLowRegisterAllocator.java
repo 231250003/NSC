@@ -78,6 +78,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         }
         for (String var : vars) {
             Interval interval = varToInterval.get(var);
+            System.out.println("crzzzz");
             if (interval == null || varToLocation.containsKey(var)) continue;
             if (!freed_register.isEmpty()&&(!instruction.contains("br")) &&(!instruction.contains("ret"))) {
                 String reg = freed_register.remove(0);
@@ -90,7 +91,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 int var_end_line=interval.end;
                 String spill_reg="";
                 String var_spill_name=var;
-                System.out.println("crzzzz");
                 for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
                     String key = entry.getKey();
                     Interval value = entry.getValue();
