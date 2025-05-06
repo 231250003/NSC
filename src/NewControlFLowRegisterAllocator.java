@@ -87,6 +87,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 LLVMIRToRiscv.valueMap.put(var,varToLocation.get(var));
             }
             else{
+                System.out.println("crzzzz");
                 int var_end_line=interval.end;
                 String spill_reg="";
                 String var_spill_name=var;
