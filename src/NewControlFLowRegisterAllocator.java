@@ -52,7 +52,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 used_num.put(var, used_num.getOrDefault(var, 0) + 1);
             }
             if(line.contains("=")) {
-                System.out.println(line);
+                line = line.substring(0, line.indexOf("="));
                 for (String var : LLVMIRToRiscv.extractVariables(line)) {
                     changed_variable.add(var);
                     System.out.println(var);
