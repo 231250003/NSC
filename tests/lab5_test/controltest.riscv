@@ -29,52 +29,58 @@ cur:
   sw x4, 24(sp)
   mv x8, x1
   sw x1, 20(sp)
-  mv a0, x8
+  sw x8, 28(sp)
+  lw t2, 28(sp)
+  mv a0, t2
   addi sp, sp, 2044
   li a7, 93
   ecall
-  sw x8, 28(sp)
 while.stmt:
   mv x3, x1
-  mv x8, x4
-  sgt t2, x3, x8
-  mv x9, t2
+  lw t0, 12(sp)
+  mv x8, t0
+  sgt t1, x3, x8
+  mv x9, t1
   sw x8, 36(sp)
   sw x3, 32(sp)
-  mv t0, x9
-  mv x10, t0
+  mv t2, x9
+  mv x10, t2
   sw x9, 40(sp)
-  li t1, 0
-  xor t2, x10, t1
-  snez t2, t2
-  mv x11, t2
+  li t0, 0
+  xor t1, x10, t0
+  snez t1, t1
+  mv x11, t1
   sw x10, 44(sp)
-  bnez x11, if.then
-  j if.else
   sw x11, 48(sp)
+  lw t2, 48(sp)
+  bnez t2, if.then
+  j if.else
 while.cond:
-  mv x3, x4
-  li t0, 0
-  xor t1, x3, t0
-  snez t1, t1
-  mv x4, t1
+  lw t0, 12(sp)
+  mv x3, t0
+  li t1, 0
+  xor t2, x3, t1
+  snez t2, t2
+  mv x4, t2
   sw x3, 52(sp)
-  mv t2, x4
-  mv x8, t2
+  mv t0, x4
+  mv x8, t0
   sw x4, 56(sp)
-  li t0, 0
-  xor t1, x8, t0
-  snez t1, t1
-  mv x9, t1
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x9, t2
   sw x8, 60(sp)
-  bnez x9, while.stmt
-  j cur
   sw x9, 64(sp)
+  lw t0, 64(sp)
+  bnez t0, while.stmt
+  j cur
 merge:
   j while.cond
 if.then:
   mv x3, x1
-  mv x8, x4
+  lw t1, 12(sp)
+  mv x8, t1
   sub t2, x3, x8
   mv x9, t2
   sw x3, 68(sp)
@@ -83,12 +89,13 @@ if.then:
   sw x9, 76(sp)
   j merge
 if.else:
-  mv x3, x4
+  lw t0, 12(sp)
+  mv x3, t0
   mv x4, x1
-  sub t0, x3, x4
-  mv x9, t0
+  sub t1, x3, x4
+  mv x9, t1
   sw x4, 84(sp)
   sw x3, 80(sp)
-  mv x4, x9
+  sw x9, 12(sp)
   sw x9, 88(sp)
   j merge
