@@ -8,7 +8,7 @@ y:
   .text
   .globl main
 main:
-  addi sp, sp, -512
+  addi sp, sp, -1024
 mainEntry:
   la t0, x
   lw t0, 0(t0)
@@ -24,15 +24,15 @@ cur:
   mv x13, x14
   mv x15, x13
   mv a0, x15
-  addi sp, sp, 512
+  addi sp, sp, 1024
   li a7, 93
   ecall
 while.stmt:
-  mv x16, x1
-  mv x21, x4
-  sgt t2, x16, x21
-  mv x17, t2
-  mv t0, x17
+  mv x22, x1
+  mv x20, x4
+  sgt t2, x22, x20
+  mv x16, t2
+  mv t0, x16
   mv x23, t0
   li t1, 0
   xor t2, x23, t1
@@ -57,16 +57,16 @@ while.cond:
 merge:
   j while.cond
 if.then:
-  mv x19, x1
-  mv x20, x4
-  sub t2, x19, x20
-  mv x18, t2
-  mv x1, x18
+  mv x18, x1
+  mv x19, x4
+  sub t2, x18, x19
+  mv x17, t2
+  mv x1, x17
   j merge
 if.else:
   mv x25, x4
   mv x24, x1
   sub t0, x25, x24
-  mv x22, t0
-  mv x4, x22
+  mv x21, t0
+  mv x4, x21
   j merge
