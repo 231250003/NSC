@@ -113,7 +113,7 @@ public class LLVMIRToRiscv {
                 }
             }
             for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
-                if (first_line_num < firstUse.get(var)&&first_line_num!=block_first_num.get(LLVM.LLVMGetBasicBlockName(bb).getString())) firstUse.put(var, first_line_num);
+                if (first_line_num < firstUse.get(var)) firstUse.put(var, first_line_num);
             }
         }
         List<Interval> intervals = new ArrayList<>();
