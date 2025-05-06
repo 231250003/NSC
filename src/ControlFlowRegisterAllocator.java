@@ -28,11 +28,16 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
     public void processInstruction(int lineNumber, String instruction) {
         expireOldIntervals(lineNumber);
         Set<String> vars=LLVMIRToRiscv.extractVariables(instruction);
-//        for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
-//            String var = entry.getKey();
-//            Interval interval = entry.getValue();
-//            if(interval.start<=lineNumber&&interval.end>=lineNumber) vars.add(var);
-//        }
+        try {
+            for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
+                String var = entry.getKey();
+                Interval interval = entry.getValue();
+                if(interval.start<=lineNumber&&interval.end>=lineNumber) vars.add(var);
+            }
+        }
+        catch (Exception e){
+            vars=LLVMIRToRiscv.extractVariables(instruction);
+        }
         for (String var : vars) {
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
