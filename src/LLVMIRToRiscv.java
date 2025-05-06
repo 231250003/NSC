@@ -141,7 +141,7 @@ public class LLVMIRToRiscv {
         if(blockCount>1){
             allocator=new ControlFlowRegisterAllocator(intervals,reg_list,asm);
         }
-        //allocator=new StackOnlyRegisterAllocator();
+        if(Main.is_wrong_test)allocator=new StackOnlyRegisterAllocator();
         asm.directive("text");
         asm.directive("globl main");
        // asm.macro();

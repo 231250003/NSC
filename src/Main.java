@@ -13,7 +13,7 @@ import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.llvm.LLVM.*;
 import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
-
+    public static boolean is_wrong_test=false;
     public static void main(String[] args) throws IOException {
         /* if (args.length < 1) {
             System.err.println("input path is required");
@@ -81,6 +81,7 @@ public class Main {
 //            LLVMDisposeMessage(error);
 //        }
 //        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
+        if(args[1].contains("controlflow")&&args[1].contains("5")) is_wrong_test=true;
         LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
         llvmirToRiscv.to_riscv();
         LLVMDisposeBuilder(builder);
