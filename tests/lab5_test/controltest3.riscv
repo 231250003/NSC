@@ -88,15 +88,15 @@ if.else:
   mv x4, x31
   j merge
 merge13:
-  mv x23, x1
-  mv a0, x23
+  mv x3, x1
+  mv a0, x3
   addi sp, sp, 512
   li a7, 93
   ecall
 if.then19:
-  mv x25, x1
+  mv x8, x1
   li t2, 1
-  add t0, x25, t2
-  mv x3, t0
-  mv x1, x3
+  add t0, x8, t2
+  mv x19, t0
+  mv x1, x19
   j merge13
