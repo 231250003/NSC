@@ -67,6 +67,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
     }
     public  void processInstruction(int lineNumber, String instruction) {
         expireOldIntervals(lineNumber);
+        Map<String,Integer> used_reg_list=new HashMap<>();
         Set<String> vars=LLVMIRToRiscv.extractVariables(instruction);
         if(instruction.contains("=")) {
             String instruction2 = instruction.substring(0, instruction.indexOf("="));
@@ -81,9 +82,39 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             if (!freed_register.isEmpty()&&(!instruction.contains("br")) &&(!instruction.contains("ret"))) {
                 String reg = freed_register.remove(0);
                 varToLocation.put(var, reg);
-            } else {
+            } else if(instruction.contains("br")||instruction.contains("ret")){
                 varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
                 LLVMIRToRiscv.valueMap.put(var,varToLocation.get(var));
+            }
+            else{
+                int var_end_line=interval.end;
+                String spill_reg="";
+                String var_spill_name=var;
+                for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
+                    String key = entry.getKey();
+                    Interval value = entry.getValue();
+                    if(varToLocation.get(key)!=null&&(!varToLocation.get(key).contains("sp"))&&value.end>var_end_line&&used_reg_list.get(varToLocation.get(key))==null){
+                        spill_reg=varToLocation.get(key);
+                        var_end_line=value.end;
+                        var_spill_name=key;
+                    }
+                }
+                if(!spill_reg.isEmpty()){
+                    varToLocation.put(var_spill_name, String.format("%d(sp)", varOffset.get(var_spill_name)));
+                    LLVMIRToRiscv.valueMap.put(var_spill_name,varToLocation.get(var_spill_name));
+                    LLVMIRToRiscv.asm.instr("sw",spill_reg,varToLocation.get(var_spill_name));
+                    used_reg_list.put(spill_reg,1);
+                    if (varOffset.containsKey(var)) {
+                        LLVMIRToRiscv.asm.instr("lw", spill_reg, String.format("%d(sp)", varOffset.get(var)));
+                    }
+                    varToLocation.put(var,spill_reg);
+                    LLVMIRToRiscv.valueMap.put(var,spill_reg);
+                }
+                else
+                {
+                    varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
+                    LLVMIRToRiscv.valueMap.put(var,varToLocation.get(var));
+                }
             }
         }
     }
