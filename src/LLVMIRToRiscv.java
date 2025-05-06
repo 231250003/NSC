@@ -78,7 +78,7 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
                     String line2;
-                    if (line.contains("br") && line.contains(",")) line2 = line.substring(0, line.indexOf(","));
+                    if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
                     else line2=line;
                     Set<String> var=extractVariables(line2);
                     if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())>finalLineNum){
