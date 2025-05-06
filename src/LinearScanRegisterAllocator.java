@@ -1,3 +1,5 @@
+import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
+
 import java.util.*;
 
 class LinearScanRegisterAllocator implements RegisterAllocator {
@@ -17,7 +19,9 @@ class LinearScanRegisterAllocator implements RegisterAllocator {
         }
         this.asm=asmBuilder;
     }
-
+    public void preprocess_blobk(LLVMBasicBlockRef bb){
+        return;
+    }
     @Override
     public void processInstruction(int lineNumber, String instruction) {
         expireOldIntervals(lineNumber);

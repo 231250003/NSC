@@ -1,3 +1,5 @@
+import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +23,9 @@ public class StackOnlyRegisterAllocator implements RegisterAllocator {
     }
     @Override
     public void processInstruction(int lineNumber, String instruction){
+        return;
+    }
+    public void preprocess_blobk(LLVMBasicBlockRef bb){
         return;
     }
 }

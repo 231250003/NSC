@@ -5,7 +5,7 @@ import java.util.regex.*;
 public class LLVMIRToRiscv {
     String file_path;
     LLVMModuleRef module;
-    AsmBuilder asm = new AsmBuilder();
+    public static AsmBuilder asm = new AsmBuilder();
     //RegisterAllocator allocator = new StackOnlyRegisterAllocator();
     RegisterAllocator allocator;
     static Map<String, String> valueMap = new HashMap<>();  // IR value → stack addr or reg
@@ -74,53 +74,48 @@ public class LLVMIRToRiscv {
                 //System.out.println(lineNum);
             }
         }
-        for (LLVMBasicBlockRef bb : blocksWithBr) {
-            int finalLineNum = block_last_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
-            for (LLVMBasicBlockRef bb2 : blocksWithBr) {
-                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    String line = LLVM.LLVMPrintValueToString(inst).getString();
-                    String line2;
-                    if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
-                    else line2=line;
-                    Set<String> var=extractVariables(line2);
-                    if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())>finalLineNum){
-                        finalLineNum=block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
-//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-//                       System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
-//                       System.out.println("crzzzz");
-                    }
-                }
-            }
-            for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
-                if (finalLineNum > lastUse.get(var)) lastUse.put(var, finalLineNum);
-            }
-        }
-        try {
-            for (LLVMBasicBlockRef bb : blocksWithBr) {
-                int first_line_num = block_first_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
-                for (LLVMBasicBlockRef bb2 : blocksWithBr) {
-                    for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-                        String line = LLVM.LLVMPrintValueToString(inst).getString();
-                        String line2;
-                        if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
-                        else line2=line;
-                        Set<String> var=extractVariables(line2);
-                        if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())<first_line_num){
-                            first_line_num=block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
-//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
-//                       System.out.println("crzzzz");
-                        }
-                    }
-                }
-                for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
-                    if (first_line_num < firstUse.get(var)) firstUse.put(var, first_line_num);
-                }
-            }
-        }
-        catch (Exception e){
-
-        }
+//        for (LLVMBasicBlockRef bb : blocksWithBr) {
+//            int finalLineNum = block_last_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+//            for (LLVMBasicBlockRef bb2 : blocksWithBr) {
+//                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+//                    String line = LLVM.LLVMPrintValueToString(inst).getString();
+//                    String line2;
+//                    if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
+//                    else line2=line;
+//                    Set<String> var=extractVariables(line2);
+//                    if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())>finalLineNum){
+//                        finalLineNum=block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
+////                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+////                       System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
+////                       System.out.println("crzzzz");
+//                    }
+//                }
+//            }
+//            for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
+//                if (finalLineNum > lastUse.get(var)) lastUse.put(var, finalLineNum);
+//            }
+//        }
+//            for (LLVMBasicBlockRef bb : blocksWithBr) {
+//                int first_line_num = block_first_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+//                for (LLVMBasicBlockRef bb2 : blocksWithBr) {
+//                    for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+//                        String line = LLVM.LLVMPrintValueToString(inst).getString();
+//                        String line2;
+//                        if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
+//                        else line2=line;
+//                        Set<String> var=extractVariables(line2);
+//                        if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())<first_line_num){
+//                            first_line_num=block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
+////                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+////                        System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
+////                       System.out.println("crzzzz");
+//                        }
+//                    }
+//                }
+//                for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
+//                    if (first_line_num < firstUse.get(var)) firstUse.put(var, first_line_num);
+//                }
+//            }
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var),used_num.get(var)));
@@ -139,7 +134,8 @@ public class LLVMIRToRiscv {
             blockCount++;
         }
         if(blockCount>1){
-            allocator=new ControlFlowRegisterAllocator(intervals,reg_list,asm);
+            allocator=new NewControlFlowRegisterAllocator();
+            NewControlFlowRegisterAllocator.init(module);
         }
         asm.directive("text");
         asm.directive("globl main");
@@ -153,14 +149,17 @@ public class LLVMIRToRiscv {
             int stackSize = 2044;
             asm.instr("addi", "sp", "sp", "-" + stackSize);
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-               // System.out.println("crzzzzzzzz");
+                if(blockCount>1) {
+                    lineNum=0;
+                    NewControlFlowRegisterAllocator.preprocess_block(bb);
+                }
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(label.isEmpty() ? "mainEntry" : label);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-                   allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
+                    allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
                     lineNum++;
                     if (opcode == LLVM.LLVMAlloca) {
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
@@ -326,6 +325,7 @@ public class LLVMIRToRiscv {
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
+                if(blockCount>1) NewControlFlowRegisterAllocator.post_process_block();
             }
         }
         asm.writeToFile(file_path);

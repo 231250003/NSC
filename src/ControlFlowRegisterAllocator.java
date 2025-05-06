@@ -1,3 +1,5 @@
+import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
+
 import java.util.*;
 
 class ControlFlowRegisterAllocator implements RegisterAllocator {
@@ -24,7 +26,6 @@ class ControlFlowRegisterAllocator implements RegisterAllocator {
 //            System.out.println(sortedEntries.get(i).getValue().used_num);
 //        }
     }
-
     public void processInstruction(int lineNumber, String instruction) {
         expireOldIntervals(lineNumber);
         Set<String> vars=LLVMIRToRiscv.extractVariables(instruction);
