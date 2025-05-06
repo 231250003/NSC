@@ -106,9 +106,9 @@ public class LLVMIRToRiscv {
                     Set<String> var=extractVariables(line2);
                     if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())<first_line_num){
                         first_line_num=block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
-                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-                        System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
-                       System.out.println("crzzzz");
+//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
+//                       System.out.println("crzzzz");
                     }
                 }
             }
