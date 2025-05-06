@@ -72,25 +72,19 @@ public class LLVMIRToRiscv {
                 //System.out.println(lineNum);
             }
         }
-        System.out.println(lineNum);
         for (LLVMBasicBlockRef bb : blocksWithBr) {
-            int finalLineNum=block_last_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
-            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-                String line = LLVM.LLVMPrintValueToString(inst).getString();
-                if (line.contains("br") && !line.contains(",")) {
-                    for(String var : extractVariables(line)){
-                        if(finalLineNum<block_last_num.get(var)) finalLineNum=block_last_num.get(var);
-                    }
-                }
-                else if (line.contains("br") && line.contains(",")) {
-                    line = line.substring(line.indexOf(",")+1);
-                    for(String var : extractVariables(line)){
-                        if(finalLineNum<block_last_num.get(var)) finalLineNum=block_last_num.get(var);
+            int finalLineNum = block_last_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+            for (LLVMBasicBlockRef bb2 : blocksWithBr) {
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    String line = LLVM.LLVMPrintValueToString(inst).getString();
+                    if(line.contains("br")&&line.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())>finalLineNum){
+                        finalLineNum=block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
+                        System.out.println("crzzzz");
                     }
                 }
             }
             for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
-                if(finalLineNum>lastUse.get(var)) lastUse.put(var, finalLineNum);
+                if (finalLineNum > lastUse.get(var)) lastUse.put(var, finalLineNum);
             }
         }
         List<Interval> intervals = new ArrayList<>();
@@ -301,7 +295,6 @@ public class LLVMIRToRiscv {
                 }
             }
         }
-        System.out.println(lineNum);
         asm.writeToFile(file_path);
     }
 
