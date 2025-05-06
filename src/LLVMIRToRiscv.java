@@ -146,7 +146,7 @@ public class LLVMIRToRiscv {
             if (!"main".equals(funcName)) continue;
             asm.label("main");
             // Prologue
-            int stackSize = 512;
+            int stackSize = 1024;
             asm.instr("addi", "sp", "sp", "-" + stackSize);
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                // System.out.println("crzzzzzzzz");
