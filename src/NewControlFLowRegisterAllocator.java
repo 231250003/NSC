@@ -90,6 +90,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 int var_end_line=interval.end;
                 String spill_reg="";
                 String var_spill_name=var;
+                System.out.println("crzzzz");
                 for (Map.Entry<String, Interval> entry : varToInterval.entrySet()) {
                     String key = entry.getKey();
                     Interval value = entry.getValue();
@@ -98,7 +99,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                         var_end_line=value.end;
                         var_spill_name=key;
                     }
-                    System.out.println("crzzzz");
                 }
                 if(!spill_reg.isEmpty()){
                     varToLocation.put(var_spill_name, String.format("%d(sp)", varOffset.get(var_spill_name)));
