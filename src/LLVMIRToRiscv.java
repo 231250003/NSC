@@ -327,8 +327,9 @@ public class LLVMIRToRiscv {
                     }
                 }
                 if(blockCount>1) NewControlFlowRegisterAllocator.post_process_block();
+                System.out.println(lineNum);
+                System.out.println("ccrzzz");
             }
-            System.out.println(lineNum);
         }
         asm.writeToFile(file_path);
     }
