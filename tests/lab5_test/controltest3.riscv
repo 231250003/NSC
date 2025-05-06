@@ -8,7 +8,7 @@ y:
   .text
   .globl main
 main:
-  addi sp, sp, -2048
+  addi sp, sp, -1536
 mainEntry:
   la t0, x
   lw t0, 0(t0)
@@ -90,7 +90,7 @@ if.else:
 merge13:
   mv x23, x1
   mv a0, x23
-  addi sp, sp, 2048
+  addi sp, sp, 1536
   li a7, 93
   ecall
 if.then19:
