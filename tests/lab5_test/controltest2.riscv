@@ -43,6 +43,7 @@ mainEntry:
   bnez x16, if.then
   j merge
 merge:
+  j while.cond
 if.then:
   lw t2, 8(sp)
   mv x3, t2
@@ -59,6 +60,7 @@ if.then:
   bnez x9, if.then9
   j merge5
 merge5:
+  j merge
 if.then9:
   li t2, 2
   mv a0, t2
@@ -66,6 +68,7 @@ if.then9:
   li a7, 93
   ecall
 cur:
+  j while.cond30
 while.stmt:
   lw t0, 8(sp)
   mv x1, t0
@@ -93,7 +96,9 @@ while.cond:
   bnez t0, while.stmt
   j cur
 merge12:
+  j while.cond
 if.then16:
+  j cur
 if.else:
   lw t1, 8(sp)
   mv x3, t1
@@ -110,6 +115,7 @@ if.else:
   bnez x9, if.then22
   j merge18
 merge18:
+  j merge12
 if.then22:
   lw t1, 16(sp)
   mv x3, t1
@@ -125,6 +131,7 @@ if.then22:
   mv x10, t0
   sw x10, 8(sp)
   sw x8, 8(sp)
+  j merge18
 cur28:
   lw t1, 8(sp)
   mv x4, t1
@@ -135,6 +142,7 @@ cur28:
   li a7, 93
   ecall
 while.stmt29:
+  j while.cond39
 while.cond30:
   lw t2, 16(sp)
   mv x1, t2
@@ -154,6 +162,7 @@ while.cond30:
   bnez x12, while.stmt29
   j cur28
 cur37:
+  j while.cond55
 while.stmt38:
   lw t1, 8(sp)
   mv x1, t1
@@ -183,6 +192,7 @@ while.cond39:
   bnez x9, while.stmt38
   j cur37
 merge44:
+  j while.cond39
 if.then48:
   lw t1, 8(sp)
   mv x3, t1
@@ -191,7 +201,9 @@ if.then48:
   mv x4, t0
   sw x4, 8(sp)
   sw x1, 8(sp)
+  j cur37
 if.else49:
+  j cur37
 cur53:
   lw t1, 16(sp)
   mv x3, t1
@@ -228,6 +240,7 @@ while.stmt54:
   li t0, 30
   mv x1, t0
   sw x1, 240(sp)
+  j while.cond63
 while.cond55:
   lw t1, 16(sp)
   mv x1, t1
@@ -271,6 +284,7 @@ while.cond63:
   bnez t1, while.stmt62
   j cur61
 merge64:
+  j cur61
 if.then68:
   lw t2, 240(sp)
   mv x1, t2
@@ -285,7 +299,9 @@ if.else69:
   sub t2, x1, t1
   mv x4, t2
   sw x4, 240(sp)
+  j merge64
 merge76:
+  j while.cond55
 if.then80:
   lw t0, 16(sp)
   mv x3, t0
@@ -294,6 +310,7 @@ if.then80:
   mv x4, t2
   sw x4, 16(sp)
   sw x1, 16(sp)
+  j while.cond55
 if.else81:
   lw t0, 16(sp)
   mv x1, t0
@@ -309,6 +326,7 @@ if.else81:
   bnez x9, if.then89
   j if.else90
 merge85:
+  j merge76
 if.then89:
   lw t0, 16(sp)
   mv x3, t0
@@ -317,6 +335,7 @@ if.then89:
   mv x4, t2
   sw x4, 16(sp)
   sw x1, 16(sp)
+  j merge85
 if.else90:
   lw t0, 16(sp)
   mv x3, t0
@@ -332,6 +351,7 @@ if.else90:
   bnez x9, if.then98
   j if.else99
 merge94:
+  j merge85
 if.then98:
   lw t0, 16(sp)
   mv x3, t0
@@ -340,6 +360,7 @@ if.then98:
   mv x4, t2
   sw x4, 16(sp)
   sw x1, 16(sp)
+  j merge94
 if.else99:
   li t0, 10
   mv a0, t0
@@ -347,6 +368,7 @@ if.else99:
   li a7, 93
   ecall
 merge107:
+  j while.cond30
 if.then113:
   lw t1, 8(sp)
   mv x3, t1
@@ -355,3 +377,4 @@ if.then113:
   mv x4, t0
   sw x4, 8(sp)
   sw x1, 8(sp)
+  j merge107
