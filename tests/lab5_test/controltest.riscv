@@ -26,6 +26,7 @@ cur:
   mv x4, t2
   mv x1, x4
   mv x8, x1
+  sw x8, 28(sp)
   sw x1, 24(sp)
   lw t0, 28(sp)
   mv a0, t0
@@ -45,6 +46,7 @@ while.stmt:
   xor t0, x10, t2
   snez t0, t0
   mv x11, t0
+  sw x11, 48(sp)
   lw t1, 48(sp)
   bnez t1, if.then
   j if.else
@@ -61,6 +63,7 @@ while.cond:
   xor t1, x8, t0
   snez t1, t1
   mv x9, t1
+  sw x9, 64(sp)
   lw t2, 64(sp)
   bnez t2, while.stmt
   j cur
