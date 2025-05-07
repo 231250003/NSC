@@ -172,10 +172,6 @@ public class LLVMIRToRiscv {
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
                         String valReg = evaluate(val);
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
-                        if(valReg.contains("x1")&&addr.contains("16")) {
-                            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                            System.out.println("wrong instruction");
-                        }
                         if(valReg.contains("x9")&&addr.contains("16")) {
                             System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                             System.out.println("crzzzzz");

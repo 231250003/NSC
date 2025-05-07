@@ -237,6 +237,9 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
            if(changed_variable.contains(key)&& (!value.contains("sp"))&&live_variable.contains(key)){
                System.out.println(varToLocation.get(key));
                LLVMIRToRiscv.valueMap.put(key,String.format("%d(sp)", varOffset.get(key)));
+               if(varToLocation.get(key).contains("x1")&&varOffset.get(key)==16) {
+                   System.out.println("wrong instruction");
+               }
                LLVMIRToRiscv.asm.instr("sw",varToLocation.get(key),String.format("%d(sp)", varOffset.get(key)));
            }
         }
