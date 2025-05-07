@@ -23,7 +23,9 @@ int main() {
               }
              else break;
         }
+        int cnt=0;
         while(b>35){
+            if(cnt==30) break;
             {
                 int b=30;
                 {
@@ -41,6 +43,8 @@ int main() {
             if(b+a>40) b=b+10;
             else if(b>30) b=b-1;
             else return 10;
+            cnt=cnt+1;
+
             }
         b=b-3;
         a=a+1;
