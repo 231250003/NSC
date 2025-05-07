@@ -47,6 +47,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                         for (String var : LLVMIRToRiscv.extractVariables(line2)) {
                             Set<String> variables=variable_changed_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
                             variables.add(var);
+                            System.out.println("crzzz");
                             break;
                         }
                     }
