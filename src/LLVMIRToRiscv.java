@@ -28,54 +28,37 @@ public class LLVMIRToRiscv {
         Map<String, Integer> firstUse = new HashMap<>();
         Map<String, Integer> lastUse = new HashMap<>();
         Map<String,Integer> used_num=new HashMap<>();
-        if(!Main.is_run_time_error_test) {
+        Set<LLVMBasicBlockRef> blocksWithBr = new HashSet<>();
+        Map<LLVMBasicBlockRef, Set<String>> blockVars = new HashMap<>();
+        Map<String, Integer> block_last_num = new HashMap<>();
+        Map<String, Integer> block_first_num = new HashMap<>();
             for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
                 for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                    Set<String> varsInBlock = new HashSet<>();
+                    block_first_num.put(LLVM.LLVMGetBasicBlockName(bb).getString(), lineNum);
                     for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                         String line = LLVM.LLVMPrintValueToString(inst).getString();
-                        if (line.contains("br") && (!line.contains(","))) continue;
-                        else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
+                        if (line.contains("br")) {
+                            blocksWithBr.add(bb);
+                        }
+                        if (line.contains("br") && !line.contains(",")) {
+                            lineNum++;
+                            continue;
+                        } else if (line.contains("br") && line.contains(","))
+                            line = line.substring(0, line.indexOf(","));
                         for (String var : extractVariables(line)) {
                             firstUse.putIfAbsent(var, lineNum);
                             lastUse.put(var, lineNum);
                             used_num.put(var, used_num.getOrDefault(var, 0) + 1);
+                            varsInBlock.add(var);
                         }
                         lineNum++;
                     }
+                    blockVars.put(bb, varsInBlock);
+                    block_last_num.put(LLVM.LLVMGetBasicBlockName(bb).getString(), lineNum);
+                    //System.out.println(lineNum);
                 }
             }
-        }
-        Set<LLVMBasicBlockRef> blocksWithBr = new HashSet<>();
-        Map<LLVMBasicBlockRef, Set<String>> blockVars = new HashMap<>();
-        Map<String,Integer> block_last_num = new HashMap<>();
-        Map<String,Integer> block_first_num = new HashMap<>();
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
-            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                Set<String> varsInBlock = new HashSet<>();
-                block_first_num.put(LLVM.LLVMGetBasicBlockName(bb).getString(),lineNum);
-                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    String line = LLVM.LLVMPrintValueToString(inst).getString();
-                    if (line.contains("br")) {
-                        blocksWithBr.add(bb);
-                    }
-                    if (line.contains("br") && !line.contains(",")) {
-                        lineNum++;
-                        continue;
-                    }
-                    else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
-                    for (String var : extractVariables(line)) {
-                        firstUse.putIfAbsent(var, lineNum);
-                        lastUse.put(var, lineNum);
-                        used_num.put(var, used_num.getOrDefault(var, 0) + 1);
-                        varsInBlock.add(var);
-                    }
-                    lineNum++;
-                }
-                blockVars.put(bb, varsInBlock);
-                block_last_num.put(LLVM.LLVMGetBasicBlockName(bb).getString(),lineNum);
-                //System.out.println(lineNum);
-            }
-        }
         if(!Main.is_run_time_error_test){
             for (LLVMBasicBlockRef bb : blocksWithBr) {
                 int finalLineNum = block_last_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
