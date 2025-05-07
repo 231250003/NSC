@@ -2,7 +2,8 @@ int x = 56;
 int y = 98;
 
 int main() {
-   
+    int a = x;
+    int b = y;
         int cnt=0;
         while(b>35){
             if(cnt==30) break;
