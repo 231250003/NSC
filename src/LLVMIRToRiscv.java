@@ -322,7 +322,7 @@ public class LLVMIRToRiscv {
 //                            System.out.println(trueLabel);
 //                            System.out.println(falseLabel);
                             asm.bnez(condReg, trueLabel);
-                            NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
+                            //NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                             asm.j(falseLabel);
                         }
                     }
