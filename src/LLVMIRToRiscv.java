@@ -165,7 +165,6 @@ public class LLVMIRToRiscv {
                     allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
                     lineNum++;
                     if (opcode == LLVM.LLVMAlloca) {
-                        System.out.println(LLVM.LLVMGetValueName(inst).getString());
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     } else if (opcode == LLVM.LLVMStore) {
