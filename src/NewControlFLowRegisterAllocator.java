@@ -34,7 +34,10 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(),bb);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
-                    if (line.contains("br")||line.contains("alloca")) continue;
+                    if (line.contains("br")||line.contains("alloca")) {
+                        if(line.contains("alloca")) System.out.println("rzzzc");
+                        continue;
+                    }
                     for (String var : LLVMIRToRiscv.extractVariables(line)) {
                         if(!varOffset.containsKey(var)){
                             nextOffset += 4;
