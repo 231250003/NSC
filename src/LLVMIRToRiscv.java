@@ -158,13 +158,7 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    String condReg="";
                     if(blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))){
-                        int numOperands = LLVM.LLVMGetNumOperands(inst);
-                        if(numOperands==3){
-                            LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
-                            condReg = evaluate(cond);
-                        }
                         NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                     }
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
@@ -319,7 +313,7 @@ public class LLVMIRToRiscv {
                             LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
                             LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
                             LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
-                            if(condReg.isEmpty()) condReg = evaluate(cond);
+                            String condReg = evaluate(cond);
                             String trueLabel = LLVM.LLVMGetValueName(ifTrue).getString();
                             String falseLabel = LLVM.LLVMGetValueName(ifFalse).getString();
 //                            System.out.println( LLVM.LLVMGetValueName(cond).getString());
