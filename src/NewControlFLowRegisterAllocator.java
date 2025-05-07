@@ -70,7 +70,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         }
     }
     public static boolean is_live_variable(LLVMBasicBlockRef bb,String var,boolean is_detecting_block){
-        if(var.equals("b")&&LLVM.LLVMGetBasicBlockName(bb).getString().equals("while.cond")) System.out.println("crzzzzssdsds");
+        if(var.equals("b")&&LLVM.LLVMGetBasicBlockName(bb).getString().equals("mainEntry")) System.out.println("crzzzzssdsds");
         if(visited_block.contains((LLVM.LLVMGetBasicBlockName(bb).getString()))){
             if(variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) return true;
             else return false;
@@ -121,7 +121,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 if(line.contains("="))line2 = line.substring(0, line.indexOf("="));
                 else line2=line.substring(line.indexOf(",")+1);
                 for (String var : LLVMIRToRiscv.extractVariables(line2)) {
-                    if(var.equals("b")&&LLVM.LLVMGetBasicBlockName(bb).getString().equals("mainEntry")) System.out.println("-------");
                     if(is_live_variable(bb,var,true)) {
                         System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
                         if(var.equals("b")) System.out.println("crzz1");
