@@ -233,7 +233,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             live_variable = new HashSet<>();
             return;
         }
-        for(String x:live_variable){
+        for(String x:changed_variable){
             System.out.println(x);
         }
         System.out.println("------------");
