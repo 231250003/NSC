@@ -233,6 +233,9 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             live_variable = new HashSet<>();
             return;
         }
+        for(String x:live_variable){
+            System.out.println(x);
+        }
         for (Map.Entry<String, String> entry : varToLocation.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
