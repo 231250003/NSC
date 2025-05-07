@@ -27,7 +27,6 @@ mainEntry:
   mv t1, x10
   mv x11, t1
   mv x12, x4
-  sw x4, 16(sp)
   add t2, x11, x12
   mv x13, t2
   li t0, 10
@@ -134,7 +133,6 @@ cur28:
   mv x4, t1
   mv x1, x4
   mv x8, x1
-  sw x1, 128(sp)
   mv a0, x8
   addi sp, sp, 2044
   li a7, 93
@@ -234,7 +232,6 @@ cur53:
 while.stmt54:
   li t0, 30
   mv x1, t0
-  sw x1, 240(sp)
   j while.cond63
 while.cond55:
   lw t1, 16(sp)
