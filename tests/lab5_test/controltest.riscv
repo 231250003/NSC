@@ -27,7 +27,6 @@ cur:
   mv x1, x4
   mv x8, x1
   sw x1, 24(sp)
-  sw x8, 28(sp)
   mv a0, x8
   addi sp, sp, 2044
   li a7, 93
@@ -46,7 +45,6 @@ while.stmt:
   snez t2, t2
   mv x11, t2
   bnez x11, if.then
-  sw x11, 48(sp)
   j if.else
 while.cond:
   lw t0, 16(sp)
@@ -62,7 +60,6 @@ while.cond:
   snez t2, t2
   mv x9, t2
   bnez x9, while.stmt
-  sw x9, 64(sp)
   j cur
 merge:
   j while.cond
