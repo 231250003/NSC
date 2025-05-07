@@ -13,7 +13,7 @@ import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.llvm.LLVM.*;
 import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
-    public static boolean is_run_time_error_test=true;
+    public static boolean is_run_time_error_test=false;
     public static void main(String[] args) throws IOException {
         /* if (args.length < 1) {
             System.err.println("input path is required");
@@ -76,13 +76,13 @@ public class Main {
             }
             func = LLVMGetNextFunction(func);
         }
-        BytePointer error = new BytePointer((Pointer) null);
-        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
-            LLVMDisposeMessage(error);
-        }
-        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
-        if(args[0].contains("control")&&args[0].contains("5")) is_run_time_error_test=true;
-      //  LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
+//        BytePointer error = new BytePointer((Pointer) null);
+//        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
+//            LLVMDisposeMessage(error);
+//        }
+//        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
+//        if(args[0].contains("control")&&args[0].contains("5")) is_run_time_error_test=true;
+        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
         llvmirToRiscv.to_riscv();
         LLVMDisposeBuilder(builder);
         LLVMDisposeModule(module);
