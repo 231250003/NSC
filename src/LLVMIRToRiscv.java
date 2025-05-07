@@ -158,9 +158,9 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    if(blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))){
-                        NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
-                    }
+//                    if(blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))){
+//                        NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
+//                    }
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
                     lineNum++;
@@ -249,6 +249,7 @@ public class LLVMIRToRiscv {
                     } else if (opcode == LLVM.LLVMRet) {
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
                         String reg = evaluate(retVal);
+                        if(blockCount>1) NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                         asm.mv("a0", reg);
                         asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
                         asm.li("a7", 93);  // syscall exit
@@ -307,6 +308,7 @@ public class LLVMIRToRiscv {
                         if (numOperands == 1) {
                             LLVMValueRef dest = LLVM.LLVMGetOperand(inst, 0);
                             String loop_label = LLVM.LLVMGetValueName(dest).getString();
+                            NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                             asm.j(loop_label);
                         } else if (numOperands == 3) {
                             //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
@@ -320,6 +322,7 @@ public class LLVMIRToRiscv {
 //                            System.out.println(trueLabel);
 //                            System.out.println(falseLabel);
                             asm.bnez(condReg, trueLabel);
+                            NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                             asm.j(falseLabel);
                         }
                     }
