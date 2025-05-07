@@ -73,6 +73,7 @@ mainEntry:
   lw t1, 0(t1)
   mv x8, t1
   mv x4, x8
+  sw x4, 16(sp)
   j while.cond
 cur:
   lw t2, 8(sp)
@@ -229,7 +230,6 @@ merge13:
   add t2, x27, t1
   mv x29, t2
   sw x29, 16(sp)
-  sw x28, 16(sp)
   la t0, c
   lw t0, 0(t0)
   mv x30, t0
@@ -452,7 +452,6 @@ merge13:
   mv x24, x27
   lw t1, 8(sp)
   mv x29, t1
-  sw x31, 8(sp)
   mv x28, x1
   add t2, x29, x28
   mv x30, t2
