@@ -40,7 +40,6 @@ mainEntry:
   xor t1, x15, t0
   snez t1, t1
   mv x16, t1
-  sw x16, 48(sp)
   lw t2, 48(sp)
   bnez t2, if.then
   j merge
@@ -59,7 +58,6 @@ if.then:
   xor t2, x8, t1
   snez t2, t2
   mv x9, t2
-  sw x9, 64(sp)
   lw t0, 64(sp)
   bnez t0, if.then9
   j merge5
@@ -92,7 +90,6 @@ while.stmt:
   xor t1, x10, t0
   snez t1, t1
   mv x11, t1
-  sw x11, 88(sp)
   lw t2, 88(sp)
   bnez t2, if.then16
   j if.else
@@ -117,7 +114,6 @@ if.else:
   xor t0, x8, t2
   snez t0, t0
   mv x9, t0
-  sw x9, 104(sp)
   lw t1, 104(sp)
   bnez t1, if.then22
   j merge18
@@ -142,7 +138,7 @@ cur28:
   mv x4, t2
   mv x1, x4
   mv x8, x1
-  sw x8, 132(sp)
+  sw x1, 128(sp)
   sw x1, 128(sp)
   lw t0, 132(sp)
   mv a0, t0
@@ -167,7 +163,6 @@ while.cond30:
   xor t2, x11, t1
   snez t2, t2
   mv x12, t2
-  sw x12, 156(sp)
   lw t0, 156(sp)
   bnez t0, while.stmt29
   j cur28
@@ -185,7 +180,6 @@ while.stmt38:
   xor t0, x8, t2
   snez t0, t0
   mv x9, t0
-  sw x9, 172(sp)
   lw t1, 172(sp)
   bnez t1, if.then48
   j if.else49
@@ -201,7 +195,6 @@ while.cond39:
   xor t1, x8, t0
   snez t1, t1
   mv x9, t1
-  sw x9, 188(sp)
   lw t2, 188(sp)
   bnez t2, while.stmt38
   j cur37
@@ -245,13 +238,13 @@ cur53:
   xor t1, x15, t0
   snez t1, t1
   mv x16, t1
-  sw x16, 236(sp)
   lw t2, 236(sp)
   bnez t2, if.then113
   j merge107
 while.stmt54:
   li t0, 30
   mv x1, t0
+  sw x1, 240(sp)
   sw x1, 240(sp)
   j while.cond63
 while.cond55:
@@ -266,7 +259,6 @@ while.cond55:
   xor t0, x8, t2
   snez t0, t0
   mv x9, t0
-  sw x9, 256(sp)
   lw t1, 256(sp)
   bnez t1, while.stmt54
   j cur53
@@ -276,7 +268,6 @@ cur61:
   li t0, 10
   sub t1, x3, t0
   mv x4, t1
-  sw x4, 264(sp)
   lw t2, 264(sp)
   mv a0, t2
   addi sp, sp, 2044
@@ -294,7 +285,6 @@ while.stmt62:
   xor t2, x8, t1
   snez t2, t2
   mv x9, t2
-  sw x9, 280(sp)
   lw t0, 280(sp)
   bnez t0, if.then68
   j if.else69
@@ -307,7 +297,6 @@ merge64:
 if.then68:
   lw t2, 240(sp)
   mv x1, t2
-  sw x1, 284(sp)
   lw t0, 284(sp)
   mv a0, t0
   addi sp, sp, 2044
@@ -343,7 +332,6 @@ if.else81:
   xor t0, x8, t2
   snez t0, t0
   mv x9, t0
-  sw x9, 316(sp)
   lw t1, 316(sp)
   bnez t1, if.then89
   j if.else90
@@ -369,7 +357,6 @@ if.else90:
   xor t1, x8, t0
   snez t1, t1
   mv x9, t1
-  sw x9, 340(sp)
   lw t2, 340(sp)
   bnez t2, if.then98
   j if.else99
