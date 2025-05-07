@@ -15,15 +15,6 @@ int main() {
             a=a+1;
          }
     }
-    while (b+a>20) {
-        while(a>10){
-            if(a>40){
-             a=a-5;
-                        break;
-              }
-             else break;
-        }
-        }
         int cnt=0;
         while(b>35){
             if(cnt==30) break;
