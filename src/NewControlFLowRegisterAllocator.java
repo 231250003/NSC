@@ -195,16 +195,16 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         }
     }
     public static void post_process_block(String inst){
-        if((inst.contains("br")&&inst.contains(","))||inst.contains("ret")){
-            if(inst.contains("br")&&inst.contains(","))inst = inst.substring(0, inst.indexOf(","));
-            for (String var : LLVMIRToRiscv.extractVariables(inst)){
-                if(varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))){
-                    LLVMIRToRiscv.valueMap.put(var,String.format("%d(sp)", varOffset.get(var)));
-                    LLVMIRToRiscv.asm.instr("sw",varToLocation.get(var),String.format("%d(sp)", varOffset.get(var)));
-                    break;
-                }
-            }
-        }
+//        if((inst.contains("br")&&inst.contains(","))||inst.contains("ret")){
+//            if(inst.contains("br")&&inst.contains(","))inst = inst.substring(0, inst.indexOf(","));
+//            for (String var : LLVMIRToRiscv.extractVariables(inst)){
+//                if(varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))){
+//                    LLVMIRToRiscv.valueMap.put(var,String.format("%d(sp)", varOffset.get(var)));
+//                    LLVMIRToRiscv.asm.instr("sw",varToLocation.get(var),String.format("%d(sp)", varOffset.get(var)));
+//                    break;
+//                }
+//            }
+//        }
         for (Map.Entry<String, String> entry : varToLocation.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
@@ -220,10 +220,12 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 LLVMIRToRiscv.valueMap.put(key,String.format("%d(sp)", varOffset.get(key)));
             }
         }
-        varToLocation=new HashMap<>();
-        changed_variable=new HashSet<>();
-        freed_register=new ArrayList<>(total_registers);
-        live_variable=new HashSet<>();
+        if(inst.isEmpty()) {
+            varToLocation = new HashMap<>();
+            changed_variable = new HashSet<>();
+            freed_register = new ArrayList<>(total_registers);
+            live_variable = new HashSet<>();
+        }
     }
     @Override
     public String allocate(String varName) {
