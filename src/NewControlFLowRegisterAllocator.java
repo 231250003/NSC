@@ -144,6 +144,13 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 break;
             }
         }
+        else if(instruction.contains("store")&&instruction.contains("i32* %")) {
+            String instruction2 = instruction.substring(instruction.indexOf(",")+1);
+            for (String var : LLVMIRToRiscv.extractVariables(instruction2)) {
+                changed_variable.add(var);
+                break;
+            }
+        }
         for (String var : vars) {
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
