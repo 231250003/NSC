@@ -122,7 +122,7 @@ public class LLVMIRToRiscv {
         }
         List<String> reg_list=new ArrayList<>();
         for(int i=0;i<32;i++){
-            if(i!=0&&i!=2&&i!=5&&i!=6&&i!=7&&i%2!=0&&i%3!=0) reg_list.add("x"+i);
+            if(i!=0&&i!=2&&i!=5&&i!=6&&i!=7) reg_list.add("x"+i);
             //if(i==10&&i==11&&i==12&&i==15&&i==16) reg_list.add("x"+i);
         }
         allocator = new LinearScanRegisterAllocator(intervals, reg_list,asm);
@@ -254,6 +254,7 @@ public class LLVMIRToRiscv {
                         String reg = evaluate(retVal);
                         if(blockCount>1) NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                         asm.mv("a0", reg);
+                        asm.mv("a0","x0");
                         asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
                         asm.li("a7", 93);  // syscall exit
                         asm.instr("ecall");
