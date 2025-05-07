@@ -158,7 +158,6 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
-                  //  System.out.println(LLVM.LLVMGetValueName(inst).getString());
 //                    if(blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))){
 //                        NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
 //                    }
@@ -166,6 +165,7 @@ public class LLVMIRToRiscv {
                     allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
                     lineNum++;
                     if (opcode == LLVM.LLVMAlloca) {
+                        System.out.println(LLVM.LLVMGetValueName(inst).getString());
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     } else if (opcode == LLVM.LLVMStore) {
@@ -173,14 +173,14 @@ public class LLVMIRToRiscv {
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
                         String valReg = evaluate(val);
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
-                        if(valReg.contains("x1")&&addr.contains("16")) {
-                            System.out.println(LLVM.LLVMGetValueName(inst).getString());
-                            System.out.println("crzzzzz");
-                        }
-                        if(valReg.contains("x9")&&addr.contains("16")) {
-                            System.out.println(LLVM.LLVMGetValueName(inst).getString());
-                            System.out.println("crzzzzz");
-                        }
+//                        if(valReg.contains("x1")&&addr.contains("16")) {
+//                            System.out.println(LLVM.LLVMGetValueName(inst).getString());
+//                            System.out.println("crzzzzz");
+//                        }
+//                        if(valReg.contains("x9")&&addr.contains("16")) {
+//                            System.out.println(LLVM.LLVMGetValueName(inst).getString());
+//                            System.out.println("crzzzzz");
+//                        }
                         if(addr!=null){
                             if(addr.contains("sp")) asm.instr("sw", valReg, addr);
                             else asm.instr("mv",addr,valReg);

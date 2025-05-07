@@ -106,7 +106,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         int lineNum=0;
         for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
             String line = LLVM.LLVMPrintValueToString(inst).getString();
-            System.out.println(line);
             if (line.contains("br") && !line.contains(",")) {
                 lineNum++;
                 continue;
@@ -132,7 +131,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 }
             }
             lineNum++;
-            System.out.println(line);
         }
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
