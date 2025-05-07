@@ -115,8 +115,10 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 lastUse.put(var, lineNum);
                 used_num.put(var, used_num.getOrDefault(var, 0) + 1);
             }
-            if(line.contains("=")){
-                String line2 = line.substring(0, line.indexOf("="));
+            if(line.contains("=") || (line.contains("store")&&line.contains("i32* %"))){
+                String line2;
+                if(line.contains("="))line2 = line.substring(0, line.indexOf("="));
+                else line2=line.substring(line.indexOf(",")+1);
                 for (String var : LLVMIRToRiscv.extractVariables(line2)) {
                     if(is_live_variable(bb,var,true)) {
                         live_variable.add(var);
@@ -136,9 +138,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         }
     }
     public  void processInstruction(int lineNumber, String instruction) {
-        if(variable_use_in_block.get("while.cond").contains("b")){
-            System.out.println("crzzzzzzz");
-        }
         expireOldIntervals(lineNumber);
         Map<String,Integer> used_reg_list=new HashMap<>();
         Set<String> vars=LLVMIRToRiscv.extractVariables(instruction);
