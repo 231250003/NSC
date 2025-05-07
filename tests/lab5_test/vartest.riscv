@@ -21,30 +21,30 @@ mainEntry:
   mv x1, t0
   li t1, 1
   add t2, x1, t1
-  mv x11, t2
+  mv x3, t2
   la t0, cccc
   lw t0, 0(t0)
-  mv x13, t0
+  mv x4, t0
   li t1, 0
-  xor t2, x13, t1
+  xor t2, x4, t1
   seqz t2, t2
-  mv x17, t2
-  mv t0, x17
-  mv x19, t0
+  mv x8, t2
+  mv t0, x8
+  mv x9, t0
   li t1, 0
-  xor t2, x19, t1
+  xor t2, x9, t1
   seqz t2, t2
-  mv x23, t2
-  mv t0, x23
-  mv x25, t0
-  add t1, x11, x25
-  mv x29, t1
+  mv x10, t2
+  mv t0, x10
+  mv x11, t0
+  add t1, x3, x11
+  mv x12, t1
   la t2, b
-  sw x29, 0(t2)
+  sw x12, 0(t2)
   la t0, b
   lw t0, 0(t0)
-  mv x31, t0
-  mv a0, x31
+  mv x13, t0
+  mv a0, x13
   addi sp, sp, 2044
   li a7, 93
   ecall

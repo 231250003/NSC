@@ -202,7 +202,10 @@ public class LLVMIRToRiscv {
                             String reg = freshReg();
                             String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                             asm.instr("lw",reg,addr);
-                            if(lval_addr.contains("sp")) asm.instr("sw",reg,lval_addr);
+                            if(lval_addr.contains("sp")){
+                                asm.instr("sw",reg,lval_addr);
+                                if(blockCount>1) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                            }
                             else asm.instr("mv",lval_addr,reg);
                             valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
 
@@ -210,7 +213,10 @@ public class LLVMIRToRiscv {
                         }
                         else{
                             String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                            if(lval_addr.contains("sp")) asm.instr("sw",addr,lval_addr);
+                            if(lval_addr.contains("sp")){
+                                asm.instr("sw",addr,lval_addr);
+                                if(blockCount>1) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                            }
                             else asm.instr("mv",lval_addr,addr);
                             valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
                         }
@@ -245,7 +251,10 @@ public class LLVMIRToRiscv {
                         asm.op2(op, destReg, reg1, reg2);
                         //System.out.println(LLVM.LLVMGetValueName(inst).getString());
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        if(addr.contains("sp")) asm.instr("sw", destReg, addr);
+                        if(addr.contains("sp")) {
+                            asm.instr("sw", destReg, addr);
+                            if(blockCount>1) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                        }
                         else asm.instr("mv",addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
 
