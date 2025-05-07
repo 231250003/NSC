@@ -254,7 +254,6 @@ public class LLVMIRToRiscv {
                         String reg = evaluate(retVal);
                         if(blockCount>1) NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                         asm.mv("a0", reg);
-                        asm.mv("a0","x0");
                         asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
                         asm.li("a7", 93);  // syscall exit
                         asm.instr("ecall");
