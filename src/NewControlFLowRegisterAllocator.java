@@ -58,6 +58,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                         if(line.contains("="))line2 = line.substring(0, line.indexOf("="));
                         else line2=line.substring(line.indexOf(",")+1);
                         for (String var : LLVMIRToRiscv.extractVariables(line2)) {
+                            if(!line.contains("="))System.out.println(var);
                             Set<String> variables=variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
                             if(!variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) {
                                 variables.add(var);
