@@ -13,7 +13,7 @@ import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.llvm.LLVM.*;
 import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
-    public static boolean is_run_time_error_test=false;
+    public static boolean is_run_time_error_test=true;
     public static void main(String[] args) throws IOException {
         /* if (args.length < 1) {
             System.err.println("input path is required");
