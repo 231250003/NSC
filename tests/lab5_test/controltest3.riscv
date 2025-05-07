@@ -74,6 +74,7 @@ mainEntry:
   mv x8, t1
   mv x4, x8
   sw x4, 16(sp)
+  j while.cond
 cur:
   lw t2, 8(sp)
   mv x3, t2
@@ -131,6 +132,7 @@ while.cond:
   bnez x9, while.stmt
   j cur
 merge:
+  j while.cond
 if.then:
   lw t1, 8(sp)
   mv x3, t1
@@ -140,6 +142,7 @@ if.then:
   mv x9, t0
   sw x9, 8(sp)
   sw x1, 8(sp)
+  j merge
 if.else:
   lw t1, 16(sp)
   mv x3, t1
@@ -149,6 +152,7 @@ if.else:
   mv x9, t0
   sw x9, 16(sp)
   sw x1, 16(sp)
+  j merge
 merge13:
   li t1, 1
   mv x1, t1
@@ -520,3 +524,4 @@ if.then19:
   mv x4, t0
   sw x4, 8(sp)
   sw x1, 8(sp)
+  j merge13
