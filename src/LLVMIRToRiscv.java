@@ -273,7 +273,10 @@ public class LLVMIRToRiscv {
                         String destReg = freshReg();
                         asm.mv(destReg, srcReg);
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        if(addr.contains("sp")) asm.instr("sw", destReg, addr);
+                        if(addr.contains("sp")) {
+                            asm.instr("sw", destReg, addr);
+                            if(blockCount>1) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                        }
                         else asm.instr("mv",addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
                     }
