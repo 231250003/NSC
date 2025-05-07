@@ -234,7 +234,6 @@ cur53:
 while.stmt54:
   li t0, 30
   mv x1, t0
-  sw x1, 240(sp)
   j while.cond63
 while.cond55:
   lw t1, 16(sp)
