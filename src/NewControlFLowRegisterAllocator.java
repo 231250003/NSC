@@ -122,6 +122,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 for (String var : LLVMIRToRiscv.extractVariables(line2)) {
                     if(var.equals("b")) System.out.println("crzzz");
                     if(is_live_variable(bb,var,true)) {
+                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
                         if(var.equals("b")) System.out.println("crzz1");
                         live_variable.add(var);
                         visited_block=new HashSet<>();
