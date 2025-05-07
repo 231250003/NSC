@@ -43,9 +43,8 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                     }
                     String line3;
                     if(line.contains("=")) line3= line.substring(line.indexOf("=")+1);
-                    else if(line.contains("store")) {
+                    else if(line.contains("store")&&line.contains("i32*")) {
                         line3= line.substring(0,line.indexOf(","));
-                        System.out.println(line3);
                     }
                     else line3=line;
                     for (String var : LLVMIRToRiscv.extractVariables(line3)){
