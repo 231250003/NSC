@@ -35,7 +35,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(),bb);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
-                    if (line.contains("br")) continue;
+                    if (line.contains("br")||line.contains("alloca")) continue;
                     for (String var : LLVMIRToRiscv.extractVariables(line)) {
                         if(!varOffset.containsKey(var)){
                             nextOffset += 4;
@@ -48,17 +48,14 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                     for (String var : LLVMIRToRiscv.extractVariables(line3)){
                         Set<String> variables=variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
                         if(!variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) {
-                            System.out.println(var);
                             variables.add(var);
                         }
                     }
-                    System.out.println("--------------");
                     if(line.contains("=")){
                         String line2 = line.substring(0, line.indexOf("="));
                         for (String var : LLVMIRToRiscv.extractVariables(line2)) {
                             Set<String> variables=variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
                             if(!variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) {
-                                System.out.println(var);
                                 variables.add(var);
                             }
                             break;
