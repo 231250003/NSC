@@ -70,7 +70,6 @@ if.then:
   sub t2, x3, x8
   mv x9, t2
   sw x9, 8(sp)
-  sw x1, 8(sp)
   j merge
 if.else:
   lw t0, 16(sp)
@@ -80,5 +79,4 @@ if.else:
   sub t2, x3, x4
   mv x9, t2
   sw x9, 16(sp)
-  sw x1, 16(sp)
   j merge
