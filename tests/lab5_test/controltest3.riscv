@@ -100,7 +100,6 @@ cur:
   snez t0, t0
   mv x13, t0
   bnez x13, if.then19
-  sw x13, 48(sp)
   j merge13
 while.stmt:
   lw t1, 8(sp)
@@ -116,7 +115,6 @@ while.stmt:
   snez t0, t0
   mv x11, t0
   bnez x11, if.then
-  sw x11, 68(sp)
   j if.else
 while.cond:
   lw t1, 16(sp)
@@ -132,7 +130,6 @@ while.cond:
   snez t0, t0
   mv x9, t0
   bnez x9, while.stmt
-  sw x9, 84(sp)
   j cur
 merge:
   j while.cond
@@ -523,7 +520,6 @@ merge13:
   mv x29, x24
   add t0, x28, x29
   mv x16, t0
-  sw x16, 672(sp)
   mv a0, x16
   addi sp, sp, 2044
   li a7, 93
