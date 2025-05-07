@@ -2,6 +2,26 @@ int x = 56;
 int y = 98;
 
 int main() {
+  if(!a+b>=10) {
+        if(a<=10) return 2;
+     }
+    while(1){
+        a=a-2;
+        if(a==45) break;
+        else if(a==48){
+            b=b-3;
+            a=a+1;
+         }
+    }
+    while (b+a>20) {
+        while(a>10){
+            if(a>40){
+             a=a-5;
+                        break;
+              }
+             else break;
+        }
+        }
     int a = x;
     int b = y;
         int cnt=0;
@@ -30,7 +50,6 @@ int main() {
         b=b-3;
         a=a+1;
         if(a+b>50) a=a-10;
-    }
     int result = a;
 	return result;
 }
