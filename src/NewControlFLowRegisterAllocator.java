@@ -132,6 +132,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 }
             }
             lineNum++;
+            System.out.println(line);
         }
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
