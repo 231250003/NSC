@@ -209,6 +209,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         varToLocation=new HashMap<>();
         changed_variable=new HashSet<>();
         freed_register=new ArrayList<>(total_registers);
+        live_variable=new HashSet<>();
     }
     @Override
     public String allocate(String varName) {
