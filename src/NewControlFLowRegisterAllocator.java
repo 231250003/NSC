@@ -32,8 +32,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 variable_def_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
                 variable_use_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
                 name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(),bb);
-                System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-                System.out.println("-------- above are blockname");
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
                     if (line.contains("br")||line.contains("alloca")) continue;
@@ -50,9 +48,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                         Set<String> variables=variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
                         if(!variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) {
                             variables.add(var);
-                            System.out.println(var);
                         }
-                        System.out.println("-------- above are used");
                     }
                     if(line.contains("=")){
                         String line2 = line.substring(0, line.indexOf("="));
@@ -60,9 +56,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                             Set<String> variables=variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
                             if(!variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) {
                                 variables.add(var);
-                                System.out.println(var);
                             }
-                            System.out.println("-------- above are def");
                             break;
                         }
                     }
