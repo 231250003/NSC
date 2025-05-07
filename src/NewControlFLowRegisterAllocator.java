@@ -13,7 +13,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
     private static List<String> freed_register;
     private static  Map<String, String> varToLocation = new HashMap<>();
     private static final Map<String, Integer> varOffset = new HashMap<>();
-    private static  Set<String> changed_variable=new HashSet<>();
+    public static  Set<String> changed_variable=new HashSet<>();
     private static int nextOffset = 0;
     private static LLVMModuleRef module;
     private static Set<String> live_variable=new HashSet<>();
@@ -208,10 +208,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
                 freed_register.add(varToLocation.get(var));
                 if(changed_variable.contains(var)&&live_variable.contains(var)) {
-                    if(varToLocation.get(var).contains("x1")&&varOffset.get(var)==16) {
-                        System.out.println("wrong inst");
-                        System.out.println(currentLine);
-                    }
                     LLVMIRToRiscv.asm.instr("sw",varToLocation.get(var),String.format("%d(sp)", varOffset.get(var)));
                 }
                 varToLocation.remove(var);
