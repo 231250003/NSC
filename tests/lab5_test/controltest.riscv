@@ -19,14 +19,12 @@ mainEntry:
   lw t1, 0(t1)
   mv x8, t1
   mv x4, x8
-  sw x4, 16(sp)
   j while.cond
 cur:
   lw t2, 8(sp)
   mv x4, t2
   mv x1, x4
   mv x8, x1
-  sw x1, 24(sp)
   mv a0, x8
   addi sp, sp, 2044
   li a7, 93
