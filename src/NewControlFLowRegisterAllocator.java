@@ -168,8 +168,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 varToLocation.put(var, String.format("%d(sp)", varOffset.get(var)));
                 LLVMIRToRiscv.valueMap.put(var,varToLocation.get(var));
             }
-            else if(freed_register.isEmpty()&&!instruction.contains("br") &&(!instruction.contains("ret"))){
-                System.out.println("rcrrcr");
+            else {
                 int var_end_line=interval.end;
                 String spill_reg="";
                 String var_spill_name=var;
@@ -208,7 +207,10 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             Interval interval = entry.getValue();
             if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
                 freed_register.add(varToLocation.get(var));
-                if(changed_variable.contains(var)&&live_variable.contains(var)) LLVMIRToRiscv.asm.instr("sw",varToLocation.get(var),String.format("%d(sp)", varOffset.get(var)));
+                if(changed_variable.contains(var)&&live_variable.contains(var)) {
+                    if(varToLocation.get(var).contains("x1")) System.out.println("crzzzzz");
+                    LLVMIRToRiscv.asm.instr("sw",varToLocation.get(var),String.format("%d(sp)", varOffset.get(var)));
+                }
                 varToLocation.remove(var);
                 varToLocation.put(var,String.format("%d(sp)", varOffset.get(var)));
             }
