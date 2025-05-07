@@ -12,71 +12,71 @@ main:
 mainEntry:
   la t0, x
   lw t0, 0(t0)
-  mv x3, t0
-  mv x1, x3
+  mv x11, t0
+  mv x1, x11
   sw x1, 8(sp)
   la t1, y
   lw t1, 0(t1)
-  mv x11, t1
-  mv x9, x11
-  sw x9, 16(sp)
+  mv x17, t1
+  mv x13, x17
+  sw x13, 16(sp)
   j while.cond
 cur:
   lw t2, 8(sp)
-  mv x9, t2
-  mv x1, x9
-  mv x11, x1
-  mv a0, x11
+  mv x13, t2
+  mv x1, x13
+  mv x17, x1
+  mv a0, x17
   addi sp, sp, 2044
   li a7, 93
   ecall
 while.stmt:
   lw t0, 8(sp)
-  mv x3, t0
+  mv x11, t0
   lw t1, 16(sp)
-  mv x11, t1
-  sgt t2, x3, x11
-  mv x13, t2
-  mv t0, x13
-  mv x15, t0
+  mv x17, t1
+  sgt t2, x11, x17
+  mv x19, t2
+  mv t0, x19
+  mv x23, t0
   li t1, 0
-  xor t2, x15, t1
+  xor t2, x23, t1
   snez t2, t2
-  mv x17, t2
-  bnez x17, if.then
+  mv x25, t2
+  bnez x25, if.then
   j if.else
 while.cond:
   lw t0, 16(sp)
-  mv x3, t0
-  li t1, 0
-  xor t2, x3, t1
-  snez t2, t2
-  mv x9, t2
-  mv t0, x9
   mv x11, t0
   li t1, 0
   xor t2, x11, t1
   snez t2, t2
   mv x13, t2
-  bnez x13, while.stmt
+  mv t0, x13
+  mv x17, t0
+  li t1, 0
+  xor t2, x17, t1
+  snez t2, t2
+  mv x19, t2
+  bnez x19, while.stmt
   j cur
 merge:
   j while.cond
 if.then:
   lw t0, 8(sp)
-  mv x3, t0
+  mv x11, t0
   lw t1, 16(sp)
-  mv x11, t1
-  sub t2, x3, x11
-  mv x13, t2
-  sw x13, 8(sp)
+  mv x17, t1
+  sub t2, x11, x17
+  mv x19, t2
+  sw x19, 8(sp)
   j merge
 if.else:
   lw t0, 16(sp)
-  mv x3, t0
+  mv x11, t0
   lw t1, 8(sp)
-  mv x9, t1
-  sub t2, x3, x9
-  mv x13, t2
-  sw x13, 16(sp)
+  mv x13, t1
+  sub t2, x11, x13
+  mv x19, t2
+  sw x19, 16(sp)
   j merge
