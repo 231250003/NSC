@@ -28,21 +28,23 @@ public class LLVMIRToRiscv {
         Map<String, Integer> firstUse = new HashMap<>();
         Map<String, Integer> lastUse = new HashMap<>();
         Map<String,Integer> used_num=new HashMap<>();
-//        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
-//            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
-//                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-//                    String line = LLVM.LLVMPrintValueToString(inst).getString();
-//                    if(line.contains("br")&&(!line.contains(",")))continue;
-//                    else if(line.contains("br")&&line.contains(",")) line=line.substring(0, line.indexOf(","));
-//                    for (String var : extractVariables(line)) {
-//                        firstUse.putIfAbsent(var, lineNum);
-//                        lastUse.put(var, lineNum);
-//                        used_num.put(var, used_num.getOrDefault(var, 0) + 1);
-//                    }
-//                    lineNum++;
-//                }
-//            }
-//        }
+        if(!Main.is_run_time_error_test) {
+            for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
+                for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                    for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+                        String line = LLVM.LLVMPrintValueToString(inst).getString();
+                        if (line.contains("br") && (!line.contains(","))) continue;
+                        else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
+                        for (String var : extractVariables(line)) {
+                            firstUse.putIfAbsent(var, lineNum);
+                            lastUse.put(var, lineNum);
+                            used_num.put(var, used_num.getOrDefault(var, 0) + 1);
+                        }
+                        lineNum++;
+                    }
+                }
+            }
+        }
         Set<LLVMBasicBlockRef> blocksWithBr = new HashSet<>();
         Map<LLVMBasicBlockRef, Set<String>> blockVars = new HashMap<>();
         Map<String,Integer> block_last_num = new HashMap<>();
@@ -74,48 +76,50 @@ public class LLVMIRToRiscv {
                 //System.out.println(lineNum);
             }
         }
-//        for (LLVMBasicBlockRef bb : blocksWithBr) {
-//            int finalLineNum = block_last_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
-//            for (LLVMBasicBlockRef bb2 : blocksWithBr) {
-//                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-//                    String line = LLVM.LLVMPrintValueToString(inst).getString();
-//                    String line2;
-//                    if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
-//                    else line2=line;
-//                    Set<String> var=extractVariables(line2);
-//                    if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())>finalLineNum){
-//                        finalLineNum=block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
-////                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-////                       System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
-////                       System.out.println("crzzzz");
-//                    }
-//                }
-//            }
-//            for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
-//                if (finalLineNum > lastUse.get(var)) lastUse.put(var, finalLineNum);
-//            }
-//        }
-//            for (LLVMBasicBlockRef bb : blocksWithBr) {
-//                int first_line_num = block_first_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
-//                for (LLVMBasicBlockRef bb2 : blocksWithBr) {
-//                    for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-//                        String line = LLVM.LLVMPrintValueToString(inst).getString();
-//                        String line2;
-//                        if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",")+1);
-//                        else line2=line;
-//                        Set<String> var=extractVariables(line2);
-//                        if(line.contains("br")&&var.contains(LLVM.LLVMGetBasicBlockName(bb).getString())&&block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString())<first_line_num){
-//                            first_line_num=block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
-////                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-////                        System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
-////                       System.out.println("crzzzz");
-//                        }
-//                    }
-//                }
-//                for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
-//                    if (first_line_num < firstUse.get(var)) firstUse.put(var, first_line_num);
-//                }
-//            }
+        if(!Main.is_run_time_error_test){
+            for (LLVMBasicBlockRef bb : blocksWithBr) {
+                int finalLineNum = block_last_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+                for (LLVMBasicBlockRef bb2 : blocksWithBr) {
+                    for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+                        String line = LLVM.LLVMPrintValueToString(inst).getString();
+                        String line2;
+                        if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",") + 1);
+                        else line2 = line;
+                        Set<String> var = extractVariables(line2);
+                        if (line.contains("br") && var.contains(LLVM.LLVMGetBasicBlockName(bb).getString()) && block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString()) > finalLineNum) {
+                            finalLineNum = block_last_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
+//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//                       System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
+//                       System.out.println("crzzzz");
+                        }
+                    }
+                }
+                for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
+                    if (finalLineNum > lastUse.get(var)) lastUse.put(var, finalLineNum);
+                }
+            }
+            for (LLVMBasicBlockRef bb : blocksWithBr) {
+                int first_line_num = block_first_num.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+                for (LLVMBasicBlockRef bb2 : blocksWithBr) {
+                    for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb2); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+                        String line = LLVM.LLVMPrintValueToString(inst).getString();
+                        String line2;
+                        if (line.contains("br") && line.contains(",")) line2 = line.substring(line.indexOf(",") + 1);
+                        else line2 = line;
+                        Set<String> var = extractVariables(line2);
+                        if (line.contains("br") && var.contains(LLVM.LLVMGetBasicBlockName(bb).getString()) && block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString()) < first_line_num) {
+                            first_line_num = block_first_num.get(LLVM.LLVMGetBasicBlockName(bb2).getString());
+//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//                        System.out.println(LLVM.LLVMGetBasicBlockName(bb2).getString());
+//                       System.out.println("crzzzz");
+                        }
+                    }
+                }
+                for (String var : blockVars.getOrDefault(bb, Collections.emptySet())) {
+                    if (first_line_num < firstUse.get(var)) firstUse.put(var, first_line_num);
+                }
+            }
+        }
         List<Interval> intervals = new ArrayList<>();
         for (String var : firstUse.keySet()) {
             intervals.add(new Interval(var, firstUse.get(var), lastUse.get(var),used_num.get(var)));
@@ -133,10 +137,11 @@ public class LLVMIRToRiscv {
              bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             blockCount++;
         }
-        if(blockCount>1){
+        if(blockCount>1&&Main.is_run_time_error_test){
             allocator=new NewControlFlowRegisterAllocator(module,reg_list);
             NewControlFlowRegisterAllocator.init();
         }
+        else if(blockCount>1) allocator=new ControlFlowRegisterAllocator(intervals, reg_list,asm);
         asm.directive("text");
         asm.directive("globl main");
        // asm.macro();
@@ -149,7 +154,7 @@ public class LLVMIRToRiscv {
             int stackSize = 2044;
             asm.instr("addi", "sp", "sp", "-" + stackSize);
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                if(blockCount>1) {
+                if(blockCount>1&&Main.is_run_time_error_test) {
                     lineNum=0;
                     NewControlFlowRegisterAllocator.preprocess_block(bb);
                 }
@@ -175,7 +180,7 @@ public class LLVMIRToRiscv {
                         if(addr!=null){
                             if(addr.contains("sp")) {
                                 asm.instr("sw", valReg, addr);
-                                if(blockCount>1) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(ptr).getString());
+                                if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(ptr).getString());
                             }
                             else asm.instr("mv",addr,valReg);
                         }
@@ -204,7 +209,7 @@ public class LLVMIRToRiscv {
                             asm.instr("lw",reg,addr);
                             if(lval_addr.contains("sp")){
                                 asm.instr("sw",reg,lval_addr);
-                                if(blockCount>1) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                                if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
                             }
                             else asm.instr("mv",lval_addr,reg);
                             valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
@@ -215,7 +220,7 @@ public class LLVMIRToRiscv {
                             String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                             if(lval_addr.contains("sp")){
                                 asm.instr("sw",addr,lval_addr);
-                                if(blockCount>1) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                                if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
                             }
                             else asm.instr("mv",lval_addr,addr);
                             valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
@@ -253,7 +258,7 @@ public class LLVMIRToRiscv {
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         if(addr.contains("sp")) {
                             asm.instr("sw", destReg, addr);
-                            if(blockCount>1) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                            if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
                         }
                         else asm.instr("mv",addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
@@ -261,7 +266,7 @@ public class LLVMIRToRiscv {
                     } else if (opcode == LLVM.LLVMRet) {
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
                         String reg = evaluate(retVal);
-                        if(blockCount>1) NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
+                        if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                         asm.mv("a0", reg);
                         asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
                         asm.li("a7", 93);  // syscall exit
@@ -275,7 +280,7 @@ public class LLVMIRToRiscv {
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         if(addr.contains("sp")) {
                             asm.instr("sw", destReg, addr);
-                            if(blockCount>1) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                            if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
                         }
                         else asm.instr("mv",addr,destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
@@ -346,7 +351,7 @@ public class LLVMIRToRiscv {
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
-                if(blockCount>1) NewControlFlowRegisterAllocator.post_process_block("");
+                if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.post_process_block("");
             }
         }
         asm.writeToFile(file_path);
