@@ -76,12 +76,12 @@ public class Main {
             }
             func = LLVMGetNextFunction(func);
         }
-//        BytePointer error = new BytePointer((Pointer) null);
-//        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
-//            LLVMDisposeMessage(error);
-//        }
-//        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
-        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
+        BytePointer error = new BytePointer((Pointer) null);
+        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
+            LLVMDisposeMessage(error);
+        }
+        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
+        //LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
         if(args[0].contains("control")&&args[0].contains("5")) is_run_time_error_test=true;
         llvmirToRiscv.to_riscv();
         LLVMDisposeBuilder(builder);
