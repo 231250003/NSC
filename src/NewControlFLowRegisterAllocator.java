@@ -200,7 +200,17 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             }
         }
     }
-    public static void post_process_block(){
+    public static void post_process_block(String inst){
+        if((inst.contains("br")&&inst.contains(","))||inst.contains("ret")){
+            if(inst.contains("br")&&inst.contains(","))inst = inst.substring(0, inst.indexOf(","));
+            for (String var : LLVMIRToRiscv.extractVariables(inst)){
+                if(varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))){
+                    LLVMIRToRiscv.valueMap.put(var,String.format("%d(sp)", varOffset.get(var)));
+                    LLVMIRToRiscv.asm.instr("sw",varToLocation.get(var),String.format("%d(sp)", varOffset.get(var)));
+                    break;
+                }
+            }
+        }
         for (Map.Entry<String, String> entry : varToLocation.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();

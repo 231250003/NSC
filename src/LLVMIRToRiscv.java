@@ -158,7 +158,9 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    if(blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))) NewControlFlowRegisterAllocator.post_process_block();
+                    if(blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))){
+                        NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
+                    }
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
                     lineNum++;
@@ -326,7 +328,7 @@ public class LLVMIRToRiscv {
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
-                if(blockCount>1) NewControlFlowRegisterAllocator.post_process_block();
+                if(blockCount>1) NewControlFlowRegisterAllocator.post_process_block("");
             }
         }
         asm.writeToFile(file_path);
