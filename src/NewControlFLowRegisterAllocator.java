@@ -18,7 +18,8 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
     private static LLVMModuleRef module;
     private static Set<String> live_variable=new HashSet<>();
     private static Set<String> visited_block=new HashSet<>();
-    private static Map<String,Set<String>> variable_changed_in_block=new HashMap<>();
+    private static Map<String,Set<String>> variable_def_in_block=new HashMap<>();
+    private static Map<String,Set<String>> variable_use_in_block=new HashMap<>();
     private static Map<String,LLVMBasicBlockRef> name2blockref=new HashMap<>();
     public NewControlFlowRegisterAllocator(LLVMModuleRef moduleRef,List<String> reg_list){
         this.module=moduleRef;
@@ -28,26 +29,30 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
     public static void init() {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                variable_changed_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
+                variable_def_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
+                variable_use_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
                 name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(),bb);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
-                    if (line.contains("br") && !line.contains(",")) {
-                        continue;
-                    }
-                    else if (line.contains("br") && line.contains(",")) line = line.substring(0, line.indexOf(","));
+                    if (line.contains("br")) continue;
                     for (String var : LLVMIRToRiscv.extractVariables(line)) {
                         if(!varOffset.containsKey(var)){
                             nextOffset += 4;
                             varOffset.put(var, nextOffset);
                         }
                     }
+                    String line3;
+                    if(line.contains("=")) line3= line.substring(line.indexOf("=")+1);
+                    else line3=line;
+                    for (String var : LLVMIRToRiscv.extractVariables(line3)){
+                        Set<String> variables=variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+                        if(!variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) variables.add(var);
+                    }
                     if(line.contains("=")){
                         String line2 = line.substring(0, line.indexOf("="));
                         for (String var : LLVMIRToRiscv.extractVariables(line2)) {
-                            Set<String> variables=variable_changed_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
-                            variables.add(var);
-                            System.out.println("crzzz");
+                            Set<String> variables=variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+                            if(!variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) variables.add(var);
                             break;
                         }
                     }
@@ -57,10 +62,10 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
     }
     public static boolean is_live_variable(LLVMBasicBlockRef bb,String var,boolean is_detecting_block){
         if(visited_block.contains((LLVM.LLVMGetBasicBlockName(bb).getString()))){
-            if(variable_changed_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) return true;
+            if(variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) return true;
             else return false;
         }
-        else if(variable_changed_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)&&is_detecting_block==false) return true;
+        else if(variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)&&is_detecting_block==false) return true;
         else{
             visited_block.add((LLVM.LLVMGetBasicBlockName(bb).getString()));
             for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
