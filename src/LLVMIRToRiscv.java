@@ -308,7 +308,7 @@ public class LLVMIRToRiscv {
                         if (numOperands == 1) {
                             LLVMValueRef dest = LLVM.LLVMGetOperand(inst, 0);
                             String loop_label = LLVM.LLVMGetValueName(dest).getString();
-                            NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
+                            //NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                             asm.j(loop_label);
                         } else if (numOperands == 3) {
                             //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
@@ -322,7 +322,7 @@ public class LLVMIRToRiscv {
 //                            System.out.println(trueLabel);
 //                            System.out.println(falseLabel);
                             asm.bnez(condReg, trueLabel);
-                            //NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
+                            NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                             asm.j(falseLabel);
                         }
                     }
