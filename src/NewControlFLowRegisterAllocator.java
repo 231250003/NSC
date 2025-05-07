@@ -15,13 +15,21 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
     private static final Map<String, Integer> varOffset = new HashMap<>();
     private static  Set<String> changed_variable=new HashSet<>();
     private static int nextOffset = 0;
-    public NewControlFlowRegisterAllocator(List<String> reg_list){
+    private static LLVMModuleRef module;
+    private static Set<String> live_variable=new HashSet<>();
+    private static Set<String> visited_block=new HashSet<>();
+    private static Map<String,Set<String>> variable_changed_in_block=new HashMap<>();
+    private static Map<String,LLVMBasicBlockRef> name2blockref=new HashMap<>();
+    public NewControlFlowRegisterAllocator(LLVMModuleRef moduleRef,List<String> reg_list){
+        this.module=moduleRef;
         total_registers=new ArrayList<>(reg_list);
         freed_register=new ArrayList<>(reg_list);
     }
-    public static void init(LLVMModuleRef module) {
+    public static void init() {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                variable_changed_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
+                name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(),bb);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
                     if (line.contains("br") && !line.contains(",")) {
@@ -34,8 +42,44 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                             varOffset.put(var, nextOffset);
                         }
                     }
+                    if(line.contains("=")){
+                        String line2 = line.substring(0, line.indexOf("="));
+                        for (String var : LLVMIRToRiscv.extractVariables(line2)) {
+                            Set<String> variables=variable_changed_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
+                            variables.add(var);
+                            break;
+                        }
+                    }
                 }
             }
+        }
+    }
+    public static boolean is_live_variable(LLVMBasicBlockRef bb,String var,boolean is_detecting_block){
+        if(visited_block.contains((LLVM.LLVMGetBasicBlockName(bb).getString()))){
+            if(variable_changed_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) return true;
+            else return false;
+        }
+        else if(variable_changed_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)&&is_detecting_block==false) return true;
+        else{
+            visited_block.add((LLVM.LLVMGetBasicBlockName(bb).getString()));
+            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
+                String line = LLVM.LLVMPrintValueToString(inst).getString();
+                if(line.contains("br")&&(!line.contains(","))) {
+                    line = line.substring(0, line.indexOf(","));
+                    for (String block_name : LLVMIRToRiscv.extractVariables(line)) {
+                        LLVMBasicBlockRef next_block=name2blockref.get(block_name);
+                        return is_live_variable(next_block,var,false);
+                    }
+                }
+                else if(line.contains("br")&&line.contains(",")){
+                    line = line.substring(line.indexOf(",")+1);
+                    for (String block_name : LLVMIRToRiscv.extractVariables(line)) {
+                        LLVMBasicBlockRef next_block=name2blockref.get(block_name);
+                        if(is_live_variable(next_block,var,false))return true;
+                    }
+                }
+            }
+            return false;
         }
     }
     public static void preprocess_block(LLVMBasicBlockRef bb){
@@ -54,6 +98,16 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 firstUse.putIfAbsent(var, lineNum);
                 lastUse.put(var, lineNum);
                 used_num.put(var, used_num.getOrDefault(var, 0) + 1);
+            }
+            if(line.contains("=")){
+                String line2 = line.substring(0, line.indexOf("="));
+                for (String var : LLVMIRToRiscv.extractVariables(line2)) {
+                    if(is_live_variable(bb,var,true)) {
+                        live_variable.add(var);
+                        visited_block=new HashSet<>();
+                    }
+                    break;
+                }
             }
             lineNum++;
         }
@@ -125,7 +179,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             Interval interval = entry.getValue();
             if(currentLine>interval.end && varToLocation.containsKey(var)&&(!varToLocation.get(var).contains("sp"))) {
                 freed_register.add(varToLocation.get(var));
-                if(changed_variable.contains(var)) LLVMIRToRiscv.asm.instr("sw",varToLocation.get(var),String.format("%d(sp)", varOffset.get(var)));
+                if(changed_variable.contains(var)&&live_variable.contains(var)) LLVMIRToRiscv.asm.instr("sw",varToLocation.get(var),String.format("%d(sp)", varOffset.get(var)));
                 varToLocation.remove(var);
                 varToLocation.put(var,String.format("%d(sp)", varOffset.get(var)));
             }
@@ -135,7 +189,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         for (Map.Entry<String, String> entry : varToLocation.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-           if(changed_variable.contains(key)&& (!value.contains("sp"))){
+           if(changed_variable.contains(key)&& (!value.contains("sp"))&&live_variable.contains(key)){
                LLVMIRToRiscv.valueMap.put(key,String.format("%d(sp)", varOffset.get(key)));
                LLVMIRToRiscv.asm.instr("sw",varToLocation.get(key),String.format("%d(sp)", varOffset.get(key)));
            }
