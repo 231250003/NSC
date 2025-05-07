@@ -14,36 +14,31 @@ mainEntry:
   lw t0, 0(t0)
   mv x3, t0
   mv x1, x3
-  sw x3, 8(sp)
   la t1, y
   lw t1, 0(t1)
   mv x8, t1
   mv x4, x8
-  sw x8, 16(sp)
   mv x9, x1
+  sw x1, 4(sp)
   li t2, 0
   xor t0, x9, t2
   seqz t0, t0
   mv x10, t0
   mv t1, x10
   mv x11, t1
-  sw x10, 24(sp)
   mv x12, x4
   add t2, x11, x12
   mv x13, t2
-  sw x12, 32(sp)
   li t0, 10
   slt t1, x13, t0
   seqz t1, t1
   mv x14, t1
   mv t2, x14
   mv x15, t2
-  sw x14, 40(sp)
   li t0, 0
   xor t1, x15, t0
   snez t1, t1
   mv x16, t1
-  sw x16, 48(sp)
   lw t2, 48(sp)
   bnez t2, if.then
   j merge
@@ -58,12 +53,10 @@ if.then:
   mv x4, t2
   mv t0, x4
   mv x8, t0
-  sw x4, 56(sp)
   li t1, 0
   xor t2, x8, t1
   snez t2, t2
   mv x9, t2
-  sw x9, 64(sp)
   lw t0, 64(sp)
   bnez t0, if.then9
   j merge5
@@ -83,25 +76,19 @@ while.stmt:
   li t0, 2
   sub t1, x1, t0
   mv x4, t1
-  sw x1, 68(sp)
   sw x4, 4(sp)
-  sw x4, 72(sp)
   lw t2, 4(sp)
   mv x8, t2
   li t0, 45
   xor t1, x8, t0
   seqz t1, t1
   mv x9, t1
-  sw x8, 76(sp)
   mv t2, x9
   mv x10, t2
-  sw x9, 80(sp)
   li t0, 0
   xor t1, x10, t0
   snez t1, t1
   mv x11, t1
-  sw x11, 88(sp)
-  sw x10, 84(sp)
   lw t2, 88(sp)
   bnez t2, if.then16
   j if.else
@@ -120,16 +107,12 @@ if.else:
   xor t0, x3, t2
   seqz t0, t0
   mv x4, t0
-  sw x3, 92(sp)
   mv t1, x4
   mv x8, t1
-  sw x4, 96(sp)
   li t2, 0
   xor t0, x8, t2
   snez t0, t0
   mv x9, t0
-  sw x9, 104(sp)
-  sw x8, 100(sp)
   lw t1, 104(sp)
   bnez t1, if.then22
   j merge18
@@ -141,23 +124,18 @@ if.then22:
   li t0, 3
   sub t1, x3, t0
   mv x4, t1
-  sw x3, 108(sp)
   sw x4, 12(sp)
-  sw x4, 112(sp)
   lw t2, 4(sp)
   mv x9, t2
   li t0, 1
   add t1, x9, t0
   mv x10, t1
-  sw x9, 116(sp)
   sw x10, 4(sp)
-  sw x10, 120(sp)
   j merge18
 cur28:
   lw t2, 4(sp)
   mv x4, t2
   mv x1, x4
-  sw x4, 128(sp)
   mv x8, x1
   lw t0, 132(sp)
   mv a0, t0
@@ -173,21 +151,15 @@ while.cond30:
   mv x8, t2
   add t0, x1, x8
   mv x9, t0
-  sw x1, 136(sp)
-  sw x8, 140(sp)
   li t1, 20
   sgt t2, x9, t1
   mv x10, t2
-  sw x9, 144(sp)
   mv t0, x10
   mv x11, t0
-  sw x10, 148(sp)
   li t1, 0
   xor t2, x11, t1
   snez t2, t2
   mv x12, t2
-  sw x11, 152(sp)
-  sw x12, 156(sp)
   lw t0, 156(sp)
   bnez t0, while.stmt29
   j cur28
@@ -199,16 +171,12 @@ while.stmt38:
   li t2, 40
   sgt t0, x1, t2
   mv x4, t0
-  sw x1, 160(sp)
   mv t1, x4
   mv x8, t1
-  sw x4, 164(sp)
   li t2, 0
   xor t0, x8, t2
   snez t0, t0
   mv x9, t0
-  sw x8, 168(sp)
-  sw x9, 172(sp)
   lw t1, 172(sp)
   bnez t1, if.then48
   j if.else49
@@ -218,16 +186,12 @@ while.cond39:
   li t0, 10
   sgt t1, x3, t0
   mv x4, t1
-  sw x3, 176(sp)
   mv t2, x4
   mv x8, t2
-  sw x4, 180(sp)
   li t0, 0
   xor t1, x8, t0
   snez t1, t1
   mv x9, t1
-  sw x9, 188(sp)
-  sw x8, 184(sp)
   lw t2, 188(sp)
   bnez t2, while.stmt38
   j cur37
@@ -239,9 +203,7 @@ if.then48:
   li t1, 5
   sub t2, x3, t1
   mv x4, t2
-  sw x3, 192(sp)
   sw x4, 4(sp)
-  sw x4, 196(sp)
   j cur37
 if.else49:
   j cur37
@@ -251,38 +213,28 @@ cur53:
   li t1, 3
   sub t2, x3, t1
   mv x4, t2
-  sw x3, 200(sp)
   sw x4, 12(sp)
-  sw x4, 204(sp)
   lw t0, 4(sp)
   mv x9, t0
   li t1, 1
   add t2, x9, t1
   mv x10, t2
-  sw x9, 208(sp)
   sw x10, 4(sp)
-  sw x10, 212(sp)
   lw t0, 4(sp)
   mv x11, t0
   lw t1, 12(sp)
   mv x12, t1
   add t2, x11, x12
   mv x13, t2
-  sw x12, 220(sp)
-  sw x11, 216(sp)
   li t0, 50
   sgt t1, x13, t0
   mv x14, t1
-  sw x13, 224(sp)
   mv t2, x14
   mv x15, t2
-  sw x14, 228(sp)
   li t0, 0
   xor t1, x15, t0
   snez t1, t1
   mv x16, t1
-  sw x15, 232(sp)
-  sw x16, 236(sp)
   lw t2, 236(sp)
   bnez t2, if.then113
   j merge107
@@ -296,16 +248,12 @@ while.cond55:
   li t2, 35
   sgt t0, x1, t2
   mv x4, t0
-  sw x1, 244(sp)
   mv t1, x4
   mv x8, t1
-  sw x4, 248(sp)
   li t2, 0
   xor t0, x8, t2
   snez t0, t0
   mv x9, t0
-  sw x8, 252(sp)
-  sw x9, 256(sp)
   lw t1, 256(sp)
   bnez t1, while.stmt54
   j cur53
@@ -315,7 +263,6 @@ cur61:
   li t0, 10
   sub t1, x3, t0
   mv x4, t1
-  sw x4, 264(sp)
   lw t2, 264(sp)
   mv a0, t2
   addi sp, sp, 2044
@@ -329,12 +276,10 @@ while.stmt62:
   mv x4, t2
   mv t0, x4
   mv x8, t0
-  sw x4, 272(sp)
   li t1, 0
   xor t2, x8, t1
   snez t2, t2
   mv x9, t2
-  sw x9, 280(sp)
   lw t0, 280(sp)
   bnez t0, if.then68
   j if.else69
@@ -359,7 +304,6 @@ if.else69:
   sub t0, x1, t2
   mv x4, t0
   sw x4, 240(sp)
-  sw x4, 292(sp)
   j merge64
 merge76:
   j while.cond55
@@ -370,7 +314,6 @@ if.then80:
   sub t0, x3, t2
   mv x4, t0
   sw x4, 12(sp)
-  sw x4, 300(sp)
   j while.cond55
 if.else81:
   lw t1, 12(sp)
@@ -380,12 +323,10 @@ if.else81:
   mv x4, t0
   mv t1, x4
   mv x8, t1
-  sw x4, 308(sp)
   li t2, 0
   xor t0, x8, t2
   snez t0, t0
   mv x9, t0
-  sw x9, 316(sp)
   lw t1, 316(sp)
   bnez t1, if.then89
   j if.else90
@@ -398,7 +339,6 @@ if.then89:
   sub t1, x3, t0
   mv x4, t1
   sw x4, 12(sp)
-  sw x4, 324(sp)
   j merge85
 if.else90:
   lw t2, 12(sp)
@@ -408,12 +348,10 @@ if.else90:
   mv x4, t1
   mv t2, x4
   mv x8, t2
-  sw x4, 332(sp)
   li t0, 0
   xor t1, x8, t0
   snez t1, t1
   mv x9, t1
-  sw x9, 340(sp)
   lw t2, 340(sp)
   bnez t2, if.then98
   j if.else99
@@ -426,7 +364,6 @@ if.then98:
   sub t2, x3, t1
   mv x4, t2
   sw x4, 12(sp)
-  sw x4, 348(sp)
   j merge94
 if.else99:
   li t0, 10
@@ -442,7 +379,5 @@ if.then113:
   li t2, 10
   sub t0, x3, t2
   mv x4, t0
-  sw x3, 352(sp)
   sw x4, 4(sp)
-  sw x4, 356(sp)
   j merge107
