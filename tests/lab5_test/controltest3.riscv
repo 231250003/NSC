@@ -141,7 +141,6 @@ if.then:
   sub t0, x3, x8
   mv x9, t0
   sw x9, 8(sp)
-  sw x1, 8(sp)
   j merge
 if.else:
   lw t1, 16(sp)
@@ -151,7 +150,6 @@ if.else:
   sub t0, x3, x4
   mv x9, t0
   sw x9, 16(sp)
-  sw x1, 16(sp)
   j merge
 merge13:
   li t1, 1
@@ -523,5 +521,4 @@ if.then19:
   add t0, x3, t2
   mv x4, t0
   sw x4, 8(sp)
-  sw x1, 8(sp)
   j merge13
