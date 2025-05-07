@@ -36,7 +36,6 @@ int main() {
             }
             if(b>70){
                 b=b-5;
-                continue;
             }
             else if(b>50) b=b-7;
             if(b+a>40) b=b+10;
