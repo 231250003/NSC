@@ -41,7 +41,6 @@ mainEntry:
   snez t1, t1
   mv x16, t1
   bnez x16, if.then
-  sw x16, 48(sp)
   j merge
 merge:
   j while.cond
@@ -59,7 +58,6 @@ if.then:
   snez t1, t1
   mv x9, t1
   bnez x9, if.then9
-  sw x9, 64(sp)
   j merge5
 merge5:
   j merge
@@ -91,7 +89,6 @@ while.stmt:
   snez t2, t2
   mv x11, t2
   bnez x11, if.then16
-  sw x11, 88(sp)
   j if.else
 while.cond:
   li t0, -1
@@ -115,7 +112,6 @@ if.else:
   snez t0, t0
   mv x9, t0
   bnez x9, if.then22
-  sw x9, 104(sp)
   j merge18
 merge18:
   j merge12
@@ -139,7 +135,6 @@ cur28:
   mv x1, x4
   mv x8, x1
   sw x1, 128(sp)
-  sw x8, 132(sp)
   mv a0, x8
   addi sp, sp, 2044
   li a7, 93
@@ -163,7 +158,6 @@ while.cond30:
   snez t0, t0
   mv x12, t0
   bnez x12, while.stmt29
-  sw x12, 156(sp)
   j cur28
 cur37:
   j while.cond55
@@ -180,7 +174,6 @@ while.stmt38:
   snez t0, t0
   mv x9, t0
   bnez x9, if.then48
-  sw x9, 172(sp)
   j if.else49
 while.cond39:
   lw t1, 8(sp)
@@ -195,7 +188,6 @@ while.cond39:
   snez t0, t0
   mv x9, t0
   bnez x9, while.stmt38
-  sw x9, 188(sp)
   j cur37
 merge44:
   j while.cond39
@@ -238,7 +230,6 @@ cur53:
   snez t2, t2
   mv x16, t2
   bnez x16, if.then113
-  sw x16, 236(sp)
   j merge107
 while.stmt54:
   li t0, 30
@@ -258,7 +249,6 @@ while.cond55:
   snez t0, t0
   mv x9, t0
   bnez x9, while.stmt54
-  sw x9, 256(sp)
   j cur53
 cur61:
   lw t1, 16(sp)
@@ -266,7 +256,6 @@ cur61:
   li t2, 10
   sub t0, x3, t2
   mv x4, t0
-  sw x4, 264(sp)
   mv a0, x4
   addi sp, sp, 2044
   li a7, 93
@@ -284,7 +273,6 @@ while.stmt62:
   snez t0, t0
   mv x9, t0
   bnez x9, if.then68
-  sw x9, 280(sp)
   j if.else69
 while.cond63:
   li t1, -1
@@ -295,7 +283,6 @@ merge64:
 if.then68:
   lw t2, 240(sp)
   mv x1, t2
-  sw x1, 284(sp)
   mv a0, x1
   addi sp, sp, 2044
   li a7, 93
@@ -331,7 +318,6 @@ if.else81:
   snez t2, t2
   mv x9, t2
   bnez x9, if.then89
-  sw x9, 316(sp)
   j if.else90
 merge85:
   j merge76
@@ -356,7 +342,6 @@ if.else90:
   snez t2, t2
   mv x9, t2
   bnez x9, if.then98
-  sw x9, 340(sp)
   j if.else99
 merge94:
   j merge85
