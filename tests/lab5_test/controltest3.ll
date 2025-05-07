@@ -1,522 +1,287 @@
-  .data
-x:
-  .word 56
-  .data
-y:
-  .word 98
-  .data
-z:
-  .word 3
-  .data
-a:
-  .word 4
-  .data
-b:
-  .word 5
-  .data
-c:
-  .word 6
-  .data
-d:
-  .word 7
-  .data
-e:
-  .word 8
-  .data
-f:
-  .word 9
-  .data
-g:
-  .word 10
-  .data
-h:
-  .word 11
-  .data
-i:
-  .word 12
-  .data
-j:
-  .word 13
-  .data
-k:
-  .word 14
-  .data
-l:
-  .word 15
-  .data
-m:
-  .word 16
-  .data
-n:
-  .word 17
-  .data
-o:
-  .word 18
-  .data
-p:
-  .word 19
-  .data
-q:
-  .word 20
+; ModuleID = 'my_module'
+source_filename = "my_module"
 
-  .text
-  .globl main
-main:
-  addi sp, sp, -2044
+@x = global i32 56
+@y = global i32 98
+@z = global i32 3
+@a = global i32 4
+@b = global i32 5
+@c = global i32 6
+@d = global i32 7
+@e = global i32 8
+@f = global i32 9
+@g = global i32 10
+@h = global i32 11
+@i = global i32 12
+@j = global i32 13
+@k = global i32 14
+@l = global i32 15
+@m = global i32 16
+@n = global i32 17
+@o = global i32 18
+@p = global i32 19
+@q = global i32 20
+
+define i32 @main() {
 mainEntry:
-  la t0, x
-  lw t0, 0(t0)
-  mv x3, t0
-  mv x1, x3
-  la t1, y
-  lw t1, 0(t1)
-  mv x12, t1
-  mv x8, x12
-  j while.cond
-cur:
-  lw t2, null(sp)
-  mv x17, t2
-  la t0, x
-  lw t0, 0(t0)
-  mv x16, t0
-  li t1, 0
-  xor t2, x16, t1
-  seqz t2, t2
-  mv x18, t2
-  mv t0, x18
-  mv x22, t0
-  li t1, 3
-  add t2, x22, t1
-  mv x13, t2
-  xor t0, x17, x13
-  snez t0, t0
-  mv x15, t0
-  mv t1, x15
-  mv x21, t1
-  li t2, 0
-  xor t0, x21, t2
-  snez t0, t0
-  mv x20, t0
-  bnez x20, if.then19
-  j merge13
-while.stmt:
-  lw t1, null(sp)
-  mv x12, t1
-  lw t2, null(sp)
-  mv x31, t2
-  sgt t0, x12, x31
-  mv x24, t0
-  mv t1, x24
-  mv x25, t1
-  li t2, 0
-  xor t0, x25, t2
-  snez t0, t0
-  mv x28, t0
-  bnez x28, if.then
-  j if.else
-while.cond:
-  lw t1, null(sp)
-  mv x10, t1
-  li t2, 0
-  xor t0, x10, t2
-  snez t0, t0
-  mv x9, t0
-  mv t1, x9
-  mv x4, t1
-  li t2, 0
-  xor t0, x4, t2
-  snez t0, t0
-  mv x11, t0
-  bnez x11, while.stmt
-  j cur
-merge:
-  j while.cond
-if.then:
-  lw t1, null(sp)
-  mv x29, t1
-  lw t2, null(sp)
-  mv x30, t2
-  sub t0, x29, x30
-  mv x23, t0
-  sw x23, null(sp)
-  j merge
-if.else:
-  lw t1, null(sp)
-  mv x27, t1
-  lw t2, null(sp)
-  mv x26, t2
-  sub t0, x27, x26
-  mv x3, t0
-  sw x3, null(sp)
-  j merge
-merge13:
-  li t1, 1
-  mv x16, t1
-  li t2, 2
-  mv x17, t2
-  li t0, 3
-  mv x25, t0
-  li t1, 4
-  mv x31, t1
-  li t2, 5
-  mv x12, t2
-  li t0, 6
-  mv x15, t0
-  li t1, 7
-  mv x28, t1
-  li t2, 8
-  mv x20, t2
-  li t0, 9
-  mv x24, t0
-  li t1, 10
-  mv x13, t1
-  li t2, 11
-  mv x18, t2
-  li t0, 12
-  mv x21, t0
-  li t1, 13
-  mv x22, t1
-  li t2, 14
-  mv x11, t2
-  li t0, 15
-  mv x4, t0
-  li t1, 16
-  mv x10, t1
-  li t2, 17
-  mv x9, t2
-  li t0, 18
-  mv x29, t0
-  li t1, 19
-  mv x30, t1
-  li t2, 20
-  mv x23, t2
-  la t0, x
-  lw t0, 0(t0)
-  mv x26, t0
-  li t1, 1
-  add t2, x26, t1
-  mv x27, t2
-  la t0, x
-  sw x27, 0(t0)
-  la t1, y
-  lw t1, 0(t1)
-  mv x3, t1
-  li t2, 2
-  add t0, x3, t2
-  mv x26, t0
-  la t1, y
-  sw x26, 0(t1)
-  la t2, z
-  lw t2, 0(t2)
-  mv x27, t2
-  li t0, 3
-  add t1, x27, t0
-  mv x3, t1
-  la t2, z
-  sw x3, 0(t2)
-  lw t0, null(sp)
-  mv x26, t0
-  li t1, 4
-  add t2, x26, t1
-  mv x27, t2
-  sw x27, null(sp)
-  lw t0, null(sp)
-  mv x3, t0
-  li t1, 5
-  add t2, x3, t1
-  mv x26, t2
-  sw x26, null(sp)
-  la t0, c
-  lw t0, 0(t0)
-  mv x27, t0
-  li t1, 6
-  add t2, x27, t1
-  mv x3, t2
-  la t0, c
-  sw x3, 0(t0)
-  la t1, d
-  lw t1, 0(t1)
-  mv x26, t1
-  li t2, 7
-  add t0, x26, t2
-  mv x8, t0
-  la t1, d
-  sw x8, 0(t1)
-  la t2, e
-  lw t2, 0(t2)
-  mv x27, t2
-  li t0, 8
-  add t1, x27, t0
-  mv x3, t1
-  la t2, e
-  sw x3, 0(t2)
-  la t0, f
-  lw t0, 0(t0)
-  mv x26, t0
-  li t1, 9
-  add t2, x26, t1
-  mv x8, t2
-  la t0, f
-  sw x8, 0(t0)
-  la t1, g
-  lw t1, 0(t1)
-  mv x27, t1
-  li t2, 10
-  add t0, x27, t2
-  mv x3, t0
-  la t1, g
-  sw x3, 0(t1)
-  la t2, h
-  lw t2, 0(t2)
-  mv x26, t2
-  li t0, 11
-  add t1, x26, t0
-  mv x8, t1
-  la t2, h
-  sw x8, 0(t2)
-  la t0, i
-  lw t0, 0(t0)
-  mv x27, t0
-  li t1, 12
-  add t2, x27, t1
-  mv x3, t2
-  la t0, i
-  sw x3, 0(t0)
-  la t1, j
-  lw t1, 0(t1)
-  mv x26, t1
-  li t2, 13
-  add t0, x26, t2
-  mv x8, t0
-  la t1, j
-  sw x8, 0(t1)
-  la t2, k
-  lw t2, 0(t2)
-  mv x27, t2
-  li t0, 14
-  add t1, x27, t0
-  mv x3, t1
-  la t2, k
-  sw x3, 0(t2)
-  la t0, l
-  lw t0, 0(t0)
-  mv x26, t0
-  li t1, 15
-  add t2, x26, t1
-  mv x8, t2
-  la t0, l
-  sw x8, 0(t0)
-  la t1, m
-  lw t1, 0(t1)
-  mv x27, t1
-  li t2, 16
-  add t0, x27, t2
-  mv x3, t0
-  la t1, m
-  sw x3, 0(t1)
-  la t2, n
-  lw t2, 0(t2)
-  mv x26, t2
-  li t0, 17
-  add t1, x26, t0
-  mv x8, t1
-  la t2, n
-  sw x8, 0(t2)
-  la t0, o
-  lw t0, 0(t0)
-  mv x27, t0
-  li t1, 18
-  add t2, x27, t1
-  mv x3, t2
-  la t0, o
-  sw x3, 0(t0)
-  la t1, p
-  lw t1, 0(t1)
-  mv x26, t1
-  li t2, 19
-  add t0, x26, t2
-  mv x8, t0
-  la t1, p
-  sw x8, 0(t1)
-  la t2, q
-  lw t2, 0(t2)
-  mv x27, t2
-  li t0, 20
-  add t1, x27, t0
-  mv x3, t1
-  la t2, q
-  sw x3, 0(t2)
-  mv x26, x16
-  li t0, 2
-  mul t1, x26, t0
-  mv x8, t1
-  mv x16, x8
-  mv x27, x17
-  li t2, 2
-  mul t0, x27, t2
-  mv x3, t0
-  mv x17, x3
-  mv x26, x25
-  li t1, 2
-  mul t2, x26, t1
-  mv x8, t2
-  mv x25, x8
-  mv x27, x31
-  li t0, 2
-  mul t1, x27, t0
-  mv x3, t1
-  mv x31, x3
-  mv x26, x12
-  li t2, 2
-  mul t0, x26, t2
-  mv x8, t0
-  mv x12, x8
-  mv x27, x15
-  li t1, 2
-  mul t2, x27, t1
-  mv x3, t2
-  mv x15, x3
-  mv x26, x28
-  li t0, 2
-  mul t1, x26, t0
-  mv x8, t1
-  mv x28, x8
-  mv x27, x20
-  li t2, 2
-  mul t0, x27, t2
-  mv x3, t0
-  mv x20, x3
-  mv x26, x24
-  li t1, 2
-  mul t2, x26, t1
-  mv x8, t2
-  mv x24, x8
-  mv x27, x13
-  li t0, 2
-  mul t1, x27, t0
-  mv x3, t1
-  mv x13, x3
-  mv x26, x18
-  li t2, 2
-  mul t0, x26, t2
-  mv x8, t0
-  mv x18, x8
-  mv x27, x21
-  li t1, 2
-  mul t2, x27, t1
-  mv x3, t2
-  mv x21, x3
-  mv x26, x22
-  li t0, 2
-  mul t1, x26, t0
-  mv x8, t1
-  mv x22, x8
-  mv x27, x11
-  li t2, 2
-  mul t0, x27, t2
-  mv x3, t0
-  mv x11, x3
-  mv x26, x4
-  li t1, 2
-  mul t2, x26, t1
-  mv x8, t2
-  mv x4, x8
-  mv x27, x10
-  li t0, 2
-  mul t1, x27, t0
-  mv x3, t1
-  mv x10, x3
-  mv x26, x9
-  li t2, 2
-  mul t0, x26, t2
-  mv x8, t0
-  mv x9, x8
-  mv x27, x29
-  li t1, 2
-  mul t2, x27, t1
-  mv x3, t2
-  mv x29, x3
-  mv x26, x30
-  li t0, 2
-  mul t1, x26, t0
-  mv x8, t1
-  mv x30, x8
-  mv x27, x23
-  li t2, 2
-  mul t0, x27, t2
-  mv x3, t0
-  mv x23, x3
-  lw t1, null(sp)
-  mv x26, t1
-  mv x8, x16
-  add t2, x26, x8
-  mv x27, t2
-  mv x3, x17
-  add t0, x27, x3
-  mv x16, t0
-  mv x8, x25
-  add t1, x16, x8
-  mv x26, t1
-  mv x17, x31
-  add t2, x26, x17
-  mv x3, t2
-  mv x27, x12
-  add t0, x3, x27
-  mv x25, t0
-  mv x8, x15
-  add t1, x25, x8
-  mv x16, t1
-  mv x31, x28
-  add t2, x16, x31
-  mv x17, t2
-  mv x26, x20
-  add t0, x17, x26
-  mv x12, t0
-  mv x27, x24
-  add t1, x12, x27
-  mv x3, t1
-  mv x15, x13
-  add t2, x3, x15
-  mv x8, t2
-  mv x25, x18
-  add t0, x8, x25
-  mv x28, t0
-  mv x31, x21
-  add t1, x28, x31
-  mv x16, t1
-  mv x20, x22
-  add t2, x16, x20
-  mv x26, t2
-  mv x17, x11
-  add t0, x26, x17
-  mv x24, t0
-  mv x27, x4
-  add t1, x24, x27
-  mv x12, t1
-  mv x13, x10
-  add t2, x12, x13
-  mv x15, t2
-  mv x3, x9
-  add t0, x15, x3
-  mv x18, t0
-  mv x25, x29
-  add t1, x18, x25
-  mv x8, t1
-  mv x21, x30
-  add t2, x8, x21
-  mv x31, t2
-  mv x28, x23
-  add t0, x31, x28
-  mv x22, t0
-  mv a0, x22
-  addi sp, sp, 2044
-  li a7, 93
-  ecall
-if.then19:
-  lw t1, null(sp)
-  mv x19, t1
-  li t2, 1
-  add t0, x19, t2
-  mv x14, t0
-  sw x14, null(sp)
-  j merge13
+  %a = alloca i32, align 4
+  %load_lval = load i32, i32* @x, align 4
+  store i32 %load_lval, i32* %a, align 4
+  %b = alloca i32, align 4
+  %load_lval1 = load i32, i32* @y, align 4
+  store i32 %load_lval1, i32* %b, align 4
+  br label %while.cond
+
+cur:                                              ; preds = %while.cond
+  %load_lval14 = load i32, i32* %a, align 4
+  %load_lval15 = load i32, i32* @x, align 4
+  %not = icmp eq i32 %load_lval15, 0
+  %zext_to_i3216 = zext i1 %not to i32
+  %add = add i32 %zext_to_i3216, 3
+  %cmp17 = icmp ne i32 %load_lval14, %add
+  %zext_to_i3218 = zext i1 %cmp17 to i32
+  %to_bool20 = icmp ne i32 %zext_to_i3218, 0
+  br i1 %to_bool20, label %if.then19, label %merge13
+
+while.stmt:                                       ; preds = %while.cond
+  %load_lval3 = load i32, i32* %a, align 4
+  %load_lval4 = load i32, i32* %b, align 4
+  %cmp5 = icmp sgt i32 %load_lval3, %load_lval4
+  %zext_to_i326 = zext i1 %cmp5 to i32
+  %to_bool7 = icmp ne i32 %zext_to_i326, 0
+  br i1 %to_bool7, label %if.then, label %if.else
+
+while.cond:                                       ; preds = %merge, %mainEntry
+  %load_lval2 = load i32, i32* %b, align 4
+  %cmp = icmp ne i32 %load_lval2, 0
+  %zext_to_i32 = zext i1 %cmp to i32
+  %to_bool = icmp ne i32 %zext_to_i32, 0
+  br i1 %to_bool, label %while.stmt, label %cur
+
+merge:                                            ; preds = %if.else, %if.then
+  br label %while.cond
+
+if.then:                                          ; preds = %while.stmt
+  %load_lval8 = load i32, i32* %a, align 4
+  %load_lval9 = load i32, i32* %b, align 4
+  %sub = sub i32 %load_lval8, %load_lval9
+  store i32 %sub, i32* %a, align 4
+  br label %merge
+
+if.else:                                          ; preds = %while.stmt
+  %load_lval10 = load i32, i32* %b, align 4
+  %load_lval11 = load i32, i32* %a, align 4
+  %sub12 = sub i32 %load_lval10, %load_lval11
+  store i32 %sub12, i32* %b, align 4
+  br label %merge
+
+merge13:                                          ; preds = %if.then19, %cur
+  %x1 = alloca i32, align 4
+  store i32 1, i32* %x1, align 4
+  %x2 = alloca i32, align 4
+  store i32 2, i32* %x2, align 4
+  %x3 = alloca i32, align 4
+  store i32 3, i32* %x3, align 4
+  %x4 = alloca i32, align 4
+  store i32 4, i32* %x4, align 4
+  %x5 = alloca i32, align 4
+  store i32 5, i32* %x5, align 4
+  %x6 = alloca i32, align 4
+  store i32 6, i32* %x6, align 4
+  %x7 = alloca i32, align 4
+  store i32 7, i32* %x7, align 4
+  %x8 = alloca i32, align 4
+  store i32 8, i32* %x8, align 4
+  %x9 = alloca i32, align 4
+  store i32 9, i32* %x9, align 4
+  %x10 = alloca i32, align 4
+  store i32 10, i32* %x10, align 4
+  %x11 = alloca i32, align 4
+  store i32 11, i32* %x11, align 4
+  %x12 = alloca i32, align 4
+  store i32 12, i32* %x12, align 4
+  %x13 = alloca i32, align 4
+  store i32 13, i32* %x13, align 4
+  %x14 = alloca i32, align 4
+  store i32 14, i32* %x14, align 4
+  %x15 = alloca i32, align 4
+  store i32 15, i32* %x15, align 4
+  %x16 = alloca i32, align 4
+  store i32 16, i32* %x16, align 4
+  %x17 = alloca i32, align 4
+  store i32 17, i32* %x17, align 4
+  %x18 = alloca i32, align 4
+  store i32 18, i32* %x18, align 4
+  %x19 = alloca i32, align 4
+  store i32 19, i32* %x19, align 4
+  %x20 = alloca i32, align 4
+  store i32 20, i32* %x20, align 4
+  %load_lval23 = load i32, i32* @x, align 4
+  %add24 = add i32 %load_lval23, 1
+  store i32 %add24, i32* @x, align 4
+  %load_lval25 = load i32, i32* @y, align 4
+  %add26 = add i32 %load_lval25, 2
+  store i32 %add26, i32* @y, align 4
+  %load_lval27 = load i32, i32* @z, align 4
+  %add28 = add i32 %load_lval27, 3
+  store i32 %add28, i32* @z, align 4
+  %load_lval29 = load i32, i32* %a, align 4
+  %add30 = add i32 %load_lval29, 4
+  store i32 %add30, i32* %a, align 4
+  %load_lval31 = load i32, i32* %b, align 4
+  %add32 = add i32 %load_lval31, 5
+  store i32 %add32, i32* %b, align 4
+  %load_lval33 = load i32, i32* @c, align 4
+  %add34 = add i32 %load_lval33, 6
+  store i32 %add34, i32* @c, align 4
+  %load_lval35 = load i32, i32* @d, align 4
+  %add36 = add i32 %load_lval35, 7
+  store i32 %add36, i32* @d, align 4
+  %load_lval37 = load i32, i32* @e, align 4
+  %add38 = add i32 %load_lval37, 8
+  store i32 %add38, i32* @e, align 4
+  %load_lval39 = load i32, i32* @f, align 4
+  %add40 = add i32 %load_lval39, 9
+  store i32 %add40, i32* @f, align 4
+  %load_lval41 = load i32, i32* @g, align 4
+  %add42 = add i32 %load_lval41, 10
+  store i32 %add42, i32* @g, align 4
+  %load_lval43 = load i32, i32* @h, align 4
+  %add44 = add i32 %load_lval43, 11
+  store i32 %add44, i32* @h, align 4
+  %load_lval45 = load i32, i32* @i, align 4
+  %add46 = add i32 %load_lval45, 12
+  store i32 %add46, i32* @i, align 4
+  %load_lval47 = load i32, i32* @j, align 4
+  %add48 = add i32 %load_lval47, 13
+  store i32 %add48, i32* @j, align 4
+  %load_lval49 = load i32, i32* @k, align 4
+  %add50 = add i32 %load_lval49, 14
+  store i32 %add50, i32* @k, align 4
+  %load_lval51 = load i32, i32* @l, align 4
+  %add52 = add i32 %load_lval51, 15
+  store i32 %add52, i32* @l, align 4
+  %load_lval53 = load i32, i32* @m, align 4
+  %add54 = add i32 %load_lval53, 16
+  store i32 %add54, i32* @m, align 4
+  %load_lval55 = load i32, i32* @n, align 4
+  %add56 = add i32 %load_lval55, 17
+  store i32 %add56, i32* @n, align 4
+  %load_lval57 = load i32, i32* @o, align 4
+  %add58 = add i32 %load_lval57, 18
+  store i32 %add58, i32* @o, align 4
+  %load_lval59 = load i32, i32* @p, align 4
+  %add60 = add i32 %load_lval59, 19
+  store i32 %add60, i32* @p, align 4
+  %load_lval61 = load i32, i32* @q, align 4
+  %add62 = add i32 %load_lval61, 20
+  store i32 %add62, i32* @q, align 4
+  %load_lval63 = load i32, i32* %x1, align 4
+  %mul = mul i32 %load_lval63, 2
+  store i32 %mul, i32* %x1, align 4
+  %load_lval64 = load i32, i32* %x2, align 4
+  %mul65 = mul i32 %load_lval64, 2
+  store i32 %mul65, i32* %x2, align 4
+  %load_lval66 = load i32, i32* %x3, align 4
+  %mul67 = mul i32 %load_lval66, 2
+  store i32 %mul67, i32* %x3, align 4
+  %load_lval68 = load i32, i32* %x4, align 4
+  %mul69 = mul i32 %load_lval68, 2
+  store i32 %mul69, i32* %x4, align 4
+  %load_lval70 = load i32, i32* %x5, align 4
+  %mul71 = mul i32 %load_lval70, 2
+  store i32 %mul71, i32* %x5, align 4
+  %load_lval72 = load i32, i32* %x6, align 4
+  %mul73 = mul i32 %load_lval72, 2
+  store i32 %mul73, i32* %x6, align 4
+  %load_lval74 = load i32, i32* %x7, align 4
+  %mul75 = mul i32 %load_lval74, 2
+  store i32 %mul75, i32* %x7, align 4
+  %load_lval76 = load i32, i32* %x8, align 4
+  %mul77 = mul i32 %load_lval76, 2
+  store i32 %mul77, i32* %x8, align 4
+  %load_lval78 = load i32, i32* %x9, align 4
+  %mul79 = mul i32 %load_lval78, 2
+  store i32 %mul79, i32* %x9, align 4
+  %load_lval80 = load i32, i32* %x10, align 4
+  %mul81 = mul i32 %load_lval80, 2
+  store i32 %mul81, i32* %x10, align 4
+  %load_lval82 = load i32, i32* %x11, align 4
+  %mul83 = mul i32 %load_lval82, 2
+  store i32 %mul83, i32* %x11, align 4
+  %load_lval84 = load i32, i32* %x12, align 4
+  %mul85 = mul i32 %load_lval84, 2
+  store i32 %mul85, i32* %x12, align 4
+  %load_lval86 = load i32, i32* %x13, align 4
+  %mul87 = mul i32 %load_lval86, 2
+  store i32 %mul87, i32* %x13, align 4
+  %load_lval88 = load i32, i32* %x14, align 4
+  %mul89 = mul i32 %load_lval88, 2
+  store i32 %mul89, i32* %x14, align 4
+  %load_lval90 = load i32, i32* %x15, align 4
+  %mul91 = mul i32 %load_lval90, 2
+  store i32 %mul91, i32* %x15, align 4
+  %load_lval92 = load i32, i32* %x16, align 4
+  %mul93 = mul i32 %load_lval92, 2
+  store i32 %mul93, i32* %x16, align 4
+  %load_lval94 = load i32, i32* %x17, align 4
+  %mul95 = mul i32 %load_lval94, 2
+  store i32 %mul95, i32* %x17, align 4
+  %load_lval96 = load i32, i32* %x18, align 4
+  %mul97 = mul i32 %load_lval96, 2
+  store i32 %mul97, i32* %x18, align 4
+  %load_lval98 = load i32, i32* %x19, align 4
+  %mul99 = mul i32 %load_lval98, 2
+  store i32 %mul99, i32* %x19, align 4
+  %load_lval100 = load i32, i32* %x20, align 4
+  %mul101 = mul i32 %load_lval100, 2
+  store i32 %mul101, i32* %x20, align 4
+  %load_lval102 = load i32, i32* %a, align 4
+  %load_lval103 = load i32, i32* %x1, align 4
+  %add104 = add i32 %load_lval102, %load_lval103
+  %load_lval105 = load i32, i32* %x2, align 4
+  %add106 = add i32 %add104, %load_lval105
+  %load_lval107 = load i32, i32* %x3, align 4
+  %add108 = add i32 %add106, %load_lval107
+  %load_lval109 = load i32, i32* %x4, align 4
+  %add110 = add i32 %add108, %load_lval109
+  %load_lval111 = load i32, i32* %x5, align 4
+  %add112 = add i32 %add110, %load_lval111
+  %load_lval113 = load i32, i32* %x6, align 4
+  %add114 = add i32 %add112, %load_lval113
+  %load_lval115 = load i32, i32* %x7, align 4
+  %add116 = add i32 %add114, %load_lval115
+  %load_lval117 = load i32, i32* %x8, align 4
+  %add118 = add i32 %add116, %load_lval117
+  %load_lval119 = load i32, i32* %x9, align 4
+  %add120 = add i32 %add118, %load_lval119
+  %load_lval121 = load i32, i32* %x10, align 4
+  %add122 = add i32 %add120, %load_lval121
+  %load_lval123 = load i32, i32* %x11, align 4
+  %add124 = add i32 %add122, %load_lval123
+  %load_lval125 = load i32, i32* %x12, align 4
+  %add126 = add i32 %add124, %load_lval125
+  %load_lval127 = load i32, i32* %x13, align 4
+  %add128 = add i32 %add126, %load_lval127
+  %load_lval129 = load i32, i32* %x14, align 4
+  %add130 = add i32 %add128, %load_lval129
+  %load_lval131 = load i32, i32* %x15, align 4
+  %add132 = add i32 %add130, %load_lval131
+  %load_lval133 = load i32, i32* %x16, align 4
+  %add134 = add i32 %add132, %load_lval133
+  %load_lval135 = load i32, i32* %x17, align 4
+  %add136 = add i32 %add134, %load_lval135
+  %load_lval137 = load i32, i32* %x18, align 4
+  %add138 = add i32 %add136, %load_lval137
+  %load_lval139 = load i32, i32* %x19, align 4
+  %add140 = add i32 %add138, %load_lval139
+  %load_lval141 = load i32, i32* %x20, align 4
+  %add142 = add i32 %add140, %load_lval141
+  ret i32 %add142
+
+if.then19:                                        ; preds = %cur
+  %load_lval21 = load i32, i32* %a, align 4
+  %add22 = add i32 %load_lval21, 1
+  store i32 %add22, i32* %a, align 4
+  br label %merge13
+}
