@@ -172,6 +172,8 @@ public class LLVMIRToRiscv {
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
                         String valReg = evaluate(val);
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
+                        if(valReg.equals("x1")&&addr.contains("16")) System.out.println(LLVM.LLVMGetValueName(inst).getString());
+                        if(valReg.equals("x9")&&addr.contains("16")) System.out.println(LLVM.LLVMGetValueName(inst).getString());
                         if(addr!=null){
                             if(addr.contains("sp")) asm.instr("sw", valReg, addr);
                             else asm.instr("mv",addr,valReg);
