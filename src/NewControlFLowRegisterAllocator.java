@@ -70,7 +70,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         }
     }
     public static boolean is_live_variable(LLVMBasicBlockRef bb,String var,boolean is_detecting_block){
-        if(var.equals("b")) System.out.println("crzzzzssdsds");
+        if(LLVM.LLVMGetBasicBlockName(bb).getString().equals("while.cond")) System.out.println("crzzzzssdsds");
         if(visited_block.contains((LLVM.LLVMGetBasicBlockName(bb).getString()))){
             if(variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) return true;
             else return false;
