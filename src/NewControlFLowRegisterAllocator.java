@@ -31,6 +31,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 variable_def_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
                 variable_use_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
+                System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
                 name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(),bb);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
@@ -47,7 +48,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                     for (String var : LLVMIRToRiscv.extractVariables(line3)){
                         Set<String> variables=variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
                         if(!variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) {
-                            System.out.println("CRZZZ");
+                            System.out.println(var);
                             variables.add(var);
                         }
                     }
@@ -56,7 +57,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                         for (String var : LLVMIRToRiscv.extractVariables(line2)) {
                             Set<String> variables=variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());
                             if(!variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) {
-                                System.out.println("crzzz");
+                                System.out.println(var);
                                 variables.add(var);
                             }
                             break;
