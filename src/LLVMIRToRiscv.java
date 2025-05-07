@@ -158,6 +158,7 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    System.out.println(LLVM.LLVMGetValueName(inst).getString());
 //                    if(blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))){
 //                        NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
 //                    }
@@ -172,7 +173,6 @@ public class LLVMIRToRiscv {
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
                         String valReg = evaluate(val);
                         String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
-                        System.out.println(LLVM.LLVMGetValueName(inst).getString());
                         if(valReg.contains("x1")&&addr.contains("16")) {
                             System.out.println(LLVM.LLVMGetValueName(inst).getString());
                             System.out.println("crzzzzz");
