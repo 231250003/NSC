@@ -71,7 +71,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
     }
     public static boolean is_live_variable(LLVMBasicBlockRef bb,String var,boolean is_detecting_block){
         if(visited_block.contains((LLVM.LLVMGetBasicBlockName(bb).getString()))){
-            if(var.equals("b")&&LLVM.LLVMGetBasicBlockName(bb).getString().equals("mainEntry")) System.out.println("crzzzzssdsds");
+            //if(var.equals("b")&&LLVM.LLVMGetBasicBlockName(bb).getString().equals("mainEntry")) System.out.println("crzzzzssdsds");
             if(variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) return true;
             else return false;
         }
@@ -122,8 +122,8 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 else line2=line.substring(line.indexOf(",")+1);
                 for (String var : LLVMIRToRiscv.extractVariables(line2)) {
                     if(is_live_variable(bb,var,true)) {
-                        System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-                        if(var.equals("b")) System.out.println("crzz1");
+                        //System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//                        if(var.equals("b")) System.out.println("crzz1");
                         live_variable.add(var);
                     }
                     visited_block=new HashSet<>();
@@ -224,6 +224,13 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
 //                }
 //            }
 //        }
+        if(inst.isEmpty()) {
+            varToLocation = new HashMap<>();
+            changed_variable = new HashSet<>();
+            freed_register = new ArrayList<>(total_registers);
+            live_variable = new HashSet<>();
+            return;
+        }
         for (Map.Entry<String, String> entry : varToLocation.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
@@ -238,12 +245,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             if(!value.contains("sp")){
                 LLVMIRToRiscv.valueMap.put(key,String.format("%d(sp)", varOffset.get(key)));
             }
-        }
-        if(inst.isEmpty()) {
-            varToLocation = new HashMap<>();
-            changed_variable = new HashSet<>();
-            freed_register = new ArrayList<>(total_registers);
-            live_variable = new HashSet<>();
         }
     }
     @Override
