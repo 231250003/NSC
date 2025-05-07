@@ -82,6 +82,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 if(line.contains("br")&&(!line.contains(","))) {
                     for (String block_name : LLVMIRToRiscv.extractVariables(line)) {
                         LLVMBasicBlockRef next_block=name2blockref.get(block_name);
+                        System.out.println(LLVM.LLVMGetBasicBlockName(next_block).getString());
                         return is_live_variable(next_block,var,false);
                     }
                 }
@@ -146,7 +147,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         }
         else if(instruction.contains("store")&&instruction.contains("i32* %")) {
             String instruction2 = instruction.substring(instruction.indexOf(",")+1);
-            System.out.println("crzzzz");
             for (String var : LLVMIRToRiscv.extractVariables(instruction2)) {
                 changed_variable.add(var);
                 break;
