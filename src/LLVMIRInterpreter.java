@@ -252,7 +252,7 @@ public class LLVMIRInterpreter {
                                     List<String> keys = new ArrayList<>(name2blockref.keySet());
                                     randomKey = keys.get(rand2.nextInt(keys.size()));
                                 }
-                                if(rand<0.25)asm.j(randomKey);
+                                if(x==0)asm.j(randomKey);
                                 else asm.bnez("x"+(int)(rand*31),randomKey);
                             }
                         }
