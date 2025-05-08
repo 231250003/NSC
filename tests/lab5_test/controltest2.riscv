@@ -44,6 +44,7 @@ if.then:
   li t1, 1
   add t2, x14, t1
   mv x15, t2
+  sw x15, 8(sp)
   j merge
 cur:
   lw t0, 8(sp)
