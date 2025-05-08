@@ -158,8 +158,8 @@ public class LLVMIRToRiscv {
                         if (Main.used_interpreter == true && blockCount > 1
                                 && (LLVM.LLVMPrintValueToString(inst).getString().contains("br") || LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))
                                 && label.equals("mainEntry")) {
-                            System.out.println("crzzzz");
-                            System.out.println("------");
+//                            System.out.println("crzzzz");
+//                            System.out.println("------");
                             LLVMIRInterpreter interpreter = new LLVMIRInterpreter(module, file_path);
                             int retval = interpreter.Process_block(LLVMGetEntryBasicBlock(LLVMGetNamedFunction(module, "main")));
                             asm.li("a0", retval);
