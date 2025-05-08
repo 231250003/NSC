@@ -149,7 +149,6 @@ public class LLVMIRToRiscv {
             asm.instr("addi", "sp", "sp", "-" + stackSize);
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 if (blockCount > 1 && Main.is_run_time_error_test) {
-                    System.out.println("crzzzz");
                     lineNum = 0;
                     NewControlFlowRegisterAllocator.preprocess_block(bb);
                 }
@@ -172,6 +171,7 @@ public class LLVMIRToRiscv {
                             continue;
                         }
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                        System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                     allocator.processInstruction(lineNum, LLVM.LLVMPrintValueToString(inst).getString());
                     lineNum++;
                     if (opcode == LLVM.LLVMAlloca) {
