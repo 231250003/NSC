@@ -237,8 +237,9 @@ public class LLVMIRInterpreter {
                             }
                         }
                         else if(opcode==LLVM.LLVMRet||opcode==LLVM.LLVMBr){
-                             rand=Math.random();
-                            if(rand>0.5){
+                            Random rand3 = new Random();
+                            int x=rand3.nextInt(4);
+                            if(x>=2){
                                 asm.mv("a0", "x"+(int)(rand*31));
                                 asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
                                 asm.li("a7", 93);  // syscall exit
