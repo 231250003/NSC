@@ -14,7 +14,6 @@ mainEntry:
   add t2, x1, t1
   mv x3, t2
   la t0, x
-  sw x3, 0(t0)
   la t1, x
   lw t1, 0(t1)
   mv x4, t1
