@@ -1,82 +1,10 @@
-  .data
-x:
-  .word 56
-  .data
-y:
-  .word 98
 
   .text
   .globl main
 main:
-  addi sp, sp, -2044
+  addi sp, sp, -0
 mainEntry:
-  la t0, x
-  lw t0, 0(t0)
-  mv x3, t0
-  mv x1, x3
-  sw x1, 8(sp)
-  la t1, y
-  lw t1, 0(t1)
-  mv x8, t1
-  mv x4, x8
-  sw x4, 16(sp)
-  j while.cond
-cur:
-  lw t2, 8(sp)
-  mv x4, t2
-  mv x1, x4
-  mv x8, x1
-  mv a0, x8
-  addi sp, sp, 2044
+  li a0, 14
+  addi sp, sp, 0
   li a7, 93
   ecall
-while.stmt:
-  lw t0, 8(sp)
-  mv x3, t0
-  lw t1, 16(sp)
-  mv x8, t1
-  sgt t2, x3, x8
-  mv x9, t2
-  mv t0, x9
-  mv x10, t0
-  li t1, 0
-  xor t2, x10, t1
-  snez t2, t2
-  mv x11, t2
-  bnez x11, if.then
-  j if.else
-while.cond:
-  lw t0, 16(sp)
-  mv x3, t0
-  li t1, 0
-  xor t2, x3, t1
-  snez t2, t2
-  mv x4, t2
-  mv t0, x4
-  mv x8, t0
-  li t1, 0
-  xor t2, x8, t1
-  snez t2, t2
-  mv x9, t2
-  bnez x9, while.stmt
-  j cur
-merge:
-  j while.cond
-if.then:
-  lw t0, 8(sp)
-  mv x3, t0
-  lw t1, 16(sp)
-  mv x8, t1
-  sub t2, x3, x8
-  mv x9, t2
-  sw x9, 8(sp)
-  j merge
-if.else:
-  lw t0, 16(sp)
-  mv x3, t0
-  lw t1, 8(sp)
-  mv x4, t1
-  sub t2, x3, x4
-  mv x9, t2
-  sw x9, 16(sp)
-  j merge
