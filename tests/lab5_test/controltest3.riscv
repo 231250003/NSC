@@ -68,7 +68,6 @@ mainEntry:
   lw t0, 0(t0)
   mv x3, t0
   mv x1, x3
-  sw x1, 8(sp)
   la t1, y
   lw t1, 0(t1)
   mv x8, t1
@@ -206,7 +205,6 @@ merge13:
   add t2, x27, t1
   mv x28, t2
   la t0, y
-  sw x28, 0(t0)
   la t1, z
   lw t1, 0(t1)
   mv x29, t1
@@ -219,12 +217,12 @@ merge13:
   li t0, 4
   add t1, x25, t0
   mv x26, t1
+  sw x26, 8(sp)
   lw t2, 16(sp)
   mv x27, t2
   li t0, 5
   add t1, x27, t0
   mv x29, t1
-  sw x29, 16(sp)
   la t2, c
   lw t2, 0(t2)
   mv x30, t2
@@ -239,7 +237,6 @@ merge13:
   add t2, x26, t1
   mv x27, t2
   la t0, d
-  sw x27, 0(t0)
   la t1, e
   lw t1, 0(t1)
   mv x29, t1
@@ -261,6 +258,7 @@ merge13:
   add t2, x26, t1
   mv x27, t2
   la t0, g
+  sw x27, 0(t0)
   la t1, h
   lw t1, 0(t1)
   mv x29, t1
@@ -275,6 +273,7 @@ merge13:
   add t1, x30, t0
   mv x25, t1
   la t2, i
+  sw x25, 0(t2)
   la t0, j
   lw t0, 0(t0)
   mv x26, t0
@@ -282,6 +281,7 @@ merge13:
   add t2, x26, t1
   mv x27, t2
   la t0, j
+  sw x27, 0(t0)
   la t1, k
   lw t1, 0(t1)
   mv x29, t1
@@ -289,7 +289,6 @@ merge13:
   add t0, x29, t2
   mv x28, t0
   la t1, k
-  sw x28, 0(t1)
   la t2, l
   lw t2, 0(t2)
   mv x30, t2
@@ -297,7 +296,6 @@ merge13:
   add t1, x30, t0
   mv x25, t1
   la t2, l
-  sw x25, 0(t2)
   la t0, m
   lw t0, 0(t0)
   mv x26, t0
@@ -312,6 +310,7 @@ merge13:
   add t0, x29, t2
   mv x28, t0
   la t1, n
+  sw x28, 0(t1)
   la t2, o
   lw t2, 0(t2)
   mv x30, t2
@@ -327,6 +326,7 @@ merge13:
   add t2, x26, t1
   mv x27, t2
   la t0, p
+  sw x27, 0(t0)
   la t1, q
   lw t1, 0(t1)
   mv x29, t1
@@ -334,6 +334,7 @@ merge13:
   add t0, x29, t2
   mv x28, t0
   la t1, q
+  sw x28, 0(t1)
   mv x30, x1
   li t2, 2
   mul t0, x30, t2
@@ -506,5 +507,4 @@ if.then19:
   li t1, 1
   add t2, x3, t1
   mv x4, t2
-  sw x4, 8(sp)
   j merge13
