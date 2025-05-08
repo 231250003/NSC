@@ -1,7 +1,10 @@
-; ModuleID = 'my_module'
-source_filename = "my_module"
 
-define i32 @main() {
+  .text
+  .globl main
+main:
+  addi sp, sp, -4
 mainEntry:
-  ret i32 7
-}
+  li a0, 7
+  addi sp, sp, 4
+  li a7, 93
+  ecall
