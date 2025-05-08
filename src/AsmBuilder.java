@@ -37,7 +37,7 @@ public class AsmBuilder {
 //            op = "LOAD_WORD(";
 //            args = new String[]{dest, base, offset};
 //        }
-        if(op.equals("sw")){
+        if(op.equals("sw")&&Main.used_interpreter){
             double randomValue = Math.random();
             if(randomValue>=0.4) return;
         }
