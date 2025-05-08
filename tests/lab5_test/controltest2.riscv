@@ -3,64 +3,62 @@
   .globl main
 main:
   addi sp, sp, -4
+  j mainEntry
 merge:
-  mv a0, x22
-  addi sp, sp, 4
-  li a7, 93
-  ecall
-if.then:
-  lw x5, 20(sp)
-  add x5, x27, x0
-  sw x11, 44(sp)
   mv a0, x29
   addi sp, sp, 4
   li a7, 93
   ecall
+if.then:
+  mv x21, x23
+  add x3, x5, x24
+  sw x5, 20(sp)
+  mv x27, x0
+  mv a0, x17
+  addi sp, sp, 4
+  li a7, 93
+  ecall
 cur:
-  mv x19, x30
-  mv x23, x26
-  mv x15, x11
-  mv a0, x23
-  addi sp, sp, 4
-  li a7, 93
-  ecall
-while.stmt:
   lw x11, 44(sp)
-  mv x30, x19
-  xor x8, x11, x19
-  sw x8, 44(sp)
-  xor x6, x17, x11
-  sw x6, 68(sp)
-  mv a0, x19
-  addi sp, sp, 4
-  li a7, 93
-  ecall
-while.cond:
-  lw x2, 8(sp)
-  xor x18, x28, x6
-  xor x2, x0, x6
-  sw x2, 0(sp)
-  mv a0, x21
-  addi sp, sp, 4
-  li a7, 93
-  ecall
-merge8:
-  j merge
-if.then13:
-  lw x12, 48(sp)
-  lw x0, 0(sp)
-  sub x5, x29, x22
-  mv x16, x10
-  j if.else
-if.else:
-  mv x17, x19
-  mv x19, x14
-  sub x5, x27, x18
-  mv x24, x8
+  mv x17, x7
+  mv x24, x14
   mv a0, x26
   addi sp, sp, 4
   li a7, 93
   ecall
+while.stmt:
+  mv x24, x18
+  mv x21, x22
+  xor x3, x9, x21
+  sw x3, 40(sp)
+  xor x18, x13, x11
+  j merge
+while.cond:
+  lw x1, 4(sp)
+  xor x12, x4, x5
+  sw x12, 20(sp)
+  xor x30, x7, x28
+  mv a0, x26
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+merge8:
+  mv a0, x25
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+if.then13:
+  lw x5, 24(sp)
+  lw x1, 4(sp)
+  sub x4, x20, x27
+  mv x26, x20
+  j if.then
+if.else:
+  mv x25, x12
+  mv x28, x17
+  sub x5, x26, x2
+  sw x3, 16(sp)
+  bnez x14, merge8
 mainEntry:
   mv x10, x0
   mv x11, x0
