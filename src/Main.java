@@ -11,6 +11,8 @@ import java.util.List;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.llvm.LLVM.*;
+import org.bytedeco.llvm.global.LLVM;
+
 import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
     public static boolean is_run_time_error_test=true;
@@ -80,10 +82,13 @@ public class Main {
         if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
             LLVMDisposeMessage(error);
         }
-        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
+        //LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
         // LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
-        //if(args[0].contains("control")&&args[0].contains("3")) is_run_time_error_test=true;
-        llvmirToRiscv.to_riscv();
+        //llvmirToRiscv.to_riscv();
+
+        LLVMIRInterpreter interpreter=new LLVMIRInterpreter(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
+        // LLVMIRInterpreter interpreter=new LLVMIRInterpreter(module,args[1]);
+        interpreter.to_riscv();
         LLVMDisposeBuilder(builder);
         LLVMDisposeModule(module);
     }
