@@ -194,7 +194,6 @@ cur42:
   li t2, 0
   xor t0, x14, t2
   snez t0, t0
-  sw t0, 8(sp)
   lw t1, 8(sp)
   bnez t1, if.then59
   j if.else60
@@ -234,7 +233,6 @@ merge55:
   mv x20, x9
   mv x10, x3
   add t1, x20, x10
-  sw t1, 16(sp)
   lw t2, 16(sp)
   li t0, 40
   sgt t1, t2, t0
