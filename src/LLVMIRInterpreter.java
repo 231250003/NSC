@@ -55,7 +55,7 @@ public class LLVMIRInterpreter {
             }
             else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                     opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
-                    opcode == LLVM.LLVMSRem){
+                    opcode == LLVM.LLVMSRem || opcode==LLVM.LLVMURem){
                 LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
                 LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
                 int op1 = evaluate(lhs);
@@ -76,6 +76,9 @@ public class LLVMIRInterpreter {
                         break;
                     case LLVM.LLVMSRem:
                         ans=op1%op2;
+                        break;
+                    case LLVM.LLVMURem:
+                        ans = Integer.remainderUnsigned(op1, op2);
                         break;
                     default:
                         throw new RuntimeException("Unsupported binop");
@@ -133,8 +136,9 @@ public class LLVMIRInterpreter {
                 }
             }
              else {
-                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                throw new RuntimeException("Unsupported instruction opcode: " + opcode);
+                 return 0;
+//                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+//                throw new RuntimeException("Unsupported instruction opcode: " + opcode);
             }
         }
         return 0;
@@ -146,7 +150,10 @@ public class LLVMIRInterpreter {
             return (int)imm;
         }
         else{
-            if(symbol.get(LLVM.LLVMGetValueName(val).getString())==null) throw new RuntimeException();
+            if(symbol.get(LLVM.LLVMGetValueName(val).getString())==null) {
+               return 0;
+                // throw new RuntimeException();
+            }
             else return symbol.get(LLVM.LLVMGetValueName(val).getString());
         }
     }
