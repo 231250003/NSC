@@ -163,6 +163,7 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
             Interval interval = varToInterval.get(var);
             if (interval == null || varToLocation.containsKey(var)) continue;
             if (!freed_register.isEmpty()&&(!instruction.contains("br")) &&(!instruction.contains("ret"))) {
+                if(var.equals("a"))System.out.println("crzzz");
                 String reg = freed_register.remove(0);
                 varToLocation.put(var, reg);
             } else if(instruction.contains("br")||instruction.contains("ret")){
