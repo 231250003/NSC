@@ -128,12 +128,14 @@ public class LLVMIRToRiscv {
              bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             blockCount++;
         }
-        if (blockCount > 1 && Main.is_run_time_error_test) {
-            allocator = new NewControlFlowRegisterAllocator(module, reg_list);
-            NewControlFlowRegisterAllocator.init();
-        }
         if (blockCount == 1) Main.used_interpreter = false;
-        else if (blockCount > 1) allocator = new ControlFlowRegisterAllocator(intervals, reg_list, asm);
+        else{
+            if (Main.is_run_time_error_test) {
+                allocator = new NewControlFlowRegisterAllocator(module, reg_list);
+                NewControlFlowRegisterAllocator.init();
+            }
+            else  allocator = new ControlFlowRegisterAllocator(intervals, reg_list, asm);
+        }
         asm.directive("text");
         asm.directive("globl main");
         // asm.macro();
