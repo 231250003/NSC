@@ -16,7 +16,7 @@ import org.bytedeco.llvm.global.LLVM;
 import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
     public static boolean is_run_time_error_test=false;
-    public static boolean used_interpreter=false;
+    public static boolean used_interpreter=true;
     public static void main(String[] args) throws IOException {
         /* if (args.length < 1) {
             System.err.println("input path is required");
