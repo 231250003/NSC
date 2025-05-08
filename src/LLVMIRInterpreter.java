@@ -136,9 +136,7 @@ public class LLVMIRInterpreter {
                 }
             }
              else {
-                 return 0;
-//                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-//                throw new RuntimeException("Unsupported instruction opcode: " + opcode);
+                throw new RuntimeException("Unsupported instruction opcode: " + opcode);
             }
         }
         return 0;
@@ -151,8 +149,7 @@ public class LLVMIRInterpreter {
         }
         else{
             if(symbol.get(LLVM.LLVMGetValueName(val).getString())==null) {
-               return 0;
-                // throw new RuntimeException();
+                throw new RuntimeException();
             }
             else return symbol.get(LLVM.LLVMGetValueName(val).getString());
         }
