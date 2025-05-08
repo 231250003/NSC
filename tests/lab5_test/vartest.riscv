@@ -40,6 +40,7 @@ mainEntry:
   add t1, x3, x11
   mv x12, t1
   la t2, b
+  sw x12, 0(t2)
   la t0, b
   lw t0, 0(t0)
   mv x13, t0
