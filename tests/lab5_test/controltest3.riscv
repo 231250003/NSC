@@ -5,451 +5,437 @@ main:
   addi sp, sp, -4
   j mainEntry
 cur:
-  li x6, 10
-  lw x8, 32(sp)
-  li x4, 8
-  mv x27, x2
-  xor x12, x16, x12
-  sw x12, 68(sp)
   li x7, 11
-  li x8, 12
-  add x4, x18, x14
-  li x8, 12
-  xor x9, x22, x2
-  sw x9, 92(sp)
-  li x8, 12
+  lw x4, 20(sp)
+  lw x1, 4(sp)
+  xor x28, x26, x29
   li x6, 10
-  xor x12, x9, x16
-  sw x12, 36(sp)
-  li x8, 12
-  bnez x25, if.else
+  add x3, x4, x19
+  sw x4, 20(sp)
+  li x5, 9
+  xor x0, x5, x15
+  sw x0, 20(sp)
+  li x4, 8
+  xor x27, x2, x11
+  bnez x0, if.then
 while.stmt:
-  li x3, 7
-  mv x26, x29
-  li x5, 9
-  mv x16, x7
-  xor x4, x15, x16
-  sw x4, 64(sp)
-  li x6, 10
-  li x3, 7
-  xor x5, x23, x11
-  sw x5, 92(sp)
-  mv a0, x8
-  addi sp, sp, 4
-  li a7, 93
-  ecall
-while.cond:
-  mv x20, x16
-  xor x14, x9, x23
-  sw x14, 40(sp)
-  li x5, 9
-  xor x30, x4, x29
-  li x5, 9
-  bnez x16, while.stmt
-merge:
+  lw x13, 56(sp)
+  li x7, 11
+  lw x11, 44(sp)
+  li x4, 8
+  xor x8, x23, x17
+  sw x8, 96(sp)
+  li x8, 12
+  xor x16, x26, x16
   li x9, 13
-  mv a0, x30
+  bnez x28, if.then
+while.cond:
+  li x7, 11
+  lw x5, 20(sp)
+  xor x6, x9, x29
+  sw x6, 36(sp)
+  li x4, 8
+  xor x19, x18, x27
+  li x5, 9
+  j merge
+merge:
+  li x8, 12
+  mv a0, x25
   addi sp, sp, 4
   li a7, 93
   ecall
 if.then:
-  li x9, 13
-  mv x28, x19
-  li x3, 7
-  lw x12, 48(sp)
-  sub x4, x24, x12
-  mv x28, x24
-  li x3, 7
-  bnez x11, if.else
-if.else:
-  lw x6, 28(sp)
-  mv x24, x19
-  li x5, 9
-  sub x3, x11, x0
-  sw x11, 44(sp)
-  li x5, 9
+  mv x26, x14
+  li x8, 12
+  mv x25, x22
+  li x6, 10
+  sub x4, x15, x14
+  sw x15, 60(sp)
   sw x3, 12(sp)
-  li x5, 9
-  mv a0, x15
+  mv a0, x0
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+if.else:
+  mv x24, x26
+  li x6, 10
+  lw x7, 28(sp)
+  sub x4, x14, x25
+  sw x14, 56(sp)
+  li x3, 7
+  sw x4, 20(sp)
+  mv a0, x4
   addi sp, sp, 4
   li a7, 93
   ecall
 merge13:
-  sw x12, 48(sp)
-  li x9, 13
-  sw x11, 48(sp)
-  li x9, 13
-  li x6, 10
-  sw x11, 48(sp)
-  li x8, 12
-  mv x19, x22
-  li x5, 9
-  mv x28, x16
-  li x9, 13
-  li x3, 7
-  mv x28, x12
-  li x7, 11
-  sw x2, 8(sp)
-  li x3, 7
+  mv x16, x13
   li x4, 8
-  sw x8, 36(sp)
-  li x3, 7
-  mv x16, x17
-  li x3, 7
   li x8, 12
-  sw x1, 4(sp)
-  li x5, 9
-  li x4, 8
-  sw x12, 52(sp)
-  li x5, 9
-  li x3, 7
-  mv x25, x27
-  sw x11, 48(sp)
-  li x3, 7
-  li x3, 7
-  sw x2, 8(sp)
-  li x7, 11
-  sw x0, 0(sp)
-  li x6, 10
-  li x5, 9
-  mv x19, x22
-  li x8, 12
-  li x4, 8
-  mv x29, x2
-  li x8, 12
-  mv x26, x27
-  li x9, 13
-  li x5, 9
-  sw x9, 36(sp)
-  li x3, 7
-  li x9, 13
+  sw x14, 60(sp)
   sw x9, 40(sp)
-  li x8, 12
-  mv x20, x4
-  li x3, 7
-  add x4, x22, x24
-  mv x29, x19
   li x7, 11
-  lw x2, 8(sp)
-  li x4, 8
-  add x3, x12, x25
-  sw x12, 48(sp)
-  li x3, 7
-  mv x23, x17
-  li x9, 13
-  lw x1, 4(sp)
-  li x7, 11
-  add x4, x18, x21
-  sw x12, 48(sp)
-  li x7, 11
-  lw x6, 24(sp)
-  li x3, 7
-  add x3, x4, x7
-  sw x4, 16(sp)
-  li x6, 10
-  mv x30, x27
-  li x4, 8
-  lw x6, 24(sp)
-  li x3, 7
-  add x3, x11, x29
-  sw x11, 48(sp)
-  li x4, 8
-  sw x7, 28(sp)
-  mv x19, x18
+  mv x27, x6
   li x5, 9
-  add x3, x10, x14
-  sw x10, 40(sp)
-  li x4, 8
-  sw x10, 40(sp)
-  li x4, 8
-  lw x4, 16(sp)
-  add x4, x22, x16
-  li x3, 7
+  li x9, 13
+  sw x13, 56(sp)
+  li x6, 10
+  li x9, 13
+  mv x29, x3
+  li x7, 11
+  mv x30, x18
+  li x5, 9
+  sw x0, 0(sp)
+  li x8, 12
   sw x6, 28(sp)
   li x8, 12
-  lw x6, 24(sp)
-  add x3, x8, x14
-  sw x8, 32(sp)
-  li x7, 11
-  mv x18, x0
-  li x9, 13
-  mv x16, x8
-  li x6, 10
-  add x3, x10, x4
-  sw x10, 40(sp)
-  li x3, 7
+  mv x27, x22
+  li x8, 12
+  li x8, 12
+  mv x29, x14
+  li x8, 12
+  li x4, 8
+  sw x12, 48(sp)
+  li x8, 12
+  li x4, 8
   sw x7, 28(sp)
-  li x6, 10
-  lw x10, 40(sp)
-  li x5, 9
-  add x3, x0, x15
-  sw x0, 0(sp)
-  li x9, 13
-  sw x14, 56(sp)
-  mv x29, x21
-  add x5, x25, x30
-  li x9, 13
-  mv x30, x8
-  li x3, 7
-  lw x4, 16(sp)
-  add x4, x12, x27
-  sw x12, 52(sp)
-  li x5, 9
-  sw x8, 32(sp)
   li x7, 11
-  lw x15, 60(sp)
-  add x4, x24, x3
+  li x4, 8
+  sw x4, 20(sp)
+  li x6, 10
+  li x6, 10
+  mv x27, x25
+  sw x7, 28(sp)
+  li x7, 11
+  mv x23, x19
+  li x9, 13
+  sw x5, 20(sp)
+  li x6, 10
+  li x4, 8
+  sw x3, 12(sp)
+  li x4, 8
+  sw x7, 28(sp)
+  li x5, 9
+  mv x25, x6
+  li x7, 11
+  add x3, x8, x17
+  sw x8, 32(sp)
+  li x8, 12
+  sw x4, 16(sp)
+  mv x19, x8
+  li x4, 8
+  add x3, x0, x16
+  sw x0, 0(sp)
+  li x3, 7
+  mv x28, x30
+  li x6, 10
+  mv x18, x26
+  add x3, x10, x1
+  sw x10, 40(sp)
   li x6, 10
   sw x6, 24(sp)
   li x3, 7
-  mv x15, x26
-  li x5, 9
-  add x3, x2, x14
-  sw x2, 8(sp)
-  sw x10, 40(sp)
-  li x9, 13
-  lw x4, 16(sp)
-  add x3, x5, x14
-  sw x5, 20(sp)
-  li x5, 9
-  mv x18, x25
+  lw x13, 56(sp)
   li x3, 7
-  lw x11, 48(sp)
+  add x5, x30, x11
   li x3, 7
-  add x5, x30, x29
-  li x9, 13
-  sw x12, 48(sp)
-  li x4, 8
-  lw x14, 60(sp)
-  li x9, 13
-  add x3, x1, x18
-  sw x1, 4(sp)
-  li x6, 10
-  mv x22, x28
-  li x9, 13
-  mv x26, x20
-  li x4, 8
-  add x5, x26, x3
-  li x4, 8
-  mv x28, x11
-  mv x22, x7
-  li x4, 8
-  add x3, x5, x2
-  sw x5, 24(sp)
-  li x6, 10
-  mv x21, x5
-  li x3, 7
-  mv x15, x28
-  li x8, 12
-  add x5, x27, x23
-  mv x23, x25
-  li x4, 8
-  mv x16, x15
-  li x6, 10
-  mul x3, x10, x19
-  sw x10, 40(sp)
   sw x13, 56(sp)
-  mv x25, x17
-  li x5, 9
-  mul x3, x5, x7
-  sw x5, 24(sp)
-  li x5, 9
-  sw x12, 48(sp)
-  li x9, 13
-  mv x22, x10
-  li x9, 13
-  mul x3, x8, x11
-  sw x8, 32(sp)
-  sw x0, 0(sp)
-  li x4, 8
-  lw x13, 52(sp)
-  li x7, 11
-  mul x5, x28, x20
-  mv x30, x17
   li x3, 7
-  mv x23, x3
-  li x5, 9
-  mul x5, x28, x2
-  li x4, 8
-  mv x26, x5
-  li x5, 9
-  mv x24, x3
-  li x4, 8
-  mul x5, x30, x6
-  li x7, 11
-  sw x5, 20(sp)
-  li x6, 10
-  lw x8, 32(sp)
-  li x6, 10
-  mul x3, x2, x15
-  sw x2, 8(sp)
-  li x5, 9
-  sw x9, 36(sp)
-  li x4, 8
-  lw x6, 24(sp)
-  li x4, 8
-  mul x4, x20, x1
-  li x7, 11
-  mv x26, x5
-  li x6, 10
-  lw x12, 48(sp)
-  li x7, 11
-  mul x5, x28, x19
-  li x3, 7
-  sw x10, 40(sp)
-  mv x21, x18
-  li x8, 12
-  mul x3, x2, x9
-  sw x2, 8(sp)
-  li x4, 8
-  mv x25, x1
-  li x6, 10
-  mv x22, x1
-  mul x3, x11, x18
-  sw x11, 44(sp)
-  li x7, 11
-  sw x7, 28(sp)
-  li x9, 13
-  lw x10, 44(sp)
-  li x4, 8
-  mul x3, x3, x11
-  sw x3, 12(sp)
-  li x8, 12
-  sw x10, 40(sp)
   lw x5, 20(sp)
   li x5, 9
-  mul x4, x23, x12
-  li x9, 13
-  sw x5, 20(sp)
+  add x3, x0, x4
+  sw x0, 0(sp)
+  mv x28, x15
+  li x7, 11
+  lw x1, 8(sp)
+  li x3, 7
+  add x3, x8, x17
+  sw x8, 32(sp)
+  li x8, 12
+  sw x7, 28(sp)
   li x5, 9
-  lw x9, 36(sp)
-  mul x4, x14, x10
-  sw x14, 60(sp)
+  mv x20, x17
+  li x6, 10
+  add x4, x15, x19
+  sw x15, 60(sp)
+  li x6, 10
+  sw x14, 56(sp)
+  mv x28, x3
   li x3, 7
-  mv x17, x8
-  li x3, 7
-  lw x15, 60(sp)
-  li x4, 8
-  mul x3, x6, x12
-  sw x6, 28(sp)
-  li x9, 13
+  add x5, x27, x10
+  li x7, 11
+  sw x12, 48(sp)
+  li x6, 10
+  lw x10, 44(sp)
+  li x5, 9
+  add x4, x15, x17
+  sw x15, 60(sp)
   mv x24, x5
   li x3, 7
-  mv x17, x24
-  li x8, 12
-  mul x4, x19, x16
-  li x4, 8
-  mv x22, x16
-  li x4, 8
   lw x4, 16(sp)
+  li x5, 9
+  add x4, x22, x15
+  li x8, 12
+  sw x13, 56(sp)
+  li x9, 13
+  mv x22, x19
+  add x3, x11, x23
+  sw x11, 44(sp)
+  li x3, 7
+  mv x24, x10
+  lw x0, 0(sp)
   li x4, 8
-  mul x4, x21, x20
+  add x3, x11, x24
+  sw x11, 44(sp)
+  mv x20, x19
+  mv x25, x26
+  li x6, 10
+  add x4, x15, x28
+  li x9, 13
+  sw x3, 12(sp)
+  mv x26, x25
   li x7, 11
-  mv x19, x3
-  li x4, 8
-  lw x0, 0(sp)
-  mul x3, x4, x19
-  sw x4, 16(sp)
-  li x4, 8
-  mv x16, x30
-  li x9, 13
-  mv x25, x12
-  li x5, 9
-  mul x5, x25, x7
-  sw x2, 8(sp)
-  li x3, 7
-  mv x17, x11
-  mul x3, x5, x13
-  sw x5, 24(sp)
-  li x4, 8
-  mv x29, x26
-  mv x25, x2
+  add x5, x30, x28
+  mv x23, x13
   li x6, 10
-  lw x0, 0(sp)
-  li x3, 7
-  add x3, x0, x26
-  sw x0, 0(sp)
-  li x3, 7
-  mv x26, x27
+  mv x16, x7
+  li x4, 8
+  add x5, x27, x0
+  li x4, 8
+  mv x28, x6
+  li x7, 11
+  mv x29, x5
+  add x4, x21, x6
   li x6, 10
-  add x4, x17, x2
-  mv x17, x11
-  li x9, 13
-  add x4, x17, x9
-  lw x0, 0(sp)
-  li x9, 13
-  add x5, x28, x20
-  mv x19, x24
-  li x8, 12
-  add x4, x19, x19
-  mv x25, x4
-  add x4, x13, x16
   sw x13, 52(sp)
-  li x9, 13
-  lw x0, 0(sp)
-  li x8, 12
-  add x4, x24, x10
-  lw x12, 52(sp)
-  add x4, x17, x21
-  li x4, 8
-  lw x9, 36(sp)
-  li x4, 8
-  add x5, x25, x17
-  li x5, 9
-  mv x21, x5
-  add x4, x16, x29
-  mv x27, x10
-  li x5, 9
-  add x5, x28, x23
-  li x6, 10
-  mv x24, x3
+  lw x9, 40(sp)
   li x3, 7
-  add x3, x4, x6
-  sw x4, 16(sp)
-  lw x7, 28(sp)
-  add x3, x0, x12
-  sw x0, 0(sp)
-  li x9, 13
-  mv x25, x17
+  add x4, x23, x28
+  mv x24, x25
+  li x6, 10
+  mv x20, x4
+  add x4, x23, x14
+  li x7, 11
+  sw x12, 52(sp)
+  mv x17, x15
+  li x6, 10
+  add x5, x26, x26
+  li x5, 9
+  sw x13, 56(sp)
+  li x6, 10
+  lw x6, 24(sp)
+  add x4, x22, x18
+  li x3, 7
+  mv x30, x1
+  lw x10, 44(sp)
+  li x7, 11
+  mul x3, x5, x29
+  sw x5, 20(sp)
   li x4, 8
-  add x3, x7, x10
+  sw x5, 20(sp)
+  li x4, 8
+  lw x12, 48(sp)
+  li x5, 9
+  mul x5, x30, x23
+  li x7, 11
+  sw x8, 32(sp)
+  li x8, 12
+  lw x4, 16(sp)
+  li x5, 9
+  mul x4, x20, x4
+  li x5, 9
+  sw x1, 4(sp)
+  lw x3, 12(sp)
+  mul x4, x18, x22
+  li x6, 10
+  mv x20, x3
+  lw x10, 40(sp)
+  mul x3, x4, x26
+  sw x4, 20(sp)
+  mv x17, x7
+  li x8, 12
+  lw x11, 48(sp)
+  li x6, 10
+  mul x3, x2, x20
+  sw x2, 8(sp)
+  mv x28, x20
+  li x5, 9
+  lw x12, 52(sp)
+  li x4, 8
+  mul x4, x18, x8
+  li x6, 10
+  sw x9, 40(sp)
+  li x3, 7
+  lw x11, 48(sp)
+  mul x3, x2, x11
+  sw x2, 8(sp)
+  li x9, 13
+  sw x9, 40(sp)
+  li x8, 12
+  mv x15, x8
+  li x6, 10
+  mul x4, x15, x22
+  sw x15, 60(sp)
+  li x4, 8
+  mv x16, x5
+  lw x0, 0(sp)
+  li x9, 13
+  mul x3, x12, x16
+  sw x12, 48(sp)
+  li x6, 10
+  sw x1, 4(sp)
+  li x9, 13
+  mv x30, x28
+  mul x5, x24, x11
+  li x4, 8
+  mv x21, x15
+  li x8, 12
+  mv x20, x8
+  li x3, 7
+  mul x5, x28, x27
+  li x7, 11
+  mv x19, x26
+  li x5, 9
+  mv x22, x17
+  li x8, 12
+  mul x4, x17, x26
+  li x3, 7
+  sw x4, 20(sp)
+  li x8, 12
+  lw x8, 32(sp)
+  li x9, 13
+  mul x3, x4, x9
+  sw x4, 16(sp)
+  sw x3, 12(sp)
+  li x8, 12
+  mv x27, x29
+  li x4, 8
+  mul x4, x23, x11
+  li x9, 13
+  mv x27, x10
+  lw x2, 8(sp)
+  li x6, 10
+  mul x4, x22, x19
+  mv x23, x4
+  li x4, 8
+  mv x21, x29
+  li x5, 9
+  mul x3, x2, x17
+  sw x2, 8(sp)
+  li x7, 11
+  sw x1, 4(sp)
+  li x3, 7
+  mv x22, x6
+  mul x4, x21, x16
+  li x9, 13
+  mv x30, x15
+  li x3, 7
+  lw x15, 60(sp)
+  li x3, 7
+  mul x5, x27, x21
+  li x7, 11
+  sw x10, 40(sp)
+  li x6, 10
+  mv x24, x18
+  li x7, 11
+  mul x4, x21, x26
+  li x9, 13
+  mv x23, x30
+  li x7, 11
+  mv x17, x12
+  lw x1, 4(sp)
+  li x6, 10
+  add x3, x6, x16
+  sw x6, 24(sp)
+  li x3, 7
+  lw x12, 48(sp)
+  li x3, 7
+  add x3, x5, x26
+  sw x5, 20(sp)
+  li x7, 11
+  mv x24, x0
+  li x5, 9
+  add x5, x25, x9
+  li x7, 11
+  mv x27, x1
+  li x4, 8
+  add x3, x0, x9
+  sw x0, 0(sp)
+  li x7, 11
+  mv x17, x7
+  li x5, 9
+  add x3, x7, x15
+  sw x7, 32(sp)
+  li x4, 8
+  lw x2, 8(sp)
+  add x4, x24, x26
+  li x8, 12
+  lw x3, 12(sp)
+  li x9, 13
+  add x3, x7, x13
   sw x7, 32(sp)
   li x7, 11
-  mv x25, x27
-  add x4, x23, x9
-  mv x20, x10
-  li x5, 9
-  add x4, x18, x4
-  lw x8, 32(sp)
+  lw x14, 60(sp)
+  li x7, 11
+  add x4, x18, x9
+  li x7, 11
+  lw x14, 56(sp)
+  li x7, 11
+  add x3, x0, x1
+  sw x0, 0(sp)
   li x4, 8
-  add x3, x9, x23
-  sw x9, 40(sp)
+  mv x17, x9
+  add x4, x21, x8
+  li x3, 7
+  mv x21, x19
+  add x3, x11, x10
+  sw x11, 44(sp)
   li x4, 8
-  lw x9, 36(sp)
+  lw x8, 36(sp)
+  add x4, x16, x13
+  li x9, 13
+  mv x24, x27
   li x5, 9
-  add x3, x10, x22
-  sw x10, 44(sp)
-  li x8, 12
-  mv x24, x20
-  li x6, 10
-  add x5, x30, x5
-  li x8, 12
-  lw x4, 16(sp)
-  li x8, 12
-  add x3, x4, x13
-  sw x4, 20(sp)
-  j if.then19
-if.then19:
-  lw x7, 28(sp)
-  li x5, 9
-  add x3, x4, x6
+  add x4, x23, x25
+  li x4, 8
+  lw x3, 12(sp)
+  li x3, 7
+  add x3, x4, x8
   sw x4, 16(sp)
-  sw x15, 60(sp)
-  li x8, 12
-  mv a0, x27
+  li x9, 13
+  mv x25, x30
+  add x4, x13, x0
+  sw x13, 52(sp)
+  lw x10, 40(sp)
+  li x6, 10
+  add x3, x7, x22
+  sw x7, 28(sp)
+  lw x6, 24(sp)
+  li x6, 10
+  add x3, x9, x26
+  sw x9, 36(sp)
+  mv x18, x18
+  li x9, 13
+  add x3, x3, x25
+  sw x3, 12(sp)
+  lw x12, 48(sp)
+  add x4, x20, x22
+  li x4, 8
+  lw x2, 8(sp)
+  li x7, 11
+  add x4, x16, x8
+  mv a0, x1
   addi sp, sp, 4
   li a7, 93
   ecall
+if.then19:
+  li x8, 12
+  mv x19, x30
+  li x8, 12
+  add x5, x30, x17
+  mv x23, x1
+  li x5, 9
+  j merge13
 mainEntry:
   mv x10, x0
   mv x11, x0
