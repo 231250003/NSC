@@ -150,205 +150,216 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    try {
 //                    if(blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))){
 //                        NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
 //                    }
-                    if(Main.used_interpreter==true&&blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))
-                    &&label.equals("mainEntry")){
-                        LLVMIRInterpreter interpreter=new LLVMIRInterpreter(module,file_path);
-                        int retval=interpreter.Process_block(LLVMGetEntryBasicBlock(LLVMGetNamedFunction(module, "main")));
-                        asm.li("a0",  retval);
-                        asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
-                        asm.li("a7", 93);  // syscall exit
-                        asm.instr("ecall");
-                        continue;
-                    }
-                    int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-                    allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
-                    lineNum++;
-                    if (opcode == LLVM.LLVMAlloca) {
-                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
-                    } else if (opcode == LLVM.LLVMStore) {
-                        LLVMValueRef val = LLVM.LLVMGetOperand(inst, 0);
-                        LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
-                        String valReg = evaluate(val);
-                        String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
-                        if(addr!=null){
-                            if(addr.contains("sp")) {
-                                asm.instr("sw", valReg, addr);
-                                if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(ptr).getString());
+                        if (Main.used_interpreter == true && blockCount > 1 && (LLVM.LLVMPrintValueToString(inst).getString().contains("br") || LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))
+                                && label.equals("mainEntry")) {
+                            LLVMIRInterpreter interpreter = new LLVMIRInterpreter(module, file_path);
+                            int retval = interpreter.Process_block(LLVMGetEntryBasicBlock(LLVMGetNamedFunction(module, "main")));
+                            asm.li("a0", retval);
+                            asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
+                            asm.li("a7", 93);  // syscall exit
+                            asm.instr("ecall");
+                            continue;
+                        }
+                        int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                        allocator.processInstruction(lineNum, LLVM.LLVMPrintValueToString(inst).getString());
+                        lineNum++;
+                        if (opcode == LLVM.LLVMAlloca) {
+                            String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                        } else if (opcode == LLVM.LLVMStore) {
+                            LLVMValueRef val = LLVM.LLVMGetOperand(inst, 0);
+                            LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
+                            String valReg = evaluate(val);
+                            String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
+                            if (addr != null) {
+                                if (addr.contains("sp")) {
+                                    asm.instr("sw", valReg, addr);
+                                    if (blockCount > 1 && Main.is_run_time_error_test)
+                                        NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(ptr).getString());
+                                } else asm.instr("mv", addr, valReg);
+                            } else {
+                                String reg = freshReg();
+                                asm.instr("la", reg, (LLVM.LLVMGetValueName(ptr).getString()));
+                                asm.instr("sw", valReg, "0(" + reg + ")");
                             }
-                            else asm.instr("mv",addr,valReg);
-                        }
-                        else{
-                            String reg=freshReg();
-                            asm.instr("la",reg,(LLVM.LLVMGetValueName(ptr).getString()));
-                            asm.instr("sw",valReg,"0("+reg+")");
-                        }
-                    } else if (opcode == LLVM.LLVMLoad) {
-                        LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 0);
-                        String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
-                        if(addr==null) {
-                            //System.out.println("LLVMTOIR");
+                        } else if (opcode == LLVM.LLVMLoad) {
+                            LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 0);
+                            String addr = valueMap.get(LLVM.LLVMGetValueName(ptr).getString());
+                            if (addr == null) {
+                                //System.out.println("LLVMTOIR");
+                                //System.out.println(LLVM.LLVMGetValueName(inst).getString());
+                                String reg = freshReg();
+                                asm.instr("la", reg, (LLVM.LLVMGetValueName(ptr).getString()));
+                                asm.instr("lw", reg, "0(" + reg + ")");
+                                String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                                if (lval_addr.contains("sp")) asm.instr("sw", reg, lval_addr);
+                                else asm.instr("mv", lval_addr, reg);
+                                valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+                            } else if (addr.contains("sp")) {
+                                String reg = freshReg();
+                                String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                                asm.instr("lw", reg, addr);
+                                if (lval_addr.contains("sp")) {
+                                    asm.instr("sw", reg, lval_addr);
+                                    if (blockCount > 1 && Main.is_run_time_error_test)
+                                        NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                                } else asm.instr("mv", lval_addr, reg);
+                                valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+
+                                //valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
+                            } else {
+                                String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                                if (lval_addr.contains("sp")) {
+                                    asm.instr("sw", addr, lval_addr);
+                                    if (blockCount > 1 && Main.is_run_time_error_test)
+                                        NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                                } else asm.instr("mv", lval_addr, addr);
+                                valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+                            }
+                        } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
+                                opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
+                                opcode == LLVM.LLVMSRem) {
+                            LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
+                            LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
+                            String reg1 = evaluate(lhs);
+                            String reg2 = evaluate(rhs);
+                            String destReg = freshReg();
+                            String op;
+                            switch (opcode) {
+                                case LLVM.LLVMAdd:
+                                    op = "add";
+                                    break;
+                                case LLVM.LLVMSub:
+                                    op = "sub";
+                                    break;
+                                case LLVM.LLVMMul:
+                                    op = "mul";
+                                    break;
+                                case LLVM.LLVMSDiv:
+                                    op = "div";
+                                    break;
+                                case LLVM.LLVMSRem:
+                                    op = "rem";
+                                    break;
+                                default:
+                                    throw new RuntimeException("Unsupported binop");
+                            }
+                            asm.op2(op, destReg, reg1, reg2);
                             //System.out.println(LLVM.LLVMGetValueName(inst).getString());
-                            String reg = freshReg();
-                            asm.instr("la",reg,(LLVM.LLVMGetValueName(ptr).getString()));
-                            asm.instr("lw",reg,"0("+reg+")");
-                            String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                            if(lval_addr.contains("sp")) asm.instr("sw",reg,lval_addr);
-                            else asm.instr("mv",lval_addr,reg);
-                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
-                        }
-                        else if(addr.contains("sp")){
-                            String reg = freshReg();
-                            String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                            asm.instr("lw",reg,addr);
-                            if(lval_addr.contains("sp")){
-                                asm.instr("sw",reg,lval_addr);
-                                if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
-                            }
-                            else asm.instr("mv",lval_addr,reg);
-                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
+                            String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                            if (addr.contains("sp")) {
+                                asm.instr("sw", destReg, addr);
+                                if (blockCount > 1 && Main.is_run_time_error_test)
+                                    NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                            } else asm.instr("mv", addr, destReg);
+                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
 
-                            //valueMap.put(LLVM.LLVMGetValueName(ptr).getString(), addr);  // 可选：也可以保存为 reg
-                        }
-                        else{
-                            String lval_addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                            if(lval_addr.contains("sp")){
-                                asm.instr("sw",addr,lval_addr);
-                                if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                        } else if (opcode == LLVM.LLVMRet) {
+                            LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
+                            String reg = evaluate(retVal);
+                            if (blockCount > 1 && Main.is_run_time_error_test)
+                                NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
+                            asm.mv("a0", reg);
+                            asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
+                            asm.li("a7", 93);  // syscall exit
+                            asm.instr("ecall");
+                        } else if (opcode == LLVM.LLVMZExt) {
+                            LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
+                            String srcReg = evaluate(operand);
+                            String destReg = freshReg();
+                            asm.mv(destReg, srcReg);
+                            String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                            if (addr.contains("sp")) {
+                                asm.instr("sw", destReg, addr);
+                                if (blockCount > 1 && Main.is_run_time_error_test)
+                                    NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
+                            } else asm.instr("mv", addr, destReg);
+                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                        } else if (opcode == LLVM.LLVMICmp) {
+                            int pred = LLVM.LLVMGetICmpPredicate(inst);  // 获取谓词
+                            LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
+                            LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
+                            String reg1 = evaluate(lhs);
+                            String reg2 = evaluate(rhs);
+                            String destReg = freshReg();
+                            switch (pred) {
+                                case LLVM.LLVMIntEQ:
+                                    asm.instr("xor", destReg, reg1, reg2);
+                                    asm.seqz(destReg, destReg);
+                                    break;
+                                case LLVM.LLVMIntNE:
+                                    asm.instr("xor", destReg, reg1, reg2);
+                                    asm.snez(destReg, destReg);
+                                    break;
+                                case LLVM.LLVMIntSLT:
+                                    asm.slt(destReg, reg1, reg2);
+                                    break;
+                                case LLVM.LLVMIntSLE:
+                                    asm.sgt(destReg, reg1, reg2);
+                                    asm.seqz(destReg, destReg);
+                                    break;
+                                case LLVM.LLVMIntSGT:
+                                    asm.sgt(destReg, reg1, reg2);
+                                    break;
+                                case LLVM.LLVMIntSGE:
+                                    asm.slt(destReg, reg1, reg2);
+                                    asm.seqz(destReg, destReg);
+                                    break;
+                                default:
+                                    throw new RuntimeException("Unsupported icmp predicate: " + pred);
                             }
-                            else asm.instr("mv",lval_addr,addr);
-                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), lval_addr);
-                        }
-                    } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
-                            opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
-                            opcode == LLVM.LLVMSRem) {
-                        LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
-                        LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
-                        String reg1 = evaluate(lhs);
-                        String reg2 = evaluate(rhs);
-                        String destReg = freshReg();
-                        String op;
-                        switch (opcode) {
-                            case LLVM.LLVMAdd:
-                                op = "add";
-                                break;
-                            case LLVM.LLVMSub:
-                                op = "sub";
-                                break;
-                            case LLVM.LLVMMul:
-                                op = "mul";
-                                break;
-                            case LLVM.LLVMSDiv:
-                                op = "div";
-                                break;
-                            case LLVM.LLVMSRem:
-                                op = "rem";
-                                break;
-                            default:
-                                throw new RuntimeException("Unsupported binop");
-                        }
-                        asm.op2(op, destReg, reg1, reg2);
-                        //System.out.println(LLVM.LLVMGetValueName(inst).getString());
-                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        if(addr.contains("sp")) {
-                            asm.instr("sw", destReg, addr);
-                            if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
-                        }
-                        else asm.instr("mv",addr,destReg);
-                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
-
-                    } else if (opcode == LLVM.LLVMRet) {
-                        LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
-                        String reg = evaluate(retVal);
-                        if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
-                        asm.mv("a0", reg);
-                        asm.instr("addi", "sp", "sp", "" + stackSize); // Epilogue
-                        asm.li("a7", 93);  // syscall exit
-                        asm.instr("ecall");
-                    }
-                    else if (opcode == LLVM.LLVMZExt) {
-                        LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
-                        String srcReg = evaluate(operand);
-                        String destReg = freshReg();
-                        asm.mv(destReg, srcReg);
-                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        if(addr.contains("sp")) {
-                            asm.instr("sw", destReg, addr);
-                            if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
-                        }
-                        else asm.instr("mv",addr,destReg);
-                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
-                    }
-                    else if (opcode == LLVM.LLVMICmp) {
-                        int pred = LLVM.LLVMGetICmpPredicate(inst);  // 获取谓词
-                        LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
-                        LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
-                        String reg1 = evaluate(lhs);
-                        String reg2 = evaluate(rhs);
-                        String destReg = freshReg();
-                        switch (pred) {
-                            case LLVM.LLVMIntEQ:
-                                asm.instr("xor", destReg, reg1, reg2);
-                                asm.seqz(destReg, destReg);
-                                break;
-                            case LLVM.LLVMIntNE:
-                                asm.instr("xor", destReg, reg1, reg2);
-                                asm.snez(destReg, destReg);
-                                break;
-                            case LLVM.LLVMIntSLT:
-                                asm.slt(destReg, reg1, reg2);
-                                break;
-                            case LLVM.LLVMIntSLE:
-                                asm.sgt(destReg, reg1, reg2);
-                                asm.seqz(destReg, destReg);
-                                break;
-                            case LLVM.LLVMIntSGT:
-                                asm.sgt(destReg, reg1, reg2);
-                                break;
-                            case LLVM.LLVMIntSGE:
-                                asm.slt(destReg, reg1, reg2);
-                                asm.seqz(destReg, destReg);
-                                break;
-                            default:
-                                throw new RuntimeException("Unsupported icmp predicate: " + pred);
-                        }
-                        String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        if(addr.contains("sp"))asm.instr("sw", destReg, addr);
-                        else asm.instr("mv", addr,destReg);
-                        valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
-                    }
-                    else if (opcode == LLVM.LLVMBr) {
-                        int numOperands = LLVM.LLVMGetNumOperands(inst);
-                        if (numOperands == 1) {
-                            LLVMValueRef dest = LLVM.LLVMGetOperand(inst, 0);
-                            String loop_label = LLVM.LLVMGetValueName(dest).getString();
-                            if(blockCount>1&&Main.is_run_time_error_test)NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
-                            asm.j(loop_label);
-                        } else if (numOperands == 3) {
-                            //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                            LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
-                            LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
-                            LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
-                            String condReg = evaluate(cond);
-                            String trueLabel = LLVM.LLVMGetValueName(ifTrue).getString();
-                            String falseLabel = LLVM.LLVMGetValueName(ifFalse).getString();
+                            String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
+                            if (addr.contains("sp")) asm.instr("sw", destReg, addr);
+                            else asm.instr("mv", addr, destReg);
+                            valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
+                        } else if (opcode == LLVM.LLVMBr) {
+                            int numOperands = LLVM.LLVMGetNumOperands(inst);
+                            if (numOperands == 1) {
+                                LLVMValueRef dest = LLVM.LLVMGetOperand(inst, 0);
+                                String loop_label = LLVM.LLVMGetValueName(dest).getString();
+                                if (blockCount > 1 && Main.is_run_time_error_test)
+                                    NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
+                                asm.j(loop_label);
+                            } else if (numOperands == 3) {
+                                //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                                LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
+                                LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
+                                LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
+                                String condReg = evaluate(cond);
+                                String trueLabel = LLVM.LLVMGetValueName(ifTrue).getString();
+                                String falseLabel = LLVM.LLVMGetValueName(ifFalse).getString();
 //                            System.out.println( LLVM.LLVMGetValueName(cond).getString());
 //                            System.out.println(trueLabel);
 //                            System.out.println(falseLabel);
-                            asm.bnez(condReg, trueLabel);
-                            if(blockCount>1&&Main.is_run_time_error_test)NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
-                            asm.j(falseLabel);
+                                asm.bnez(condReg, trueLabel);
+                                if (blockCount > 1 && Main.is_run_time_error_test)
+                                    NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
+                                asm.j(falseLabel);
+                            }
+                        } else {
+                            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                            throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                         }
                     }
-                    else {
-                        System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                        throw new RuntimeException("Unsupported instruction opcode: " + opcode);
+                    catch (Exception e){
+                        if (Main.used_interpreter == true && blockCount > 1 && (LLVM.LLVMPrintValueToString(inst).getString().contains("br") || LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))
+                                && label.equals("mainEntry")) {
+                            LLVMIRInterpreter interpreter = new LLVMIRInterpreter(module, file_path);
+                            int retval = interpreter.Process_block(LLVMGetEntryBasicBlock(LLVMGetNamedFunction(module, "main")));
+                            asm.li("a0", retval);
+                            asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
+                            asm.li("a7", 93);  // syscall exit
+                            asm.instr("ecall");
+                            continue;
+                        }
                     }
+                    if (blockCount > 1 && Main.is_run_time_error_test)
+                        NewControlFlowRegisterAllocator.post_process_block("");
                 }
-                if(blockCount>1&&Main.is_run_time_error_test) NewControlFlowRegisterAllocator.post_process_block("");
             }
         }
         asm.writeToFile(file_path);
