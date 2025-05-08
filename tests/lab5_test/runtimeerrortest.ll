@@ -1,24 +1,13 @@
-  .data
-x:
-  .word 5
+; ModuleID = 'my_module'
+source_filename = "my_module"
 
-  .text
-  .globl main
-main:
-  addi sp, sp, -2044
+@x = global i32 5
+
+define i32 @main() {
 mainEntry:
-  la t0, x
-  lw t0, 0(t0)
-  mv x1, t0
-  li t1, 1
-  add t2, x1, t1
-  mv x3, t2
-  la t0, x
-  sw x3, 0(t0)
-  la t1, x
-  lw t1, 0(t1)
-  mv x4, t1
-  mv a0, x4
-  addi sp, sp, 2044
-  li a7, 93
-  ecall
+  %load_lval = load i32, i32* @x, align 4
+  %add = add i32 %load_lval, 1
+  store i32 %add, i32* @x, align 4
+  %load_lval1 = load i32, i32* @x, align 4
+  ret i32 %load_lval1
+}
