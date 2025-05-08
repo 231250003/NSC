@@ -2,6 +2,10 @@ import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
 import java.util.*;
 import java.util.regex.*;
+
+import static org.bytedeco.llvm.global.LLVM.LLVMGetEntryBasicBlock;
+import static org.bytedeco.llvm.global.LLVM.LLVMGetNamedFunction;
+
 public class LLVMIRToRiscv {
     String file_path;
     LLVMModuleRef module;
@@ -149,6 +153,16 @@ public class LLVMIRToRiscv {
 //                    if(blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))){
 //                        NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
 //                    }
+                    if(Main.used_interpreter==true&&blockCount>1&&(LLVM.LLVMPrintValueToString(inst).getString().contains("br")||LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))
+                    &&label.equals("mainEntry")){
+                        LLVMIRInterpreter interpreter=new LLVMIRInterpreter(module,file_path);
+                        int retval=interpreter.Process_block(LLVMGetEntryBasicBlock(LLVMGetNamedFunction(module, "main")));
+                        asm.li("a0",  retval);
+                        asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
+                        asm.li("a7", 93);  // syscall exit
+                        asm.instr("ecall");
+                        continue;
+                    }
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     allocator.processInstruction(lineNum,LLVM.LLVMPrintValueToString(inst).getString());
                     lineNum++;

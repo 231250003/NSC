@@ -15,11 +15,16 @@ public class LLVMIRInterpreter {
     private static final Map<String,LLVMBasicBlockRef> name2blockref=new HashMap<>();
     Map<String,Integer> symbol;
     String file_path;
+    int load_store_inst;
     public LLVMIRInterpreter(LLVMModuleRef module,String file_path){
         this.module=module;
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(),bb);
+                name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(), bb);
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                    if (opcode == LLVM.LLVMLoad||opcode==LLVM.LLVMStore) load_store_inst++;
+                }
             }
         }
         symbol=new HashMap<>();
@@ -151,10 +156,10 @@ public class LLVMIRInterpreter {
         asm.directive("text");
         asm.directive("globl main");
         asm.label("main");
-        asm.instr("addi", "sp", "sp", "-" + 0);
+        asm.instr("addi", "sp", "sp", "-" + 4);
         asm.label( "mainEntry");
         asm.li("a0",  retval);
-        asm.instr("addi", "sp", "sp", "" + 0); // Epilogue
+        asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
         asm.li("a7", 93);  // syscall exit
         asm.instr("ecall");
         asm.writeToFile(file_path);
