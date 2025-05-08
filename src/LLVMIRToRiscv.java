@@ -392,7 +392,7 @@ public class LLVMIRToRiscv {
 //            System.err.println("LLVM ValueKind: " + kind);
 //            System.err.println("LLVM Value: " + valStr);
 //            throw new RuntimeException("Unsupported operand: " + valStr);
-            return 0;
+            return "x0";
         }
     }
 
