@@ -187,7 +187,8 @@ public class LLVMIRToRiscv {
                                 asm.instr("sw", valReg, addr);
                                 if (blockCount > 1 && Main.is_run_time_error_test)
                                     NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(ptr).getString());
-                            } else asm.instr("mv", addr, valReg);
+                            }
+                            else asm.instr("mv", addr, valReg);
                         } else {
                             String reg = freshReg();
                             asm.instr("la", reg, (LLVM.LLVMGetValueName(ptr).getString()));

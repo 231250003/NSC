@@ -1,50 +1,22 @@
-  .data
-a:
-  .word 1
-  .data
-dddd:
-  .word 111
-  .data
-b:
-  .word 0
-  .data
-cccc:
-  .word 0
+; ModuleID = 'my_module'
+source_filename = "my_module"
 
-  .text
-  .globl main
-main:
-  addi sp, sp, -2044
+@a = global i32 1
+@dddd = global i32 111
+@b = global i32 0
+@cccc = global i32 0
+
+define i32 @main() {
 mainEntry:
-  la t0, a
-  lw t0, 0(t0)
-  mv x1, t0
-  li t1, 1
-  add t2, x1, t1
-  mv x3, t2
-  la t0, cccc
-  lw t0, 0(t0)
-  mv x4, t0
-  li t1, 0
-  xor t2, x4, t1
-  seqz t2, t2
-  mv x8, t2
-  mv t0, x8
-  mv x9, t0
-  li t1, 0
-  xor t2, x9, t1
-  seqz t2, t2
-  mv x10, t2
-  mv t0, x10
-  mv x11, t0
-  add t1, x3, x11
-  mv x12, t1
-  la t2, b
-  sw x12, 0(t2)
-  la t0, b
-  lw t0, 0(t0)
-  mv x13, t0
-  mv a0, x13
-  addi sp, sp, 2044
-  li a7, 93
-  ecall
+  %load_lval = load i32, i32* @a, align 4
+  %add = add i32 %load_lval, 1
+  %load_lval1 = load i32, i32* @cccc, align 4
+  %not = icmp eq i32 %load_lval1, 0
+  %zext_to_i32 = zext i1 %not to i32
+  %not2 = icmp eq i32 %zext_to_i32, 0
+  %zext_to_i323 = zext i1 %not2 to i32
+  %add4 = add i32 %add, %zext_to_i323
+  store i32 %add4, i32* @b, align 4
+  %load_lval5 = load i32, i32* @b, align 4
+  ret i32 %load_lval5
+}
