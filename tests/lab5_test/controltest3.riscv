@@ -192,7 +192,6 @@ merge13:
   add t0, x27, t2
   mv x28, t0
   la t1, x
-  sw x28, 0(t1)
   la t2, y
   lw t2, 0(t2)
   mv x12, t2
@@ -226,7 +225,6 @@ merge13:
   add t1, x28, t0
   mv x12, t1
   la t2, c
-  sw x12, 0(t2)
   la t0, d
   lw t0, 0(t0)
   mv x27, t0
@@ -234,7 +232,6 @@ merge13:
   add t2, x27, t1
   mv x8, t2
   la t0, d
-  sw x8, 0(t0)
   la t1, e
   lw t1, 0(t1)
   mv x28, t1
@@ -250,7 +247,6 @@ merge13:
   add t1, x27, t0
   mv x8, t1
   la t2, f
-  sw x8, 0(t2)
   la t0, g
   lw t0, 0(t0)
   mv x28, t0
@@ -258,7 +254,6 @@ merge13:
   add t2, x28, t1
   mv x12, t2
   la t0, g
-  sw x12, 0(t0)
   la t1, h
   lw t1, 0(t1)
   mv x27, t1
@@ -274,7 +269,6 @@ merge13:
   add t1, x28, t0
   mv x12, t1
   la t2, i
-  sw x12, 0(t2)
   la t0, j
   lw t0, 0(t0)
   mv x27, t0
@@ -282,7 +276,6 @@ merge13:
   add t2, x27, t1
   mv x8, t2
   la t0, j
-  sw x8, 0(t0)
   la t1, k
   lw t1, 0(t1)
   mv x28, t1
@@ -290,7 +283,6 @@ merge13:
   add t0, x28, t2
   mv x12, t0
   la t1, k
-  sw x12, 0(t1)
   la t2, l
   lw t2, 0(t2)
   mv x27, t2
@@ -298,7 +290,6 @@ merge13:
   add t1, x27, t0
   mv x8, t1
   la t2, l
-  sw x8, 0(t2)
   la t0, m
   lw t0, 0(t0)
   mv x28, t0
@@ -314,7 +305,6 @@ merge13:
   add t0, x27, t2
   mv x8, t0
   la t1, n
-  sw x8, 0(t1)
   la t2, o
   lw t2, 0(t2)
   mv x28, t2
@@ -322,7 +312,6 @@ merge13:
   add t1, x28, t0
   mv x12, t1
   la t2, o
-  sw x12, 0(t2)
   la t0, p
   lw t0, 0(t0)
   mv x27, t0
@@ -330,7 +319,6 @@ merge13:
   add t2, x27, t1
   mv x8, t2
   la t0, p
-  sw x8, 0(t0)
   la t1, q
   lw t1, 0(t1)
   mv x28, t1
@@ -338,7 +326,6 @@ merge13:
   add t0, x28, t2
   mv x12, t0
   la t1, q
-  sw x12, 0(t1)
   mv x27, x17
   li t2, 2
   mul t0, x27, t2
