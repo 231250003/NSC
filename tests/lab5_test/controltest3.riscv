@@ -153,9 +153,7 @@ merge13:
   li t0, 1
   mv x26, t0
   li t1, 2
-  sw t1, 8(sp)
   li t2, 3
-  sw t2, 12(sp)
   li t0, 4
   mv x24, t0
   li t1, 5
@@ -197,7 +195,6 @@ merge13:
   add t1, x28, t0
   mv x29, t1
   la t2, x
-  sw x29, 0(t2)
   la t0, y
   lw t0, 0(t0)
   mv x30, t0
@@ -205,7 +202,6 @@ merge13:
   add t2, x30, t1
   mv x3, t2
   la t0, y
-  sw x3, 0(t0)
   la t1, z
   lw t1, 0(t1)
   mv x10, t1
@@ -213,25 +209,22 @@ merge13:
   add t0, x10, t2
   mv x19, t0
   la t1, z
-  sw x19, 0(t1)
   lw t2, 8(sp)
   mv x8, t2
   li t0, 4
   add t1, x8, t0
   mv x31, t1
-  sw x31, 8(sp)
   lw t2, 16(sp)
   lw t0, 20(sp)
   li t1, 5
   add t2, t0, t1
-  sw t2, 24(sp)
   lw t0, 24(sp)
+  sw t0, 16(sp)
   la t1, c
   lw t1, 0(t1)
   lw t2, 28(sp)
   li t0, 6
   add t1, t2, t0
-  sw t1, 32(sp)
   lw t2, 32(sp)
   la t0, c
   sw t2, 0(t0)
@@ -240,22 +233,22 @@ merge13:
   lw t2, 36(sp)
   li t0, 7
   add t1, t2, t0
+  sw t1, 40(sp)
   lw t2, 40(sp)
   la t0, d
   la t1, e
   lw t1, 0(t1)
-  sw t1, 44(sp)
   lw t2, 44(sp)
   li t0, 8
   add t1, t2, t0
   lw t2, 48(sp)
   la t0, e
+  sw t2, 0(t0)
   la t1, f
   lw t1, 0(t1)
   lw t2, 52(sp)
   li t0, 9
   add t1, t2, t0
-  sw t1, 56(sp)
   lw t2, 56(sp)
   la t0, f
   la t1, g
@@ -263,20 +256,20 @@ merge13:
   lw t2, 60(sp)
   li t0, 10
   add t1, t2, t0
-  sw t1, 64(sp)
   lw t2, 64(sp)
   la t0, g
-  sw t2, 0(t0)
   la t1, h
   lw t1, 0(t1)
   sw t1, 68(sp)
   lw t2, 68(sp)
   li t0, 11
   add t1, t2, t0
+  sw t1, 72(sp)
   lw t2, 72(sp)
   la t0, h
   la t1, i
   lw t1, 0(t1)
+  sw t1, 76(sp)
   lw t2, 76(sp)
   li t0, 12
   add t1, t2, t0
@@ -285,22 +278,19 @@ merge13:
   la t0, i
   la t1, j
   lw t1, 0(t1)
-  sw t1, 84(sp)
   lw t2, 84(sp)
   li t0, 13
   add t1, t2, t0
+  sw t1, 88(sp)
   lw t2, 88(sp)
   la t0, j
-  sw t2, 0(t0)
   la t1, k
   lw t1, 0(t1)
-  sw t1, 92(sp)
   lw t2, 92(sp)
   li t0, 14
   add t1, t2, t0
   mv x28, t1
   la t2, k
-  sw x28, 0(t2)
   la t0, l
   lw t0, 0(t0)
   mv x29, t0
@@ -316,7 +306,6 @@ merge13:
   add t0, x3, t2
   mv x10, t0
   la t1, m
-  sw x10, 0(t1)
   la t2, n
   lw t2, 0(t2)
   mv x19, t2
@@ -324,6 +313,7 @@ merge13:
   add t1, x19, t0
   mv x8, t1
   la t2, n
+  sw x8, 0(t2)
   la t0, o
   lw t0, 0(t0)
   mv x31, t0
@@ -348,42 +338,39 @@ merge13:
   sw t1, 108(sp)
   lw t2, 108(sp)
   la t0, q
+  sw t2, 0(t0)
   lw t1, 112(sp)
   li t2, 2
   mul t0, t1, t2
+  sw t0, 116(sp)
   lw t1, 116(sp)
   mv x26, t1
   lw t2, 8(sp)
-  sw t2, 120(sp)
   lw t0, 120(sp)
   li t1, 2
   mul t2, t0, t1
   sw t2, 124(sp)
   lw t0, 124(sp)
-  sw t0, 8(sp)
   lw t1, 12(sp)
   lw t2, 128(sp)
   li t0, 2
   mul t1, t2, t0
-  sw t1, 132(sp)
   lw t2, 132(sp)
-  sw t2, 12(sp)
+  sw x24, 136(sp)
   lw t0, 136(sp)
   li t1, 2
   mul t2, t0, t1
+  sw t2, 140(sp)
   lw t0, 140(sp)
   mv x24, t0
   lw t1, 16(sp)
-  sw t1, 144(sp)
   lw t2, 144(sp)
   li t0, 2
   mul t1, t2, t0
   lw t2, 148(sp)
-  sw t2, 16(sp)
   lw t0, 152(sp)
   li t1, 2
   mul t2, t0, t1
-  sw t2, 156(sp)
   lw t0, 156(sp)
   mv x11, t0
   lw t1, 160(sp)
@@ -412,57 +399,54 @@ merge13:
   mul t0, x8, t2
   mv x31, t0
   mv x15, x31
+  sw x16, 168(sp)
   lw t1, 168(sp)
   li t2, 2
   mul t0, t1, t2
   mv x4, t0
   mv x16, x4
-  sw x17, 172(sp)
   lw t1, 172(sp)
   li t2, 2
   mul t0, t1, t2
   lw t1, 176(sp)
   mv x17, t1
-  sw x20, 180(sp)
   lw t2, 180(sp)
   li t0, 2
   mul t1, t2, t0
-  sw t1, 184(sp)
   lw t2, 184(sp)
   mv x20, t2
   lw t0, 188(sp)
   li t1, 2
   mul t2, t0, t1
-  sw t2, 192(sp)
   lw t0, 192(sp)
   mv x18, t0
-  sw x21, 196(sp)
   lw t1, 196(sp)
   li t2, 2
   mul t0, t1, t2
   lw t1, 200(sp)
   mv x21, t1
-  sw x22, 204(sp)
   lw t2, 204(sp)
   li t0, 2
   mul t1, t2, t0
   sw t1, 208(sp)
   lw t2, 208(sp)
   mv x22, t2
+  sw x23, 212(sp)
   lw t0, 212(sp)
   li t1, 2
   mul t2, t0, t1
   lw t0, 216(sp)
   mv x23, t0
-  sw x25, 220(sp)
   lw t1, 220(sp)
   li t2, 2
   mul t0, t1, t2
+  sw t0, 224(sp)
   lw t1, 224(sp)
   mv x25, t1
   lw t2, 228(sp)
   li t0, 2
   mul t1, t2, t0
+  sw t1, 232(sp)
   lw t2, 232(sp)
   mv x27, t2
   lw t0, 8(sp)
@@ -477,66 +461,68 @@ merge13:
   lw t0, 12(sp)
   mv x3, t0
   add t1, x30, x3
-  sw t1, 244(sp)
   mv x10, x24
   lw t2, 244(sp)
   add t0, t2, x10
   mv x19, t0
   lw t1, 16(sp)
+  sw t1, 248(sp)
   lw t2, 248(sp)
   add t0, x19, t2
   mv x8, t0
   mv x31, x11
   add t1, x8, x31
-  sw t1, 252(sp)
   lw t2, 252(sp)
   lw t0, 256(sp)
   add t1, t2, t0
   mv x4, t1
+  sw x13, 260(sp)
   lw t2, 260(sp)
   add t0, x4, t2
   sw t0, 264(sp)
+  sw x9, 268(sp)
   lw t1, 264(sp)
   lw t2, 268(sp)
   add t0, t1, t2
   lw t1, 272(sp)
   lw t2, 276(sp)
   add t0, t1, t2
+  sw x15, 284(sp)
   lw t1, 280(sp)
   lw t2, 284(sp)
   add t0, t1, t2
-  sw x16, 292(sp)
+  sw t0, 288(sp)
   lw t1, 288(sp)
   lw t2, 292(sp)
   add t0, t1, t2
+  sw t0, 296(sp)
   lw t1, 296(sp)
   lw t2, 300(sp)
   add t0, t1, t2
   sw t0, 304(sp)
-  sw x20, 308(sp)
   lw t1, 304(sp)
   lw t2, 308(sp)
   add t0, t1, t2
+  sw t0, 312(sp)
   sw x18, 316(sp)
   lw t1, 312(sp)
   lw t2, 316(sp)
   add t0, t1, t2
+  sw x21, 324(sp)
   lw t1, 320(sp)
   lw t2, 324(sp)
   add t0, t1, t2
-  sw x22, 332(sp)
+  sw t0, 328(sp)
   lw t1, 328(sp)
   lw t2, 332(sp)
   add t0, t1, t2
-  sw x23, 340(sp)
   lw t1, 336(sp)
   lw t2, 340(sp)
   add t0, t1, t2
-  sw x25, 348(sp)
   lw t1, 344(sp)
   lw t2, 348(sp)
   add t0, t1, t2
-  sw x27, 356(sp)
+  sw t0, 352(sp)
   lw t1, 352(sp)
   lw t2, 356(sp)
   add t0, t1, t2
@@ -550,6 +536,5 @@ if.then19:
   mv x28, t1
   li t2, 1
   add t0, x28, t2
-  sw t0, 360(sp)
   lw t1, 360(sp)
   j merge13
