@@ -226,13 +226,13 @@ public class LLVMIRToRiscv {
                         }
                     } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                             opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
-                            opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem) {
+                            opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem||opcode==LLVM.LLVMUDiv) {
                         LLVMValueRef lhs = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef rhs = LLVM.LLVMGetOperand(inst, 1);
                         String reg1 = evaluate(lhs);
                         String reg2 = evaluate(rhs);
                         String destReg = freshReg();
-                        String op;
+                        String op="";
                         switch (opcode) {
                             case LLVM.LLVMAdd:
                                 op = "add";
@@ -246,6 +246,9 @@ public class LLVMIRToRiscv {
                             case LLVM.LLVMSDiv:
                                 op = "div";
                                 break;
+                            case LLVM.LLVMUDiv:
+                                op="divu";
+                                break;;
                             case LLVM.LLVMSRem:
                                 op = "rem";
                                 break;
@@ -253,7 +256,8 @@ public class LLVMIRToRiscv {
                                 op = "urem";
                                 break;
                             default:
-                                throw new RuntimeException("Unsupported binop");
+                                break;
+                                //throw new RuntimeException("Unsupported binop");
                         }
                         asm.op2(op, destReg, reg1, reg2);
                         //System.out.println(LLVM.LLVMGetValueName(inst).getString());
@@ -347,9 +351,10 @@ public class LLVMIRToRiscv {
                                 NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
                             asm.j(falseLabel);
                         }
-                    } else {
-                        System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                        throw new RuntimeException("Unsupported instruction opcode: " + opcode);
+                    }
+                    else {
+//                        System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+//                        throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                     if (blockCount > 1 && Main.is_run_time_error_test)
                         NewControlFlowRegisterAllocator.post_process_block("");
