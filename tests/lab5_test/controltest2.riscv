@@ -32,8 +32,10 @@ mainEntry:
   xor t2, x9, t1
   snez t2, t2
   mv x13, t2
-  bnez x13, if.then
-  j merge
+  li a0, 14
+  addi sp, sp, 4
+  li a7, 93
+  ecall
 merge:
   j while.cond
 if.then:
@@ -52,14 +54,14 @@ cur:
   li a7, 93
   ecall
 while.stmt:
-  mv x27, x3
+  mv x23, x3
   mv x11, x8
-  sgt t2, x27, x11
-  mv x23, t2
-  mv t0, x23
-  mv x25, t0
+  sgt t2, x23, x11
+  mv x24, t2
+  mv t0, x24
+  mv x26, t0
   li t1, 0
-  xor t2, x25, t1
+  xor t2, x26, t1
   snez t2, t2
   mv x10, t2
   bnez x10, if.then13
@@ -84,13 +86,13 @@ if.then13:
   mv x30, x3
   mv x31, x8
   sub t2, x30, x31
-  mv x24, t2
-  mv x3, x24
+  mv x25, t2
+  mv x3, x25
   j merge8
 if.else:
   mv x28, x8
   mv x29, x3
   sub t0, x28, x29
-  mv x26, t0
-  mv x8, x26
+  mv x27, t0
+  mv x8, x27
   j merge8
