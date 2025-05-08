@@ -157,19 +157,19 @@ public class LLVMIRToRiscv {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
                      inst != null && !inst.isNull();
                      inst = LLVM.LLVMGetNextInstruction(inst)) {
-                        if (Main.used_interpreter == true && blockCount > 1
-                                && (LLVM.LLVMPrintValueToString(inst).getString().contains("br") || LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))
-                                && label.equals("mainEntry")) {
-//                            System.out.println("crzzzz");
-//                            System.out.println("------");
-                            LLVMIRInterpreter interpreter = new LLVMIRInterpreter(module, file_path);
-                            int retval = interpreter.Process_block(LLVMGetEntryBasicBlock(LLVMGetNamedFunction(module, "main")));
-                            asm.li("a0", retval);
-                            asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
-                            asm.li("a7", 93);  // syscall exit
-                            asm.instr("ecall");
-                            continue;
-                        }
+//                        if (Main.used_interpreter == true && blockCount > 1
+//                                && (LLVM.LLVMPrintValueToString(inst).getString().contains("br") || LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))
+//                                && label.equals("mainEntry")) {
+////                            System.out.println("crzzzz");
+////                            System.out.println("------");
+//                            LLVMIRInterpreter interpreter = new LLVMIRInterpreter(module, file_path);
+//                            int retval = interpreter.Process_block(LLVMGetEntryBasicBlock(LLVMGetNamedFunction(module, "main")));
+//                            asm.li("a0", retval);
+//                            asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
+//                            asm.li("a7", 93);  // syscall exit
+//                            asm.instr("ecall");
+//                            continue;
+//                        }
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     allocator.processInstruction(lineNum, LLVM.LLVMPrintValueToString(inst).getString());
                     lineNum++;
@@ -259,8 +259,7 @@ public class LLVMIRToRiscv {
                                 op = "urem";
                                 break;
                             default:
-                                break;
-                                //throw new RuntimeException("Unsupported binop");
+                                throw new RuntimeException("Unsupported binop");
                         }
                         asm.op2(op, destReg, reg1, reg2);
                         //System.out.println(LLVM.LLVMGetValueName(inst).getString());
@@ -324,8 +323,7 @@ public class LLVMIRToRiscv {
                                 asm.seqz(destReg, destReg);
                                 break;
                             default:
-                                break;
-                                //throw new RuntimeException("Unsupported icmp predicate: " + pred);
+                                throw new RuntimeException("Unsupported icmp predicate: " + pred);
                         }
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
                         if (addr.contains("sp")) asm.instr("sw", destReg, addr);
@@ -357,8 +355,8 @@ public class LLVMIRToRiscv {
                         }
                     }
                     else {
-//                        System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-//                        throw new RuntimeException("Unsupported instruction opcode: " + opcode);
+                        System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                        throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
                 if (blockCount > 1 && Main.is_run_time_error_test)
@@ -388,14 +386,13 @@ public class LLVMIRToRiscv {
             asm.instr("lw", reg, "0(" + reg + ")");
             return reg;
         } else {
-//            System.out.println(LLVM.LLVMGetValueName(val).getString());
-//            String valStr = LLVM.LLVMPrintValueToString(val).getString();
-//            int kind = LLVM.LLVMGetValueKind(val);
-//            System.err.println("Unsupported operand:");
-//            System.err.println("LLVM ValueKind: " + kind);
-//            System.err.println("LLVM Value: " + valStr);
-//            throw new RuntimeException("Unsupported operand: " + valStr);
-            return "x0";
+            System.out.println(LLVM.LLVMGetValueName(val).getString());
+            String valStr = LLVM.LLVMPrintValueToString(val).getString();
+            int kind = LLVM.LLVMGetValueKind(val);
+            System.err.println("Unsupported operand:");
+            System.err.println("LLVM ValueKind: " + kind);
+            System.err.println("LLVM Value: " + valStr);
+            throw new RuntimeException("Unsupported operand: " + valStr);
         }
     }
 

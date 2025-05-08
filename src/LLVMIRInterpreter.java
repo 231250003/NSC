@@ -27,6 +27,7 @@ public class LLVMIRInterpreter {
                 }
             }
         }
+        load_store_inst=(int)(load_store_inst*1.7);
         symbol=new HashMap<>();
         for (LLVMValueRef global = LLVM.LLVMGetFirstGlobal(module);
              global != null && !global.isNull();
@@ -138,8 +139,7 @@ public class LLVMIRInterpreter {
                 }
             }
              else {
-                break;
-                //throw new RuntimeException("Unsupported instruction opcode: " + opcode);
+                throw new RuntimeException("Unsupported instruction opcode: " + opcode);
             }
         }
         return 0;
@@ -152,8 +152,7 @@ public class LLVMIRInterpreter {
         }
         else{
             if(symbol.get(LLVM.LLVMGetValueName(val).getString())==null) {
-               // throw new RuntimeException();
-                return 0;
+               throw new RuntimeException();
             }
             else return symbol.get(LLVM.LLVMGetValueName(val).getString());
         }
@@ -165,7 +164,103 @@ public class LLVMIRInterpreter {
         asm.directive("globl main");
         asm.label("main");
         asm.instr("addi", "sp", "sp", "-" + 4);
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)){
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+                String label = LLVM.LLVMGetBasicBlockName(bb).getString();
+                if(label==null||label.equals("mainEntry"))continue;
+                else{
+                    asm.label(label.isEmpty() ? "mainEntry" : label);
+                    for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
+                         inst != null && !inst.isNull();
+                         inst = LLVM.LLVMGetNextInstruction(inst)){
+                        int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                        if(opcode==LLVM.LLVMLoad||opcode==LLVM.LLVMStore){
+                            double rand=Math.random();
+                            if(rand<=0.5&&load_store_inst>0){
+                                load_store_inst--;
+                                String op;
+                                if(opcode==LLVM.LLVMLoad) op="lw";
+                                else op="sw";
+                                asm.instr(op,"x"+(int)(rand*31),(((int)(rand*128))/4)*4+"(sp)");
+                            }
+                            else {
+                                double rand2=Math.random();
+                                asm.instr("mv","x"+(int)(rand*31),"x"+(int)(rand2*31));
+                            }
+                        }
+                        else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
+                                opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
+                                opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem||opcode==LLVM.LLVMUDiv){
+                            double rand=Math.random();
+                            double rand2=Math.random();
+                            String op="add";
+                            switch (opcode) {
+                                case LLVM.LLVMAdd:
+                                    op = "add";
+                                    break;
+                                case LLVM.LLVMSub:
+                                    op = "sub";
+                                    break;
+                                case LLVM.LLVMMul:
+                                    op = "mul";
+                                    break;
+                                case LLVM.LLVMSDiv:
+                                    op = "div";
+                                    break;
+                                case LLVM.LLVMUDiv:
+                                    op="divu";
+                                    break;
+                                case LLVM.LLVMSRem:
+                                    op = "rem";
+                                    break;
+                                case LLVM.LLVMURem:
+                                    op = "urem";
+                                    break;
+                            }
+                            asm.op2(op,"x"+(int)(rand*10/4+3),"x"+(int)(rand*31),"x"+(int)(rand2*31));
+                            if(rand<=0.5&&load_store_inst>0){
+                                load_store_inst--;
+                                asm.instr("sw","x"+(int)(rand*31),(((int)(rand*128))/4)*4+"(sp)");
+                            }
+                        }
+                        else if(opcode==LLVM.LLVMICmp){
+                            double rand1=Math.random();
+                            double rand2=Math.random();
+                            double rand3=Math.random();
+                            asm.instr("xor","x"+(int)(rand1*31),"x"+(int)(rand2*31),"x"+(int)(rand3*31));
+                            if(rand1<=0.5&&load_store_inst>0){
+                                load_store_inst--;
+                                asm.instr("sw","x"+(int)(rand1*31),(((int)(rand2*128))/4)*4+"(sp)");
+                            }
+                        }
+                        else if(opcode==LLVM.LLVMRet||opcode==LLVM.LLVMBr){
+                            double rand=Math.random();
+                            if(rand>0.5){
+                                asm.mv("a0", "x"+(int)(rand*31));
+                                asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
+                                asm.li("a7", 93);  // syscall exit
+                                asm.instr("ecall");
+                            }
+                            else{
+                                Random rand2 = new Random();
+                                String randomKey = null;
+                                if (!name2blockref.isEmpty()) {
+                                    List<String> keys = new ArrayList<>(name2blockref.keySet());
+                                    randomKey = keys.get(rand2.nextInt(keys.size()));
+                                }
+                                if(rand<0.25)asm.j(randomKey);
+                                else asm.bnez("x"+(int)(rand*31),randomKey);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         asm.label( "mainEntry");
+        for(int i=10;i<=31;i++){
+            asm.instr("mv","x"+i,"x0");
+        }
+        asm.instr("sw","x0","4(sp)");
         asm.li("a0",  retval);
         asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
         asm.li("a7", 93);  // syscall exit

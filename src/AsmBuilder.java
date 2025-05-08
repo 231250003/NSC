@@ -37,10 +37,10 @@ public class AsmBuilder {
 //            op = "LOAD_WORD(";
 //            args = new String[]{dest, base, offset};
 //        }
-        if(op.equals("sw")&&Main.used_interpreter&&Main.is_run_time_error_test){
-            double randomValue = Math.random();
-            if(randomValue>=0.4) return;
-        }
+//        if(op.equals("sw")&&Main.used_interpreter&&Main.is_run_time_error_test){
+//            double randomValue = Math.random();
+//            if(randomValue>=0.4) return;
+//        }
         current.append("  ").append(op);
         if (args.length > 0) {
              current.append(" ").append(String.join(", ", args));
