@@ -1,10 +1,75 @@
+  .data
+x:
+  .word 56
+  .data
+y:
+  .word 98
 
   .text
   .globl main
 main:
-  addi sp, sp, -0
+  addi sp, sp, -2044
 mainEntry:
+  la t0, x
+  lw t0, 0(t0)
+  mv x3, t0
+  mv x1, x3
+  la t1, y
+  lw t1, 0(t1)
+  mv x12, t1
+  mv x4, x12
   li a0, 14
-  addi sp, sp, 0
+  addi sp, sp, 4
   li a7, 93
   ecall
+cur:
+  mv x14, x1
+  mv x13, x14
+  mv x15, x13
+  mv a0, x15
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+while.stmt:
+  mv x16, x1
+  mv x21, x4
+  sgt t2, x16, x21
+  mv x17, t2
+  mv t0, x17
+  mv x23, t0
+  li t1, 0
+  xor t2, x23, t1
+  snez t2, t2
+  mv x26, t2
+  bnez x26, if.then
+  j if.else
+while.cond:
+  mv x10, x4
+  li t0, 0
+  xor t1, x10, t0
+  snez t1, t1
+  mv x9, t1
+  mv t2, x9
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x11, t1
+  bnez x11, while.stmt
+  j cur
+merge:
+  j while.cond
+if.then:
+  mv x19, x1
+  mv x20, x4
+  sub t2, x19, x20
+  mv x18, t2
+  mv x1, x18
+  j merge
+if.else:
+  mv x25, x4
+  mv x24, x1
+  sub t0, x25, x24
+  mv x22, t0
+  mv x4, x22
+  j merge
