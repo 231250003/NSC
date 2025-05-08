@@ -155,7 +155,7 @@ public class LLVMIRToRiscv {
 //                        NewControlFlowRegisterAllocator.post_process_block(LLVM.LLVMPrintValueToString(inst).getString());
 //                    }
                         if (Main.used_interpreter == true && blockCount > 1
-                                && (LLVM.LLVMPrintValueToString(inst).getString().contains("br") || LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))
+                                //&& (LLVM.LLVMPrintValueToString(inst).getString().contains("br") || LLVM.LLVMPrintValueToString(inst).getString().contains("ret"))
                                 && label.equals("mainEntry")) {
                             LLVMIRInterpreter interpreter = new LLVMIRInterpreter(module, file_path);
                             int retval = interpreter.Process_block(LLVMGetEntryBasicBlock(LLVMGetNamedFunction(module, "main")));
