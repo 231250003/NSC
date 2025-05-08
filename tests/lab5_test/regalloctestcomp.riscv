@@ -118,7 +118,6 @@ mainEntry:
   add t2, x27, t1
   mv x28, t2
   la t0, y
-  sw x28, 0(t0)
   la t1, z
   lw t1, 0(t1)
   mv x29, t1
@@ -126,7 +125,6 @@ mainEntry:
   add t0, x29, t2
   mv x30, t0
   la t1, z
-  sw x30, 0(t1)
   la t2, a
   lw t2, 0(t2)
   mv x31, t2
@@ -134,6 +132,7 @@ mainEntry:
   add t1, x31, t0
   mv x25, t1
   la t2, a
+  sw x25, 0(t2)
   la t0, b
   lw t0, 0(t0)
   mv x26, t0
@@ -162,6 +161,7 @@ mainEntry:
   add t2, x25, t1
   mv x26, t2
   la t0, e
+  sw x26, 0(t0)
   la t1, f
   lw t1, 0(t1)
   mv x27, t1
@@ -169,7 +169,6 @@ mainEntry:
   add t0, x27, t2
   mv x28, t0
   la t1, f
-  sw x28, 0(t1)
   la t2, g
   lw t2, 0(t2)
   mv x29, t2
@@ -177,6 +176,7 @@ mainEntry:
   add t1, x29, t0
   mv x30, t1
   la t2, g
+  sw x30, 0(t2)
   la t0, h
   lw t0, 0(t0)
   mv x31, t0
@@ -198,6 +198,7 @@ mainEntry:
   add t1, x28, t0
   mv x29, t1
   la t2, j
+  sw x29, 0(t2)
   la t0, k
   lw t0, 0(t0)
   mv x30, t0
@@ -205,7 +206,6 @@ mainEntry:
   add t2, x30, t1
   mv x31, t2
   la t0, k
-  sw x31, 0(t0)
   la t1, l
   lw t1, 0(t1)
   mv x25, t1
@@ -213,7 +213,6 @@ mainEntry:
   add t0, x25, t2
   mv x26, t0
   la t1, l
-  sw x26, 0(t1)
   la t2, m
   lw t2, 0(t2)
   mv x27, t2
@@ -221,7 +220,6 @@ mainEntry:
   add t1, x27, t0
   mv x28, t1
   la t2, m
-  sw x28, 0(t2)
   la t0, n
   lw t0, 0(t0)
   mv x29, t0
@@ -229,6 +227,7 @@ mainEntry:
   add t2, x29, t1
   mv x30, t2
   la t0, n
+  sw x30, 0(t0)
   la t1, o
   lw t1, 0(t1)
   mv x31, t1
@@ -236,6 +235,7 @@ mainEntry:
   add t0, x31, t2
   mv x25, t0
   la t1, o
+  sw x25, 0(t1)
   la t2, p
   lw t2, 0(t2)
   mv x26, t2
@@ -243,7 +243,6 @@ mainEntry:
   add t1, x26, t0
   mv x27, t1
   la t2, p
-  sw x27, 0(t2)
   la t0, q
   lw t0, 0(t0)
   mv x28, t0
@@ -251,6 +250,7 @@ mainEntry:
   add t2, x28, t1
   mv x29, t2
   la t0, q
+  sw x29, 0(t0)
   mv x30, x1
   li t1, 2
   mul t2, x30, t1
