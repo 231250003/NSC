@@ -40,66 +40,67 @@ merge:
   j while.cond
 if.then:
   lw t0, 8(sp)
-  mv x14, t0
+  mv x3, t0
   li t1, 1
-  add t2, x14, t1
-  mv x15, t2
-  sw x15, 8(sp)
+  add t2, x3, t1
+  mv x4, t2
+  sw x4, 8(sp)
   j merge
 cur:
   lw t0, 8(sp)
-  mv x19, t0
-  mv x17, x19
-  mv x20, x17
-  mv a0, x20
+  mv x4, t0
+  mv x1, x4
+  mv x8, x1
+  mv a0, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
 while.stmt:
   lw t1, 8(sp)
-  mv x22, t1
+  mv x3, t1
   lw t2, 16(sp)
-  mv x24, t2
-  sgt t0, x22, x24
-  mv x25, t0
-  mv t1, x25
-  mv x26, t1
+  mv x8, t2
+  sgt t0, x3, x8
+  mv x9, t0
+  mv t1, x9
+  mv x10, t1
   li t2, 0
-  xor t0, x26, t2
+  xor t0, x10, t2
   snez t0, t0
-  mv x27, t0
-  bnez x27, if.then13
+  mv x11, t0
+  bnez x11, if.then13
   j if.else
 while.cond:
   lw t1, 16(sp)
-  mv x28, t1
+  mv x3, t1
   li t2, 0
-  xor t0, x28, t2
+  xor t0, x3, t2
   snez t0, t0
-  mv x29, t0
-  mv t1, x29
-  mv x31, t1
+  mv x4, t0
+  mv t1, x4
+  mv x8, t1
   li t2, 0
-  xor t0, x31, t2
+  xor t0, x8, t2
   snez t0, t0
-  mv x3, t0
-  bnez x3, while.stmt
+  mv x9, t0
+  bnez x9, while.stmt
   j cur
 merge8:
   j while.cond
 if.then13:
   lw t1, 8(sp)
-  mv x8, t1
+  mv x3, t1
   lw t2, 16(sp)
-  mv x10, t2
-  sub t0, x8, x10
-  mv x11, t0
+  mv x8, t2
+  sub t0, x3, x8
+  mv x9, t0
   j merge8
 if.else:
   lw t1, 16(sp)
-  mv x16, t1
+  mv x3, t1
   lw t2, 8(sp)
-  mv x23, t2
-  sub t0, x16, x23
-  mv x30, t0
+  mv x8, t2
+  sub t0, x3, x8
+  mv x9, t0
+  sw x9, 16(sp)
   j merge8
