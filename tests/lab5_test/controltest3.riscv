@@ -172,6 +172,7 @@ merge13:
   add t1, x1, t0
   mv x1, t1
   la t2, z
+  sw x1, 0(t2)
   lw t0, 8(sp)
   mv x3, t0
   li t1, 4
@@ -205,6 +206,7 @@ merge13:
   add t1, x1, t0
   mv x1, t1
   la t2, e
+  sw x1, 0(t2)
   la t0, f
   lw t0, 0(t0)
   mv x1, t0
@@ -212,6 +214,7 @@ merge13:
   add t2, x1, t1
   mv x1, t2
   la t0, f
+  sw x1, 0(t0)
   la t1, g
   lw t1, 0(t1)
   mv x1, t1
@@ -233,7 +236,6 @@ merge13:
   add t2, x1, t1
   mv x3, t2
   la t0, i
-  sw x3, 0(t0)
   la t1, j
   lw t1, 0(t1)
   mv x1, t1
@@ -270,6 +272,7 @@ merge13:
   add t1, x1, t0
   mv x3, t1
   la t2, n
+  sw x3, 0(t2)
   la t0, o
   lw t0, 0(t0)
   mv x1, t0
@@ -285,6 +288,7 @@ merge13:
   add t0, x1, t2
   mv x3, t0
   la t1, p
+  sw x3, 0(t1)
   la t2, q
   lw t2, 0(t2)
   mv x1, t2
@@ -292,6 +296,7 @@ merge13:
   add t1, x1, t0
   mv x3, t1
   la t2, q
+  sw x3, 0(t2)
   mv x1, x1
   li t0, 2
   mul t1, x1, t0
