@@ -4,6 +4,7 @@ int y = 98;
 int main() {
   int a = x;
     int b = y;
+    if(a%2==0) a=a+1;
   if(!a+b>=10) {
         if(a<=10) return 2;
      }
