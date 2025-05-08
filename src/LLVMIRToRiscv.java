@@ -163,8 +163,7 @@ public class LLVMIRToRiscv {
                             asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
                             asm.li("a7", 93);  // syscall exit
                             asm.instr("ecall");
-                            //continue;
-                            break;
+                            continue;
                         }
                         int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                         allocator.processInstruction(lineNum, LLVM.LLVMPrintValueToString(inst).getString());
