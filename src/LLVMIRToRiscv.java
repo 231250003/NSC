@@ -248,7 +248,7 @@ public class LLVMIRToRiscv {
                                 break;
                             case LLVM.LLVMUDiv:
                                 op="divu";
-                                break;;
+                                break;
                             case LLVM.LLVMSRem:
                                 op = "rem";
                                 break;
