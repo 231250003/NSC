@@ -64,505 +64,450 @@ q:
 main:
   addi sp, sp, -2044
 mainEntry:
+  la t0, x
+  lw t0, 0(t0)
+  mv x3, t0
+  mv x1, x3
+  la t1, y
+  lw t1, 0(t1)
+  mv x12, t1
+  mv x8, x12
   li a0, 439
   addi sp, sp, 4
   li a7, 93
   ecall
 cur:
-  la t0, a
-  lw t0, 0(t0)
-  mv x13, t0
-  la t1, x
-  lw t1, 0(t1)
-  mv x14, t1
-  li t2, 0
-  xor t0, x14, t2
-  seqz t0, t0
-  mv x15, t0
-  mv t1, x15
-  mv x16, t1
-  li t2, 3
-  add t0, x16, t2
-  mv x17, t0
-  xor t1, x13, x17
-  snez t1, t1
+  mv x13, x1
+  la t2, x
+  lw t2, 0(t2)
+  mv x17, t2
+  li t0, 0
+  xor t1, x17, t0
+  seqz t1, t1
   mv x18, t1
   mv t2, x18
-  mv x19, t2
-  li t0, 0
-  xor t1, x19, t0
-  snez t1, t1
-  mv x21, t1
-  bnez x21, if.then19
+  mv x22, t2
+  li t0, 3
+  add t1, x22, t0
+  mv x14, t1
+  xor t2, x13, x14
+  snez t2, t2
+  mv x16, t2
+  mv t0, x16
+  mv x21, t0
+  li t1, 0
+  xor t2, x21, t1
+  snez t2, t2
+  mv x20, t2
+  bnez x20, if.then19
   j merge13
 while.stmt:
-  la t2, a
-  lw t2, 0(t2)
-  mv x23, t2
-  la t0, b
-  lw t0, 0(t0)
-  mv x24, t0
-  sgt t1, x23, x24
-  mv x25, t1
-  mv t2, x25
-  mv x26, t2
-  li t0, 0
-  xor t1, x26, t0
-  snez t1, t1
-  mv x27, t1
-  bnez x27, if.then
+  mv x23, x1
+  mv x3, x8
+  sgt t0, x23, x3
+  mv x25, t0
+  mv t1, x25
+  mv x26, t1
+  li t2, 0
+  xor t0, x26, t2
+  snez t0, t0
+  mv x29, t0
+  bnez x29, if.then
   j if.else
 while.cond:
-  la t2, b
-  lw t2, 0(t2)
-  mv x10, t2
-  li t0, 0
-  xor t1, x10, t0
-  snez t1, t1
-  mv x9, t1
-  mv t2, x9
-  mv x4, t2
-  li t0, 0
-  xor t1, x4, t0
-  snez t1, t1
-  mv x11, t1
+  mv x10, x8
+  li t1, 0
+  xor t2, x10, t1
+  snez t2, t2
+  mv x9, t2
+  mv t0, x9
+  mv x4, t0
+  li t1, 0
+  xor t2, x4, t1
+  snez t2, t2
+  mv x11, t2
   bnez x11, while.stmt
   j cur
 merge:
   j while.cond
 if.then:
-  la t2, a
-  lw t2, 0(t2)
-  mv x31, t2
-  la t0, b
-  lw t0, 0(t0)
-  mv x3, t0
-  sub t1, x31, x3
-  mv x28, t1
-  la t2, a
-  sw x28, 0(t2)
+  mv x30, x1
+  mv x31, x8
+  sub t0, x30, x31
+  mv x24, t0
+  mv x1, x24
   j merge
 if.else:
-  la t0, b
-  lw t0, 0(t0)
-  mv x30, t0
-  la t1, a
-  lw t1, 0(t1)
-  mv x29, t1
-  sub t2, x30, x29
-  mv x12, t2
-  la t0, b
-  sw x12, 0(t0)
+  mv x28, x8
+  mv x27, x1
+  sub t1, x28, x27
+  mv x12, t1
+  mv x8, x12
   j merge
 merge13:
-  li t1, 1
-  mv x14, t1
-  li t2, 2
-  mv x13, t2
-  li t0, 3
-  mv x26, t0
-  li t1, 4
-  mv x24, t1
-  li t2, 5
-  mv x23, t2
-  li t0, 6
-  mv x18, t0
-  li t1, 7
-  mv x27, t1
-  li t2, 8
-  mv x21, t2
-  li t0, 9
-  mv x25, t0
-  li t1, 10
-  mv x17, t1
-  li t2, 11
-  mv x15, t2
-  li t0, 12
-  mv x19, t0
-  li t1, 13
+  li t2, 1
+  mv x17, t2
+  li t0, 2
+  mv x13, t0
+  li t1, 3
+  mv x26, t1
+  li t2, 4
+  mv x3, t2
+  li t0, 5
+  mv x23, t0
+  li t1, 6
   mv x16, t1
-  li t2, 14
-  mv x11, t2
-  li t0, 15
-  mv x4, t0
-  li t1, 16
-  mv x10, t1
-  li t2, 17
-  mv x9, t2
-  li t0, 18
-  mv x31, t0
-  li t1, 19
-  mv x3, t1
-  li t2, 20
-  mv x28, t2
-  la t0, x
-  lw t0, 0(t0)
-  mv x29, t0
-  li t1, 1
-  add t2, x29, t1
-  mv x30, t2
-  la t0, x
-  sw x30, 0(t0)
-  la t1, y
-  lw t1, 0(t1)
-  mv x12, t1
-  li t2, 2
-  add t0, x12, t2
-  sw t0, 4(sp)
-  lw t1, 4(sp)
-  la t2, y
-  sw t1, 0(t2)
-  la t0, z
-  lw t0, 0(t0)
-  sw t0, 8(sp)
-  lw t1, 8(sp)
-  li t2, 3
-  add t0, t1, t2
-  sw t0, 12(sp)
-  lw t1, 12(sp)
-  la t2, z
-  sw t1, 0(t2)
-  la t0, a
-  lw t0, 0(t0)
-  mv x29, t0
-  li t1, 4
-  add t2, x29, t1
-  mv x30, t2
-  la t0, a
-  sw x30, 0(t0)
-  la t1, b
-  lw t1, 0(t1)
-  mv x12, t1
-  li t2, 5
-  add t0, x12, t2
-  sw t0, 16(sp)
-  lw t1, 16(sp)
-  la t2, b
-  sw t1, 0(t2)
-  la t0, c
-  lw t0, 0(t0)
-  sw t0, 20(sp)
-  lw t1, 20(sp)
-  li t2, 6
-  add t0, t1, t2
-  sw t0, 24(sp)
-  lw t1, 24(sp)
-  la t2, c
-  sw t1, 0(t2)
-  la t0, d
-  lw t0, 0(t0)
-  mv x29, t0
-  li t1, 7
-  add t2, x29, t1
-  mv x30, t2
-  la t0, d
-  sw x30, 0(t0)
-  la t1, e
-  lw t1, 0(t1)
-  mv x12, t1
-  li t2, 8
-  add t0, x12, t2
-  mv x8, t0
-  la t1, e
-  sw x8, 0(t1)
-  la t2, f
-  lw t2, 0(t2)
-  sw t2, 28(sp)
-  lw t0, 28(sp)
-  li t1, 9
-  add t2, t0, t1
-  sw t2, 32(sp)
-  lw t0, 32(sp)
-  la t1, f
-  sw t0, 0(t1)
-  la t2, g
-  lw t2, 0(t2)
+  li t2, 7
   mv x29, t2
-  li t0, 10
-  add t1, x29, t0
-  mv x30, t1
-  la t2, g
-  sw x30, 0(t2)
-  la t0, h
-  lw t0, 0(t0)
-  mv x12, t0
-  li t1, 11
-  add t2, x12, t1
-  mv x8, t2
-  la t0, h
-  sw x8, 0(t0)
-  la t1, i
-  lw t1, 0(t1)
-  sw t1, 36(sp)
-  lw t2, 36(sp)
-  li t0, 12
-  add t1, t2, t0
-  sw t1, 40(sp)
-  lw t2, 40(sp)
-  la t0, i
-  sw t2, 0(t0)
-  la t1, j
-  lw t1, 0(t1)
-  mv x29, t1
+  li t0, 8
+  mv x20, t0
+  li t1, 9
+  mv x25, t1
+  li t2, 10
+  mv x14, t2
+  li t0, 11
+  mv x18, t0
+  li t1, 12
+  mv x21, t1
   li t2, 13
-  add t0, x29, t2
-  mv x30, t0
-  la t1, j
-  sw x30, 0(t1)
-  la t2, k
+  mv x22, t2
+  li t0, 14
+  mv x11, t0
+  li t1, 15
+  mv x4, t1
+  li t2, 16
+  mv x10, t2
+  li t0, 17
+  mv x9, t0
+  li t1, 18
+  mv x30, t1
+  li t2, 19
+  mv x31, t2
+  li t0, 20
+  mv x24, t0
+  la t1, x
+  lw t1, 0(t1)
+  mv x27, t1
+  li t2, 1
+  add t0, x27, t2
+  mv x28, t0
+  la t1, x
+  sw x28, 0(t1)
+  la t2, y
   lw t2, 0(t2)
   mv x12, t2
-  li t0, 14
+  li t0, 2
   add t1, x12, t0
+  mv x27, t1
+  la t2, y
+  sw x27, 0(t2)
+  la t0, z
+  lw t0, 0(t0)
+  mv x28, t0
+  li t1, 3
+  add t2, x28, t1
+  mv x12, t2
+  la t0, z
+  sw x12, 0(t0)
+  mv x27, x1
+  li t1, 4
+  add t2, x27, t1
+  mv x28, t2
+  mv x1, x28
+  mv x12, x8
+  li t0, 5
+  add t1, x12, t0
+  mv x27, t1
+  mv x8, x27
+  la t2, c
+  lw t2, 0(t2)
+  mv x28, t2
+  li t0, 6
+  add t1, x28, t0
+  mv x12, t1
+  la t2, c
+  sw x12, 0(t2)
+  la t0, d
+  lw t0, 0(t0)
+  mv x27, t0
+  li t1, 7
+  add t2, x27, t1
+  mv x8, t2
+  la t0, d
+  sw x8, 0(t0)
+  la t1, e
+  lw t1, 0(t1)
+  mv x28, t1
+  li t2, 8
+  add t0, x28, t2
+  mv x12, t0
+  la t1, e
+  sw x12, 0(t1)
+  la t2, f
+  lw t2, 0(t2)
+  mv x27, t2
+  li t0, 9
+  add t1, x27, t0
   mv x8, t1
-  la t2, k
+  la t2, f
   sw x8, 0(t2)
-  la t0, l
+  la t0, g
   lw t0, 0(t0)
-  sw t0, 44(sp)
-  lw t1, 44(sp)
-  li t2, 15
-  add t0, t1, t2
-  sw t0, 48(sp)
-  lw t1, 48(sp)
+  mv x28, t0
+  li t1, 10
+  add t2, x28, t1
+  mv x12, t2
+  la t0, g
+  sw x12, 0(t0)
+  la t1, h
+  lw t1, 0(t1)
+  mv x27, t1
+  li t2, 11
+  add t0, x27, t2
+  mv x8, t0
+  la t1, h
+  sw x8, 0(t1)
+  la t2, i
+  lw t2, 0(t2)
+  mv x28, t2
+  li t0, 12
+  add t1, x28, t0
+  mv x12, t1
+  la t2, i
+  sw x12, 0(t2)
+  la t0, j
+  lw t0, 0(t0)
+  mv x27, t0
+  li t1, 13
+  add t2, x27, t1
+  mv x8, t2
+  la t0, j
+  sw x8, 0(t0)
+  la t1, k
+  lw t1, 0(t1)
+  mv x28, t1
+  li t2, 14
+  add t0, x28, t2
+  mv x12, t0
+  la t1, k
+  sw x12, 0(t1)
   la t2, l
-  sw t1, 0(t2)
+  lw t2, 0(t2)
+  mv x27, t2
+  li t0, 15
+  add t1, x27, t0
+  mv x8, t1
+  la t2, l
+  sw x8, 0(t2)
   la t0, m
   lw t0, 0(t0)
-  mv x29, t0
+  mv x28, t0
   li t1, 16
-  add t2, x29, t1
-  mv x30, t2
+  add t2, x28, t1
+  mv x12, t2
   la t0, m
-  sw x30, 0(t0)
+  sw x12, 0(t0)
   la t1, n
   lw t1, 0(t1)
-  mv x12, t1
+  mv x27, t1
   li t2, 17
-  add t0, x12, t2
+  add t0, x27, t2
   mv x8, t0
   la t1, n
   sw x8, 0(t1)
   la t2, o
   lw t2, 0(t2)
-  sw t2, 52(sp)
-  lw t0, 52(sp)
-  li t1, 18
-  add t2, t0, t1
-  sw t2, 56(sp)
-  lw t0, 56(sp)
-  la t1, o
-  sw t0, 0(t1)
-  la t2, p
-  lw t2, 0(t2)
-  mv x29, t2
-  li t0, 19
-  add t1, x29, t0
-  mv x30, t1
-  la t2, p
-  sw x30, 0(t2)
-  la t0, q
+  mv x28, t2
+  li t0, 18
+  add t1, x28, t0
+  mv x12, t1
+  la t2, o
+  sw x12, 0(t2)
+  la t0, p
   lw t0, 0(t0)
-  mv x12, t0
-  li t1, 20
-  add t2, x12, t1
+  mv x27, t0
+  li t1, 19
+  add t2, x27, t1
   mv x8, t2
-  la t0, q
+  la t0, p
   sw x8, 0(t0)
-  sw x14, 60(sp)
-  lw t1, 60(sp)
+  la t1, q
+  lw t1, 0(t1)
+  mv x28, t1
+  li t2, 20
+  add t0, x28, t2
+  mv x12, t0
+  la t1, q
+  sw x12, 0(t1)
+  mv x27, x17
   li t2, 2
-  mul t0, t1, t2
-  sw t0, 64(sp)
-  lw t1, 64(sp)
-  mv x14, t1
-  mv x29, x13
-  li t2, 2
-  mul t0, x29, t2
-  mv x30, t0
-  mv x13, x30
-  mv x12, x26
-  li t1, 2
-  mul t2, x12, t1
-  mv x8, t2
-  mv x26, x8
-  sw x24, 68(sp)
-  lw t0, 68(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 72(sp)
-  lw t0, 72(sp)
-  mv x24, t0
-  mv x29, x23
-  li t1, 2
-  mul t2, x29, t1
-  mv x30, t2
-  mv x23, x30
-  mv x12, x18
-  li t0, 2
-  mul t1, x12, t0
-  mv x8, t1
-  mv x18, x8
-  sw x27, 76(sp)
-  lw t2, 76(sp)
-  li t0, 2
-  mul t1, t2, t0
-  sw t1, 80(sp)
-  lw t2, 80(sp)
-  mv x27, t2
-  mv x29, x21
-  li t0, 2
-  mul t1, x29, t0
-  mv x30, t1
-  mv x21, x30
-  mv x12, x25
-  li t2, 2
-  mul t0, x12, t2
+  mul t0, x27, t2
   mv x8, t0
-  mv x25, x8
-  sw x17, 84(sp)
-  lw t1, 84(sp)
-  li t2, 2
-  mul t0, t1, t2
-  sw t0, 88(sp)
-  lw t1, 88(sp)
-  mv x17, t1
-  mv x29, x15
-  li t2, 2
-  mul t0, x29, t2
-  mv x30, t0
-  mv x15, x30
-  mv x12, x19
+  mv x17, x8
+  mv x28, x13
   li t1, 2
-  mul t2, x12, t1
-  mv x8, t2
-  mv x19, x8
-  sw x16, 92(sp)
-  lw t0, 92(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 96(sp)
-  lw t0, 96(sp)
-  mv x16, t0
-  mv x29, x11
-  li t1, 2
-  mul t2, x29, t1
-  mv x30, t2
-  mv x11, x30
-  mv x12, x4
+  mul t2, x28, t1
+  mv x12, t2
+  mv x13, x12
+  mv x27, x26
   li t0, 2
-  mul t1, x12, t0
+  mul t1, x27, t0
+  mv x8, t1
+  mv x26, x8
+  mv x28, x3
+  li t2, 2
+  mul t0, x28, t2
+  mv x12, t0
+  mv x3, x12
+  mv x27, x23
+  li t1, 2
+  mul t2, x27, t1
+  mv x8, t2
+  mv x23, x8
+  mv x28, x16
+  li t0, 2
+  mul t1, x28, t0
+  mv x12, t1
+  mv x16, x12
+  mv x27, x29
+  li t2, 2
+  mul t0, x27, t2
+  mv x8, t0
+  mv x29, x8
+  mv x28, x20
+  li t1, 2
+  mul t2, x28, t1
+  mv x12, t2
+  mv x20, x12
+  mv x27, x25
+  li t0, 2
+  mul t1, x27, t0
+  mv x8, t1
+  mv x25, x8
+  mv x28, x14
+  li t2, 2
+  mul t0, x28, t2
+  mv x12, t0
+  mv x14, x12
+  mv x27, x18
+  li t1, 2
+  mul t2, x27, t1
+  mv x8, t2
+  mv x18, x8
+  mv x28, x21
+  li t0, 2
+  mul t1, x28, t0
+  mv x12, t1
+  mv x21, x12
+  mv x27, x22
+  li t2, 2
+  mul t0, x27, t2
+  mv x8, t0
+  mv x22, x8
+  mv x28, x11
+  li t1, 2
+  mul t2, x28, t1
+  mv x12, t2
+  mv x11, x12
+  mv x27, x4
+  li t0, 2
+  mul t1, x27, t0
   mv x8, t1
   mv x4, x8
-  sw x10, 100(sp)
-  lw t2, 100(sp)
-  li t0, 2
-  mul t1, t2, t0
-  sw t1, 104(sp)
-  lw t2, 104(sp)
-  mv x10, t2
-  mv x29, x9
-  li t0, 2
-  mul t1, x29, t0
-  mv x30, t1
-  mv x9, x30
-  mv x12, x31
+  mv x28, x10
   li t2, 2
-  mul t0, x12, t2
+  mul t0, x28, t2
+  mv x12, t0
+  mv x10, x12
+  mv x27, x9
+  li t1, 2
+  mul t2, x27, t1
+  mv x8, t2
+  mv x9, x8
+  mv x28, x30
+  li t0, 2
+  mul t1, x28, t0
+  mv x12, t1
+  mv x30, x12
+  mv x27, x31
+  li t2, 2
+  mul t0, x27, t2
   mv x8, t0
   mv x31, x8
-  sw x3, 108(sp)
-  lw t1, 108(sp)
-  li t2, 2
-  mul t0, t1, t2
-  sw t0, 112(sp)
-  lw t1, 112(sp)
-  mv x3, t1
-  mv x29, x28
-  li t2, 2
-  mul t0, x29, t2
-  mv x30, t0
-  mv x28, x30
-  la t1, a
-  lw t1, 0(t1)
-  mv x12, t1
-  mv x8, x14
-  add t2, x12, x8
-  sw t2, 116(sp)
-  sw x13, 120(sp)
-  lw t0, 116(sp)
-  lw t1, 120(sp)
-  add t2, t0, t1
-  sw t2, 124(sp)
-  sw x26, 128(sp)
-  lw t0, 124(sp)
-  lw t1, 128(sp)
-  add t2, t0, t1
-  mv x29, t2
-  mv x30, x24
-  add t0, x29, x30
-  sw t0, 132(sp)
-  mv x14, x23
-  lw t1, 132(sp)
-  add t2, t1, x14
-  mv x8, t2
-  mv x12, x18
-  add t0, x8, x12
-  mv x13, t0
-  mv x26, x27
-  add t1, x13, x26
-  sw t1, 136(sp)
-  mv x24, x21
-  lw t2, 136(sp)
-  add t0, t2, x24
-  mv x30, t0
-  mv x29, x25
-  add t1, x30, x29
-  mv x23, t1
-  mv x14, x17
-  add t2, x23, x14
-  mv x18, t2
-  mv x12, x15
-  add t0, x18, x12
-  mv x8, t0
-  mv x27, x19
-  add t1, x8, x27
-  mv x26, t1
-  mv x13, x16
-  add t2, x26, x13
-  mv x21, t2
-  mv x24, x11
-  add t0, x21, x24
-  mv x25, t0
-  mv x29, x4
-  add t1, x25, x29
-  mv x30, t1
-  mv x17, x10
-  add t2, x30, x17
-  mv x14, t2
-  mv x23, x9
-  add t0, x14, x23
-  mv x15, t0
-  mv x12, x31
-  add t1, x15, x12
-  mv x18, t1
-  mv x19, x3
-  add t2, x18, x19
-  mv x27, t2
-  mv x8, x28
+  mv x28, x24
+  li t1, 2
+  mul t2, x28, t1
+  mv x12, t2
+  mv x24, x12
+  mv x27, x1
+  mv x8, x17
   add t0, x27, x8
+  mv x28, t0
+  mv x12, x13
+  add t1, x28, x12
+  mv x17, t1
+  mv x8, x26
+  add t2, x17, x8
+  mv x27, t2
+  mv x13, x3
+  add t0, x27, x13
+  mv x12, t0
+  mv x28, x23
+  add t1, x12, x28
+  mv x26, t1
+  mv x8, x16
+  add t2, x26, x8
+  mv x17, t2
+  mv x3, x29
+  add t0, x17, x3
+  mv x13, t0
+  mv x27, x20
+  add t1, x13, x27
+  mv x23, t1
+  mv x28, x25
+  add t2, x23, x28
+  mv x12, t2
+  mv x16, x14
+  add t0, x12, x16
+  mv x8, t0
+  mv x26, x18
+  add t1, x8, x26
+  mv x29, t1
+  mv x3, x21
+  add t2, x29, x3
+  mv x17, t2
+  mv x20, x22
+  add t0, x17, x20
+  mv x27, t0
+  mv x13, x11
+  add t1, x27, x13
+  mv x25, t1
+  mv x28, x4
+  add t2, x25, x28
+  mv x23, t2
+  mv x14, x10
+  add t0, x23, x14
   mv x16, t0
-  mv a0, x16
+  mv x12, x9
+  add t1, x16, x12
+  mv x18, t1
+  mv x26, x30
+  add t2, x18, x26
+  mv x8, t2
+  mv x21, x31
+  add t0, x8, x21
+  mv x3, t0
+  mv x29, x24
+  add t1, x3, x29
+  mv x22, t1
+  mv a0, x22
   addi sp, sp, 2044
   li a7, 93
   ecall
 if.then19:
-  la t1, a
-  lw t1, 0(t1)
-  mv x22, t1
+  mv x19, x1
   li t2, 1
-  add t0, x22, t2
-  mv x20, t0
-  la t1, a
-  sw x20, 0(t1)
+  add t0, x19, t2
+  mv x15, t0
+  mv x1, x15
   j merge13
