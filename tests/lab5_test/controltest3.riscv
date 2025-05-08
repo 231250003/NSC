@@ -190,7 +190,6 @@ merge13:
   add t2, x1, t1
   mv x3, t2
   la t0, c
-  sw x3, 0(t0)
   la t1, d
   lw t1, 0(t1)
   mv x1, t1
@@ -198,7 +197,6 @@ merge13:
   add t0, x1, t2
   mv x1, t0
   la t1, d
-  sw x1, 0(t1)
   la t2, e
   lw t2, 0(t2)
   mv x1, t2
@@ -229,6 +227,7 @@ merge13:
   add t1, x1, t0
   mv x3, t1
   la t2, h
+  sw x3, 0(t2)
   la t0, i
   lw t0, 0(t0)
   mv x1, t0
@@ -236,6 +235,7 @@ merge13:
   add t2, x1, t1
   mv x3, t2
   la t0, i
+  sw x3, 0(t0)
   la t1, j
   lw t1, 0(t1)
   mv x1, t1
@@ -243,6 +243,7 @@ merge13:
   add t0, x1, t2
   mv x1, t0
   la t1, j
+  sw x1, 0(t1)
   la t2, k
   lw t2, 0(t2)
   mv x1, t2
@@ -250,7 +251,6 @@ merge13:
   add t1, x1, t0
   mv x1, t1
   la t2, k
-  sw x1, 0(t2)
   la t0, l
   lw t0, 0(t0)
   mv x1, t0
@@ -288,7 +288,6 @@ merge13:
   add t0, x1, t2
   mv x3, t0
   la t1, p
-  sw x3, 0(t1)
   la t2, q
   lw t2, 0(t2)
   mv x1, t2
