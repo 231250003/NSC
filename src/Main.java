@@ -84,8 +84,10 @@ public class Main {
 //            LLVMDisposeMessage(error);
 //        }
 //        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
-        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
-        llvmirToRiscv.to_riscv();
+//        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
+//        llvmirToRiscv.to_riscv();
+        LLVMIRInterpreter interpreter=new LLVMIRInterpreter(module,args[1].substring(0,args[1].length()-3)+".riscv");
+        interpreter.to_riscv();
         LLVMDisposeBuilder(builder);
         LLVMDisposeModule(module);
     }
