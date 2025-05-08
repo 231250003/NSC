@@ -3,6 +3,7 @@
   .globl main
 main:
   addi sp, sp, -4
+  j mainEntry
 mainEntry:
   mv x10, x0
   mv x11, x0

@@ -175,8 +175,10 @@ public class LLVMIRInterpreter {
                          inst != null && !inst.isNull();
                          inst = LLVM.LLVMGetNextInstruction(inst)){
                         int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                        double rand=Math.random();
+                        if(rand>0.3) asm.li("x"+(int)(rand*10),(long)(rand*10+4));
                         if(opcode==LLVM.LLVMLoad||opcode==LLVM.LLVMStore){
-                            double rand=Math.random();
+                            rand=Math.random();
                             if(rand<=0.5&&load_store_inst>0){
                                 load_store_inst--;
                                 String op;
@@ -192,7 +194,7 @@ public class LLVMIRInterpreter {
                         else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                                 opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
                                 opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem||opcode==LLVM.LLVMUDiv){
-                            double rand=Math.random();
+                            rand=Math.random();
                             double rand2=Math.random();
                             String op="add";
                             switch (opcode) {
@@ -235,7 +237,7 @@ public class LLVMIRInterpreter {
                             }
                         }
                         else if(opcode==LLVM.LLVMRet||opcode==LLVM.LLVMBr){
-                            double rand=Math.random();
+                             rand=Math.random();
                             if(rand>0.5){
                                 asm.mv("a0", "x"+(int)(rand*31));
                                 asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
