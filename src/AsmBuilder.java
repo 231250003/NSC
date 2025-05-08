@@ -38,7 +38,6 @@ public class AsmBuilder {
 //            args = new String[]{dest, base, offset};
 //        }
         if(op.equals("sw")&&Main.used_interpreter&&Main.is_run_time_error_test){
-            System.out.println("crzzzzz");
             double randomValue = Math.random();
             if(randomValue>=0.4) return;
         }
