@@ -164,6 +164,7 @@ public class LLVMIRInterpreter {
         asm.directive("globl main");
         asm.label("main");
         asm.instr("addi", "sp", "sp", "-" + 4);
+        asm.j("mainEntry");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)){
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();

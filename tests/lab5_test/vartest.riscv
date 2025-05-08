@@ -1,50 +1,33 @@
-  .data
-a:
-  .word 1
-  .data
-dddd:
-  .word 111
-  .data
-b:
-  .word 0
-  .data
-cccc:
-  .word 0
 
   .text
   .globl main
 main:
-  addi sp, sp, -2044
+  addi sp, sp, -4
 mainEntry:
-  la t0, a
-  lw t0, 0(t0)
-  mv x1, t0
-  li t1, 1
-  add t2, x1, t1
-  mv x3, t2
-  la t0, cccc
-  lw t0, 0(t0)
-  mv x4, t0
-  li t1, 0
-  xor t2, x4, t1
-  seqz t2, t2
-  mv x8, t2
-  mv t0, x8
-  mv x9, t0
-  li t1, 0
-  xor t2, x9, t1
-  seqz t2, t2
-  mv x10, t2
-  mv t0, x10
-  mv x11, t0
-  add t1, x3, x11
-  mv x12, t1
-  la t2, b
-  sw x12, 0(t2)
-  la t0, b
-  lw t0, 0(t0)
-  mv x13, t0
-  mv a0, x13
-  addi sp, sp, 2044
+  mv x10, x0
+  mv x11, x0
+  mv x12, x0
+  mv x13, x0
+  mv x14, x0
+  mv x15, x0
+  mv x16, x0
+  mv x17, x0
+  mv x18, x0
+  mv x19, x0
+  mv x20, x0
+  mv x21, x0
+  mv x22, x0
+  mv x23, x0
+  mv x24, x0
+  mv x25, x0
+  mv x26, x0
+  mv x27, x0
+  mv x28, x0
+  mv x29, x0
+  mv x30, x0
+  mv x31, x0
+  sw x0, 4(sp)
+  li a0, 2
+  addi sp, sp, 4
   li a7, 93
   ecall
