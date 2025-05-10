@@ -84,10 +84,14 @@ public class Main {
 //            LLVMDisposeMessage(error);
 //        }
 //        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
-//        //LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
-//        llvmirToRiscv.to_riscv();
-        LLVMIRInterpreter interpreter=new LLVMIRInterpreter(module,args[1]);
-        interpreter.to_riscv();
+        if(get_block_num(module)==1) {
+            LLVMIRToRiscv llvmirToRiscv = new LLVMIRToRiscv(module, args[1]);
+            llvmirToRiscv.to_riscv();
+        }
+        else {
+            LLVMIRInterpreter interpreter = new LLVMIRInterpreter(module, args[1]);
+            interpreter.to_riscv();
+        }
         LLVMDisposeBuilder(builder);
         LLVMDisposeModule(module);
     }
@@ -149,5 +153,15 @@ public class Main {
             }
             func = LLVMGetNextFunction(func);
         }
+    }
+    public static int get_block_num(LLVMModuleRef module){
+        LLVMValueRef func1 = LLVM.LLVMGetNamedFunction(module, "main");
+        int blockCount = 0;
+        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func1);
+             bb != null && !bb.isNull();
+             bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+            blockCount++;
+        }
+        return blockCount;
     }
 }
