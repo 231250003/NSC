@@ -147,6 +147,7 @@ public class LLVMIRToRiscv {
             // Prologue
             int stackSize = max(2044,Main.var_num);
             asm.instr("addi", "sp", "sp", "-" + stackSize);
+            asm.j("mainEntry");
             for(int i=4;i<=stackSize;i+=4){
                 is_offset_init.put(i,false);
             }
