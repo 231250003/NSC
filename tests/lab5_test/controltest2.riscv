@@ -1,107 +1,96 @@
+  .data
+x:
+  .word 56
+  .data
+y:
+  .word 98
 
   .text
   .globl main
 main:
-  addi sp, sp, -40
-  j mainEntry
+  addi sp, sp, -2044
+mainEntry:
+  la t0, x
+  lw t0, 0(t0)
+  mv x4, t0
+  mv x3, x4
+  la t1, y
+  lw t1, 0(t1)
+  mv x15, t1
+  mv x8, x15
+  mv x12, x3
+  li t2, 2
+  rem t0, x12, t2
+  mv x10, t0
+  li t1, 1
+  xor t2, x10, t1
+  seqz t2, t2
+  mv x11, t2
+  mv t0, x11
+  mv x9, t0
+  li t1, 0
+  xor t2, x9, t1
+  snez t2, t2
+  mv x13, t2
+  bnez x13, if.then
+  j merge
 merge:
-  li x8, 12
-  mv a0, x27
-  addi sp, sp, 4
-  li a7, 93
-  ecall
+  j while.cond
 if.then:
-  li x6, 10
-  mv x23, x9
-  li x3, 7
-  add x3, x6, x25
-  sw x6, 4(sp)
-  li x6, 10
-  mv x23, x30
-  li x5, 9
-  mv a0, x18
-  addi sp, sp, 4
-  li a7, 93
-  ecall
+  mv x14, x3
+  li t0, 1
+  add t1, x14, t0
+  mv x1, t1
+  mv x3, x1
+  j merge
 cur:
-  li x3, 7
-  li x3, 7
-  mv x23, x4
-  li x5, 9
-  sw x7, 4(sp)
-  mv x28, x21
-  mv a0, x0
-  addi sp, sp, 4
+  mv x21, x3
+  mv x20, x21
+  mv x22, x20
+  mv a0, x22
+  addi sp, sp, 2044
   li a7, 93
   ecall
 while.stmt:
-  li x4, 8
-  lw x3, 0(sp)
-  li x9, 13
-  lw x9, 8(sp)
-  li x5, 9
-  xor x28, x1, x13
-  xor x5, x6, x16
-  sw x5, 4(sp)
-  bnez x2, cur
+  mv x27, x3
+  mv x11, x8
+  sgt t2, x27, x11
+  mv x23, t2
+  mv t0, x23
+  mv x25, t0
+  li t1, 0
+  xor t2, x25, t1
+  snez t2, t2
+  mv x10, t2
+  bnez x10, if.then13
+  j if.else
 while.cond:
-  li x4, 8
-  mv x23, x9
-  li x3, 7
-  xor x1, x5, x30
-  sw x1, 4(sp)
-  xor x4, x2, x26
-  sw x4, 0(sp)
-  li x3, 7
-  mv a0, x11
-  addi sp, sp, 4
-  li a7, 93
-  ecall
+  mv x17, x8
+  li t0, 0
+  xor t1, x17, t0
+  snez t1, t1
+  mv x16, t1
+  mv t2, x16
+  mv x18, t2
+  li t0, 0
+  xor t1, x18, t0
+  snez t1, t1
+  mv x19, t1
+  bnez x19, while.stmt
+  j cur
 merge8:
-  li x6, 10
-  bnez x18, merge
+  j while.cond
 if.then13:
-  li x5, 9
-  mv x16, x25
-  li x9, 13
-  lw x9, 8(sp)
-  li x8, 12
-  sub x3, x10, x13
-  sw x10, 8(sp)
-  li x8, 12
-  mv x15, x0
-  bnez x6, if.then13
+  mv x30, x3
+  mv x31, x8
+  sub t2, x30, x31
+  mv x24, t2
+  mv x3, x24
+  j merge8
 if.else:
-  mv x22, x6
-  mv x21, x3
-  sub x5, x27, x28
-  li x8, 12
-  sw x3, 0(sp)
-  bnez x1, merge
-mainEntry:
-  mv x10, x0
-  mv x11, x0
-  mv x12, x0
-  mv x13, x0
-  mv x14, x0
-  mv x15, x0
-  mv x16, x0
-  mv x17, x0
-  mv x18, x0
-  mv x19, x0
-  mv x20, x0
-  mv x21, x0
-  mv x22, x0
-  mv x23, x0
-  mv x24, x0
-  mv x25, x0
-  mv x26, x0
-  mv x27, x0
-  mv x28, x0
-  mv x29, x0
-  mv x30, x0
-  mv x31, x0
-  li a0, 14
-  addi sp, sp, 40
-  li a7, 93
-  ecall
+  mv x28, x8
+  mv x29, x3
+  sub t0, x28, x29
+  mv x26, t0
+  mv x8, x26
+  j merge8
