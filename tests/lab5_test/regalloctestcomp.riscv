@@ -63,6 +63,7 @@ q:
   .globl main
 main:
   addi sp, sp, -2044
+  j mainEntry
 mainEntry:
   li t0, 1
   mv x1, t0
