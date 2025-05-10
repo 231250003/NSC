@@ -170,23 +170,18 @@ public class Main {
     }
     public static int get_var_num(LLVMModuleRef module){
         Set<String> allVariables = new HashSet<>();
-        LLVMValueRef func = LLVMGetFirstFunction(module);
-        while (!func.equals(null)) {
-            // 遍历基本块
-            LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
-            while (!block.equals(null)) {
-                // 遍历指令
-                LLVMValueRef instr = LLVMGetFirstInstruction(block);
-                while (!instr.equals(null)) {
-                    String instrStr = LLVMPrintValueToString(instr).getString();
-                    allVariables.addAll(LLVMIRToRiscv.extractVariables(instrStr));
-                    instr = LLVMGetNextInstruction(instr);
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)){
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
+                     inst != null && !inst.isNull();
+                     inst = LLVM.LLVMGetNextInstruction(inst)){
+                    String line = LLVM.LLVMPrintValueToString(inst).getString();
+                    for(String var:LLVMIRToRiscv.extractVariables(line)){
+                        allVariables.add(var);
+                    }
                 }
-                block = LLVMGetNextBasicBlock(block);
             }
-            func = LLVMGetNextFunction(func);
         }
-
         return allVariables.size();
     }
 }
