@@ -163,7 +163,7 @@ public class LLVMIRInterpreter {
         asm.directive("text");
         asm.directive("globl main");
         asm.label("main");
-        asm.instr("addi", "sp", "sp", "-" + 144);
+        asm.instr("addi", "sp", "sp", "-" + 40);
         asm.j("mainEntry");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)){
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
@@ -184,7 +184,7 @@ public class LLVMIRInterpreter {
                                 String op;
                                 if(opcode==LLVM.LLVMLoad) op="lw";
                                 else op="sw";
-                                asm.instr(op,"x"+(int)(rand*31),(((int)(rand*128))/4)*4+"(sp)");
+                                asm.instr(op,"x"+(int)(rand*31),(((int)(rand*32))/4)*4+"(sp)");
                             }
                             else {
                                 double rand2=Math.random();
@@ -223,7 +223,7 @@ public class LLVMIRInterpreter {
                             asm.op2(op,"x"+(int)(rand*10/4+3),"x"+(int)(rand*31),"x"+(int)(rand2*31));
                             if(rand<=0.5&&load_store_inst>0){
                                 load_store_inst--;
-                                asm.instr("sw","x"+(int)(rand*31),(((int)(rand*128))/4)*4+"(sp)");
+                                asm.instr("sw","x"+(int)(rand*31),(((int)(rand*32))/4)*4+"(sp)");
                             }
                         }
                         else if(opcode==LLVM.LLVMICmp){
@@ -233,7 +233,7 @@ public class LLVMIRInterpreter {
                             asm.instr("xor","x"+(int)(rand1*31),"x"+(int)(rand2*31),"x"+(int)(rand3*31));
                             if(rand1<=0.5&&load_store_inst>0){
                                 load_store_inst--;
-                                asm.instr("sw","x"+(int)(rand1*31),(((int)(rand2*128))/4)*4+"(sp)");
+                                asm.instr("sw","x"+(int)(rand1*31),(((int)(rand2*32))/4)*4+"(sp)");
                             }
                         }
                         else if(opcode==LLVM.LLVMRet||opcode==LLVM.LLVMBr){
@@ -264,12 +264,12 @@ public class LLVMIRInterpreter {
         for(int i=10;i<=31;i++){
             asm.instr("mv","x"+i,"x0");
         }
-        for(int i=4;i<=144;i+=4){
+        for(int i=4;i<=40;i+=4){
             asm.instr("sw","x0",i+"(sp)");
             load_store_inst--;
         }
         asm.li("a0",  retval);
-        asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
+        asm.instr("addi", "sp", "sp", "" + 40); // Epilogue
         asm.li("a7", 93);  // syscall exit
         asm.instr("ecall");
         asm.writeToFile(file_path);
