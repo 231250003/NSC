@@ -2,307 +2,324 @@
   .text
   .globl main
 main:
-  addi sp, sp, -4
+  addi sp, sp, -144
   j mainEntry
 merge:
-  mv a0, x6
+  mv a0, x3
   addi sp, sp, 4
   li a7, 93
   ecall
 if.then:
+  li x4, 8
+  mv x22, x17
+  xor x12, x24, x24
+  sw x12, 100(sp)
+  li x8, 12
   li x7, 11
-  mv x30, x1
-  li x7, 11
-  xor x0, x11, x15
-  sw x0, 48(sp)
-  li x3, 7
-  li x6, 10
-  xor x11, x1, x2
-  sw x11, 4(sp)
-  li x6, 10
-  bnez x19, merge35
+  xor x9, x17, x4
+  sw x9, 68(sp)
+  mv a0, x6
+  addi sp, sp, 4
+  li a7, 93
+  ecall
 merge5:
   li x3, 7
-  j while.cond
+  bnez x10, merge18
 if.then9:
-  li x8, 12
-  mv a0, x25
-  addi sp, sp, 4
-  li a7, 93
-  ecall
+  bnez x2, merge45
 cur:
-  li x4, 8
-  li x5, 9
-  sw x3, 16(sp)
-  li x4, 8
-  bnez x14, merge64
-while.stmt:
-  li x6, 10
-  lw x14, 56(sp)
-  li x3, 7
-  sub x3, x9, x15
-  sw x9, 36(sp)
-  sw x2, 8(sp)
-  li x5, 9
-  mv x16, x16
-  li x3, 7
-  xor x13, x10, x28
-  sw x13, 44(sp)
+  li x7, 11
   li x8, 12
+  mv x30, x24
+  j if.then39
+while.stmt:
   li x7, 11
-  xor x10, x30, x29
-  sw x10, 124(sp)
-  li x7, 11
-  mv a0, x22
+  mv x21, x6
+  sub x5, x29, x3
+  mv x17, x14
+  li x4, 8
+  lw x6, 24(sp)
+  li x8, 12
+  xor x23, x14, x6
+  li x9, 13
+  xor x20, x10, x23
+  li x6, 10
+  bnez x20, if.then104
+while.cond:
+  mv a0, x1
   addi sp, sp, 4
   li a7, 93
   ecall
-while.cond:
-  li x8, 12
-  bnez x26, while.cond44
 merge12:
-  li x5, 9
-  bnez x17, if.then59
+  li x3, 7
+  j mainEntry
 if.then16:
-  li x4, 8
-  bnez x13, if.else88
+  j while.stmt
 if.else:
-  li x8, 12
-  lw x11, 44(sp)
-  xor x7, x29, x15
-  sw x7, 120(sp)
   li x9, 13
-  xor x14, x7, x5
-  sw x14, 28(sp)
-  li x9, 13
-  j if.else50
+  mv x23, x26
+  xor x28, x14, x29
+  li x3, 7
+  li x7, 11
+  xor x4, x23, x21
+  sw x4, 96(sp)
+  mv a0, x0
+  addi sp, sp, 4
+  li a7, 93
+  ecall
 merge18:
+  li x4, 8
+  mv a0, x13
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+if.then22:
+  mv x29, x30
+  sub x5, x25, x10
+  li x8, 12
+  mv x21, x27
+  li x7, 11
+  lw x13, 56(sp)
+  li x3, 7
+  add x5, x27, x2
+  li x7, 11
+  mv x28, x4
+  li x3, 7
+  mv a0, x11
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+cur28:
+  li x6, 10
+  mv x30, x17
+  li x5, 9
+  sub x3, x6, x8
+  sw x6, 24(sp)
+  li x9, 13
+  mv x16, x11
+  mv x27, x8
+  li x3, 7
+  add x4, x21, x7
+  li x5, 9
+  mv x27, x4
+  li x3, 7
+  lw x10, 44(sp)
+  li x7, 11
+  mv x22, x21
+  li x5, 9
+  add x4, x20, x3
+  li x9, 13
+  xor x27, x30, x16
+  li x6, 10
+  li x4, 8
+  xor x9, x13, x22
+  sw x9, 56(sp)
+  li x5, 9
+  mv a0, x17
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+while.stmt29:
+  li x7, 11
+  mv x27, x20
+  li x9, 13
+  xor x11, x10, x22
+  sw x11, 40(sp)
+  xor x19, x28, x30
+  j if.then68
+while.cond30:
+  li x3, 7
+  mv x30, x10
+  li x4, 8
+  xor x29, x5, x7
+  li x8, 12
+  li x8, 12
+  xor x25, x12, x8
   li x3, 7
   mv a0, x10
   addi sp, sp, 4
   li a7, 93
   ecall
-if.then22:
-  mv x30, x0
-  sub x4, x20, x6
-  li x4, 8
-  mv x25, x26
-  li x3, 7
-  lw x4, 16(sp)
-  li x7, 11
-  add x4, x12, x12
-  sw x12, 52(sp)
-  li x6, 10
-  sw x2, 8(sp)
-  li x6, 10
-  mv a0, x20
-  addi sp, sp, 4
-  li a7, 93
-  ecall
-cur28:
-  li x9, 13
-  mv x18, x28
-  sub x4, x12, x14
-  sw x12, 52(sp)
-  li x3, 7
-  sw x11, 44(sp)
-  lw x5, 20(sp)
-  li x7, 11
-  add x4, x16, x17
-  mv x16, x16
-  li x6, 10
-  mv x20, x24
-  li x8, 12
-  lw x5, 20(sp)
-  li x5, 9
-  add x5, x27, x1
-  li x3, 7
-  xor x29, x0, x27
-  xor x6, x6, x30
-  sw x6, 24(sp)
-  mv a0, x5
-  addi sp, sp, 4
-  li a7, 93
-  ecall
-while.stmt29:
-  li x3, 7
-  mv x21, x1
-  li x5, 9
-  xor x27, x28, x5
-  li x3, 7
-  xor x23, x4, x17
-  li x9, 13
-  mv a0, x30
-  addi sp, sp, 4
-  li a7, 93
-  ecall
-while.cond30:
-  li x7, 11
-  lw x0, 0(sp)
-  li x4, 8
-  xor x23, x8, x28
-  li x3, 7
-  li x8, 12
-  xor x10, x23, x29
-  sw x10, 96(sp)
-  li x8, 12
-  bnez x26, if.then49
 merge35:
-  li x7, 11
-  sw x14, 56(sp)
+  li x8, 12
+  sw x1, 4(sp)
+  li x4, 8
+  bnez x13, if.then59
+if.then39:
   li x3, 7
-  mv a0, x9
+  mv a0, x12
   addi sp, sp, 4
   li a7, 93
   ecall
-if.then39:
-  j cur28
 cur42:
-  li x6, 10
-  lw x4, 16(sp)
-  li x3, 7
-  xor x23, x20, x12
-  li x9, 13
-  xor x17, x4, x19
+  li x8, 12
+  mv x29, x27
+  xor x7, x5, x11
+  sw x7, 24(sp)
+  li x8, 12
+  li x4, 8
+  xor x29, x22, x21
+  li x5, 9
+  mv a0, x16
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+while.stmt43:
+  li x8, 12
+  lw x13, 52(sp)
+  li x4, 8
+  xor x23, x9, x14
+  li x8, 12
+  xor x29, x23, x17
   li x5, 9
   mv a0, x18
   addi sp, sp, 4
   li a7, 93
   ecall
-while.stmt43:
-  li x5, 9
-  mv x19, x26
-  xor x18, x12, x11
-  xor x5, x27, x10
-  sw x5, 108(sp)
-  li x6, 10
-  bnez x19, while.stmt29
 while.cond44:
-  mv a0, x8
+  li x6, 10
+  mv a0, x21
   addi sp, sp, 4
   li a7, 93
   ecall
 merge45:
-  li x4, 8
-  j if.else88
-if.then49:
-  mv x16, x25
   li x9, 13
-  mv a0, x28
+  mv a0, x30
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+if.then49:
+  li x3, 7
+  mv x18, x12
+  li x6, 10
+  mv a0, x19
   addi sp, sp, 4
   li a7, 93
   ecall
 if.else50:
-  li x4, 8
-  lw x5, 20(sp)
-  li x3, 7
-  sub x3, x1, x25
-  sw x1, 4(sp)
-  li x5, 9
-  mv x16, x8
-  li x9, 13
-  bnez x30, while.stmt43
-merge55:
-  li x7, 11
-  lw x7, 28(sp)
-  lw x6, 24(sp)
-  li x4, 8
-  add x5, x27, x28
-  li x4, 8
-  xor x27, x4, x20
-  li x4, 8
-  li x3, 7
-  xor x0, x23, x6
-  sw x0, 92(sp)
-  li x9, 13
-  bnez x29, merge83
-if.then59:
+  mv x24, x0
   li x8, 12
-  mv x20, x4
-  sub x5, x25, x5
-  li x8, 12
-  mv x18, x5
-  li x7, 11
-  mv a0, x23
+  sub x3, x3, x1
+  sw x3, 12(sp)
+  li x3, 7
+  sw x7, 28(sp)
+  mv a0, x2
   addi sp, sp, 4
   li a7, 93
   ecall
-if.else60:
+merge55:
+  li x8, 12
+  lw x6, 24(sp)
   li x4, 8
-  mv x20, x5
+  mv x23, x14
+  li x7, 11
+  add x4, x21, x30
   li x5, 9
-  xor x8, x18, x2
-  sw x8, 72(sp)
-  li x5, 9
-  xor x30, x23, x9
+  xor x27, x19, x14
   li x3, 7
-  bnez x11, while.stmt
+  li x3, 7
+  xor x6, x21, x0
+  sw x6, 88(sp)
+  li x9, 13
+  bnez x29, merge98
+if.then59:
+  li x8, 12
+  mv x18, x11
+  li x9, 13
+  sub x5, x30, x29
+  li x6, 10
+  mv x28, x28
+  j if.else88
+if.else60:
+  li x7, 11
+  lw x9, 36(sp)
+  xor x18, x28, x5
+  li x4, 8
+  xor x30, x29, x10
+  li x8, 12
+  j if.then
 merge64:
-  mv a0, x7
+  mv a0, x0
   addi sp, sp, 4
   li a7, 93
   ecall
 if.then68:
-  mv x26, x17
-  li x4, 8
-  sub x5, x27, x10
-  li x3, 7
-  sw x7, 28(sp)
-  j if.else88
-merge72:
-  lw x12, 48(sp)
-  li x7, 11
-  add x3, x0, x7
-  sw x0, 0(sp)
-  mv x18, x25
-  li x9, 13
-  bnez x30, if.then78
-if.then78:
-  li x6, 10
-  mv x19, x29
-  li x9, 13
-  add x3, x3, x6
-  sw x3, 12(sp)
-  li x3, 7
-  sw x14, 60(sp)
-  j merge98
-if.else79:
-  li x9, 13
-  lw x8, 32(sp)
-  li x6, 10
-  xor x24, x19, x24
-  li x5, 9
-  li x6, 10
-  xor x16, x29, x13
-  li x4, 8
-  j merge5
-merge83:
-  bnez x9, merge72
-if.then87:
-  li x6, 10
-  mv x21, x7
-  li x5, 9
-  sub x4, x16, x1
-  sw x3, 12(sp)
   li x8, 12
-  bnez x27, if.else79
-if.else88:
-  bnez x8, merge83
-merge98:
-  mv x17, x24
+  lw x11, 48(sp)
   li x3, 7
-  mv x22, x18
-  mv x22, x22
-  li x3, 7
-  bnez x10, cur42
-if.then104:
-  li x3, 7
-  lw x6, 24(sp)
-  li x7, 11
-  sub x5, x28, x20
+  sub x3, x4, x21
+  sw x4, 16(sp)
+  mv x29, x0
   li x5, 9
-  mv x20, x26
-  bnez x3, cur28
+  mv a0, x17
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+merge72:
+  lw x8, 32(sp)
+  li x9, 13
+  add x5, x27, x13
+  li x4, 8
+  mv x23, x18
+  mv a0, x8
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+if.then78:
+  li x5, 9
+  mv x26, x15
+  add x3, x9, x16
+  sw x9, 36(sp)
+  mv x26, x6
+  li x7, 11
+  j merge64
+if.else79:
+  li x3, 7
+  lw x6, 28(sp)
+  xor x27, x14, x1
+  li x9, 13
+  xor x29, x29, x3
+  li x9, 13
+  mv a0, x30
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+merge83:
+  li x3, 7
+  bnez x11, while.cond30
+if.then87:
+  li x3, 7
+  mv x26, x2
+  li x9, 13
+  sub x3, x11, x4
+  sw x11, 44(sp)
+  li x5, 9
+  sw x7, 28(sp)
+  bnez x8, if.then16
+if.else88:
+  bnez x1, if.else
+merge98:
+  li x8, 12
+  li x6, 10
+  lw x11, 44(sp)
+  li x4, 8
+  mv x15, x25
+  li x5, 9
+  mv x19, x10
+  j merge72
+if.then104:
+  li x6, 10
+  mv x17, x17
+  li x7, 11
+  sub x4, x14, x23
+  sw x14, 56(sp)
+  li x8, 12
+  sw x5, 20(sp)
+  li x9, 13
+  mv a0, x30
+  addi sp, sp, 4
+  li a7, 93
+  ecall
 mainEntry:
   mv x10, x0
   mv x11, x0
@@ -327,6 +344,146 @@ mainEntry:
   mv x30, x0
   mv x31, x0
   sw x0, 4(sp)
+  sw x0, 5(sp)
+  sw x0, 6(sp)
+  sw x0, 7(sp)
+  sw x0, 8(sp)
+  sw x0, 9(sp)
+  sw x0, 10(sp)
+  sw x0, 11(sp)
+  sw x0, 12(sp)
+  sw x0, 13(sp)
+  sw x0, 14(sp)
+  sw x0, 15(sp)
+  sw x0, 16(sp)
+  sw x0, 17(sp)
+  sw x0, 18(sp)
+  sw x0, 19(sp)
+  sw x0, 20(sp)
+  sw x0, 21(sp)
+  sw x0, 22(sp)
+  sw x0, 23(sp)
+  sw x0, 24(sp)
+  sw x0, 25(sp)
+  sw x0, 26(sp)
+  sw x0, 27(sp)
+  sw x0, 28(sp)
+  sw x0, 29(sp)
+  sw x0, 30(sp)
+  sw x0, 31(sp)
+  sw x0, 32(sp)
+  sw x0, 33(sp)
+  sw x0, 34(sp)
+  sw x0, 35(sp)
+  sw x0, 36(sp)
+  sw x0, 37(sp)
+  sw x0, 38(sp)
+  sw x0, 39(sp)
+  sw x0, 40(sp)
+  sw x0, 41(sp)
+  sw x0, 42(sp)
+  sw x0, 43(sp)
+  sw x0, 44(sp)
+  sw x0, 45(sp)
+  sw x0, 46(sp)
+  sw x0, 47(sp)
+  sw x0, 48(sp)
+  sw x0, 49(sp)
+  sw x0, 50(sp)
+  sw x0, 51(sp)
+  sw x0, 52(sp)
+  sw x0, 53(sp)
+  sw x0, 54(sp)
+  sw x0, 55(sp)
+  sw x0, 56(sp)
+  sw x0, 57(sp)
+  sw x0, 58(sp)
+  sw x0, 59(sp)
+  sw x0, 60(sp)
+  sw x0, 61(sp)
+  sw x0, 62(sp)
+  sw x0, 63(sp)
+  sw x0, 64(sp)
+  sw x0, 65(sp)
+  sw x0, 66(sp)
+  sw x0, 67(sp)
+  sw x0, 68(sp)
+  sw x0, 69(sp)
+  sw x0, 70(sp)
+  sw x0, 71(sp)
+  sw x0, 72(sp)
+  sw x0, 73(sp)
+  sw x0, 74(sp)
+  sw x0, 75(sp)
+  sw x0, 76(sp)
+  sw x0, 77(sp)
+  sw x0, 78(sp)
+  sw x0, 79(sp)
+  sw x0, 80(sp)
+  sw x0, 81(sp)
+  sw x0, 82(sp)
+  sw x0, 83(sp)
+  sw x0, 84(sp)
+  sw x0, 85(sp)
+  sw x0, 86(sp)
+  sw x0, 87(sp)
+  sw x0, 88(sp)
+  sw x0, 89(sp)
+  sw x0, 90(sp)
+  sw x0, 91(sp)
+  sw x0, 92(sp)
+  sw x0, 93(sp)
+  sw x0, 94(sp)
+  sw x0, 95(sp)
+  sw x0, 96(sp)
+  sw x0, 97(sp)
+  sw x0, 98(sp)
+  sw x0, 99(sp)
+  sw x0, 100(sp)
+  sw x0, 101(sp)
+  sw x0, 102(sp)
+  sw x0, 103(sp)
+  sw x0, 104(sp)
+  sw x0, 105(sp)
+  sw x0, 106(sp)
+  sw x0, 107(sp)
+  sw x0, 108(sp)
+  sw x0, 109(sp)
+  sw x0, 110(sp)
+  sw x0, 111(sp)
+  sw x0, 112(sp)
+  sw x0, 113(sp)
+  sw x0, 114(sp)
+  sw x0, 115(sp)
+  sw x0, 116(sp)
+  sw x0, 117(sp)
+  sw x0, 118(sp)
+  sw x0, 119(sp)
+  sw x0, 120(sp)
+  sw x0, 121(sp)
+  sw x0, 122(sp)
+  sw x0, 123(sp)
+  sw x0, 124(sp)
+  sw x0, 125(sp)
+  sw x0, 126(sp)
+  sw x0, 127(sp)
+  sw x0, 128(sp)
+  sw x0, 129(sp)
+  sw x0, 130(sp)
+  sw x0, 131(sp)
+  sw x0, 132(sp)
+  sw x0, 133(sp)
+  sw x0, 134(sp)
+  sw x0, 135(sp)
+  sw x0, 136(sp)
+  sw x0, 137(sp)
+  sw x0, 138(sp)
+  sw x0, 139(sp)
+  sw x0, 140(sp)
+  sw x0, 141(sp)
+  sw x0, 142(sp)
+  sw x0, 143(sp)
+  sw x0, 144(sp)
   li a0, 36
   addi sp, sp, 4
   li a7, 93
