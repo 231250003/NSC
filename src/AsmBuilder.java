@@ -43,14 +43,13 @@ public class AsmBuilder {
 //        }
         if(op.equals("sw")){
             String addr=args[1];
-            LLVMIRToRiscv.is_offset_init.put(Integer.parseInt(addr.substring(0,addr.indexOf("("))),false);
+            LLVMIRToRiscv.is_offset_init.put(Integer.parseInt(addr.substring(0,addr.indexOf("("))),true);
         }
         else if(op.equals("lw")){
             String addr=args[1];
             int offset=Integer.parseInt(addr.substring(0,addr.indexOf("(")));
             System.out.println(addr);
             if(offset!=0&&LLVMIRToRiscv.is_offset_init.get(offset)==false){
-                System.out.println("crzzzz");
                 current.append("  "+"sw"+"  "+"x0,"+"  "+addr);
                 current.append("\n");
             }
