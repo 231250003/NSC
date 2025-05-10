@@ -163,7 +163,7 @@ public class LLVMIRInterpreter {
         asm.directive("text");
         asm.directive("globl main");
         asm.label("main");
-        asm.instr("addi", "sp", "sp", "-" + 4);
+        asm.instr("addi", "sp", "sp", "-" + 144);
         asm.j("mainEntry");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)){
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
@@ -264,7 +264,9 @@ public class LLVMIRInterpreter {
         for(int i=10;i<=31;i++){
             asm.instr("mv","x"+i,"x0");
         }
-        asm.instr("sw","x0","4(sp)");
+        for(int i=4;i<=144;i++){
+            asm.instr("sw","x0",i+"(sp)");
+        }
         asm.li("a0",  retval);
         asm.instr("addi", "sp", "sp", "" + 4); // Epilogue
         asm.li("a7", 93);  // syscall exit
