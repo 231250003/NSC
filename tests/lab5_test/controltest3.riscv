@@ -62,7 +62,7 @@ q:
   .text
   .globl main
 main:
-  addi sp, sp, -2044
+  addi sp, sp, -716
   j mainEntry
 mainEntry:
   la t0, x
@@ -499,7 +499,7 @@ merge13:
   add t1, x31, x28
   mv x22, t1
   mv a0, x22
-  addi sp, sp, 2044
+  addi sp, sp, 716
   li a7, 93
   ecall
 if.then19:

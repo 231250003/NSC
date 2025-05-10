@@ -84,12 +84,12 @@ public class Main {
         }
         var_num=get_var_num(module);
 
-        BytePointer error = new BytePointer((Pointer) null);
-        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
-            LLVMDisposeMessage(error);
-        }
-        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
-        //LLVMIRToRiscv llvmirToRiscv = new LLVMIRToRiscv(module, args[1]);
+//        BytePointer error = new BytePointer((Pointer) null);
+//        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
+//            LLVMDisposeMessage(error);
+//        }
+        //LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
+        LLVMIRToRiscv llvmirToRiscv = new LLVMIRToRiscv(module, args[1]);
         llvmirToRiscv.to_riscv();
 //        if(get_block_num(module)==1) {
 //            LLVMIRToRiscv llvmirToRiscv = new LLVMIRToRiscv(module, args[1]);
