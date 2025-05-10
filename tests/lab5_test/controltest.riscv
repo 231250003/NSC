@@ -194,6 +194,7 @@ cur42:
   xor t0, x8, t2
   snez t0, t0
   sw t0, 8(sp)
+  sw  x0,  8(sp)
   lw t1, 8(sp)
   bnez t1, if.then59
   j if.else60
@@ -234,6 +235,7 @@ merge55:
   mv x26, x3
   add t1, x4, x26
   sw t1, 16(sp)
+  sw  x0,  16(sp)
   lw t2, 16(sp)
   li t0, 40
   sgt t1, t2, t0
@@ -248,10 +250,12 @@ merge55:
   j if.else79
 if.then59:
   sw x9, 4(sp)
+  sw  x0,  4(sp)
   lw t2, 4(sp)
   li t0, 5
   sub t1, t2, t0
   sw t1, 12(sp)
+  sw  x0,  12(sp)
   lw t2, 12(sp)
   mv x9, t2
   j merge55
