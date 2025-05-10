@@ -264,10 +264,10 @@ public class LLVMIRInterpreter {
         for(int i=10;i<=31;i++){
             asm.instr("mv","x"+i,"x0");
         }
-        for(int i=4;i<=40;i+=4){
-            asm.instr("sw","x0",i+"(sp)");
-            load_store_inst--;
-        }
+//        for(int i=4;i<=40;i+=4){
+//            asm.instr("sw","x0",i+"(sp)");
+//            load_store_inst--;
+//        }
         asm.li("a0",  retval);
         asm.instr("addi", "sp", "sp", "" + 40); // Epilogue
         asm.li("a7", 93);  // syscall exit

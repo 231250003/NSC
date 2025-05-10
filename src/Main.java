@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Pointer;
@@ -17,6 +19,7 @@ import static org.bytedeco.llvm.global.LLVM.*;
 public class Main {
     public static boolean is_run_time_error_test=true;
     public static boolean used_interpreter=true;
+    public static int var_num;
     public static void main(String[] args) throws IOException {
         /* if (args.length < 1) {
             System.err.println("input path is required");
@@ -84,6 +87,7 @@ public class Main {
 //            LLVMDisposeMessage(error);
 //        }
 //        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
+        var_num=get_var_num(module);
         if(get_block_num(module)==1) {
             LLVMIRToRiscv llvmirToRiscv = new LLVMIRToRiscv(module, args[1]);
             llvmirToRiscv.to_riscv();
@@ -163,5 +167,26 @@ public class Main {
             blockCount++;
         }
         return blockCount;
+    }
+    public static int get_var_num(LLVMModuleRef module){
+        Set<String> allVariables = new HashSet<>();
+        LLVMValueRef func = LLVMGetFirstFunction(module);
+        while (!func.equals(null)) {
+            // 遍历基本块
+            LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
+            while (!block.equals(null)) {
+                // 遍历指令
+                LLVMValueRef instr = LLVMGetFirstInstruction(block);
+                while (!instr.equals(null)) {
+                    String instrStr = LLVMPrintValueToString(instr).getString();
+                    allVariables.addAll(LLVMIRToRiscv.extractVariables(instrStr));
+                    instr = LLVMGetNextInstruction(instr);
+                }
+                block = LLVMGetNextBasicBlock(block);
+            }
+            func = LLVMGetNextFunction(func);
+        }
+
+        return allVariables.size();
     }
 }

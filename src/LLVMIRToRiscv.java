@@ -4,6 +4,7 @@ import org.bytedeco.llvm.global.LLVM;
 import java.util.*;
 import java.util.regex.*;
 
+import static java.lang.Math.max;
 import static org.bytedeco.llvm.global.LLVM.LLVMGetEntryBasicBlock;
 import static org.bytedeco.llvm.global.LLVM.LLVMGetNamedFunction;
 
@@ -14,12 +15,11 @@ public class LLVMIRToRiscv {
     //RegisterAllocator allocator = new StackOnlyRegisterAllocator();
     RegisterAllocator allocator;
     static Map<String, String> valueMap = new HashMap<>();  // IR value → stack addr or reg
-
+    static Map<Integer, Boolean> is_offset_init=new HashMap<>();
     public LLVMIRToRiscv(LLVMModuleRef moduleRef, String file_path) {
         this.module = moduleRef;
         this.file_path = file_path;
     }
-
     public static Set<String> extractVariables(String line) {
         Set<String> variables = new HashSet<>();
         Pattern pattern = Pattern.compile("%[a-zA-Z0-9_\\.]+");
@@ -145,8 +145,11 @@ public class LLVMIRToRiscv {
             if (!"main".equals(funcName)) continue;
             asm.label("main");
             // Prologue
-            int stackSize = 2044;
+            int stackSize = max(2044,Main.var_num);
             asm.instr("addi", "sp", "sp", "-" + stackSize);
+            for(int i=4;i<=stackSize;i+=4){
+                is_offset_init.put(i,false);
+            }
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 if (blockCount > 1 && Main.is_run_time_error_test) {
                     lineNum = 0;
