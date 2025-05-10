@@ -264,7 +264,7 @@ public class LLVMIRInterpreter {
         for(int i=10;i<=31;i++){
             asm.instr("mv","x"+i,"x0");
         }
-        for(int i=4;i<=144;i++){
+        for(int i=4;i<=144;i+=4){
             asm.instr("sw","x0",i+"(sp)");
         }
         asm.li("a0",  retval);
