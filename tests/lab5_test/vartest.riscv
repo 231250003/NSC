@@ -15,6 +15,7 @@ cccc:
   .globl main
 main:
   addi sp, sp, -2044
+  j mainEntry
 mainEntry:
   la t0, a
   lw t0, 0(t0)

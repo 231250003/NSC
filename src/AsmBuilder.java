@@ -49,6 +49,7 @@ public class AsmBuilder {
             String addr=args[1];
             int offset=Integer.parseInt(addr.substring(0,addr.indexOf("(")));
             if(offset!=0&&LLVMIRToRiscv.is_offset_init.get(offset)==false){
+                System.out.println("crzzzz");
                 current.append("  "+"sw"+"  "+"x0,"+"  "+addr);
                 current.append("\n");
             }
