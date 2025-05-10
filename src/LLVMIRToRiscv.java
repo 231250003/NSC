@@ -145,7 +145,7 @@ public class LLVMIRToRiscv {
             if (!"main".equals(funcName)) continue;
             asm.label("main");
             // Prologue
-            int stackSize = max(2044,Main.var_num);
+            int stackSize = max(2044,Main.var_num*4+4);
             asm.instr("addi", "sp", "sp", "-" + stackSize);
             asm.j("mainEntry");
             for(int i=4;i<=stackSize;i+=4){
