@@ -79,14 +79,14 @@ public class Main {
             }
             func = LLVMGetNextFunction(func);
         }
-        BytePointer error = new BytePointer((Pointer) null);
-        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
-            LLVMDisposeMessage(error);
-        }
+//        BytePointer error = new BytePointer((Pointer) null);
+//        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
+//            LLVMDisposeMessage(error);
+//        }
 //        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
 //        //LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1]);
 //        llvmirToRiscv.to_riscv();
-        LLVMIRInterpreter interpreter=new LLVMIRInterpreter(module,args[1].substring(0,args[1].length()-3)+".riscv");
+        LLVMIRInterpreter interpreter=new LLVMIRInterpreter(module,args[1]);
         interpreter.to_riscv();
         LLVMDisposeBuilder(builder);
         LLVMDisposeModule(module);
