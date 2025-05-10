@@ -14,8 +14,8 @@ public class LLVMIRToRiscv {
     public static AsmBuilder asm = new AsmBuilder();
     //RegisterAllocator allocator = new StackOnlyRegisterAllocator();
     RegisterAllocator allocator;
-    static Map<String, String> valueMap = new HashMap<>();  // IR value → stack addr or reg
-    static Map<Integer, Boolean> is_offset_init=new HashMap<>();
+    public static Map<String, String> valueMap = new HashMap<>();  // IR value → stack addr or reg
+    public static Map<Integer, Boolean> is_offset_init=new HashMap<>();
     public LLVMIRToRiscv(LLVMModuleRef moduleRef, String file_path) {
         this.module = moduleRef;
         this.file_path = file_path;

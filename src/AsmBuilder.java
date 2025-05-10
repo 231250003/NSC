@@ -41,6 +41,18 @@ public class AsmBuilder {
 //            double randomValue = Math.random();
 //            if(randomValue>=0.4) return;
 //        }
+        if(op.equals("sw")){
+            String addr=args[1];
+            LLVMIRToRiscv.is_offset_init.put(Integer.parseInt(addr.substring(0,addr.indexOf("("))),true);
+        }
+        else if(op.equals("lw")){
+            String addr=args[1];
+            int offset=Integer.parseInt(addr.substring(0,addr.indexOf("(")));
+            if(offset!=0&&LLVMIRToRiscv.is_offset_init.get(offset)==false){
+                current.append("  "+"sw"+"  "+"x0,"+"  "+addr);
+                current.append("\n");
+            }
+        }
         current.append("  ").append(op);
         if (args.length > 0) {
              current.append(" ").append(String.join(", ", args));
