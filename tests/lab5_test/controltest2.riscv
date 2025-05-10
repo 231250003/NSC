@@ -2,75 +2,82 @@
   .text
   .globl main
 main:
-  addi sp, sp, -144
+  addi sp, sp, -40
   j mainEntry
 merge:
-  li x9, 13
-  mv a0, x30
+  li x8, 12
+  mv a0, x27
   addi sp, sp, 4
   li a7, 93
   ecall
 if.then:
+  li x6, 10
+  mv x23, x9
+  li x3, 7
+  add x3, x6, x25
+  sw x6, 4(sp)
+  li x6, 10
+  mv x23, x30
   li x5, 9
-  mv x24, x1
-  add x3, x10, x12
-  sw x10, 44(sp)
-  li x5, 9
-  sw x3, 12(sp)
-  li x4, 8
-  bnez x12, merge8
+  mv a0, x18
+  addi sp, sp, 4
+  li a7, 93
+  ecall
 cur:
-  li x7, 11
-  li x6, 10
-  mv x25, x21
-  li x7, 11
-  mv x30, x22
-  li x6, 10
-  mv x25, x29
-  j while.stmt
+  li x3, 7
+  li x3, 7
+  mv x23, x4
+  li x5, 9
+  sw x7, 4(sp)
+  mv x28, x21
+  mv a0, x0
+  addi sp, sp, 4
+  li a7, 93
+  ecall
 while.stmt:
-  mv x24, x4
-  lw x13, 52(sp)
   li x4, 8
-  xor x29, x0, x6
-  xor x6, x7, x26
-  sw x6, 28(sp)
-  li x8, 12
-  bnez x24, merge8
+  lw x3, 0(sp)
+  li x9, 13
+  lw x9, 8(sp)
+  li x5, 9
+  xor x28, x1, x13
+  xor x5, x6, x16
+  sw x5, 4(sp)
+  bnez x2, cur
 while.cond:
-  li x9, 13
-  lw x8, 32(sp)
-  li x3, 7
-  xor x1, x29, x27
-  sw x1, 120(sp)
-  li x9, 13
-  li x8, 12
-  xor x18, x3, x9
-  li x6, 10
-  bnez x20, if.then
-merge8:
-  li x7, 11
-  bnez x22, if.then13
-if.then13:
-  li x9, 13
-  mv x18, x28
-  lw x12, 48(sp)
-  li x8, 12
-  sub x4, x22, x15
-  li x7, 11
-  mv x21, x29
-  li x3, 7
-  j while.stmt
-if.else:
-  mv x21, x29
-  mv x20, x12
-  li x3, 7
-  sub x3, x0, x12
-  sw x0, 0(sp)
   li x4, 8
-  sw x12, 48(sp)
+  mv x23, x9
   li x3, 7
-  j while.stmt
+  xor x1, x5, x30
+  sw x1, 4(sp)
+  xor x4, x2, x26
+  sw x4, 0(sp)
+  li x3, 7
+  mv a0, x11
+  addi sp, sp, 4
+  li a7, 93
+  ecall
+merge8:
+  li x6, 10
+  bnez x18, merge
+if.then13:
+  li x5, 9
+  mv x16, x25
+  li x9, 13
+  lw x9, 8(sp)
+  li x8, 12
+  sub x3, x10, x13
+  sw x10, 8(sp)
+  li x8, 12
+  mv x15, x0
+  bnez x6, if.then13
+if.else:
+  mv x22, x6
+  mv x21, x3
+  sub x5, x27, x28
+  li x8, 12
+  sw x3, 0(sp)
+  bnez x1, merge
 mainEntry:
   mv x10, x0
   mv x11, x0
@@ -94,43 +101,7 @@ mainEntry:
   mv x29, x0
   mv x30, x0
   mv x31, x0
-  sw x0, 4(sp)
-  sw x0, 8(sp)
-  sw x0, 12(sp)
-  sw x0, 16(sp)
-  sw x0, 20(sp)
-  sw x0, 24(sp)
-  sw x0, 28(sp)
-  sw x0, 32(sp)
-  sw x0, 36(sp)
-  sw x0, 40(sp)
-  sw x0, 44(sp)
-  sw x0, 48(sp)
-  sw x0, 52(sp)
-  sw x0, 56(sp)
-  sw x0, 60(sp)
-  sw x0, 64(sp)
-  sw x0, 68(sp)
-  sw x0, 72(sp)
-  sw x0, 76(sp)
-  sw x0, 80(sp)
-  sw x0, 84(sp)
-  sw x0, 88(sp)
-  sw x0, 92(sp)
-  sw x0, 96(sp)
-  sw x0, 100(sp)
-  sw x0, 104(sp)
-  sw x0, 108(sp)
-  sw x0, 112(sp)
-  sw x0, 116(sp)
-  sw x0, 120(sp)
-  sw x0, 124(sp)
-  sw x0, 128(sp)
-  sw x0, 132(sp)
-  sw x0, 136(sp)
-  sw x0, 140(sp)
-  sw x0, 144(sp)
   li a0, 14
-  addi sp, sp, 4
+  addi sp, sp, 40
   li a7, 93
   ecall
