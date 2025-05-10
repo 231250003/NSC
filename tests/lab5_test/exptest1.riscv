@@ -3,6 +3,7 @@
   .globl main
 main:
   addi sp, sp, -2044
+  j mainEntry
 mainEntry:
   li t0, 7
   mv a0, t0
