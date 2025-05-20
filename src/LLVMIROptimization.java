@@ -241,6 +241,23 @@ public class LLVMIROptimization {
                 }
             }
         }
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null;) {
+                    LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
+                    if (LLVM.LLVMIsAStoreInst(inst) != null) {
+                        LLVMValueRef dest = LLVM.LLVMGetOperand(inst, 1);
+                        String varName = LLVM.LLVMGetValueName(dest).getString();
+                        if (varName != null && is_constant.contains(varName)) {
+                            LLVMValueRef constValue = LLVM.LLVMGetOperand(inst, 0);
+                            LLVM.LLVMReplaceAllUsesWith(dest, constValue);
+                            LLVM.LLVMInstructionEraseFromParent(inst);
+                        }
+                    }
+                    inst = nextInst;
+                }
+            }
+        }
 
     }
 }
