@@ -107,7 +107,18 @@ public class LLVMIROptimization {
             } else if (opcode == LLVM.LLVMStore) {
                 String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
                 String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
+                 System.out.println(inst);
+                 for (Map.Entry<LLVMValueRef, Map<String, ConstPropValueHolder>> entry : in_inst.entrySet()) {
+                     Map<String, ConstPropValueHolder> varMap = entry.getValue();
+                     for (Map.Entry<String, ConstPropValueHolder> varEntry : varMap.entrySet()) {
+                         String varName = varEntry.getKey();
+                         ConstPropValueHolder val = varEntry.getValue();
+                         System.out.println("Inst: " + LLVM.LLVMPrintValueToString(inst).getString() +
+                                 ", Var: " + varName + ", Value: " + val);
+                     }
+                 }
                 new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
+                System.out.println("crzzzz");
             } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                     opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
                     opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem || opcode == LLVM.LLVMUDiv) {
