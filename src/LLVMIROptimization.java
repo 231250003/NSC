@@ -261,6 +261,7 @@ public class LLVMIROptimization {
 //                            LLVM.LLVMInstructionEraseFromParent(inst);
 //                        }
                     }
+                    else System.out.println("crzzzz");
                     inst = nextInst;
                 }
             }
