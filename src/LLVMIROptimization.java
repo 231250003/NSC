@@ -258,6 +258,7 @@ public class LLVMIROptimization {
                         if (constVal != null) {
                             LLVMTypeRef valType = LLVM.LLVMTypeOf(inst);
                             if (LLVM.LLVMGetTypeKind(valType) != LLVM.LLVMVoidTypeKind)  {
+                                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                                 LLVMValueRef constInt = LLVM.LLVMConstInt(valType, constVal.getIntValue(), 0);
                                 LLVM.LLVMReplaceAllUsesWith(inst, constInt);
                                 LLVM.LLVMInstructionEraseFromParent(inst);
