@@ -241,31 +241,6 @@ public class LLVMIROptimization {
                 }
             }
         }
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
-            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; ) {
-                    LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
-                    String lhs = LLVM.LLVMGetValueName(inst).getString();
-                    if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
-                        LLVM.LLVMInstructionEraseFromParent(inst);
-//                        ConstPropValueHolder constVal = null;
-//                        for (Map<String, ConstPropValueHolder> out : out_inst.values()) {
-//                            if (out.containsKey(lhs) && out.get(lhs).getKind() == ConstPropValueHolder.Kind.INT) {
-//                                constVal = out.get(lhs);
-//                                break;
-//                            }
-//                        }
-//                        if (constVal != null) {
-//                            LLVMValueRef constInt = LLVM.LLVMConstInt(LLVM.LLVMTypeOf(inst), constVal.getIntValue(), 0);
-//                            LLVM.LLVMReplaceAllUsesWith(inst, constInt);
-//                            LLVM.LLVMInstructionEraseFromParent(inst);
-//                        }
-                    }
-                    else System.out.println("crzzzz");
-                    inst = nextInst;
-                }
-            }
-        }
 
     }
 }
