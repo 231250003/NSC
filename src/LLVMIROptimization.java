@@ -36,8 +36,7 @@ public class LLVMIROptimization {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     if (predecessor.get(inst) == null) predecessor.put(inst, new HashSet<>());
-                    if (inst != LLVM.LLVMGetFirstInstruction(bb))
-                        predecessor.get(inst).add(LLVM.LLVMGetPreviousInstruction(inst));
+                    if (inst != LLVM.LLVMGetFirstInstruction(bb)) predecessor.get(inst).add(LLVM.LLVMGetPreviousInstruction(inst));
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
                     if (line.contains("br")) {
                         String line2;
@@ -50,9 +49,10 @@ public class LLVMIROptimization {
                             if (predecessor.get(jmpinst) == null) predecessor.put(jmpinst, new HashSet<>());
                             predecessor.get(jmpinst).add(inst);
                         }
-                    } else if (line.contains("ret")) successor.put(inst, new HashSet<>());
+                    }
+                    else if (line.contains("ret")) successor.put(inst, new HashSet<>());
                     if (line.contains("br")) {
-                        if (line.contains(".")) line = line.substring(0, line.indexOf(","));
+                        if (line.contains(",")) line = line.substring(0, line.indexOf(","));
                         else continue;
                     }
                     for (String var : LLVMIRToRiscv.extractVariables(line)) {
@@ -89,7 +89,6 @@ public class LLVMIROptimization {
                     ConstPropValueHolder value = entry.getValue();
                     System.out.println(key);
                     if(key==null) System.out.println("???");
-                    if(in_inst.get(inst)==null) System.out.println("ccc");
                     if(in_inst.get(inst).get(key)==null) System.out.println("CRZZZ");
                     if (value.getKind() == ConstPropValueHolder.Kind.NAC)
                         in_inst.get(inst).put(key, ConstPropValueHolder.NAC);
