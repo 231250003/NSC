@@ -89,6 +89,7 @@ public class LLVMIROptimization {
                     ConstPropValueHolder value = entry.getValue();
                     System.out.println(key);
                     if(key==null) System.out.println("???");
+                    if(in_inst.get(inst)==null) System.out.println("ccc");
                     if(in_inst.get(inst).get(key)==null) System.out.println("CRZZZ");
                     if (value.getKind() == ConstPropValueHolder.Kind.NAC)
                         in_inst.get(inst).put(key, ConstPropValueHolder.NAC);
