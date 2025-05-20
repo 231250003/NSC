@@ -227,26 +227,28 @@ public class LLVMIROptimization {
             }
             out_inst.put(inst, new_out);
         }
-        Map<String,Boolean> is_constant=new HashMap<>();
+       Set<String> is_constant=new HashSet<>();
         for(Map.Entry<String,ConstPropValueHolder> entry:constpropinit.entrySet()){
-            is_constant.put(entry.getKey(),true);
+            is_constant.add(entry.getKey());
         }
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     for(Map.Entry<String,ConstPropValueHolder> entry:out_inst.get(inst).entrySet()){
-                        if(entry.getValue().getKind()== ConstPropValueHolder.Kind.NAC) is_constant.put(entry.getKey(),false);
+                        if(entry.getValue().getKind()== ConstPropValueHolder.Kind.NAC) is_constant.remove(entry.getKey());
                     }
                 }
             }
         }
-        System.out.println(is_constant.size());
+        for(String x:is_constant){
+            System.out.println(x);
+        }
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; ) {
                     LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
                     String lhs = LLVM.LLVMGetValueName(inst).getString();
-                    if (lhs != null && !lhs.isEmpty() && is_constant.getOrDefault(lhs, false)) {
+                    if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
                         ConstPropValueHolder constVal = null;
                         for (Map<String, ConstPropValueHolder> out : out_inst.values()) {
                             if (out.containsKey(lhs) && out.get(lhs).getKind() == ConstPropValueHolder.Kind.INT) {
