@@ -83,7 +83,8 @@ public class Main {
             func = LLVMGetNextFunction(func);
         }
         var_num=get_var_num(module);
-
+        LLVMIROptimization optimization=new LLVMIROptimization(module);
+        optimization.constprop();
         BytePointer error = new BytePointer((Pointer) null);
         if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
             LLVMDisposeMessage(error);
