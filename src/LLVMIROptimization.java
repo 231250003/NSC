@@ -229,6 +229,7 @@ public class LLVMIROptimization {
                     }
                 }
             }
+            out_inst.put(inst,new HashMap<>(new_out));
         }
     }
 }
