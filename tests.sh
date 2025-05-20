@@ -1,6 +1,7 @@
 #!/bin/bash
 
-SYSY_DIR="tests/lab5_test"
+GENERATE_RISCV=1
+SYSY_DIR="tests/lab6_test"
 echo "== Batch processing all .sysy files in $SYSY_DIR =="
 
 for sysy_file in "$SYSY_DIR"/*.sysy; do
@@ -46,18 +47,20 @@ for sysy_file in "$SYSY_DIR"/*.sysy; do
         echo "❌ C vs LLVMIR Return values differ!"
     fi
     # Step 7: 使用 RARS 运行 .riscv 汇编文件
+    if [ "$GENERATE_RISCV" -eq 1 ]; then
     riscv_file="$SYSY_DIR/$filename.riscv"
     if [ -f "$riscv_file" ]; then
-          echo "Running RARS on: $riscv_file"
-          java -jar ../rars.jar nc me "$riscv_file"
-          riscv_return_value=$?
-          echo "RISC-V Return value: $riscv_return_value"
-          if [ "$c_return_value" -eq "$riscv_return_value" ]; then
-                echo "✅ C vs RISC-V return values match."
-          else
-                echo "❌ C vs RISC-V return values differ!"
-          fi
-    else
-          echo "RISC-V assembly file not found: $riscv_file"
+            echo "Running RARS on: $riscv_file"
+            java -jar ../rars.jar nc me "$riscv_file"
+            riscv_return_value=$?
+            echo "RISC-V Return value: $riscv_return_value"
+            if [ "$c_return_value" -eq "$riscv_return_value" ]; then
+                  echo "✅ C vs RISC-V return values match."
+            else
+                  echo "❌ C vs RISC-V return values differ!"
+            fi
+      else
+            echo "RISC-V assembly file not found: $riscv_file"
+      fi
     fi
 done
