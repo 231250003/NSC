@@ -1,7 +1,6 @@
 import com.sun.jdi.Value;
 import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
 import org.bytedeco.llvm.LLVM.LLVMModuleRef;
-import org.bytedeco.llvm.LLVM.LLVMTypeRef;
 import org.bytedeco.llvm.LLVM.LLVMValueRef;
 import org.bytedeco.llvm.global.LLVM;
 
@@ -248,8 +247,6 @@ public class LLVMIROptimization {
                     LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
                     String lhs = LLVM.LLVMGetValueName(inst).getString();
                     if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
-                        System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                        System.out.println("crxzzzzzz");
                         ConstPropValueHolder constVal = null;
                         for (Map<String, ConstPropValueHolder> out : out_inst.values()) {
                             if (out.containsKey(lhs) && out.get(lhs).getKind() == ConstPropValueHolder.Kind.INT) {
@@ -258,12 +255,9 @@ public class LLVMIROptimization {
                             }
                         }
                         if (constVal != null) {
-                            LLVMTypeRef valType = LLVM.LLVMTypeOf(inst);
-                            if (LLVM.LLVMGetTypeKind(valType) != LLVM.LLVMVoidTypeKind)  {
-                                LLVMValueRef constInt = LLVM.LLVMConstInt(valType, constVal.getIntValue(), 0);
-                                LLVM.LLVMReplaceAllUsesWith(inst, constInt);
-                                LLVM.LLVMInstructionEraseFromParent(inst);
-                            }
+                            LLVMValueRef constInt = LLVM.LLVMConstInt(LLVM.LLVMTypeOf(inst), constVal.getIntValue(), 0);
+                            LLVM.LLVMReplaceAllUsesWith(inst, constInt);
+                            LLVM.LLVMInstructionEraseFromParent(inst);
                         }
                     }
                     inst = nextInst;
