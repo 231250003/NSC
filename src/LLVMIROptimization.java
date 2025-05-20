@@ -100,21 +100,21 @@ public class LLVMIROptimization {
                 }
             }
             int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-            if (opcode == LLVM.LLVMLoad) {
+             if (opcode == LLVM.LLVMLoad) {
+                String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
                 String dest = LLVM.LLVMGetValueName(inst).getString();
-                LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(LLVM.LLVMGetOperand(inst, 0));
+                new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
+            } else if (opcode == LLVM.LLVMStore) {
+                 String dest = LLVM.LLVMGetValueName(inst).getString();
+                 LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(LLVM.LLVMGetOperand(inst, 0));
                  if(constInt!=null){
                      int x=(int) LLVM.LLVMConstIntGetSExtValue(constInt);
                      new_out.put(dest, ConstPropValueHolder.ofInt(x));
                  }
-                else {
+                 else {
                      String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
                      new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
                  }
-            } else if (opcode == LLVM.LLVMStore) {
-                String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
-                String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
-                new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
             } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                     opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
                     opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem || opcode == LLVM.LLVMUDiv) {
@@ -229,7 +229,7 @@ public class LLVMIROptimization {
                     }
                 }
             }
-            out_inst.put(inst,new HashMap<>(new_out));
+            out_inst.put(inst,new_out);
         }
     }
 }
