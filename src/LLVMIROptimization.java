@@ -246,6 +246,7 @@ public class LLVMIROptimization {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; ) {
                     LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
                     String lhs = LLVM.LLVMGetValueName(inst).getString();
+                    System.out.println(lhs);
                     if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
                         ConstPropValueHolder constVal = null;
                         for (Map<String, ConstPropValueHolder> out : out_inst.values()) {
