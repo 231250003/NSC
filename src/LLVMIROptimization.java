@@ -56,6 +56,7 @@ public class LLVMIROptimization {
                         else continue;
                     }
                     for (String var : LLVMIRToRiscv.extractVariables(line)) {
+                        if(var.length()==0) System.out.println("crzzzzzz");
                         if (constpropinit.get(var) == null) constpropinit.put(var, ConstPropValueHolder.UNDEF);
                     }
                 }
@@ -84,7 +85,6 @@ public class LLVMIROptimization {
             Map<String, ConstPropValueHolder> new_out = new HashMap<>(old_out);
             for (LLVMValueRef x : predecessor.get(inst)) {
                 if(x==null) break;
-                if(out_inst.get(x).isEmpty())System.out.println("crzzzzzzz");
                 for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
                     String key = entry.getKey();
                     ConstPropValueHolder value = entry.getValue();
