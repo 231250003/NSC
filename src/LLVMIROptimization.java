@@ -15,7 +15,6 @@ public class LLVMIROptimization {
 
     public LLVMIROptimization(LLVMModuleRef module) {
         this.module = module;
-        buildgraph();
     }
 
     public void buildgraph() {
@@ -56,7 +55,6 @@ public class LLVMIROptimization {
                         else continue;
                     }
                     for (String var : LLVMIRToRiscv.extractVariables(line)) {
-                        if(var.length()==0) System.out.println("crzzzzzz");
                         if (constpropinit.get(var) == null) constpropinit.put(var, ConstPropValueHolder.UNDEF);
                     }
                 }
@@ -107,8 +105,8 @@ public class LLVMIROptimization {
                 String dest = LLVM.LLVMGetValueName(inst).getString();
                 new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
             } else if (opcode == LLVM.LLVMStore) {
-                 String dest = LLVM.LLVMGetValueName(inst).getString();
                  LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(LLVM.LLVMGetOperand(inst, 0));
+                 String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
                  if(constInt!=null){
                      int x=(int) LLVM.LLVMConstIntGetSExtValue(constInt);
                      new_out.put(dest, ConstPropValueHolder.ofInt(x));
@@ -221,7 +219,7 @@ public class LLVMIROptimization {
                 ConstPropValueHolder v1 = old_out.get(key);
                 ConstPropValueHolder v2 = new_out.get(key);
                 if(v1.getKind()!=v2.getKind())state_changed=true;
-                else if(v1.getKind()==ConstPropValueHolder.Kind.INT&&v1.getIntValue().equals(v2.getIntValue())) state_changed=true;
+                else if(v1.getKind()==ConstPropValueHolder.Kind.INT&&(!v1.getIntValue().equals(v2.getIntValue()))) state_changed=true;
             }
             if(state_changed){
                 Set<LLVMValueRef> succs = successor.get(inst);
