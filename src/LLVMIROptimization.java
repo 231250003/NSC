@@ -248,6 +248,8 @@ public class LLVMIROptimization {
                     LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
                     String lhs = LLVM.LLVMGetValueName(inst).getString();
                     if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
+                        System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                        System.out.println("crxzzzzzz");
                         ConstPropValueHolder constVal = null;
                         for (Map<String, ConstPropValueHolder> out : out_inst.values()) {
                             if (out.containsKey(lhs) && out.get(lhs).getKind() == ConstPropValueHolder.Kind.INT) {
@@ -258,8 +260,6 @@ public class LLVMIROptimization {
                         if (constVal != null) {
                             LLVMTypeRef valType = LLVM.LLVMTypeOf(inst);
                             if (LLVM.LLVMGetTypeKind(valType) != LLVM.LLVMVoidTypeKind)  {
-                                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                                System.out.println("crxzzzzzz");
                                 LLVMValueRef constInt = LLVM.LLVMConstInt(valType, constVal.getIntValue(), 0);
                                 LLVM.LLVMReplaceAllUsesWith(inst, constInt);
                                 LLVM.LLVMInstructionEraseFromParent(inst);
