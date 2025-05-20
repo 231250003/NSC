@@ -226,6 +226,7 @@ public class LLVMIROptimization {
                 }
             }
             out_inst.put(inst, new_out);
+            out_inst.put(inst, new_out);
         }
        Set<String> is_constant=new HashSet<>();
         for(Map.Entry<String,ConstPropValueHolder> entry:constpropinit.entrySet()){
@@ -239,9 +240,6 @@ public class LLVMIROptimization {
                     }
                 }
             }
-        }
-        for(String x:is_constant){
-            System.out.println(x);
         }
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
@@ -257,7 +255,7 @@ public class LLVMIROptimization {
                             }
                         }
                         if (constVal != null) {
-                            LLVMValueRef constInt = LLVM.LLVMConstInt(LLVM.LLVMTypeOf(inst), constVal.getIntValue(), 1);
+                            LLVMValueRef constInt = LLVM.LLVMConstInt(LLVM.LLVMTypeOf(inst), constVal.getIntValue(), 0);
                             LLVM.LLVMReplaceAllUsesWith(inst, constInt);
                             LLVM.LLVMInstructionEraseFromParent(inst);
                         }
