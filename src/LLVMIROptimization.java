@@ -82,21 +82,21 @@ public class LLVMIROptimization {
             worklist.remove(inst);
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
             Map<String, ConstPropValueHolder> new_out = new HashMap<>(old_out);
-            for (LLVMValueRef x : predecessor.get(inst)) {
-                if(x==null) System.out.println("crzzzz");
-                else System.out.println(LLVM.LLVMGetValueName(x).getString());
-                for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
-                    String key = entry.getKey();
-                    ConstPropValueHolder value = entry.getValue();
-                    if (value.getKind() == ConstPropValueHolder.Kind.NAC)
-                        in_inst.get(inst).put(key, ConstPropValueHolder.NAC);
-                    else if (value.getKind() == ConstPropValueHolder.Kind.INT) {
-                        Integer in_val = value.getIntValue();
-                        if (in_inst.get(inst).get(key).getKind() == ConstPropValueHolder.Kind.INT &&
-                                (!in_inst.get(inst).get(key).getIntValue().equals(in_val))) {
+            if(predecessor.get(inst)!=null) {
+                for (LLVMValueRef x : predecessor.get(inst)) {
+                    for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
+                        String key = entry.getKey();
+                        ConstPropValueHolder value = entry.getValue();
+                        if (value.getKind() == ConstPropValueHolder.Kind.NAC)
                             in_inst.get(inst).put(key, ConstPropValueHolder.NAC);
-                        } else if (in_inst.get(inst).get(key).getKind() == ConstPropValueHolder.Kind.UNDEF) {
-                            in_inst.get(inst).put(key, ConstPropValueHolder.ofInt((in_val)));
+                        else if (value.getKind() == ConstPropValueHolder.Kind.INT) {
+                            Integer in_val = value.getIntValue();
+                            if (in_inst.get(inst).get(key).getKind() == ConstPropValueHolder.Kind.INT &&
+                                    (!in_inst.get(inst).get(key).getIntValue().equals(in_val))) {
+                                in_inst.get(inst).put(key, ConstPropValueHolder.NAC);
+                            } else if (in_inst.get(inst).get(key).getKind() == ConstPropValueHolder.Kind.UNDEF) {
+                                in_inst.get(inst).put(key, ConstPropValueHolder.ofInt((in_val)));
+                            }
                         }
                     }
                 }
