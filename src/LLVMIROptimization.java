@@ -100,28 +100,21 @@ public class LLVMIROptimization {
                 }
             }
             int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-             if (opcode == LLVM.LLVMLoad) {
-                String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
+            if (opcode == LLVM.LLVMLoad) {
                 String dest = LLVM.LLVMGetValueName(inst).getString();
-                new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
+                LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(LLVM.LLVMGetOperand(inst, 0));
+                 if(constInt!=null){
+                     int x=(int) LLVM.LLVMConstIntGetSExtValue(constInt);
+                     new_out.put(dest, ConstPropValueHolder.ofInt(x));
+                 }
+                else {
+                     String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
+                     new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
+                 }
             } else if (opcode == LLVM.LLVMStore) {
                 String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
                 String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
-                System.out.println( LLVM.LLVMPrintValueToString(inst).getString());
-                System.out.println(src);
-                 for (Map.Entry<LLVMValueRef, Map<String, ConstPropValueHolder>> entry : in_inst.entrySet()) {
-                     LLVMValueRef inst2 = entry.getKey();
-                     Map<String, ConstPropValueHolder> varMap = entry.getValue();
-                     for (Map.Entry<String, ConstPropValueHolder> varEntry : varMap.entrySet()) {
-                         String varName = varEntry.getKey();
-                         ConstPropValueHolder val = varEntry.getValue();
-
-                         System.out.println("Inst: " + LLVM.LLVMPrintValueToString(inst2).getString() +
-                                 ", Var: " + varName + ", Value: " + val);
-                     }
-                 }
                 new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
-                System.out.println("crzzzz");
             } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                     opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
                     opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem || opcode == LLVM.LLVMUDiv) {
