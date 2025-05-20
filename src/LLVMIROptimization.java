@@ -229,7 +229,7 @@ public class LLVMIROptimization {
         }
         Map<String,Boolean> is_constant=new HashMap<>();
         for(Map.Entry<String,ConstPropValueHolder> entry:constpropinit.entrySet()){
-            is_constant.put(entry.getKey(),false);
+            is_constant.put(entry.getKey(),true);
         }
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
