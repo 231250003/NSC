@@ -107,7 +107,7 @@ public class LLVMIROptimization {
             } else if (opcode == LLVM.LLVMStore) {
                 String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
                 String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
-                System.out.println(inst);
+                System.out.println( LLVM.LLVMPrintValueToString(inst).getString());
                 System.out.println(src);
                  for (Map.Entry<LLVMValueRef, Map<String, ConstPropValueHolder>> entry : in_inst.entrySet()) {
                      LLVMValueRef inst2 = entry.getKey();
