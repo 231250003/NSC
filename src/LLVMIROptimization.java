@@ -403,12 +403,27 @@ public class LLVMIROptimization {
             }
         }
         for (LLVMValueRef instr : allInstrs) {
-            if (instr!=null&&(!usedInstrs.contains(instr))) {
+            boolean shouldKeep = false;
+            if (usedInstrs.contains(instr)) {
+                shouldKeep = true;
+            }
+            int numOperands = LLVM.LLVMGetNumOperands(instr);
+            for (int i = 0; i < numOperands && !shouldKeep; i++) {
+                LLVMValueRef operand = LLVM.LLVMGetOperand(instr, i);
+                if (operand != null && !operand.isNull() && usedInstrs.contains(operand)) {
+                    shouldKeep = true;
+                }
+            }
+            if (!shouldKeep) {
                 int opcode = LLVM.LLVMGetInstructionOpcode(instr);
-                if (opcode != LLVM.LLVMRet && opcode != LLVM.LLVMBr&& opcode != LLVM.LLVMSwitch && opcode != LLVM.LLVMUnreachable) {
+                if (opcode != LLVM.LLVMRet &&
+                        opcode != LLVM.LLVMBr &&
+                        opcode != LLVM.LLVMSwitch &&
+                        opcode != LLVM.LLVMUnreachable) {
                     LLVM.LLVMInstructionEraseFromParent(instr);
                 }
             }
         }
+
     }
 }
