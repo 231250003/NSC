@@ -35,7 +35,6 @@ public class LLVMIROptimization {
                 name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(), bb);
             }
         }
-        System.out.println("canal-end");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
@@ -68,6 +67,7 @@ public class LLVMIROptimization {
                 }
             }
         }
+        System.out.println("canal-end");
     }
     private ConstPropValueHolder getConstValue(LLVMValueRef operand, Map<String, ConstPropValueHolder> inMap) {
         if (LLVM.LLVMIsConstant(operand) != 0) {
