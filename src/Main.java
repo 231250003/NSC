@@ -76,8 +76,8 @@ public class Main {
         while (func != null && !func.isNull()) {
             LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
             while (block != null && !block.isNull()) {
-                //removeRedundantInstructions(module);
-                //removeEmptyBlocks(module);
+                removeRedundantInstructions(module);
+                removeEmptyBlocks(module);
                 block = LLVMGetNextBasicBlock(block);
             }
             func = LLVMGetNextFunction(func);
@@ -121,10 +121,10 @@ public class Main {
         while (func != null && !func.isNull()) {
             LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
             while (block != null && !block.isNull()) {
-                LLVMValueRef instr = LLVMGetFirstInstruction(block);
+                LLVMValueRef instr = LLVMGetLastInstruction(block);
                 boolean reachedTerminator = false;
                 while (instr != null && !instr.isNull()) {
-                    LLVMValueRef next = LLVMGetNextInstruction(instr);
+                    LLVMValueRef prev = LLVMGetPreviousInstruction(instr);
                     if (reachedTerminator) {
                         LLVMInstructionEraseFromParent(instr);
                     } else {
@@ -132,7 +132,7 @@ public class Main {
                             reachedTerminator = true;
                         }
                     }
-                    instr = next;
+                    instr = prev;
                 }
                 block = LLVMGetNextBasicBlock(block);
             }
