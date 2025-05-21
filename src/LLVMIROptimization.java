@@ -51,6 +51,8 @@ public class LLVMIROptimization {
                             successor.get(inst).add(jmpinst);
                             if (predecessor.get(jmpinst) == null) predecessor.put(jmpinst, new HashSet<>());
                             predecessor.get(jmpinst).add(inst);
+                            System.out.println(LLVM.LLVMPrintValueToString(jmpinst).getString());
+                            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                         }
                     }
                     else if (line.contains("ret")) successor.put(inst, new HashSet<>());
@@ -64,6 +66,7 @@ public class LLVMIROptimization {
                 }
             }
         }
+        System.out.println("end of graph");
     }
     private ConstPropValueHolder getConstValue(LLVMValueRef operand, Map<String, ConstPropValueHolder> inMap) {
         if (LLVM.LLVMIsConstant(operand) != 0) {
