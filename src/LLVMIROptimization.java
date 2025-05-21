@@ -289,6 +289,7 @@ public class LLVMIROptimization {
                 System.out.print(entry.getKey());
                 System.out.print("  ");
                 System.out.println(entry.getValue());
+                System.out.println("--------------");
             }
             out_inst.put(inst, new_out);
         }
