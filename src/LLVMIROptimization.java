@@ -560,7 +560,6 @@ public class LLVMIROptimization {
         return flag;
     }
     public boolean elem_dead_code(){
-        System.out.println("canal1");
         boolean ret=false;
         buildgraph();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
@@ -568,6 +567,7 @@ public class LLVMIROptimization {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull();) {
                     LLVMValueRef next = LLVM.LLVMGetNextInstruction(inst);  // 保存下一条指令指针
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                    System.out.println("canal1");
                     if(opcode==LLVM.LLVMBr){
                         int numOperands = LLVM.LLVMGetNumOperands(inst);
                         if(numOperands==3){
@@ -586,11 +586,11 @@ public class LLVMIROptimization {
                             }
                         }
                     }
+                    System.out.println("canal-end");
                     inst = next;
                 }
             }
         }
-        System.out.println("canal-end");
         cleanUnreachableBlocks();
         buildgraph();
         //LLVMDumpModule(module);
