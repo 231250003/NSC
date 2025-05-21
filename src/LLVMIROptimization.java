@@ -6,6 +6,8 @@ import org.bytedeco.llvm.global.LLVM;
 
 import java.util.*;
 
+import static org.bytedeco.llvm.global.LLVM.LLVMConstInt;
+
 public class LLVMIROptimization {
     LLVMModuleRef module;
     public Map<LLVMValueRef, Set<LLVMValueRef>> predecessor = new HashMap<>();
@@ -242,29 +244,63 @@ public class LLVMIROptimization {
             }
         }
         for(String x:is_constant) System.out.println(x);
-//        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
-//            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-//                Set<String> has_store_variable=new HashSet<>();
-//                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-//                    LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
-//                    int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-//                    if (opcode == LLVM.LLVMLoad){
-//                        String dest = LLVM.LLVMGetValueName(inst).getString();
-//                        if(is_constant.contains(dest))   LLVM.LLVMInstructionEraseFromParent(inst);
-//                    }
-//                    else if(opcode==LLVM.LLVMStore){
-//                        String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
-//                        if(!has_store_variable.contains(dest)) has_store_variable.add(dest);
-//                        else LLVM.LLVMInstructionEraseFromParent(inst);
-//                    }
-//                    else if(opcode==LLVM.LLVMRet){
-//                        LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
-//                        if(is_constant.contains(LLVM.LLVMGetValueName(retVal).getString())){
-//                            LLVMValueRef constInst = LLVM.LLVMConstInt(LLVMTypeOf(inst), is_constant, 0);
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                Set<String> has_store_variable=new HashSet<>();
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null;) {
+                    LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
+                    int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                    String lhs = LLVM.LLVMGetValueName(inst).getString();
+                    if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
+                        LLVM.LLVMInstructionEraseFromParent(inst);
+                    }
+                    else if(opcode==LLVM.LLVMStore){
+                        String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
+                        if(is_constant.contains(dest)) {
+                            if (!has_store_variable.contains(dest)) {
+                                has_store_variable.add(dest);
+                                LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 1)), out_inst.get(inst).get(dest).getIntValue(), 0);
+                                LLVM.LLVMSetOperand(inst, 0, constInst);
+                            }
+                            else LLVM.LLVMInstructionEraseFromParent(inst);
+                        }
+                    }
+                    else if(opcode==LLVM.LLVMRet){
+                        LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
+                        if(is_constant.contains(LLVM.LLVMGetValueName(retVal).getString())){
+                            LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(retVal), out_inst.get(inst).get(LLVM.LLVMGetValueName(retVal).getString()).getIntValue(), 0);
+                            LLVM.LLVMSetOperand(inst, 0, constInst);
+                        }
+                    }
+                    else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
+                                    opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
+                                    opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem ||
+                                    opcode == LLVM.LLVMUDiv||opcode == LLVM.LLVMICmp || opcode == LLVM.LLVMZExt) {
+                        int numOperands = LLVM.LLVMGetNumOperands(inst);
+                        for (int i = 0; i < numOperands; i++) {
+                            LLVMValueRef op = LLVM.LLVMGetOperand(inst, i);
+                            String opName = LLVM.LLVMGetValueName(op).getString();
+                            if (is_constant.contains(opName)) {
+                                int value = out_inst.get(inst).get(opName).getIntValue();
+                                LLVMValueRef constOp = LLVMConstInt(LLVM.LLVMTypeOf(op), value, 0);
+                                LLVM.LLVMSetOperand(inst, i, constOp);
+                            }
+                        }
+                    }
+                    else if (opcode == LLVM.LLVMBr) {
+                        if (LLVM.LLVMIsConditional(inst) != 0) { // 条件跳转
+                            LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
+                            String condName = LLVM.LLVMGetValueName(cond).getString();
+                            if (is_constant.contains(condName)) {
+                                int value = out_inst.get(inst).get(condName).getIntValue();
+                                LLVMValueRef constCond = LLVMConstInt(LLVM.LLVMTypeOf(cond), value, 0);
+                                LLVM.LLVMSetOperand(inst, 0, constCond);
+                            }
+                        }
+                    }
+                    inst=nextInst;
+                }
+            }
+        }
     }
 }
