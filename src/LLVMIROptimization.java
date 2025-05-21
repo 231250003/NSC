@@ -532,7 +532,7 @@ public class LLVMIROptimization {
         int block_count=0;
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                System.out.println(block_count);
+                block_count++;
             }
         }
         System.out.println(block_count);
