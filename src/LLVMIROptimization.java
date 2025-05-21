@@ -492,9 +492,9 @@ public class LLVMIROptimization {
     public void append_inst(LLVMBasicBlockRef dest,LLVMBasicBlockRef src){
         LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(dest);
         LLVMValueRef first_inst=LLVM.LLVMGetFirstInstruction(src);
-        System.out.println(LLVMPrintValueToString(last_inst).getString());
-        System.out.println(LLVMPrintValueToString(first_inst).getString());
-        System.out.println("----------");
+//        System.out.println(LLVMPrintValueToString(last_inst).getString());
+//        System.out.println(LLVMPrintValueToString(first_inst).getString());
+//        System.out.println("----------");
         Set<LLVMValueRef> x=predecessor.get(last_inst);
         for(LLVMValueRef stmt:x){
             successor.get(stmt).remove(last_inst);
@@ -533,9 +533,6 @@ public class LLVMIROptimization {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(bb);
                 System.out.println(LLVMPrintValueToString(last_inst).getString());
-                for(LLVMValueRef x:successor.get(last_inst)){
-                    System.out.println(LLVMPrintValueToString(x).getString());
-                }
                 if(successor.get(last_inst).size()==1){
                     for(LLVMValueRef entry:successor.get(last_inst)){
                         if(!LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetInstructionParent(entry)))&&predecessor.get(entry).size()==1) {
