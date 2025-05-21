@@ -269,8 +269,8 @@ public class LLVMIROptimization {
                 }
             }
         }
-//        for(String x:is_constant) System.out.println(x);
-//        System.out.println("crzzz");
+        for(String x:is_constant) System.out.println(x);
+        System.out.println("crzzz");
         Set<LLVMValueRef> inst_to_delete=new HashSet<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
