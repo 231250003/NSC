@@ -84,6 +84,7 @@ public class LLVMIROptimization {
         }
     }
     public void constprop() {
+        System.out.println("canal");
         buildgraph();
 //        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
 //            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
@@ -93,7 +94,6 @@ public class LLVMIROptimization {
 //            System.out.println("-------------");
 //        }
 //        System.out.println("end of predecessor check");
-        System.out.println("canal");
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> in_inst = new HashMap<>();
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> out_inst = new HashMap<>();
         Set<LLVMValueRef> worklist = new HashSet<>();
