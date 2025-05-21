@@ -241,7 +241,30 @@ public class LLVMIROptimization {
                 }
             }
         }
-      
-
+        for(String x:is_constant) System.out.println(x);
+//        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
+//            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+//                Set<String> has_store_variable=new HashSet<>();
+//                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+//                    LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
+//                    int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+//                    if (opcode == LLVM.LLVMLoad){
+//                        String dest = LLVM.LLVMGetValueName(inst).getString();
+//                        if(is_constant.contains(dest))   LLVM.LLVMInstructionEraseFromParent(inst);
+//                    }
+//                    else if(opcode==LLVM.LLVMStore){
+//                        String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
+//                        if(!has_store_variable.contains(dest)) has_store_variable.add(dest);
+//                        else LLVM.LLVMInstructionEraseFromParent(inst);
+//                    }
+//                    else if(opcode==LLVM.LLVMRet){
+//                        LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
+//                        if(is_constant.contains(LLVM.LLVMGetValueName(retVal).getString())){
+//                            LLVMValueRef constInst = LLVM.LLVMConstInt(LLVMTypeOf(inst), is_constant, 0);
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 }
