@@ -84,7 +84,8 @@ public class LLVMIROptimization {
             }
         }
     }
-    public void constprop() {
+    public boolean constprop() {
+        boolean ret=false;
         buildgraph();
 //        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
 //            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
@@ -380,11 +381,14 @@ public class LLVMIROptimization {
         }
         for(LLVMValueRef x:inst_to_delete) {
             //System.out.println(LLVM.LLVMPrintValueToString(x).getString());
+            if(x!=null) ret=true;
             LLVM.LLVMInstructionEraseFromParent(x);
         }
         //System.out.println("end");
+        return ret;
     }
-    public void elem_unused(){
+    public boolean elem_unused(){
+        boolean ret=false;
         Set<LLVMValueRef> allInstrs = new HashSet<>();
         Set<LLVMValueRef> usedInstrs = new HashSet<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
@@ -433,10 +437,12 @@ public class LLVMIROptimization {
                         opcode != LLVM.LLVMBr &&
                         opcode != LLVM.LLVMSwitch &&
                         opcode != LLVM.LLVMUnreachable) {
+                    ret=true;
                     LLVM.LLVMInstructionEraseFromParent(instr);
                 }
             }
         }
+        return ret;
     }
     public boolean remove_redundant_block(){
         boolean remove=false;
@@ -552,7 +558,8 @@ public class LLVMIROptimization {
         LLVM.LLVMDumpModule(module);
         return flag;
     }
-    public void elem_dead_code(){
+    public boolean elem_dead_code(){
+        boolean ret=false;
         buildgraph();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
@@ -566,6 +573,7 @@ public class LLVMIROptimization {
                             LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
                             LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
                             if (LLVM.LLVMIsAConstantInt(cond) != null) {
+                                ret=true;
                                 long condValue = LLVM.LLVMConstIntGetZExtValue(cond);
                                 LLVMValueRef target = (condValue != 0) ? ifTrue : ifFalse;
                                 LLVMBuilderRef builder = LLVM.LLVMCreateBuilder();
@@ -583,6 +591,7 @@ public class LLVMIROptimization {
         cleanUnreachableBlocks();
         buildgraph();
         while(remove_redundant_block());
+        return ret;
     }
     public void cleanUnreachableBlocks() {
         Set<LLVMBasicBlockRef> unreachableBlocks = new HashSet<>();
