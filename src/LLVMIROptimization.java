@@ -391,12 +391,25 @@ public class LLVMIROptimization {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
                     allInstrs.add(inst);
-                    int numOperands = LLVM.LLVMGetNumOperands(inst);
-                    for (int i = 0; i < numOperands; i++) {
-                        LLVMValueRef operand = LLVM.LLVMGetOperand(inst, i);
-                        if (operand != null && !operand.isNull()) {
-                            if(!LLVMGetValueName(operand).getString().isEmpty())usedInstrs.add(operand);
-                            System.out.println(LLVMGetValueName(operand).getString());
+                    int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                    if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
+                            opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
+                            opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem ||
+                            opcode == LLVM.LLVMUDiv||opcode == LLVM.LLVMICmp || opcode == LLVM.LLVMZExt||opcode == LLVM.LLVMLoad||opcode== LLVMRet) {
+                        int numOperands = LLVM.LLVMGetNumOperands(inst);
+                        for (int i = 0; i < numOperands; i++) {
+                            LLVMValueRef operand = LLVM.LLVMGetOperand(inst, i);
+                            if (operand != null && !operand.isNull()) {
+                                if (!LLVMGetValueName(operand).getString().isEmpty()) usedInstrs.add(operand);
+                            }
+                        }
+                    }
+                    else if(opcode==LLVM.LLVMStore||(opcode==LLVM.LLVMBr&&LLVM.LLVMGetNumOperands(inst)==1)){
+                        for (int i = 0; i<1; i++) {
+                            LLVMValueRef operand = LLVM.LLVMGetOperand(inst, i);
+                            if (operand != null && !operand.isNull()) {
+                                if (!LLVMGetValueName(operand).getString().isEmpty()) usedInstrs.add(operand);
+                            }
                         }
                     }
                 }
@@ -424,6 +437,5 @@ public class LLVMIROptimization {
                 }
             }
         }
-
     }
 }
