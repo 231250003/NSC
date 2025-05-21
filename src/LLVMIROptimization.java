@@ -51,9 +51,6 @@ public class LLVMIROptimization {
                             successor.get(inst).add(jmpinst);
                             if (predecessor.get(jmpinst) == null) predecessor.put(jmpinst, new HashSet<>());
                             predecessor.get(jmpinst).add(inst);
-                            System.out.println(LLVM.LLVMPrintValueToString(jmpinst).getString());
-                            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                            if(predecessor.get(jmpinst).contains(inst)) System.out.println("crzzzz");
                         }
                     }
                     else if (line.contains("ret")) successor.put(inst, new HashSet<>());
@@ -106,8 +103,8 @@ public class LLVMIROptimization {
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
             System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
             for (LLVMValueRef x : predecessor.get(inst)) {
-                if (x == null) break;
                 System.out.println(LLVM.LLVMPrintValueToString(x).getString());
+                if (x == null) break;
                 for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
                     String key = entry.getKey();
                     ConstPropValueHolder value = entry.getValue();
