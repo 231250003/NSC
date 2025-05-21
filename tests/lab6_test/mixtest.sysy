@@ -12,6 +12,5 @@ int main() {
         num = num + 1;
         i = i + 1;
     }
-
     return num * num + c;
 }
