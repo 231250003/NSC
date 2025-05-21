@@ -11,7 +11,7 @@ int main(){
             x=x+1;
             break;
         }
-        num=num+1;
+        num=num+1+x;
         c=c+1;
      }
      return c+num;
