@@ -420,6 +420,7 @@ public class LLVMIROptimization {
                 }
             }
         }
+        LLVMDumpModule(module);
         for (LLVMValueRef instr : allInstrs) {
             boolean shouldKeep = false;
             if (usedInstrs.contains(instr)) {
