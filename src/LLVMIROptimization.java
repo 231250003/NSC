@@ -42,8 +42,8 @@ public class LLVMIROptimization {
                     if (inst != LLVM.LLVMGetFirstInstruction(bb)) predecessor.get(inst).add(LLVM.LLVMGetPreviousInstruction(inst));
                     if(successor.get(inst)==null) successor.put(inst,new HashSet<>());
                     if(LLVM.LLVMGetNextInstruction(inst)!=null) successor.get(inst).add(LLVM.LLVMGetNextInstruction(inst));
-                    String line = LLVM.LLVMPrintValueToString(inst).getString();
                     System.out.println("canal-end");
+                    String line = LLVM.LLVMPrintValueToString(inst).getString();
                     if (line.contains("br")) {
                         String line2;
                         if (line.contains(",")) line2 = line.substring(line.indexOf(",") + 1);
