@@ -253,6 +253,7 @@ public class LLVMIROptimization {
         }
 //        for(String x:is_constant) System.out.println(x);
 //        System.out.println("crzzz");
+        Set<LLVMValueRef> inst_to_delete=new HashSet<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 Set<String> has_store_variable=new HashSet<>();
@@ -263,7 +264,7 @@ public class LLVMIROptimization {
                     if(LLVM.LLVMGetValueName(inst)!=null) lhs = LLVM.LLVMGetValueName(inst).getString();
                     else lhs=null;
                     if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
-                       // LLVM.LLVMInstructionEraseFromParent(inst);
+                        inst_to_delete.add(inst);
                     }
                     else if(opcode==LLVM.LLVMStore){
                         String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
@@ -273,7 +274,7 @@ public class LLVMIROptimization {
                                 LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 0)), out_inst.get(inst).get(dest).getIntValue(), 0);
                                 LLVM.LLVMSetOperand(inst, 0, constInst);
                             }
-                            //else LLVM.LLVMInstructionEraseFromParent(inst);
+                            else inst_to_delete.add(inst);
                         }
                     }
                     else if(opcode==LLVM.LLVMRet){
@@ -311,5 +312,6 @@ public class LLVMIROptimization {
                 }
             }
         }
+        for(LLVMValueRef x:inst_to_delete)  LLVM.LLVMInstructionEraseFromParent(x);
     }
 }
