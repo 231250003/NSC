@@ -522,7 +522,6 @@ public class LLVMIROptimization {
 //        System.out.println("end of successor check");
     }
     public boolean merge_block(){
-        System.out.println("crzzz");
        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:successor.entrySet()){
            entry.getValue().removeIf(Objects::isNull);
        }
@@ -530,6 +529,13 @@ public class LLVMIROptimization {
             entry.getValue().removeIf(Objects::isNull);
         }
         boolean flag=false;
+        int block_count=0;
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                System.out.println(block_count);
+            }
+        }
+        System.out.println(block_count);
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(bb);
