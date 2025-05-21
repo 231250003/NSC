@@ -54,13 +54,13 @@ public class LLVMIROptimization {
                             predecessor.get(jmpinst).add(inst);
                         }
                     }
-                    //else if (line.contains("ret")) successor.put(inst, new HashSet<>());
                     if (line.contains("br")) {
-                        if (line.contains(",")) line = line.substring(0, line.indexOf(","));
-                        else continue;
-                    }
-                    for (String var : LLVMIRToRiscv.extractVariables(line)) {
-                        if (constpropinit.get(var) == null) constpropinit.put(var, ConstPropValueHolder.UNDEF);
+                        if (line.contains(",")){
+                            line = line.substring(0, line.indexOf(","));
+                            for (String var : LLVMIRToRiscv.extractVariables(line)) {
+                                if (constpropinit.get(var) == null) constpropinit.put(var, ConstPropValueHolder.UNDEF);
+                            }
+                        }
                     }
                 }
             }
