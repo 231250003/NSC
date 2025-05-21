@@ -284,12 +284,12 @@ public class LLVMIROptimization {
                     }
                 }
             }
-//            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-//            for(Map.Entry<String,ConstPropValueHolder> entry:new_out.entrySet()){
-//                System.out.print(entry.getKey());
-//                System.out.print("  ");
-//                System.out.println(entry.getValue());
-//            }
+            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+            for(Map.Entry<String,ConstPropValueHolder> entry:new_out.entrySet()){
+                System.out.print(entry.getKey());
+                System.out.print("  ");
+                System.out.println(entry.getValue());
+            }
             out_inst.put(inst, new_out);
         }
        Set<String> is_constant=new HashSet<>();
