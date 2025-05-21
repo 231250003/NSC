@@ -443,7 +443,6 @@ public class LLVMIROptimization {
                 }
             }
         }
-        LLVMDumpModule(module);
         return ret;
     }
     public boolean remove_redundant_block(){
