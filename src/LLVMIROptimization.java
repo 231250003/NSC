@@ -494,6 +494,7 @@ public class LLVMIROptimization {
         LLVMValueRef first_inst=LLVM.LLVMGetFirstInstruction(src);
         System.out.println(LLVMPrintValueToString(last_inst).getString());
         System.out.println(LLVMPrintValueToString(first_inst).getString());
+        System.out.println("----------");
         Set<LLVMValueRef> x=predecessor.get(last_inst);
         for(LLVMValueRef stmt:x){
             successor.get(stmt).remove(last_inst);
