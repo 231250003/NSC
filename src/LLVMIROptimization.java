@@ -128,6 +128,7 @@ public class LLVMIROptimization {
                 }
             }
             Map<String, ConstPropValueHolder> new_out = new HashMap<>(in_inst.get(inst));
+            System.out.println("canal");
             int opcode = LLVM.LLVMGetInstructionOpcode(inst);
             if (opcode == LLVM.LLVMLoad) {
                 LLVMValueRef ptrOp = LLVM.LLVMGetOperand(inst, 0);
@@ -302,7 +303,6 @@ public class LLVMIROptimization {
 //            System.out.println("--------------");
             out_inst.put(inst, new_out);
         }
-        System.out.println("canal");
         Set<String> is_constant=new HashSet<>();
         for(Map.Entry<String,ConstPropValueHolder> entry:constpropinit.entrySet()){
             is_constant.add(entry.getKey());
