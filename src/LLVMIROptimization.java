@@ -519,8 +519,10 @@ public class LLVMIROptimization {
             instructions.add(inst);
         }
         for (LLVMValueRef inst : instructions) {
+            String name = LLVMGetValueName(inst).getString();
             LLVMInstructionRemoveFromParent(inst);
             LLVMInsertIntoBuilder(builder, inst);
+            if(name!=null&& !name.isEmpty()) LLVMSetValueName(inst, name);
         }
         LLVMRemoveBasicBlockFromParent(src);
 //        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:successor.entrySet()){
