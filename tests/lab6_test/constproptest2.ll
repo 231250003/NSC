@@ -8,16 +8,14 @@ mainEntry:
   %num = alloca i32, align 4
   store i32 1, i32* %num, align 4
   %c = alloca i32, align 4
-  %load_lval = load i32, i32* %num, align 4
-  store i32 %load_lval, i32* %c, align 4
+  store i32 1, i32* %c, align 4
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
   %load_lval3 = load i32, i32* %num, align 4
   %load_lval4 = load i32, i32* %num, align 4
   %mul = mul i32 %load_lval3, %load_lval4
-  %load_lval5 = load i32, i32* %c, align 4
-  %add6 = add i32 %mul, %load_lval5
+  %add6 = add i32 %mul, 1
   ret i32 %add6
 
 while.stmt:                                       ; preds = %while.cond
