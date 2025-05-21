@@ -508,8 +508,8 @@ public class LLVMIROptimization {
         LLVMBuilderRef builder = LLVMCreateBuilder();
         LLVMPositionBuilderAtEnd(builder, dest);
         for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(src); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
-            LLVMInstructionRemoveFromParent(inst);
             LLVMInsertIntoBuilder(builder, inst);
+            LLVMInstructionRemoveFromParent(inst);
         }
         LLVMRemoveBasicBlockFromParent(src);
 //        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:successor.entrySet()){
