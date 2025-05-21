@@ -102,7 +102,7 @@ public class LLVMIROptimization {
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
             for (LLVMValueRef x : predecessor.get(inst)) {
                 if (x == null) break;
-                System.out.println(LLVM.LLVMPrintValueToString(x));
+                System.out.println(LLVM.LLVMPrintValueToString(x).getString());
                 for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
                     String key = entry.getKey();
                     ConstPropValueHolder value = entry.getValue();
