@@ -8,7 +8,9 @@ int main() {
     int f = a / b;      // DIV (5)
     int g = a % b;      // REM (0)
 
-   
+    // 条件分支测试
+       int m = 0;
+     
 
     // 循环控制测试
     int sum = 0;
