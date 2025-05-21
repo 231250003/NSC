@@ -478,14 +478,14 @@ public class LLVMIROptimization {
             }
             LLVMRemoveBasicBlockFromParent(x);
         }
-//        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
-//            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
-//            for(LLVMValueRef x:(entry.getValue())){
-//                System.out.println(LLVMPrintValueToString(x).getString());
-//            }
-//            System.out.println("-------------");
-//        }
-//        System.out.println("end of predecessor check");
+        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
+            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
+            for(LLVMValueRef x:(entry.getValue())){
+                System.out.println(LLVMPrintValueToString(x).getString());
+            }
+            System.out.println("-------------");
+        }
+        System.out.println("end of predecessor check");
          boolean flag=merge_block();
         return remove||flag;
     }
@@ -525,7 +525,6 @@ public class LLVMIROptimization {
                     for(LLVMValueRef entry:successor.get(last_inst)){
                         if(!LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetInstructionParent(entry)))&&predecessor.get(entry).size()==1) {
                             append_inst(bb,LLVMGetInstructionParent(entry));
-                            System.out.println("crzzzz");
                             flag=true;
                         }
                     }
