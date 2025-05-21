@@ -344,10 +344,7 @@ public class LLVMIROptimization {
                             else inst_to_delete.add(inst);
                         }
                         else{
-                            System.out.println((LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString()));
-                            System.out.println(LLVM.LLVMIsConstant(LLVM.LLVMGetOperand(inst, 0))!=0);
-                            if(LLVM.LLVMIsConstant(LLVM.LLVMGetOperand(inst, 0))!=0&&is_constant.contains(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString())){
-                                System.out.println("crczzzz");
+                            if(LLVM.LLVMIsConstant(LLVM.LLVMGetOperand(inst, 0))==0&&is_constant.contains(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString())){
                                 LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 0)), out_inst.get(inst).get(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString()).getIntValue(), 0);
                                 LLVM.LLVMSetOperand(inst, 0, constInst);
                             }
