@@ -249,7 +249,9 @@ public class LLVMIROptimization {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null;) {
                     LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-                    String lhs = LLVM.LLVMGetValueName(inst).getString();
+                    String lhs;
+                    if(LLVM.LLVMGetValueName(inst)!=null) lhs = LLVM.LLVMGetValueName(inst).getString();
+                    else lhs=null;
                     if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
                         LLVM.LLVMInstructionEraseFromParent(inst);
                     }
@@ -301,6 +303,5 @@ public class LLVMIROptimization {
                 }
             }
         }
-        System.out.println("crzzzz");
     }
 }
