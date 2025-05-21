@@ -274,7 +274,6 @@ public class LLVMIRToRiscv {
                                 NewControlFlowRegisterAllocator.changed_variable.remove(LLVM.LLVMGetValueName(inst).getString());
                         } else asm.instr("mv", addr, destReg);
                         valueMap.put(LLVM.LLVMGetValueName(inst).getString(), addr);
-
                     } else if (opcode == LLVM.LLVMRet) {
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
                         String reg = evaluate(retVal);

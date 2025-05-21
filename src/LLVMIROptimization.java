@@ -96,7 +96,7 @@ public class LLVMIROptimization {
 //        System.out.println("end of predecessor check");
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> in_inst = new HashMap<>();
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> out_inst = new HashMap<>();
-        Set<LLVMValueRef> worklist = new HashSet<>();
+        List<LLVMValueRef> worklist = new ArrayList<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
