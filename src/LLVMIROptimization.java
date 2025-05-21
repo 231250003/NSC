@@ -84,8 +84,8 @@ public class LLVMIROptimization {
         }
     }
     public void constprop() {
-        buildgraph();
         System.out.println("canal");
+        buildgraph();
 //        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
 //            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
 //            for(LLVMValueRef x:(entry.getValue())){
