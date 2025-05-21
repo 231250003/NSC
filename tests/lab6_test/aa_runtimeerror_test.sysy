@@ -17,6 +17,7 @@ int main() {
 
      int mem_test = 0;
      mem_test = c;
+     int load_test = mem_test;
 
     // 复合条件验证
     return (c - 18)    // 验证加法
