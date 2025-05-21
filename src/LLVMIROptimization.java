@@ -84,7 +84,7 @@ public class LLVMIROptimization {
             LLVMValueRef inst = worklist.iterator().next();
             worklist.remove(inst);
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
-            Map<String, ConstPropValueHolder> new_out = new HashMap<>(old_out);
+            Map<String, ConstPropValueHolder> new_out = new HashMap<>(in_inst.get(inst));
             for (LLVMValueRef x : predecessor.get(inst)) {
                 if (x == null) break;
                 for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
@@ -98,7 +98,6 @@ public class LLVMIROptimization {
                                 (!in_inst.get(inst).get(key).getIntValue().equals(in_val))) {
                             in_inst.get(inst).put(key, ConstPropValueHolder.NAC);
                         } else if (in_inst.get(inst).get(key).getKind() == ConstPropValueHolder.Kind.UNDEF) {
-                            System.out.println("reach here");
                             in_inst.get(inst).put(key, ConstPropValueHolder.ofInt((in_val)));
                         }
                     }
