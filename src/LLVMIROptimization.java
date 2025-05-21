@@ -389,7 +389,6 @@ public class LLVMIROptimization {
         return ret;
     }
     public boolean elem_unused(){
-        LLVMDumpModule(module);
         boolean ret=false;
         Set<LLVMValueRef> allInstrs = new HashSet<>();
         Set<LLVMValueRef> usedInstrs = new HashSet<>();
@@ -444,6 +443,7 @@ public class LLVMIROptimization {
                 }
             }
         }
+        LLVMDumpModule(module);
         return ret;
     }
     public boolean remove_redundant_block(){
