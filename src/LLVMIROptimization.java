@@ -443,6 +443,7 @@ public class LLVMIROptimization {
                 }
             }
         }
+        LLVMDumpModule(module);
         return ret;
     }
     public boolean remove_redundant_block(){
@@ -561,7 +562,6 @@ public class LLVMIROptimization {
         return flag;
     }
     public boolean elem_dead_code(){
-        LLVMDumpModule(module);
         boolean ret=false;
         buildgraph();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
