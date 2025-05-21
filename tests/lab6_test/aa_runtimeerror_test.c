@@ -8,7 +8,8 @@ int main() {
     int f = 5;      // DIV (5)
     int g = 0;      // REM (0)
     // 循环控制测试
-    
+    int sum = 0;
+        
 
      int mem_test = 0;
      mem_test = c;
