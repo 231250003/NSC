@@ -409,7 +409,7 @@ public class LLVMIROptimization {
                             }
                         }
                     }
-                    else if(opcode==LLVM.LLVMStore||(opcode==LLVM.LLVMBr&&LLVM.LLVMGetNumOperands(inst)==1)){
+                    else if(opcode==LLVM.LLVMStore||(opcode==LLVM.LLVMBr)){
                         for (int i = 0; i<1; i++) {
                             LLVMValueRef operand = LLVM.LLVMGetOperand(inst, i);
                             if (operand != null && !operand.isNull()) {
