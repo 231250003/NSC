@@ -98,6 +98,7 @@ public class LLVMIROptimization {
                                 (!in_inst.get(inst).get(key).getIntValue().equals(in_val))) {
                             in_inst.get(inst).put(key, ConstPropValueHolder.NAC);
                         } else if (in_inst.get(inst).get(key).getKind() == ConstPropValueHolder.Kind.UNDEF) {
+                            System.out.println("reach here");
                             in_inst.get(inst).put(key, ConstPropValueHolder.ofInt((in_val)));
                         }
                     }
