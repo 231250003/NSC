@@ -211,6 +211,7 @@ public class LLVMIROptimization {
                     new_out.put(dest, ConstPropValueHolder.UNDEF);
                 }
             }
+            else new_out=new HashMap<>(in_inst.get(inst));
             boolean state_changed = false;
             for (String key : old_out.keySet()) {
                 ConstPropValueHolder v1 = old_out.get(key);
