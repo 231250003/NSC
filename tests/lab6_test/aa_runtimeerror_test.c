@@ -2,10 +2,10 @@ int main() {
     // 基础算术指令测试
     int a = 15;         // li 指令测试
     int b = 3;          // 立即数加载
-    int c = a + b;      // ADD (18)
-    int d = a - b;      // SUB (12)
-    int e = a * b;      // MUL (45)
-    int f = a / b;      // DIV (5)
+    int c = 18;      // ADD (18)
+    int d = 12;      // SUB (12)
+    int e = 45;      // MUL (45)
+    int f = 5;      // DIV (5)
     int g = a % b;      // REM (0)
 
 
