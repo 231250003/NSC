@@ -111,6 +111,8 @@ public class LLVMIROptimization {
                 String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
                 if (constInt != null) {
                     int x = (int) LLVM.LLVMConstIntGetSExtValue(constInt);
+                    System.out.println(x);
+                    System.out.println("get you");
                     new_out.put(dest, ConstPropValueHolder.ofInt(x));
                 } else {
                     String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
