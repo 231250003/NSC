@@ -253,7 +253,7 @@ public class LLVMIROptimization {
                     if(LLVM.LLVMGetValueName(inst)!=null) lhs = LLVM.LLVMGetValueName(inst).getString();
                     else lhs=null;
                     if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
-                        LLVM.LLVMInstructionEraseFromParent(inst);
+                       // LLVM.LLVMInstructionEraseFromParent(inst);
                     }
                     else if(opcode==LLVM.LLVMStore){
                         String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
@@ -263,7 +263,7 @@ public class LLVMIROptimization {
                                 LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 1)), out_inst.get(inst).get(dest).getIntValue(), 0);
                                 LLVM.LLVMSetOperand(inst, 0, constInst);
                             }
-                            else LLVM.LLVMInstructionEraseFromParent(inst);
+                            //else LLVM.LLVMInstructionEraseFromParent(inst);
                         }
                     }
                     else if(opcode==LLVM.LLVMRet){
