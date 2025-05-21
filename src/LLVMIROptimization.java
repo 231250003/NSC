@@ -47,8 +47,6 @@ public class LLVMIROptimization {
                         else line2 = line;
                         for (String block_name : LLVMIRToRiscv.extractVariables(line2)) {
                             LLVMValueRef jmpinst = LLVM.LLVMGetFirstInstruction(name2blockref.get(block_name));
-                            System.out.println(LLVM.LLVMPrintValueToString(jmpinst).getString());
-                            System.out.println("crzzzz");
                             if (successor.get(inst) == null) successor.put(inst, new HashSet<>());
                             successor.get(inst).add(jmpinst);
                             if (predecessor.get(jmpinst) == null) predecessor.put(jmpinst, new HashSet<>());
@@ -126,8 +124,8 @@ public class LLVMIROptimization {
                 LLVMValueRef ptrOp = LLVM.LLVMGetOperand(inst, 0);
                 String src = LLVM.LLVMGetValueName(ptrOp).getString();
                 String dest = LLVM.LLVMGetValueName(inst).getString();
-                ConstPropValueHolder srcVal = in_inst.get(inst).getOrDefault(src, ConstPropValueHolder.UNDEF);
-                ConstPropValueHolder oldDestVal = in_inst.get(inst).getOrDefault(dest, ConstPropValueHolder.UNDEF);
+                ConstPropValueHolder srcVal = in_inst.get(inst).get(src);
+                ConstPropValueHolder oldDestVal = in_inst.get(inst).get(dest);
                 ConstPropValueHolder resultVal;
                 if (oldDestVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
                     resultVal = new ConstPropValueHolder(srcVal);
