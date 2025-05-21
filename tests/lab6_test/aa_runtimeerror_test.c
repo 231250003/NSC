@@ -6,7 +6,7 @@ int main() {
     int d = 12;      // SUB (12)
     int e = 45;      // MUL (45)
     int f = 5;      // DIV (5)
-    int g = a % b;      // REM (0)
+    int g = 0;      // REM (0)
 
 
 
