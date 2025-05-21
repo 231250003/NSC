@@ -121,19 +121,55 @@ public class LLVMIROptimization {
             Map<String, ConstPropValueHolder> new_out = new HashMap<>(in_inst.get(inst));
             int opcode = LLVM.LLVMGetInstructionOpcode(inst);
             if (opcode == LLVM.LLVMLoad) {
-                String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
+                LLVMValueRef ptrOp = LLVM.LLVMGetOperand(inst, 0);
+                String src = LLVM.LLVMGetValueName(ptrOp).getString();
                 String dest = LLVM.LLVMGetValueName(inst).getString();
-                new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
-            } else if (opcode == LLVM.LLVMStore) {
-                LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(LLVM.LLVMGetOperand(inst, 0));
-                String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
-                if (constInt != null) {
-                    int x = (int) LLVM.LLVMConstIntGetSExtValue(constInt);
-                    new_out.put(dest, ConstPropValueHolder.ofInt(x));
+                ConstPropValueHolder srcVal = in_inst.get(inst).getOrDefault(src, ConstPropValueHolder.UNDEF);
+                ConstPropValueHolder oldDestVal = in_inst.get(inst).getOrDefault(dest, ConstPropValueHolder.UNDEF);
+                ConstPropValueHolder resultVal;
+                if (oldDestVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
+                    resultVal = new ConstPropValueHolder(srcVal);
+                } else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.NAC) {
+                    resultVal = ConstPropValueHolder.NAC;
+                } else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.INT) {
+                    if (srcVal.getKind() == ConstPropValueHolder.Kind.INT) {
+                        if (!oldDestVal.equals(srcVal)) {
+                            resultVal = ConstPropValueHolder.NAC;
+                        } else {
+                            resultVal = oldDestVal;
+                        }
+                    } else {
+                        resultVal = ConstPropValueHolder.NAC;
+                    }
                 } else {
-                    String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
-                    new_out.put(dest, new ConstPropValueHolder(in_inst.get(inst).get(src)));
+                    resultVal = ConstPropValueHolder.NAC; // fallback 安全策略
                 }
+                new_out.put(dest, resultVal);
+            } else if (opcode == LLVM.LLVMStore) {
+                LLVMValueRef valueOp = LLVM.LLVMGetOperand(inst, 0);
+                LLVMValueRef ptrOp = LLVM.LLVMGetOperand(inst, 1);
+                String dest = LLVM.LLVMGetValueName(ptrOp).getString();
+                ConstPropValueHolder srcVal = getConstValue(valueOp, in_inst.get(inst));
+                ConstPropValueHolder destVal = in_inst.get(inst).getOrDefault(dest, ConstPropValueHolder.UNDEF);
+                ConstPropValueHolder newVal;
+                if (destVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
+                    newVal = new ConstPropValueHolder(srcVal);
+                } else if (destVal.getKind() == ConstPropValueHolder.Kind.NAC) {
+                    newVal = ConstPropValueHolder.NAC;
+                } else if (destVal.getKind() == ConstPropValueHolder.Kind.INT) {
+                    if (srcVal.getKind() == ConstPropValueHolder.Kind.INT) {
+                        if (destVal.getIntValue() .equals(srcVal.getIntValue())) {
+                            newVal =new ConstPropValueHolder(destVal);
+                        } else {
+                            newVal = ConstPropValueHolder.NAC;
+                        }
+                    } else {
+                        newVal = ConstPropValueHolder.NAC;
+                    }
+                } else {
+                    newVal = ConstPropValueHolder.NAC;
+                }
+                new_out.put(dest, newVal);
             } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                     opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
                     opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem || opcode == LLVM.LLVMUDiv) {
