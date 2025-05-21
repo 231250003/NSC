@@ -302,7 +302,8 @@ public class LLVMIROptimization {
 //            System.out.println("--------------");
             out_inst.put(inst, new_out);
         }
-       Set<String> is_constant=new HashSet<>();
+        System.out.println("canal");
+        Set<String> is_constant=new HashSet<>();
         for(Map.Entry<String,ConstPropValueHolder> entry:constpropinit.entrySet()){
             is_constant.add(entry.getKey());
         }
