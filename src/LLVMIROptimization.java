@@ -7,8 +7,7 @@ import org.bytedeco.llvm.global.LLVM;
 
 import java.util.*;
 
-import static org.bytedeco.llvm.global.LLVM.LLVMConstInt;
-import static org.bytedeco.llvm.global.LLVM.LLVMPrintValueToString;
+import static org.bytedeco.llvm.global.LLVM.*;
 
 public class LLVMIROptimization {
     LLVMModuleRef module;
@@ -397,6 +396,7 @@ public class LLVMIROptimization {
                         LLVMValueRef operand = LLVM.LLVMGetOperand(inst, i);
                         if (operand != null && !operand.isNull()) {
                             usedInstrs.add(operand);
+                            System.out.println(LLVMGetValueName(operand).getString());
                         }
                     }
                 }
