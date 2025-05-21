@@ -246,13 +246,13 @@ public class LLVMIROptimization {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     for(Map.Entry<String,ConstPropValueHolder> entry:out_inst.get(inst).entrySet()){
-                        if(entry.getValue().getKind()== ConstPropValueHolder.Kind.NAC||entry.getValue().getKind()== ConstPropValueHolder.Kind.UNDEF) is_constant.remove(entry.getKey());
+                        if(entry.getValue().getKind()== ConstPropValueHolder.Kind.NAC) is_constant.remove(entry.getKey());
                     }
                 }
             }
         }
-        for(String x:is_constant) System.out.println(x);
-        System.out.println("crzzz");
+//        for(String x:is_constant) System.out.println(x);
+//        System.out.println("crzzz");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 Set<String> has_store_variable=new HashSet<>();
