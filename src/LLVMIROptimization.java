@@ -108,11 +108,9 @@ public class LLVMIROptimization {
         while (!worklist.isEmpty()) {
             LLVMValueRef inst = worklist.iterator().next();
             worklist.remove(inst);
-//            Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
-//            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+            Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
             for (LLVMValueRef x : predecessor.get(inst)) {
                 if (x == null) continue;
-                System.out.println(LLVM.LLVMPrintValueToString(x).getString());
                 for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
                     String key = entry.getKey();
                     ConstPropValueHolder value = entry.getValue();
@@ -129,7 +127,6 @@ public class LLVMIROptimization {
                     }
                 }
             }
-//            System.out.println("-------------");
             Map<String, ConstPropValueHolder> new_out = new HashMap<>(in_inst.get(inst));
             int opcode = LLVM.LLVMGetInstructionOpcode(inst);
             if (opcode == LLVM.LLVMLoad) {
