@@ -532,7 +532,7 @@ public class LLVMIROptimization {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(bb);
-                System.out.println(LLVMPrintValueToString(last_inst).getString());
+//                System.out.println(LLVMPrintValueToString(last_inst).getString());
                 if(successor.get(last_inst).size()==1){
                     for(LLVMValueRef entry:successor.get(last_inst)){
                         if(!LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetInstructionParent(entry)))&&predecessor.get(entry).size()==1) {
@@ -545,6 +545,7 @@ public class LLVMIROptimization {
                 if(flag) break;
             }
         }
+        LLVM.LLVMDumpModule(module);
         return flag;
     }
     public void elem_dead_code(){
