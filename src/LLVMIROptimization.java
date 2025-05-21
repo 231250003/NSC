@@ -228,7 +228,6 @@ public class LLVMIROptimization {
                 }
             }
             out_inst.put(inst, new_out);
-            out_inst.put(inst, new_out);
         }
        Set<String> is_constant=new HashSet<>();
         for(Map.Entry<String,ConstPropValueHolder> entry:constpropinit.entrySet()){
