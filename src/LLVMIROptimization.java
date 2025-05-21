@@ -18,6 +18,7 @@ public class LLVMIROptimization {
     }
 
     public void buildgraph() {
+        System.out.println("canal1");
         predecessor = new HashMap<>();
          successor = new HashMap<>();
         constpropinit = new HashMap<>();
@@ -29,6 +30,7 @@ public class LLVMIROptimization {
             long val = init.isNull() ? 0 : LLVM.LLVMConstIntGetSExtValue(init);
             constpropinit.put(name, ConstPropValueHolder.ofInt((int) val));
         }
+        System.out.println("canal-end");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(), bb);
@@ -560,10 +562,8 @@ public class LLVMIROptimization {
         return flag;
     }
     public boolean elem_dead_code(){
-        System.out.println("canal1");
         boolean ret=false;
         buildgraph();
-        System.out.println("canal-end");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull();) {
