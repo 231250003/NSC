@@ -522,6 +522,7 @@ public class LLVMIROptimization {
 //        System.out.println("end of successor check");
     }
     public boolean merge_block(){
+        System.out.println("crzzz");
        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:successor.entrySet()){
            entry.getValue().removeIf(Objects::isNull);
        }
