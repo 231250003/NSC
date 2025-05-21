@@ -128,7 +128,6 @@ public class LLVMIROptimization {
                 }
             }
             Map<String, ConstPropValueHolder> new_out = new HashMap<>(in_inst.get(inst));
-            System.out.println("canal");
             int opcode = LLVM.LLVMGetInstructionOpcode(inst);
             if (opcode == LLVM.LLVMLoad) {
                 LLVMValueRef ptrOp = LLVM.LLVMGetOperand(inst, 0);
@@ -317,6 +316,7 @@ public class LLVMIROptimization {
             }
         }
         for(String x:is_constant) System.out.println(x);
+        System.out.println("canal");
         Set<LLVMValueRef> inst_to_delete=new HashSet<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
