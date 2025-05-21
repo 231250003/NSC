@@ -51,6 +51,7 @@ public class LLVMIROptimization {
                             successor.get(inst).add(jmpinst);
                             if (predecessor.get(jmpinst) == null) predecessor.put(jmpinst, new HashSet<>());
                             predecessor.get(jmpinst).add(inst);
+                            System.out.println(block_name);
                             System.out.println(LLVM.LLVMPrintValueToString(jmpinst).getString());
                             System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                         }
