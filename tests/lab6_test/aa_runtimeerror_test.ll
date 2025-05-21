@@ -15,10 +15,10 @@ mainEntry:
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %load_lval25 = load i32, i32* %c, align 4
-  %load_lval26 = load i32, i32* %num, align 4
-  %add27 = add i32 %load_lval25, %load_lval26
-  ret i32 %add27
+  %load_lval27 = load i32, i32* %c, align 4
+  %load_lval28 = load i32, i32* %num, align 4
+  %add29 = add i32 %load_lval27, %load_lval28
+  ret i32 %add29
 
 while.stmt:                                       ; preds = %while.cond
   br label %while.cond12
@@ -39,6 +39,9 @@ cur10:                                            ; preds = %while.stmt11, %whil
   %load_lval23 = load i32, i32* %c, align 4
   %add24 = add i32 %load_lval23, 1
   store i32 %add24, i32* %c, align 4
+  %load_lval25 = load i32, i32* %c, align 4
+  %add26 = add i32 %load_lval25, 2
+  store i32 %add26, i32* %c, align 4
   br label %while.cond
 
 while.stmt11:                                     ; preds = %while.cond12
