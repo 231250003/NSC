@@ -512,10 +512,10 @@ public class LLVMIROptimization {
             LLVMInsertIntoBuilder(builder, inst);
         }
         LLVMRemoveBasicBlockFromParent(src);
-                for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
+        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
             System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
-            for(LLVMValueRef x:(entry.getValue())){
-                System.out.println(LLVMPrintValueToString(x).getString());
+            for(LLVMValueRef tem:(entry.getValue())){
+                System.out.println(LLVMPrintValueToString(tem).getString());
             }
             System.out.println("-------------");
         }
