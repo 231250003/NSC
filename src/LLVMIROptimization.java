@@ -456,6 +456,7 @@ public class LLVMIROptimization {
                 List<LLVMValueRef> toRemove = new ArrayList<>();
                 for(LLVMValueRef pred : x) {
                     System.out.println("canal");
+                    System.out.println(LLVM.LLVMGetBasicBlockName(LLVMGetInstructionParent(pred)).getString());
                     if(delete_block.contains(LLVMGetInstructionParent(pred))) {
                         toRemove.add(pred);
                     }
