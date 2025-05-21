@@ -506,6 +506,7 @@ public class LLVMIROptimization {
         return flag;
     }
     public void elem_dead_code(){
+        buildgraph();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull();) {
@@ -532,6 +533,7 @@ public class LLVMIROptimization {
                 }
             }
         }
+        buildgraph();
         while(remove_redundant_block());
     }
 }
