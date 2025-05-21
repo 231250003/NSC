@@ -1,6 +1,7 @@
 import com.sun.jdi.Value;
 import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
 import org.bytedeco.llvm.LLVM.LLVMModuleRef;
+import org.bytedeco.llvm.LLVM.LLVMUseRef;
 import org.bytedeco.llvm.LLVM.LLVMValueRef;
 import org.bytedeco.llvm.global.LLVM;
 
@@ -383,5 +384,32 @@ public class LLVMIROptimization {
             LLVM.LLVMInstructionEraseFromParent(x);
         }
         //System.out.println("end");
+    }
+    public void elem_unused(){
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                List<LLVMValueRef> allocaInsts = new ArrayList<>();
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
+                     inst != null && !inst.isNull();
+                     inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    if (LLVM.LLVMGetInstructionOpcode(inst) == LLVM.LLVMAlloca) {
+                        allocaInsts.add(inst);
+                    }
+                }
+                for (LLVMValueRef alloca : allocaInsts) {
+                    boolean isUsed = false;
+                    for (LLVMUseRef use = LLVM.LLVMGetFirstUse(alloca); use != null && !use.isNull(); use = LLVM.LLVMGetNextUse(use)) {
+                        LLVMValueRef user = LLVM.LLVMGetUser(use);
+                        if (!user.equals(alloca)) {
+                            isUsed = true;
+                            break;
+                        }
+                    }
+                    if (!isUsed) {
+                        LLVM.LLVMInstructionEraseFromParent(alloca);
+                    }
+                }
+            }
+        }
     }
 }
