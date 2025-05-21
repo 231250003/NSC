@@ -84,6 +84,7 @@ public class Main {
         LLVMIROptimization optimization=new LLVMIROptimization(module);
         optimization.constprop();
         optimization.elem_unused();
+        optimization.elem_dead_code();
         BytePointer error = new BytePointer((Pointer) null);
         if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
             LLVMDisposeMessage(error);
