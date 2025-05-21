@@ -17,6 +17,12 @@ int main() {
           sum = sum + n;
           n = n + 1;
         }
+
+     // 内存压力测试(无数组)
+     int mem_test = 0;
+     mem_test = c;       // 测试store指令
+     int load_test = mem_test; // 测试load指令
+
     // 复合条件验证
     return (c - 18)    // 验证加法
          + (d - 12)    // 验证减法
