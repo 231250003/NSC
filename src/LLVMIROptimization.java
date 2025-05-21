@@ -507,7 +507,11 @@ public class LLVMIROptimization {
         LLVMInstructionEraseFromParent(last_inst);
         LLVMBuilderRef builder = LLVMCreateBuilder();
         LLVMPositionBuilderAtEnd(builder, dest);
-        for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(src); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
+        List<LLVMValueRef> instructions = new ArrayList<>();
+        for (LLVMValueRef inst = LLVMGetFirstInstruction(src); inst != null; inst = LLVMGetNextInstruction(inst)) {
+            instructions.add(inst);
+        }
+        for (LLVMValueRef inst : instructions) {
             LLVMInstructionRemoveFromParent(inst);
             LLVMInsertIntoBuilder(builder, inst);
         }
