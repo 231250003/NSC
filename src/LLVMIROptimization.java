@@ -478,20 +478,22 @@ public class LLVMIROptimization {
             }
             LLVMRemoveBasicBlockFromParent(x);
         }
-        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
-            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
-            for(LLVMValueRef x:(entry.getValue())){
-                System.out.println(LLVMPrintValueToString(x).getString());
-            }
-            System.out.println("-------------");
-        }
-        System.out.println("end of predecessor check");
+//        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
+//            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
+//            for(LLVMValueRef x:(entry.getValue())){
+//                System.out.println(LLVMPrintValueToString(x).getString());
+//            }
+//            System.out.println("-------------");
+//        }
+//        System.out.println("end of predecessor check");
          boolean flag=merge_block();
         return remove||flag;
     }
     public void append_inst(LLVMBasicBlockRef dest,LLVMBasicBlockRef src){
         LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(dest);
         LLVMValueRef first_inst=LLVM.LLVMGetFirstInstruction(src);
+        System.out.println(LLVMPrintValueToString(last_inst).getString());
+        System.out.println(LLVMPrintValueToString(first_inst).getString());
         Set<LLVMValueRef> x=predecessor.get(last_inst);
         for(LLVMValueRef stmt:x){
             successor.get(stmt).remove(last_inst);
