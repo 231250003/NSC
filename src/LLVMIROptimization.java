@@ -227,7 +227,7 @@ public class LLVMIROptimization {
                     }
                 }
             }
-            System.out.println(LLVM.LLVMPrintValueToString(inst));
+            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
             for(Map.Entry<String,ConstPropValueHolder> entry:new_out.entrySet()){
                 System.out.print(entry.getKey());
                 System.out.print("  ");
