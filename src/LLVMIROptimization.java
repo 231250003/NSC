@@ -268,7 +268,7 @@ public class LLVMIROptimization {
                     }
                     else if(opcode==LLVM.LLVMRet){
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
-                        if(is_constant.contains(LLVM.LLVMGetValueName(retVal).getString())){
+                        if(LLVM.LLVMGetValueName(retVal)!=null&&is_constant.contains(LLVM.LLVMGetValueName(retVal).getString())){
                             LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(retVal), out_inst.get(inst).get(LLVM.LLVMGetValueName(retVal).getString()).getIntValue(), 0);
                             LLVM.LLVMSetOperand(inst, 0, constInst);
                         }
@@ -280,9 +280,8 @@ public class LLVMIROptimization {
                         int numOperands = LLVM.LLVMGetNumOperands(inst);
                         for (int i = 0; i < numOperands; i++) {
                             LLVMValueRef op = LLVM.LLVMGetOperand(inst, i);
-                            String opName = LLVM.LLVMGetValueName(op).getString();
-                            if (is_constant.contains(opName)) {
-                                int value = out_inst.get(inst).get(opName).getIntValue();
+                            if (LLVM.LLVMGetValueName(op)!=null&&is_constant.contains(LLVM.LLVMGetValueName(op).getString())) {
+                                int value = out_inst.get(inst).get(LLVM.LLVMGetValueName(op).getString()).getIntValue();
                                 LLVMValueRef constOp = LLVMConstInt(LLVM.LLVMTypeOf(op), value, 0);
                                 LLVM.LLVMSetOperand(inst, i, constOp);
                             }
@@ -291,9 +290,8 @@ public class LLVMIROptimization {
                     else if (opcode == LLVM.LLVMBr) {
                         if (LLVM.LLVMIsConditional(inst) != 0) { // 条件跳转
                             LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
-                            String condName = LLVM.LLVMGetValueName(cond).getString();
-                            if (is_constant.contains(condName)) {
-                                int value = out_inst.get(inst).get(condName).getIntValue();
+                            if (LLVM.LLVMGetValueName(cond)!=null&&is_constant.contains(LLVM.LLVMGetValueName(cond).getString())) {
+                                int value = out_inst.get(inst).get(LLVM.LLVMGetValueName(cond).getString()).getIntValue();
                                 LLVMValueRef constCond = LLVMConstInt(LLVM.LLVMTypeOf(cond), value, 0);
                                 LLVM.LLVMSetOperand(inst, 0, constCond);
                             }
