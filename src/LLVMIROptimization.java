@@ -444,6 +444,7 @@ public class LLVMIROptimization {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 LLVMValueRef first_inst= LLVM.LLVMGetFirstInstruction(bb);
+                if(predecessor.get(first_inst)==null|| predecessor.get(first_inst).isEmpty()) System.out.println("crzzzzzz");
                 if(bb!=LLVM.LLVMGetEntryBasicBlock(func)&&(predecessor.get(first_inst)==null|| predecessor.get(first_inst).isEmpty())){
                     remove=true;
                     System.out.println("crzzzzzz");
