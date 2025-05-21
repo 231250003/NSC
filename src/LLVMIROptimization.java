@@ -85,13 +85,13 @@ public class LLVMIROptimization {
     }
     public void constprop() {
         buildgraph();
-        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
-            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
-            for(LLVMValueRef x:(entry.getValue())){
-                System.out.println(LLVMPrintValueToString(x).getString());
-            }
-            System.out.println("-------------");
-        }
+//        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
+//            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
+//            for(LLVMValueRef x:(entry.getValue())){
+//                System.out.println(LLVMPrintValueToString(x).getString());
+//            }
+//            System.out.println("-------------");
+//        }
         System.out.println("end of predecessor check");
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> in_inst = new HashMap<>();
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> out_inst = new HashMap<>();
@@ -108,10 +108,10 @@ public class LLVMIROptimization {
         while (!worklist.isEmpty()) {
             LLVMValueRef inst = worklist.iterator().next();
             worklist.remove(inst);
-            Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
-            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+//            Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
+//            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
             for (LLVMValueRef x : predecessor.get(inst)) {
-                if (x == null) break;
+                if (x == null) continue;
                 System.out.println(LLVM.LLVMPrintValueToString(x).getString());
                 for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
                     String key = entry.getKey();
@@ -129,7 +129,7 @@ public class LLVMIROptimization {
                     }
                 }
             }
-            System.out.println("-------------");
+//            System.out.println("-------------");
             Map<String, ConstPropValueHolder> new_out = new HashMap<>(in_inst.get(inst));
             int opcode = LLVM.LLVMGetInstructionOpcode(inst);
             if (opcode == LLVM.LLVMLoad) {
