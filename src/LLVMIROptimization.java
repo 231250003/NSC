@@ -85,7 +85,6 @@ public class LLVMIROptimization {
         }
     }
     public boolean constprop() {
-        System.out.println("canal1");
         boolean ret=false;
         buildgraph();
 //        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
@@ -386,7 +385,6 @@ public class LLVMIROptimization {
             if(x!=null) ret=true;
             LLVM.LLVMInstructionEraseFromParent(x);
         }
-        System.out.println("canal-end");
         return ret;
     }
     public boolean elem_unused(){
@@ -562,6 +560,7 @@ public class LLVMIROptimization {
         return flag;
     }
     public boolean elem_dead_code(){
+        System.out.println("canal1");
         boolean ret=false;
         buildgraph();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
@@ -596,6 +595,7 @@ public class LLVMIROptimization {
         //LLVMDumpModule(module);
         while(remove_redundant_block());
        // LLVMDumpModule(module);
+        System.out.println("canal-end");
         return ret;
     }
     public void cleanUnreachableBlocks() {
