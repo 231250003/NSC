@@ -47,6 +47,8 @@ public class LLVMIROptimization {
                         else line2 = line;
                         for (String block_name : LLVMIRToRiscv.extractVariables(line2)) {
                             LLVMValueRef jmpinst = LLVM.LLVMGetFirstInstruction(name2blockref.get(block_name));
+                            System.out.println(LLVM.LLVMPrintValueToString(jmpinst).getString());
+                            System.out.println("crzzzz");
                             if (successor.get(inst) == null) successor.put(inst, new HashSet<>());
                             successor.get(inst).add(jmpinst);
                             if (predecessor.get(jmpinst) == null) predecessor.put(jmpinst, new HashSet<>());
