@@ -386,28 +386,27 @@ public class LLVMIROptimization {
         //System.out.println("end");
     }
     public void elem_unused(){
+        Set<LLVMValueRef> allInstrs = new HashSet<>();
+        Set<LLVMValueRef> usedInstrs = new HashSet<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                List<LLVMValueRef> allocaInsts = new ArrayList<>();
-                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
-                     inst != null && !inst.isNull();
-                     inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    if (LLVM.LLVMGetInstructionOpcode(inst) == LLVM.LLVMAlloca) {
-                        allocaInsts.add(inst);
-                    }
-                }
-                for (LLVMValueRef alloca : allocaInsts) {
-                    boolean isUsed = false;
-                    for (LLVMUseRef use = LLVM.LLVMGetFirstUse(alloca); use != null && !use.isNull(); use = LLVM.LLVMGetNextUse(use)) {
-                        LLVMValueRef user = LLVM.LLVMGetUser(use);
-                        if (!user.equals(alloca)) {
-                            isUsed = true;
-                            break;
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    allInstrs.add(inst);
+                    int numOperands = LLVM.LLVMGetNumOperands(inst);
+                    for (int i = 0; i < numOperands; i++) {
+                        LLVMValueRef operand = LLVM.LLVMGetOperand(inst, i);
+                        if (operand != null && !operand.isNull()) {
+                            usedInstrs.add(operand);
                         }
                     }
-                    if (!isUsed) {
-                        LLVM.LLVMInstructionEraseFromParent(alloca);
-                    }
+                }
+            }
+        }
+        for (LLVMValueRef instr : allInstrs) {
+            if (instr!=null&&(!usedInstrs.contains(instr))) {
+                int opcode = LLVM.LLVMGetInstructionOpcode(instr);
+                if (opcode != LLVM.LLVMRet && opcode != LLVM.LLVMBr&& opcode != LLVM.LLVMSwitch && opcode != LLVM.LLVMUnreachable) {
+                    LLVM.LLVMInstructionEraseFromParent(instr);
                 }
             }
         }
