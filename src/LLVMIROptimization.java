@@ -138,6 +138,7 @@ public class LLVMIROptimization {
                 ConstPropValueHolder srcVal = in_inst.get(inst).get(src);
                 ConstPropValueHolder oldDestVal = in_inst.get(inst).get(dest);
                 ConstPropValueHolder resultVal;
+                if(oldDestVal==null) System.out.println("CRZZZZZ");
                 if (oldDestVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
                     resultVal = new ConstPropValueHolder(srcVal);
                 } else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.NAC) {
@@ -555,7 +556,6 @@ public class LLVMIROptimization {
                 if(flag) break;
             }
         }
-        LLVM.LLVMDumpModule(module);
         return flag;
     }
     public boolean elem_dead_code(){
