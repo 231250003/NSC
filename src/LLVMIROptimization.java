@@ -88,7 +88,6 @@ public class LLVMIROptimization {
     public boolean constprop() {
         boolean ret=false;
         buildgraph();
-        LLVMDumpModule(module);
 //        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
 //            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
 //            for(LLVMValueRef x:(entry.getValue())){
@@ -387,6 +386,7 @@ public class LLVMIROptimization {
             if(x!=null) ret=true;
             LLVM.LLVMInstructionEraseFromParent(x);
         }
+        LLVMDumpModule(module);
         return ret;
     }
     public boolean elem_unused(){
