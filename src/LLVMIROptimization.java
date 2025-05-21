@@ -384,7 +384,6 @@ public class LLVMIROptimization {
     public void elem_unused(){
         Set<LLVMValueRef> allInstrs = new HashSet<>();
         Set<LLVMValueRef> usedInstrs = new HashSet<>();
-        System.out.println("crzzzz");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
@@ -439,6 +438,7 @@ public class LLVMIROptimization {
     public boolean remove_redundant_block(){
         boolean remove=false;
         List<LLVMBasicBlockRef> delete_block=new ArrayList<>();
+        System.out.println("crzzz");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 LLVMValueRef first_inst= LLVM.LLVMGetFirstInstruction(bb);
