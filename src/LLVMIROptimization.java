@@ -447,8 +447,8 @@ public class LLVMIROptimization {
                             LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
                             LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
                             LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
+                            System.out.println("crzzz");
                             if (LLVM.LLVMIsAConstantInt(cond) != null) {
-                                System.out.println("crzzz");
                                 long condValue = LLVM.LLVMConstIntGetZExtValue(cond); // 获取常量布尔值（0 或 1）
                                 LLVMValueRef target = (condValue != 0) ? ifTrue : ifFalse;
                                 LLVMBuilderRef builder = LLVM.LLVMCreateBuilder();
