@@ -450,13 +450,10 @@ public class LLVMIROptimization {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 LLVMValueRef first_inst=LLVM.LLVMGetFirstInstruction(bb);
-                System.out.println("crzzz");
                 Set<LLVMValueRef> x=predecessor.get(first_inst);
-                System.out.println("pair-crz");
                 List<LLVMValueRef> toRemove = new ArrayList<>();
                 for(LLVMValueRef pred : x) {
-                    System.out.println(LLVM.LLVMPrintValueToString(pred).getString());
-                    System.out.println(LLVM.LLVMGetBasicBlockName(LLVMGetInstructionParent(pred)).getString());
+                    if(pred==null) continue;
                     if(delete_block.contains(LLVMGetInstructionParent(pred))) {
                         toRemove.add(pred);
                     }
@@ -464,6 +461,8 @@ public class LLVMIROptimization {
                 for(LLVMValueRef z:toRemove) x.remove(z);
             }
         }
+        System.out.println("crzzz");
+
 //        for(LLVMBasicBlockRef x:delete_block){
 //            LLVMRemoveBasicBlockFromParent(x);
 //        }
