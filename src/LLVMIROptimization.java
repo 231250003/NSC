@@ -93,6 +93,7 @@ public class LLVMIROptimization {
 //            System.out.println("-------------");
 //        }
 //        System.out.println("end of predecessor check");
+        System.out.println("canal");
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> in_inst = new HashMap<>();
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> out_inst = new HashMap<>();
         Set<LLVMValueRef> worklist = new HashSet<>();
@@ -106,7 +107,6 @@ public class LLVMIROptimization {
             }
         }
         while (!worklist.isEmpty()) {
-            System.out.println("canal");
             LLVMValueRef inst = worklist.iterator().next();
             worklist.remove(inst);
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
