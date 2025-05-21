@@ -13,6 +13,7 @@ int main(){
         }
         num=num+1+x;
         c=c+1;
+        c=c+2;
      }
      return c+num;
 }
