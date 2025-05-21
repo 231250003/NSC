@@ -18,7 +18,6 @@ public class LLVMIROptimization {
     }
 
     public void buildgraph() {
-        LLVMDumpModule(module);
         predecessor = new HashMap<>();
          successor = new HashMap<>();
         constpropinit = new HashMap<>();
@@ -593,9 +592,9 @@ public class LLVMIROptimization {
         }
         cleanUnreachableBlocks();
         buildgraph();
-        //LLVMDumpModule(module);
+        LLVMDumpModule(module);
         while(remove_redundant_block());
-       // LLVMDumpModule(module);
+        LLVMDumpModule(module);
         return ret;
     }
     public void cleanUnreachableBlocks() {
