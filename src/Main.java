@@ -122,15 +122,13 @@ public class Main {
             LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
             while (block != null && !block.isNull()) {
                 LLVMValueRef instr = LLVMGetLastInstruction(block);
-                boolean reachedTerminator = false;
                 while (instr != null && !instr.isNull()) {
                     LLVMValueRef prev = LLVMGetPreviousInstruction(instr);
-                    if (reachedTerminator) {
+                    if (LLVMIsATerminatorInst(instr) != null) {
+                        break;
+                    }
+                    else {
                         LLVMInstructionEraseFromParent(instr);
-                    } else {
-                        if (LLVMIsATerminatorInst(instr) != null) {
-                            reachedTerminator = true;
-                        }
                     }
                     instr = prev;
                 }
