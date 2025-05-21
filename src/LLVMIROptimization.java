@@ -593,9 +593,9 @@ public class LLVMIROptimization {
         cleanUnreachableBlocks();
         buildgraph();
         //LLVMDumpModule(module);
+        System.out.println("canal-end");
         while(remove_redundant_block());
        // LLVMDumpModule(module);
-        System.out.println("canal-end");
         return ret;
     }
     public void cleanUnreachableBlocks() {
