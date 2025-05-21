@@ -55,15 +55,15 @@ public class LLVMIROptimization {
                         }
                     }
                     if (line.contains("br")) {
-                        System.out.println("canal1");
                         if (line.contains(",")){
                             line = line.substring(0, line.indexOf(","));
                         }
-                        System.out.println("canal-end");
                         else continue;
                     }
                     for (String var : LLVMIRToRiscv.extractVariables(line)) {
+                        System.out.println("canal1");
                         if (constpropinit.get(var) == null) constpropinit.put(var, ConstPropValueHolder.UNDEF);
+                        System.out.println("canal-end");
                     }
                 }
             }
