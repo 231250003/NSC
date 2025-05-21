@@ -1,8 +1,5 @@
 import com.sun.jdi.Value;
-import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
-import org.bytedeco.llvm.LLVM.LLVMModuleRef;
-import org.bytedeco.llvm.LLVM.LLVMUseRef;
-import org.bytedeco.llvm.LLVM.LLVMValueRef;
+import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
 
 import java.util.*;
@@ -434,6 +431,34 @@ public class LLVMIROptimization {
                         opcode != LLVM.LLVMSwitch &&
                         opcode != LLVM.LLVMUnreachable) {
                     LLVM.LLVMInstructionEraseFromParent(instr);
+                }
+            }
+        }
+    }
+    public void elem_dead_code(){
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull();) {
+                    LLVMValueRef next = LLVM.LLVMGetNextInstruction(inst);  // 保存下一条指令指针
+                    int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                    if(opcode==LLVM.LLVMBr){
+                        int numOperands = LLVM.LLVMGetNumOperands(inst);
+                        if(numOperands==3){
+                            LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
+                            LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
+                            LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
+                            if (LLVM.LLVMIsAConstantInt(cond) != null) {
+                                long condValue = LLVM.LLVMConstIntGetZExtValue(cond); // 获取常量布尔值（0 或 1）
+                                LLVMValueRef target = (condValue != 0) ? ifTrue : ifFalse;
+                                LLVMBuilderRef builder = LLVM.LLVMCreateBuilder();
+                                LLVM.LLVMPositionBuilderBefore(builder, inst);
+                                LLVM.LLVMBuildBr(builder, LLVM.LLVMValueAsBasicBlock(target));
+                                LLVM.LLVMDisposeBuilder(builder);
+                                LLVM.LLVMInstructionEraseFromParent(inst);
+                            }
+                        }
+                    }
+                    inst = next;
                 }
             }
         }
