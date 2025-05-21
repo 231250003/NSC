@@ -270,7 +270,7 @@ public class LLVMIROptimization {
                         if(is_constant.contains(dest)) {
                             if (!has_store_variable.contains(dest)) {
                                 has_store_variable.add(dest);
-                                LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 1)), out_inst.get(inst).get(dest).getIntValue(), 0);
+                                LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 0)), out_inst.get(inst).get(dest).getIntValue(), 0);
                                 LLVM.LLVMSetOperand(inst, 0, constInst);
                             }
                             //else LLVM.LLVMInstructionEraseFromParent(inst);
