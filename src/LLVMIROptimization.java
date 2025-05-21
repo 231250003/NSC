@@ -111,8 +111,6 @@ public class LLVMIROptimization {
                 String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
                 if (constInt != null) {
                     int x = (int) LLVM.LLVMConstIntGetSExtValue(constInt);
-                    System.out.println(x);
-                    System.out.println("get you");
                     new_out.put(dest, ConstPropValueHolder.ofInt(x));
                 } else {
                     String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
@@ -228,6 +226,11 @@ public class LLVMIROptimization {
                         worklist.add(x);
                     }
                 }
+            }
+            for(Map.Entry<String,ConstPropValueHolder> entry:new_out.entrySet()){
+                System.out.print(entry.getKey());
+                System.out.print("  ");
+                System.out.println(entry.getValue());
             }
             out_inst.put(inst, new_out);
         }

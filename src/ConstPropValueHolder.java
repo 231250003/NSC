@@ -31,4 +31,17 @@ public class ConstPropValueHolder {
         }
         return intValue;
     }
+    @Override
+    public String toString() {
+        switch (kind) {
+            case INT:
+                return "INT(" + intValue + ")";
+            case NAC:
+                return "NAC";
+            case UNDEF:
+                return "UNDEF";
+            default:
+                throw new IllegalStateException("Unknown kind: " + kind);
+        }
+    }
 }
