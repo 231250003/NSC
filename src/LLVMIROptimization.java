@@ -53,6 +53,7 @@ public class LLVMIROptimization {
                             predecessor.get(jmpinst).add(inst);
                             System.out.println(LLVM.LLVMPrintValueToString(jmpinst).getString());
                             System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                            if(predecessor.get(jmpinst).contains(inst)) System.out.println("crzzzz");
                         }
                     }
                     else if (line.contains("ret")) successor.put(inst, new HashSet<>());
