@@ -85,6 +85,7 @@ public class LLVMIROptimization {
         }
     }
     public boolean constprop() {
+        System.out.println("canal1");
         boolean ret=false;
         buildgraph();
 //        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
@@ -385,7 +386,7 @@ public class LLVMIROptimization {
             if(x!=null) ret=true;
             LLVM.LLVMInstructionEraseFromParent(x);
         }
-        //System.out.println("end");
+        System.out.println("canal-end");
         return ret;
     }
     public boolean elem_unused(){
