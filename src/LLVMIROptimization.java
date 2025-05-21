@@ -385,9 +385,9 @@ public class LLVMIROptimization {
                 }
             }
         }
-        System.out.println("canal");
+        //System.out.println("canal");
         for(LLVMValueRef x:inst_to_delete) {
-            //System.out.println(LLVM.LLVMPrintValueToString(x).getString());
+            System.out.println(LLVM.LLVMPrintValueToString(x).getString());
             LLVM.LLVMInstructionEraseFromParent(x);
         }
         System.out.println("end");
