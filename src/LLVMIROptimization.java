@@ -529,16 +529,13 @@ public class LLVMIROptimization {
             entry.getValue().removeIf(Objects::isNull);
         }
         boolean flag=false;
-        int block_count=0;
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
-            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                block_count++;
-            }
-        }
-        System.out.println(block_count);
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(bb);
+                System.out.println(LLVMPrintValueToString(last_inst).getString());
+                for(LLVMValueRef x:successor.get(last_inst)){
+                    System.out.println(LLVMPrintValueToString(x).getString());
+                }
                 if(successor.get(last_inst).size()==1){
                     for(LLVMValueRef entry:successor.get(last_inst)){
                         if(!LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetInstructionParent(entry)))&&predecessor.get(entry).size()==1) {
