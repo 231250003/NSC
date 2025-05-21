@@ -7,6 +7,7 @@ int main() {
     if(c==1) c=c+1;
     while(num<=10) {
         num=num+1;
+        c=c+1;
      }
     return c;
 }
