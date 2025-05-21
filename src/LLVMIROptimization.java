@@ -464,9 +464,8 @@ public class LLVMIROptimization {
         for(LLVMBasicBlockRef x:delete_block){
             LLVMRemoveBasicBlockFromParent(x);
         }
-        System.out.println("crzzz");
-        // boolean flag=merge_block();
-        return false;//||flag;
+         boolean flag=merge_block();
+        return remove||flag;
     }
     public void append_inst(LLVMBasicBlockRef dest,LLVMBasicBlockRef src){
         LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(dest);
