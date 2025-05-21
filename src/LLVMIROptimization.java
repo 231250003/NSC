@@ -54,7 +54,7 @@ public class LLVMIROptimization {
                             predecessor.get(jmpinst).add(inst);
                         }
                     }
-                    else if (line.contains("ret")) successor.put(inst, new HashSet<>());
+                    //else if (line.contains("ret")) successor.put(inst, new HashSet<>());
                     if (line.contains("br")) {
                         if (line.contains(",")) line = line.substring(0, line.indexOf(","));
                         else continue;
