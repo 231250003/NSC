@@ -452,6 +452,7 @@ public class LLVMIROptimization {
                     }
                 }
                 if(bb!=LLVM.LLVMGetEntryBasicBlock(func)&& is_isolated_block){
+                    System.out.println(LLVMGetBasicBlockName(LLVM.LLVMGetEntryBasicBlock(func)).getString());
                     System.out.println(LLVMGetBasicBlockName(bb).getString());
                     remove=true;
                     delete_block.add(bb);
