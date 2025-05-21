@@ -446,6 +446,7 @@ public class LLVMIROptimization {
                 LLVMValueRef first_inst= LLVM.LLVMGetFirstInstruction(bb);
                 if(bb!=LLVM.LLVMGetEntryBasicBlock(func)&&(predecessor.get(first_inst)==null|| predecessor.get(first_inst).isEmpty())){
                     remove=true;
+                    System.out.println("crzzzzzz");
                     delete_block.add(bb);
                 }
             }
@@ -538,14 +539,14 @@ public class LLVMIROptimization {
             }
         }
         buildgraph();
-        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
-            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
-            for(LLVMValueRef x:(entry.getValue())){
-                System.out.println(LLVMPrintValueToString(x).getString());
-            }
-            System.out.println("-------------");
-        }
-        System.out.println("end of predecessor check");
+//        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
+//            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
+//            for(LLVMValueRef x:(entry.getValue())){
+//                System.out.println(LLVMPrintValueToString(x).getString());
+//            }
+//            System.out.println("-------------");
+//        }
+//        System.out.println("end of predecessor check");
         while(remove_redundant_block());
     }
 }
