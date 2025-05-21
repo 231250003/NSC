@@ -106,6 +106,7 @@ public class LLVMIROptimization {
             }
         }
         while (!worklist.isEmpty()) {
+            System.out.println("canal");
             LLVMValueRef inst = worklist.iterator().next();
             worklist.remove(inst);
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
@@ -301,7 +302,6 @@ public class LLVMIROptimization {
 //            }
 //            System.out.println("--------------");
             out_inst.put(inst, new_out);
-            System.out.println("canal");
         }
         Set<String> is_constant=new HashSet<>();
         for(Map.Entry<String,ConstPropValueHolder> entry:constpropinit.entrySet()){
