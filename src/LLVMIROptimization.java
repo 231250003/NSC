@@ -459,6 +459,7 @@ public class LLVMIROptimization {
                         toRemove.add(pred);
                     }
                 }
+                System.out.println("canal");
                 for(LLVMValueRef z:toRemove) x.remove(z);
             }
         }
