@@ -328,7 +328,7 @@ public class LLVMIROptimization {
                     if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)&&opcode!=LLVM.LLVMAlloca) {
                         int numOperands = LLVM.LLVMGetNumOperands(inst);
                         for (int i = 0; i < numOperands; i++) {
-                            LLVMValueRef zero = LLVM.LLVMConstInt(LLVM.LLVMInt32Type(), 0, 0);
+                            LLVMValueRef zero = LLVM.LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, i)), 0, 0);
                             LLVM.LLVMSetOperand(inst, i, zero);
                         }
                         inst_to_delete.add(inst);
@@ -386,7 +386,7 @@ public class LLVMIROptimization {
             }
         }
         for(LLVMValueRef x:inst_to_delete) {
-            System.out.println(LLVM.LLVMPrintValueToString(x).getString());
+            //System.out.println(LLVM.LLVMPrintValueToString(x).getString());
             LLVM.LLVMInstructionEraseFromParent(x);
         }
     }
