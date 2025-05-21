@@ -452,8 +452,6 @@ public class LLVMIROptimization {
                     }
                 }
                 if(!LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(func)))&& is_isolated_block){
-                    System.out.println(LLVMGetBasicBlockName(LLVM.LLVMGetEntryBasicBlock(func)).getString());
-                    System.out.println(LLVMGetBasicBlockName(bb).getString());
                     remove=true;
                     delete_block.add(bb);
                 }
@@ -507,7 +505,7 @@ public class LLVMIROptimization {
                 LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(bb);
                 if(successor.get(last_inst).size()==1){
                     for(LLVMValueRef entry:successor.get(last_inst)){
-                        if(LLVMGetInstructionParent(entry)!=bb&&predecessor.get(entry).size()==1) {
+                        if(!LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetInstructionParent(entry)))&&predecessor.get(entry).size()==1) {
                             append_inst(bb,LLVMGetInstructionParent(entry));
                             flag=true;
                         }
