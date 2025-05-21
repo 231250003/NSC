@@ -65,7 +65,23 @@ public class LLVMIROptimization {
             }
         }
     }
-
+    private ConstPropValueHolder getConstValue(LLVMValueRef operand, Map<String, ConstPropValueHolder> inMap) {
+        if (LLVM.LLVMIsConstant(operand) != 0) {
+            if (LLVM.LLVMGetTypeKind(LLVM.LLVMTypeOf(operand)) == LLVM.LLVMIntegerTypeKind) {
+                long val = LLVM.LLVMConstIntGetZExtValue(operand);
+                return ConstPropValueHolder.ofInt((int) val);
+            } else {
+                return ConstPropValueHolder.NAC;
+            }
+        } else {
+            String name = LLVM.LLVMGetValueName(operand) != null ? LLVM.LLVMGetValueName(operand).getString() : "";
+            if (inMap.containsKey(name)) {
+                return inMap.get(name);
+            } else {
+                throw new RuntimeException();
+            }
+        }
+    }
     public void constprop() {
         buildgraph();
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> in_inst = new HashMap<>();
@@ -121,12 +137,14 @@ public class LLVMIROptimization {
             } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                     opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
                     opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem || opcode == LLVM.LLVMUDiv) {
-                String src1 = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
-                String src2 = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
+                LLVMValueRef op1 = LLVM.LLVMGetOperand(inst, 0);
+                LLVMValueRef op2 = LLVM.LLVMGetOperand(inst, 1);
                 String dest = LLVM.LLVMGetValueName(inst).getString();
-                if (in_inst.get(inst).get(src1).getKind() == ConstPropValueHolder.Kind.INT && in_inst.get(inst).get(src2).getKind() == ConstPropValueHolder.Kind.INT) {
-                    Integer x1 = in_inst.get(inst).get(src1).getIntValue();
-                    Integer x2 = in_inst.get(inst).get(src2).getIntValue();
+                ConstPropValueHolder v1 = getConstValue(op1, in_inst.get(inst));
+                ConstPropValueHolder v2 = getConstValue(op2, in_inst.get(inst));
+                if (v1.getKind() == ConstPropValueHolder.Kind.INT && v2.getKind() == ConstPropValueHolder.Kind.INT) {
+                    Integer x1 = v1.getIntValue();
+                    Integer x2 = v2.getIntValue();
                     Integer dest_val = 0;
                     switch (opcode) {
                         case LLVM.LLVMAdd:
@@ -154,17 +172,19 @@ public class LLVMIROptimization {
                             throw new RuntimeException("Unsupported binop");
                     }
                     new_out.put(dest, ConstPropValueHolder.ofInt(dest_val));
-                } else if (in_inst.get(inst).get(src1).getKind() == ConstPropValueHolder.Kind.NAC || in_inst.get(inst).get(src2).getKind() == ConstPropValueHolder.Kind.NAC) {
+                } else if (v1.getKind() == ConstPropValueHolder.Kind.NAC || v2.getKind() == ConstPropValueHolder.Kind.NAC) {
                     new_out.put(dest, ConstPropValueHolder.NAC);
                 } else new_out.put(dest, ConstPropValueHolder.UNDEF);
             } else if (opcode == LLVM.LLVMICmp) {
-                String src1 = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
-                String src2 = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
+                LLVMValueRef op1 = LLVM.LLVMGetOperand(inst, 0);
+                LLVMValueRef op2 = LLVM.LLVMGetOperand(inst, 1);
                 String dest = LLVM.LLVMGetValueName(inst).getString();
-                if (in_inst.get(inst).get(src1).getKind() == ConstPropValueHolder.Kind.INT &&
-                        in_inst.get(inst).get(src2).getKind() == ConstPropValueHolder.Kind.INT) {
-                    int x1 = in_inst.get(inst).get(src1).getIntValue();
-                    int x2 = in_inst.get(inst).get(src2).getIntValue();
+                ConstPropValueHolder v1 = getConstValue(op1, in_inst.get(inst));
+                ConstPropValueHolder v2 = getConstValue(op2, in_inst.get(inst));
+                if (v1.getKind() == ConstPropValueHolder.Kind.INT &&
+                        v2.getKind() == ConstPropValueHolder.Kind.INT) {
+                    int x1 = v1.getIntValue();
+                    int x2 = v2.getIntValue();
                     int pred = LLVM.LLVMGetICmpPredicate(inst);
                     boolean result;
 
@@ -192,21 +212,20 @@ public class LLVMIROptimization {
                     }
 
                     new_out.put(dest, ConstPropValueHolder.ofInt(result ? 1 : 0));
-                } else if (in_inst.get(inst).get(src1).getKind() == ConstPropValueHolder.Kind.NAC ||
-                        in_inst.get(inst).get(src2).getKind() == ConstPropValueHolder.Kind.NAC) {
+                } else if (v1.getKind() == ConstPropValueHolder.Kind.NAC ||
+                       v2.getKind() == ConstPropValueHolder.Kind.NAC) {
                     new_out.put(dest, ConstPropValueHolder.NAC);
                 } else {
                     new_out.put(dest, ConstPropValueHolder.UNDEF);
                 }
             } else if (opcode == LLVM.LLVMZExt) {
-                String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
+                LLVMValueRef srcOp = LLVM.LLVMGetOperand(inst, 0);
                 String dest = LLVM.LLVMGetValueName(inst).getString();
-
-                if (in_inst.get(inst).get(src).getKind() == ConstPropValueHolder.Kind.INT) {
-                    int val = in_inst.get(inst).get(src).getIntValue();
-                    int zext_val = val & 0xFFFFFFFF;
+                ConstPropValueHolder val = getConstValue(srcOp, in_inst.get(inst));
+                if (val.getKind() == ConstPropValueHolder.Kind.INT) {
+                    int zext_val = val.getIntValue() & 0xFFFFFFFF;
                     new_out.put(dest, ConstPropValueHolder.ofInt(zext_val));
-                } else if (in_inst.get(inst).get(src).getKind() == ConstPropValueHolder.Kind.NAC) {
+                } else if (val.getKind() == ConstPropValueHolder.Kind.NAC) {
                     new_out.put(dest, ConstPropValueHolder.NAC);
                 } else {
                     new_out.put(dest, ConstPropValueHolder.UNDEF);
