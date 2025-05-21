@@ -345,7 +345,7 @@ public class LLVMIROptimization {
                         }
                         else{
                             System.out.println((LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString()));
-                            if(is_constant.contains(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString()))System.out.println("crzzzzz");
+                            System.out.println(LLVM.LLVMIsConstant(LLVM.LLVMGetOperand(inst, 0))!=0);
                             if(LLVM.LLVMIsConstant(LLVM.LLVMGetOperand(inst, 0))!=0&&is_constant.contains(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString())){
                                 System.out.println("crczzzz");
                                 LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 0)), out_inst.get(inst).get(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString()).getIntValue(), 0);
