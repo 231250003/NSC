@@ -18,7 +18,6 @@ public class LLVMIROptimization {
     }
 
     public void buildgraph() {
-        System.out.println("canal1");
         predecessor = new HashMap<>();
          successor = new HashMap<>();
         constpropinit = new HashMap<>();
@@ -44,6 +43,7 @@ public class LLVMIROptimization {
                     if(LLVM.LLVMGetNextInstruction(inst)!=null) successor.get(inst).add(LLVM.LLVMGetNextInstruction(inst));
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
                     if (line.contains("br")) {
+                        System.out.println("canal1");
                         String line2;
                         if (line.contains(",")) line2 = line.substring(line.indexOf(",") + 1);
                         else line2 = line;
@@ -54,6 +54,7 @@ public class LLVMIROptimization {
                             if (predecessor.get(jmpinst) == null) predecessor.put(jmpinst, new HashSet<>());
                             predecessor.get(jmpinst).add(inst);
                         }
+                        System.out.println("canalend");
                     }
                     if (line.contains("br")) {
                         if (line.contains(",")){
@@ -67,7 +68,6 @@ public class LLVMIROptimization {
                 }
             }
         }
-        System.out.println("canal-end");
     }
     private ConstPropValueHolder getConstValue(LLVMValueRef operand, Map<String, ConstPropValueHolder> inMap) {
         if (LLVM.LLVMIsConstant(operand) != 0) {
