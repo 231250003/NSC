@@ -51,6 +51,7 @@ public class LLVMIROptimization {
                             successor.get(inst).add(jmpinst);
                             if (predecessor.get(jmpinst) == null) predecessor.put(jmpinst, new HashSet<>());
                             predecessor.get(jmpinst).add(inst);
+                            System.out.println("crzzz");
                         }
                     }
                     else if (line.contains("ret")) successor.put(inst, new HashSet<>());
