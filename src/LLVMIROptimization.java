@@ -57,10 +57,11 @@ public class LLVMIROptimization {
                     if (line.contains("br")) {
                         if (line.contains(",")){
                             line = line.substring(0, line.indexOf(","));
-                            for (String var : LLVMIRToRiscv.extractVariables(line)) {
-                                if (constpropinit.get(var) == null) constpropinit.put(var, ConstPropValueHolder.UNDEF);
-                            }
                         }
+                        else continue;
+                    }
+                    for (String var : LLVMIRToRiscv.extractVariables(line)) {
+                        if (constpropinit.get(var) == null) constpropinit.put(var, ConstPropValueHolder.UNDEF);
                     }
                 }
             }
