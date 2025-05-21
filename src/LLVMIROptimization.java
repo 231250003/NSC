@@ -386,10 +386,10 @@ public class LLVMIROptimization {
             if(x!=null) ret=true;
             LLVM.LLVMInstructionEraseFromParent(x);
         }
-        LLVMDumpModule(module);
         return ret;
     }
     public boolean elem_unused(){
+        LLVMDumpModule(module);
         boolean ret=false;
         Set<LLVMValueRef> allInstrs = new HashSet<>();
         Set<LLVMValueRef> usedInstrs = new HashSet<>();
