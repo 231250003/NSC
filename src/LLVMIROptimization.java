@@ -86,6 +86,7 @@ public class LLVMIROptimization {
         }
     }
     public boolean constprop() {
+        LLVMDumpModule(module);
         boolean ret=false;
         buildgraph();
 //        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
@@ -443,7 +444,6 @@ public class LLVMIROptimization {
                 }
             }
         }
-        LLVMDumpModule(module);
         return ret;
     }
     public boolean remove_redundant_block(){
