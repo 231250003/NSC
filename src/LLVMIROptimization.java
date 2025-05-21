@@ -257,13 +257,12 @@ public class LLVMIROptimization {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 Set<String> has_store_variable=new HashSet<>();
-                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null;) {
-                    LLVMValueRef nextInst = LLVM.LLVMGetNextInstruction(inst);
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null;inst=LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     String lhs;
                     if(LLVM.LLVMGetValueName(inst)!=null) lhs = LLVM.LLVMGetValueName(inst).getString();
                     else lhs=null;
-                    if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)) {
+                    if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)&&opcode!=LLVM.LLVMAlloca) {
                         inst_to_delete.add(inst);
                     }
                     else if(opcode==LLVM.LLVMStore){
@@ -308,10 +307,12 @@ public class LLVMIROptimization {
                             }
                         }
                     }
-                    inst=nextInst;
                 }
             }
         }
-        for(LLVMValueRef x:inst_to_delete) System.out.println(LLVM.LLVMPrintValueToString(x).getString());
+        for(LLVMValueRef x:inst_to_delete) {
+            LLVM.LLVMInstructionEraseFromParent(x);
+            //System.out.println(LLVM.LLVMPrintValueToString(x).getString());
+        }
     }
 }
