@@ -37,11 +37,13 @@ public class LLVMIROptimization {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    System.out.println("canal1");
                     if (predecessor.get(inst) == null) predecessor.put(inst, new HashSet<>());
                     if (inst != LLVM.LLVMGetFirstInstruction(bb)) predecessor.get(inst).add(LLVM.LLVMGetPreviousInstruction(inst));
                     if(successor.get(inst)==null) successor.put(inst,new HashSet<>());
                     if(LLVM.LLVMGetNextInstruction(inst)!=null) successor.get(inst).add(LLVM.LLVMGetNextInstruction(inst));
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
+                    System.out.println("canal-end");
                     if (line.contains("br")) {
                         String line2;
                         if (line.contains(",")) line2 = line.substring(line.indexOf(",") + 1);
@@ -61,9 +63,7 @@ public class LLVMIROptimization {
                         else continue;
                     }
                     for (String var : LLVMIRToRiscv.extractVariables(line)) {
-                        System.out.println("canal1");
                         if (constpropinit.get(var) == null) constpropinit.put(var, ConstPropValueHolder.UNDEF);
-                        System.out.println("canal-end");
                     }
                 }
             }
