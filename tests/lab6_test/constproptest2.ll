@@ -20,6 +20,6 @@ merge:                                            ; preds = %if.then, %mainEntry
 if.then:                                          ; preds = %mainEntry
   %load_lval1 = load i32, i32* null, align 4
   %add = add i32 0, 0
-  store i32 %add, i32* %num, align 4
+  store i32 2, i32* %num, align 4
   br label %merge
 }

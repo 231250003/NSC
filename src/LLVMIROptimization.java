@@ -315,7 +315,7 @@ public class LLVMIROptimization {
                 }
             }
         }
-        for(String x:is_constant) System.out.println(x);
+//        for(String x:is_constant) System.out.println(x);
         Set<LLVMValueRef> inst_to_delete=new HashSet<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
@@ -386,8 +386,8 @@ public class LLVMIROptimization {
         }
         //System.out.println("canal");
         for(LLVMValueRef x:inst_to_delete) {
-            System.out.println(LLVM.LLVMPrintValueToString(x).getString());
-            //LLVM.LLVMInstructionEraseFromParent(x);
+            //System.out.println(LLVM.LLVMPrintValueToString(x).getString());
+            LLVM.LLVMInstructionEraseFromParent(x);
         }
         System.out.println("end");
     }
