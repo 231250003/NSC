@@ -33,13 +33,16 @@ if.then7:                                         ; preds = %merge
   br label %merge3
 
 cur:                                              ; preds = %while.cond
-  %load_lval17 = load i32, i32* %c, align 4
-  ret i32 %load_lval17
+  %load_lval19 = load i32, i32* %c, align 4
+  ret i32 %load_lval19
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval15 = load i32, i32* %num, align 4
   %add16 = add i32 %load_lval15, 1
   store i32 %add16, i32* %num, align 4
+  %load_lval17 = load i32, i32* %c, align 4
+  %add18 = add i32 %load_lval17, 1
+  store i32 %add18, i32* %c, align 4
   br label %while.cond
 
 while.cond:                                       ; preds = %while.stmt, %merge3
