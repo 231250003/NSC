@@ -436,6 +436,14 @@ public class LLVMIROptimization {
         }
     }
     public boolean remove_redundant_block(){
+        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
+            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
+            for(LLVMValueRef x:(entry.getValue())){
+                System.out.println(LLVMPrintValueToString(x).getString());
+            }
+            System.out.println("-------------");
+        }
+        System.out.println("end of predecessor check");
         boolean remove=false;
         List<LLVMBasicBlockRef> delete_block=new ArrayList<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
