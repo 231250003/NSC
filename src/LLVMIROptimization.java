@@ -161,7 +161,7 @@ public class LLVMIROptimization {
                 String src1 = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
                 String src2 = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
                 String dest = LLVM.LLVMGetValueName(inst).getString();
-                if(src1==null||src2==null) System.out.println("crzzz");
+                if(src1.isEmpty()||src2.isEmpty()) System.out.println("crzzz");
                 if (in_inst.get(inst).get(src1).getKind() == ConstPropValueHolder.Kind.INT &&
                         in_inst.get(inst).get(src2).getKind() == ConstPropValueHolder.Kind.INT) {
                     int x1 = in_inst.get(inst).get(src1).getIntValue();
