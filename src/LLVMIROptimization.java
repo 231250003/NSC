@@ -326,6 +326,11 @@ public class LLVMIROptimization {
                     if(LLVM.LLVMGetValueName(inst)!=null) lhs = LLVM.LLVMGetValueName(inst).getString();
                     else lhs=null;
                     if (lhs != null && !lhs.isEmpty() && is_constant.contains(lhs)&&opcode!=LLVM.LLVMAlloca) {
+                        int numOperands = LLVM.LLVMGetNumOperands(inst);
+                        for (int i = 0; i < numOperands; i++) {
+                            LLVMValueRef zero = LLVM.LLVMConstInt(LLVM.LLVMInt32Type(), 0, 0);
+                            LLVM.LLVMSetOperand(inst, i, zero);
+                        }
                         inst_to_delete.add(inst);
                     }
                     else if(opcode==LLVM.LLVMStore){
@@ -338,13 +343,13 @@ public class LLVMIROptimization {
                             }
                             else inst_to_delete.add(inst);
                         }
-//                        else{
-//                            if(LLVM.LLVMIsConstant(LLVM.LLVMGetOperand(inst, 0))!=0&&is_constant.contains(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString())){
-//                                System.out.println("crczzzz");
-//                                LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 0)), out_inst.get(inst).get(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString()).getIntValue(), 0);
-//                                LLVM.LLVMSetOperand(inst, 0, constInst);
-//                            }
-//                        }
+                        else{
+                            if(LLVM.LLVMIsConstant(LLVM.LLVMGetOperand(inst, 0))!=0&&is_constant.contains(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString())){
+                                System.out.println("crczzzz");
+                                LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 0)), out_inst.get(inst).get(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString()).getIntValue(), 0);
+                                LLVM.LLVMSetOperand(inst, 0, constInst);
+                            }
+                        }
                     }
                     else if(opcode==LLVM.LLVMRet){
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
