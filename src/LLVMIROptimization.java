@@ -511,6 +511,12 @@ public class LLVMIROptimization {
         LLVMRemoveBasicBlockFromParent(src);
     }
     public boolean merge_block(){
+       for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:successor.entrySet()){
+           entry.getValue().removeIf(Objects::isNull);
+       }
+        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
+            entry.getValue().removeIf(Objects::isNull);
+        }
         boolean flag=false;
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
