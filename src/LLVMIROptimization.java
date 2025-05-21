@@ -230,12 +230,12 @@ public class LLVMIROptimization {
                     }
                 }
             }
-            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-            for(Map.Entry<String,ConstPropValueHolder> entry:new_out.entrySet()){
-                System.out.print(entry.getKey());
-                System.out.print("  ");
-                System.out.println(entry.getValue());
-            }
+//            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+//            for(Map.Entry<String,ConstPropValueHolder> entry:new_out.entrySet()){
+//                System.out.print(entry.getKey());
+//                System.out.print("  ");
+//                System.out.println(entry.getValue());
+//            }
             out_inst.put(inst, new_out);
         }
        Set<String> is_constant=new HashSet<>();
@@ -251,8 +251,8 @@ public class LLVMIROptimization {
                 }
             }
         }
-        for(String x:is_constant) System.out.println(x);
-        System.out.println("crzzz");
+//        for(String x:is_constant) System.out.println(x);
+//        System.out.println("crzzz");
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 Set<String> has_store_variable=new HashSet<>();
