@@ -18,6 +18,9 @@ public class LLVMIROptimization {
     }
 
     public void buildgraph() {
+        predecessor = new HashMap<>();
+         successor = new HashMap<>();
+        constpropinit = new HashMap<>();
         for (LLVMValueRef global = LLVM.LLVMGetFirstGlobal(module);
              global != null && !global.isNull();
              global = LLVM.LLVMGetNextGlobal(global)) {
