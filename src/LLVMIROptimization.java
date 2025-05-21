@@ -7,6 +7,7 @@ import org.bytedeco.llvm.global.LLVM;
 import java.util.*;
 
 import static org.bytedeco.llvm.global.LLVM.LLVMConstInt;
+import static org.bytedeco.llvm.global.LLVM.LLVMPrintValueToString;
 
 public class LLVMIROptimization {
     LLVMModuleRef module;
@@ -51,10 +52,6 @@ public class LLVMIROptimization {
                             successor.get(inst).add(jmpinst);
                             if (predecessor.get(jmpinst) == null) predecessor.put(jmpinst, new HashSet<>());
                             predecessor.get(jmpinst).add(inst);
-                            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                            System.out.println(block_name);
-                            System.out.println(LLVM.LLVMPrintValueToString(jmpinst).getString());
-                            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                         }
                     }
                     else if (line.contains("ret")) successor.put(inst, new HashSet<>());
@@ -68,7 +65,6 @@ public class LLVMIROptimization {
                 }
             }
         }
-        System.out.println("end of graph");
     }
     private ConstPropValueHolder getConstValue(LLVMValueRef operand, Map<String, ConstPropValueHolder> inMap) {
         if (LLVM.LLVMIsConstant(operand) != 0) {
@@ -89,6 +85,14 @@ public class LLVMIROptimization {
     }
     public void constprop() {
         buildgraph();
+        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
+            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
+            for(LLVMValueRef x:(entry.getValue())){
+                System.out.println(LLVMPrintValueToString(x).getString());
+            }
+            System.out.println("-------------");
+        }
+        System.out.println("end of predecessor check");
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> in_inst = new HashMap<>();
         Map<LLVMValueRef, Map<String, ConstPropValueHolder>> out_inst = new HashMap<>();
         Set<LLVMValueRef> worklist = new HashSet<>();
