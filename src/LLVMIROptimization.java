@@ -478,14 +478,14 @@ public class LLVMIROptimization {
             }
             LLVMRemoveBasicBlockFromParent(x);
         }
-        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
-            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
-            for(LLVMValueRef x:(entry.getValue())){
-                System.out.println(LLVMPrintValueToString(x).getString());
-            }
-            System.out.println("-------------");
-        }
-        System.out.println("end of predecessor check");
+//        for(Map.Entry<LLVMValueRef,Set<LLVMValueRef>> entry:predecessor.entrySet()){
+//            System.out.println(LLVMPrintValueToString(entry.getKey()).getString());
+//            for(LLVMValueRef x:(entry.getValue())){
+//                System.out.println(LLVMPrintValueToString(x).getString());
+//            }
+//            System.out.println("-------------");
+//        }
+//        System.out.println("end of predecessor check");
          boolean flag=merge_block();
         return remove||flag;
     }
