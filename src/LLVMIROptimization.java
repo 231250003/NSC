@@ -38,6 +38,8 @@ public class LLVMIROptimization {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     if (predecessor.get(inst) == null) predecessor.put(inst, new HashSet<>());
                     if (inst != LLVM.LLVMGetFirstInstruction(bb)) predecessor.get(inst).add(LLVM.LLVMGetPreviousInstruction(inst));
+                    if(successor.get(inst)==null) successor.put(inst,new HashSet<>());
+                    if(LLVM.LLVMGetNextInstruction(inst)!=null) successor.get(inst).add(LLVM.LLVMGetNextInstruction(inst));
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
                     if (line.contains("br")) {
                         String line2;
