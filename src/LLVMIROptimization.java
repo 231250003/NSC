@@ -465,7 +465,6 @@ public class LLVMIROptimization {
                 for(LLVMValueRef pred : x) {
                     if(pred==null) continue;
                     if(delete_block.contains(LLVMGetInstructionParent(pred))) {
-                        System.out.println("crzzzzz");
                         toRemove.add(pred);
                     }
                 }
