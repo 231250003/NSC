@@ -142,14 +142,10 @@ public class LLVMIROptimization {
                 } else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.NAC) {
                     resultVal = ConstPropValueHolder.NAC;
                 } else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.INT) {
-                    if (srcVal.getKind() == ConstPropValueHolder.Kind.INT) {
-                        if (!oldDestVal.equals(srcVal)) {
-                            resultVal = ConstPropValueHolder.NAC;
-                        } else {
-                            resultVal = oldDestVal;
-                        }
+                    if (srcVal.getKind() == ConstPropValueHolder.Kind.INT||srcVal.getKind() == ConstPropValueHolder.Kind.NAC) {
+                            resultVal = new ConstPropValueHolder(srcVal);
                     } else {
-                        resultVal = ConstPropValueHolder.NAC;
+                        resultVal = oldDestVal;
                     }
                 } else {
                     resultVal = ConstPropValueHolder.NAC; // fallback 安全策略
@@ -167,14 +163,11 @@ public class LLVMIROptimization {
                 } else if (destVal.getKind() == ConstPropValueHolder.Kind.NAC) {
                     newVal = ConstPropValueHolder.NAC;
                 } else if (destVal.getKind() == ConstPropValueHolder.Kind.INT) {
-                    if (srcVal.getKind() == ConstPropValueHolder.Kind.INT) {
-                        if (destVal.getIntValue() .equals(srcVal.getIntValue())) {
-                            newVal =new ConstPropValueHolder(destVal);
-                        } else {
-                            newVal = ConstPropValueHolder.NAC;
-                        }
-                    } else {
-                        newVal = ConstPropValueHolder.NAC;
+                    if (srcVal.getKind() == ConstPropValueHolder.Kind.INT||srcVal.getKind() == ConstPropValueHolder.Kind.NAC) {
+                        newVal =new ConstPropValueHolder(srcVal);
+                    }
+                    else {
+                        newVal =destVal;
                     }
                 } else {
                     newVal = ConstPropValueHolder.NAC;
