@@ -18,6 +18,7 @@ public class LLVMIROptimization {
     }
 
     public void buildgraph() {
+        LLVMDumpModule(module);
         predecessor = new HashMap<>();
          successor = new HashMap<>();
         constpropinit = new HashMap<>();
@@ -34,11 +35,10 @@ public class LLVMIROptimization {
                 name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(), bb);
             }
         }
-        LLVMDumpModule(module);
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    System.out.println("canal1");
+                    //System.out.println("canal1");
                     if (predecessor.get(inst) == null) predecessor.put(inst, new HashSet<>());
                     if (inst != LLVM.LLVMGetFirstInstruction(bb)) predecessor.get(inst).add(LLVM.LLVMGetPreviousInstruction(inst));
                     if(successor.get(inst)==null) successor.put(inst,new HashSet<>());
