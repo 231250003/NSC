@@ -84,7 +84,6 @@ public class LLVMIROptimization {
             LLVMValueRef inst = worklist.iterator().next();
             worklist.remove(inst);
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
-            Map<String, ConstPropValueHolder> new_out = new HashMap<>(in_inst.get(inst));
             for (LLVMValueRef x : predecessor.get(inst)) {
                 if (x == null) break;
                 for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
@@ -103,6 +102,7 @@ public class LLVMIROptimization {
                     }
                 }
             }
+            Map<String, ConstPropValueHolder> new_out = new HashMap<>(in_inst.get(inst));
             int opcode = LLVM.LLVMGetInstructionOpcode(inst);
             if (opcode == LLVM.LLVMLoad) {
                 String src = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 0)).getString();
