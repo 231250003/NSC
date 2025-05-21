@@ -590,11 +590,10 @@ public class LLVMIROptimization {
                 }
             }
         }
+        LLVMDumpModule(module);
         cleanUnreachableBlocks();
         buildgraph();
-        LLVMDumpModule(module);
         while(remove_redundant_block());
-        LLVMDumpModule(module);
         return ret;
     }
     public void cleanUnreachableBlocks() {
