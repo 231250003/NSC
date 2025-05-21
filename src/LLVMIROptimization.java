@@ -402,13 +402,13 @@ public class LLVMIROptimization {
                 }
             }
         }
-//        for (LLVMValueRef instr : allInstrs) {
-//            if (instr!=null&&(!usedInstrs.contains(instr))) {
-//                int opcode = LLVM.LLVMGetInstructionOpcode(instr);
-//                if (opcode != LLVM.LLVMRet && opcode != LLVM.LLVMBr&& opcode != LLVM.LLVMSwitch && opcode != LLVM.LLVMUnreachable) {
-//                    LLVM.LLVMInstructionEraseFromParent(instr);
-//                }
-//            }
-//        }
+        for (LLVMValueRef instr : allInstrs) {
+            if (instr!=null&&(!usedInstrs.contains(instr))) {
+                int opcode = LLVM.LLVMGetInstructionOpcode(instr);
+                if (opcode != LLVM.LLVMRet && opcode != LLVM.LLVMBr&& opcode != LLVM.LLVMSwitch && opcode != LLVM.LLVMUnreachable) {
+                    LLVM.LLVMInstructionEraseFromParent(instr);
+                }
+            }
+        }
     }
 }
