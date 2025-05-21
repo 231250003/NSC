@@ -11,7 +11,7 @@ mainEntry:
   %cmp = icmp eq i32 %load_lval, 1
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
-  br i1 %to_bool, label %if.then, label %merge
+  br i1 true, label %if.then, label %merge
 
 merge:                                            ; preds = %if.then, %mainEntry
   %load_lval2 = load i32, i32* %num, align 4
