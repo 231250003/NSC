@@ -8,13 +8,7 @@ int main() {
     int f = a / b;      // DIV (5)
     int g = a % b;      // REM (0)
 
-    // 条件分支测试
-    int m = 0;
-    if (a > b) {        // BGT 分支测试
-        m = 1;          // 应执行此分支
-    } else {
-        m = -1;
-    }
+   
 
     // 循环控制测试
     int sum = 0;
