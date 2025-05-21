@@ -301,6 +301,7 @@ public class LLVMIROptimization {
 //            }
 //            System.out.println("--------------");
             out_inst.put(inst, new_out);
+            System.out.println("canal");
         }
         Set<String> is_constant=new HashSet<>();
         for(Map.Entry<String,ConstPropValueHolder> entry:constpropinit.entrySet()){
@@ -316,7 +317,6 @@ public class LLVMIROptimization {
             }
         }
         for(String x:is_constant) System.out.println(x);
-        System.out.println("canal");
         Set<LLVMValueRef> inst_to_delete=new HashSet<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
