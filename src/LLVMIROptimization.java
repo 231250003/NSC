@@ -59,8 +59,8 @@ public class LLVMIROptimization {
                         if (line.contains(",")){
                             line = line.substring(0, line.indexOf(","));
                         }
-                        else continue;
                         System.out.println("canal-end");
+                        else continue;
                     }
                     for (String var : LLVMIRToRiscv.extractVariables(line)) {
                         if (constpropinit.get(var) == null) constpropinit.put(var, ConstPropValueHolder.UNDEF);
