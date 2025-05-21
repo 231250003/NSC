@@ -455,11 +455,11 @@ public class LLVMIROptimization {
                 System.out.println("pair-crz");
                 List<LLVMValueRef> toRemove = new ArrayList<>();
                 for(LLVMValueRef pred : x) {
+                    System.out.println("canal");
                     if(delete_block.contains(LLVMGetInstructionParent(pred))) {
                         toRemove.add(pred);
                     }
                 }
-                System.out.println("canal");
                 for(LLVMValueRef z:toRemove) x.remove(z);
             }
         }
