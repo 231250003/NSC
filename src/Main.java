@@ -76,8 +76,6 @@ public class Main {
         while (func != null && !func.isNull()) {
             LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
             while (block != null && !block.isNull()) {
-                removeRedundantInstructions(module);
-                removeEmptyBlocks(module);
                 block = LLVMGetNextBasicBlock(block);
             }
             func = LLVMGetNextFunction(func);
@@ -116,60 +114,6 @@ public class Main {
         }
         System.err.printf("%s %s at Line %d.%n", tokenType,tokenText, t.getLine());
     }*/
-    public static void removeRedundantInstructions(LLVMModuleRef module) {
-        LLVMValueRef func = LLVMGetFirstFunction(module);
-        while (func != null && !func.isNull()) {
-            LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
-            while (block != null && !block.isNull()) {
-                LLVMValueRef instr = LLVMGetLastInstruction(block);
-                while (instr != null && !instr.isNull()) {
-                    LLVMValueRef prev = LLVMGetPreviousInstruction(instr);
-                    if (LLVMIsATerminatorInst(instr) != null) {
-                        break;
-                    }
-                    else {
-                        LLVMInstructionEraseFromParent(instr);
-                    }
-                    instr = prev;
-                }
-                block = LLVMGetNextBasicBlock(block);
-            }
-            func = LLVMGetNextFunction(func);
-        }
-    }
-    public static void removeEmptyBlocks(LLVMModuleRef module) {
-        LLVMValueRef func = LLVMGetFirstFunction(module);
-        while (func != null && !func.isNull()) {
-            LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
-            while (block != null && !block.isNull()) {
-                LLVMBasicBlockRef nextBlock = LLVMGetNextBasicBlock(block);
-                LLVMValueRef instr = LLVMGetFirstInstruction(block);
-                boolean isEmpty = true;
-                while (instr != null && !instr.isNull()) {
-                    if (LLVMIsATerminatorInst(instr) != null) {
-                        isEmpty = false;
-                        break;
-                    }
-                    instr = LLVMGetNextInstruction(instr);
-                }
-                if (isEmpty) {
-                    LLVMDeleteBasicBlock(block);
-                }
-                block = nextBlock;
-            }
-            func = LLVMGetNextFunction(func);
-        }
-    }
-    public static int get_block_num(LLVMModuleRef module){
-        LLVMValueRef func1 = LLVM.LLVMGetNamedFunction(module, "main");
-        int blockCount = 0;
-        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func1);
-             bb != null && !bb.isNull();
-             bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-            blockCount++;
-        }
-        return blockCount;
-    }
     public static int get_var_num(LLVMModuleRef module){
         Set<String> allVariables = new HashSet<>();
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)){
