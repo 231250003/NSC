@@ -76,8 +76,8 @@ public class Main {
         while (func != null && !func.isNull()) {
             LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
             while (block != null && !block.isNull()) {
-                removeRedundantInstructions(module);
-                removeEmptyBlocks(module);          
+                //removeRedundantInstructions(module);
+                //removeEmptyBlocks(module);
                 block = LLVMGetNextBasicBlock(block);
             }
             func = LLVMGetNextFunction(func);
