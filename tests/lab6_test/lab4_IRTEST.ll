@@ -3,8 +3,6 @@ source_filename = "my_module"
 
 define i32 @main() {
 mainEntry:
-  %a = alloca i32, align 4
-  store i32 2, i32* %a, align 4
   br i1 false, label %if.then, label %if.else
 
 merge:                                            ; preds = %if.else, %if.then
