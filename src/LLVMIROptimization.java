@@ -435,6 +435,76 @@ public class LLVMIROptimization {
             }
         }
     }
+    public boolean remove_redundant_block(){
+        boolean remove=false;
+        List<LLVMBasicBlockRef> delete_block=new ArrayList<>();
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                LLVMValueRef first_inst= LLVM.LLVMGetFirstInstruction(bb);
+                if(bb!=LLVM.LLVMGetEntryBasicBlock(func)&&(predecessor.get(first_inst)==null|| predecessor.get(first_inst).isEmpty())){
+                    remove=true;
+                    delete_block.add(bb);
+                }
+            }
+        }
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                LLVMValueRef first_inst=LLVM.LLVMGetFirstInstruction(bb);
+                Set<LLVMValueRef> x=predecessor.get(first_inst);
+                List<LLVMValueRef> toRemove = new ArrayList<>();
+                for(LLVMValueRef pred : x) {
+                    if(delete_block.contains(LLVMGetInstructionParent(pred))) {
+                        toRemove.add(pred);
+                    }
+                }
+                for(LLVMValueRef z:toRemove) x.remove(z);
+            }
+        }
+        for(LLVMBasicBlockRef x:delete_block){
+            LLVMRemoveBasicBlockFromParent(x);
+        }
+        boolean flag=merge_block();
+        return remove||flag;
+    }
+    public void append_inst(LLVMBasicBlockRef dest,LLVMBasicBlockRef src){
+        LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(dest);
+        LLVMValueRef first_inst=LLVM.LLVMGetFirstInstruction(src);
+        Set<LLVMValueRef> x=predecessor.get(last_inst);
+        for(LLVMValueRef stmt:x){
+            successor.get(stmt).remove(last_inst);
+            successor.get(stmt).add(first_inst);
+            predecessor.get(first_inst).add(stmt);
+        }
+        predecessor.get(first_inst).remove(last_inst);
+        predecessor.remove(last_inst);
+        successor.remove(last_inst);
+        LLVMInstructionEraseFromParent(last_inst);
+        LLVMBuilderRef builder = LLVMCreateBuilder();
+        LLVMPositionBuilderAtEnd(builder, dest);
+        for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(src); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
+            LLVMInstructionRemoveFromParent(inst);
+            LLVMInsertIntoBuilder(builder, inst);
+        }
+        LLVMRemoveBasicBlockFromParent(src);
+    }
+    public boolean merge_block(){
+        boolean flag=false;
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                LLVMValueRef last_inst = LLVM.LLVMGetLastInstruction(bb);
+                if(successor.get(last_inst).size()==1){
+                    for(LLVMValueRef entry:successor.get(last_inst)){
+                        if(LLVMGetInstructionParent(entry)!=bb&&predecessor.get(entry).size()==1) {
+                            append_inst(bb,LLVMGetInstructionParent(entry));
+                            flag=true;
+                        }
+                    }
+                }
+                if(flag) break;
+            }
+        }
+        return flag;
+    }
     public void elem_dead_code(){
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
@@ -448,7 +518,7 @@ public class LLVMIROptimization {
                             LLVMValueRef ifFalse = LLVM.LLVMGetOperand(inst, 1);
                             LLVMValueRef ifTrue = LLVM.LLVMGetOperand(inst, 2);
                             if (LLVM.LLVMIsAConstantInt(cond) != null) {
-                                long condValue = LLVM.LLVMConstIntGetZExtValue(cond); // 获取常量布尔值（0 或 1）
+                                long condValue = LLVM.LLVMConstIntGetZExtValue(cond);
                                 LLVMValueRef target = (condValue != 0) ? ifTrue : ifFalse;
                                 LLVMBuilderRef builder = LLVM.LLVMCreateBuilder();
                                 LLVM.LLVMPositionBuilderBefore(builder, inst);
@@ -462,5 +532,6 @@ public class LLVMIROptimization {
                 }
             }
         }
+        while(remove_redundant_block());
     }
 }

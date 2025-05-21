@@ -3,12 +3,12 @@ source_filename = "my_module"
 
 define i32 @main() {
 mainEntry:
-  br i1 false, label %if.then, label %if.else
+  br label %if.else
 
 merge:                                            ; preds = %if.else, %if.then
   unreachable
 
-if.then:                                          ; preds = %mainEntry
+if.then:                                          ; No predecessors!
   ret i32 3
   br label %merge
 
