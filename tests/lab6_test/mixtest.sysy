@@ -1,0 +1,17 @@
+int global_var = 1;
+
+int main() {
+    int num = 1;
+    int c = num;
+
+    int i = 0;
+    if (i > c) {
+        num = num + 1;
+        i = i + 1;
+    } else {
+        num = num + 1;
+        i = i + 1;
+    }
+
+    return num * num + c;
+}
