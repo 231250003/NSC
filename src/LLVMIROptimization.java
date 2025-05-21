@@ -461,12 +461,11 @@ public class LLVMIROptimization {
                 for(LLVMValueRef z:toRemove) x.remove(z);
             }
         }
+        for(LLVMBasicBlockRef x:delete_block){
+            LLVMRemoveBasicBlockFromParent(x);
+        }
         System.out.println("crzzz");
-
-//        for(LLVMBasicBlockRef x:delete_block){
-//            LLVMRemoveBasicBlockFromParent(x);
-//        }
-       // boolean flag=merge_block();
+        // boolean flag=merge_block();
         return false;//||flag;
     }
     public void append_inst(LLVMBasicBlockRef dest,LLVMBasicBlockRef src){
