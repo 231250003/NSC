@@ -635,7 +635,9 @@ public class LLVMIROptimization {
                         if (succ.equals(bb)) {
                             LLVMBuilderRef builder = LLVM.LLVMCreateBuilder();
                             LLVM.LLVMPositionBuilderBefore(builder, term);
+                            System.out.println("canal1");
                             LLVMValueRef cloned = tryCloneInstruction(builder, firstInst);
+                            System.out.println("canal2");
                             LLVM.LLVMInstructionEraseFromParent(term);
                             LLVM.LLVMInsertIntoBuilder(builder, cloned);
                             LLVM.LLVMDisposeBuilder(builder);
@@ -662,8 +664,8 @@ public class LLVMIROptimization {
         if (opcode == LLVM.LLVMBr) {
             if (LLVM.LLVMIsConditional(inst) != 0) {
                 LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
-                LLVMBasicBlockRef tBB = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 1));
-                LLVMBasicBlockRef fBB = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 2));
+                LLVMBasicBlockRef fBB = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 1));
+                LLVMBasicBlockRef tBB = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 2));
                 return LLVM.LLVMBuildCondBr(builder, cond, tBB, fBB);
             } else {
                 LLVMBasicBlockRef target = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 0));
