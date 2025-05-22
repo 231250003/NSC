@@ -1,20 +1,50 @@
 int main() {
-    const int kMax = 0x6;
-    int result = 0, i = 0;
-    while (i < kMax) {
-        int j = i;
-        while (j < kMax) {
-            if (j == kMax - 1) {
-                break;
-            }
-            if (j % 2 == 0) {
-                j = j + 1;
-                continue;
-            }
-            result = result + 1;
-            j = j + 01;
-        }
-        i = i + 1;
-    }
-    return result;
+  int i = 0;
+  int max = 5;
+  int count = 0;
+
+  while (i < max) {
+
+    int x1  = 10;
+    int x2  = 10;
+    int x3  = 10;
+    int x4  = 10;
+    int x5  = 10;
+    int x6  = 10;
+    int x7  = 10;
+    int x8  = 10;
+    int x9  = 10;
+    int x10 = 10;
+    int x11 = 10;
+    int x12 = 10;
+    int x13 = 10;
+    int x14 = 10;
+    int x15 = 10;
+    int x16 = 10;
+    int x17 = 10;
+    int x18 = 10;
+    int x19 = 10;
+    int x20 = 10;
+    int x21 = 10;
+    int x22 = 10;
+    int x23 = 10;
+    int x24 = 10;
+    int x25 = 10;
+    int x26 = 10;
+    int x27 = 10;
+    int x28 = 10;
+    int x29 = 10;
+    int x30 = 10;
+    int x31 = 10;
+    int x32 = 10;
+
+    count = count + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9;
+    count = count + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19;
+    count = count + x20 + x21 + x22 + x23 + x24 + x25 + x26 + x27 + x28 + x29;
+    count = count + x30 + x31 + x32;
+
+    i = i + 1;
+  }
+
+  return count;
 }
