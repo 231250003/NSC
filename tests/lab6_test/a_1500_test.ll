@@ -12,8 +12,7 @@ mainEntry:
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %load_lval5 = load i32, i32* %sum, align 4
-  ret i32 %load_lval5
+  unreachable
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval1 = load i32, i32* %i, align 4
@@ -22,7 +21,10 @@ while.stmt:                                       ; preds = %while.cond
   %load_lval2 = load i32, i32* %sum, align 4
   %load_lval3 = load i32, i32* %i, align 4
   %add4 = add i32 %load_lval2, %load_lval3
-  store i32 %add4, i32* %sum, align 4
+  %add5 = add i32 %add4, 1
+  store i32 %add5, i32* %sum, align 4
+  %load_lval6 = load i32, i32* %sum, align 4
+  ret i32 %load_lval6
   br label %while.cond
 
 while.cond:                                       ; preds = %while.stmt, %mainEntry
