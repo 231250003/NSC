@@ -614,7 +614,7 @@ public class LLVMIROptimization {
         }
         cleanUnreachableBlocks();
         buildgraph();
-       // while(simplifySingleInstructionBlocks());
+        while(simplifySingleInstructionBlocks());
         while(remove_redundant_block());
         return ret;
     }
@@ -624,9 +624,10 @@ public class LLVMIROptimization {
         for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(function)) {
             for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(function); block != null; block = LLVMGetNextBasicBlock(block)) {
                 boolean onlyTerminator = true;
+                if(LLVMGetInstructionOpcode(LLVMGetFirstInstruction(block))!=LLVMBr||LLVM.LLVMGetNumOperands(LLVMGetFirstInstruction(block))!=1) onlyTerminator=false;
                 for (LLVMValueRef inst = LLVMGetFirstInstruction(block); inst != null; inst = LLVMGetNextInstruction(inst)) {
                     int opcode = LLVMGetInstructionOpcode(inst);
-                    if (opcode != LLVMRet && opcode != LLVMBr && opcode != LLVMUnreachable) {
+                    if (opcode != LLVMBr&&opcode!=LLVMRet) {
                         onlyTerminator = false;
                         break;
                     }
@@ -638,52 +639,24 @@ public class LLVMIROptimization {
         }
         for (LLVMBasicBlockRef candidate : candidateBlocks) {
             LLVMValueRef terminator=LLVMGetFirstInstruction(candidate);
-            if (terminator == null) continue;
-            int termOpcode = LLVMGetInstructionOpcode(terminator);
-            LLVMValueRef termOperand0 = null;
-            LLVMBasicBlockRef succ0 = null;
-            LLVMBasicBlockRef succ1 = null;
-            int numSuccessors = LLVMGetNumSuccessors(terminator);
-            if (termOpcode == LLVMRet) {
-                termOperand0 = LLVMGetOperand(terminator, 0);
-            }
-            if (termOpcode == LLVMBr && numSuccessors == 2) {
-                termOperand0 = LLVMGetOperand(terminator, 0);
-            }
-            if (numSuccessors >= 1) {
-                succ0 = LLVMGetSuccessor(terminator, 0);
-            }
-            if (numSuccessors >= 2) {
-                succ1 = LLVMGetSuccessor(terminator, 1);
-            }
+            LLVMValueRef jmp_block=LLVM.LLVMGetOperand(terminator,0);
             for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(function)) {
                 for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(function); block != null; block = LLVMGetNextBasicBlock(block)) {
                     LLVMValueRef term = LLVMGetBasicBlockTerminator(block);
-                    if (term == null) continue;
-                    int opcode = LLVMGetInstructionOpcode(term);
-                    if (opcode != LLVMBr) continue;
-                    int numSucc = LLVMGetNumSuccessors(term);
-                    boolean matched = false;
-                    for (int i = 0; i < numSucc; i++) {
-                        if (LLVMGetSuccessor(term, i).equals(candidate)) {
-                            matched = true;
-                            break;
+                    if (term == null || LLVMGetInstructionOpcode(term) != LLVMBr) continue;
+                    int numOps = LLVMGetNumOperands(term);
+                    if (numOps == 1) {
+                        if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMPrintValueToString(LLVM.LLVMGetOperand(term,0)).getString())) {
+                            LLVMSetOperand(term, 0, jmp_block);
                         }
-                    }
-                    if (matched) {
-                        LLVMBuilderRef builder = LLVMCreateBuilder();
-                        LLVMPositionBuilderAtEnd(builder, block);
-                        LLVMInstructionEraseFromParent(term);
-                        if (termOpcode == LLVMRet) {
-                            LLVMBuildRet(builder, termOperand0);
-                        } else if (termOpcode == LLVMUnreachable) {
-                            LLVMBuildUnreachable(builder);
-                        } else if (termOpcode == LLVMBr && LLVMGetNumSuccessors(terminator) == 1) {
-                            LLVMBuildBr(builder, succ0);
-                        } else if (termOpcode == LLVMBr && LLVMGetNumSuccessors(terminator) == 2) {
-                            LLVMBuildCondBr(builder, termOperand0, succ0, succ1);
+                    } else if (numOps == 3) {
+                        LLVMValueRef op1 = LLVMGetOperand(term, 1);
+                        LLVMValueRef op2 = LLVMGetOperand(term, 2);
+                        if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMPrintValueToString(op1).getString())) {
+                            LLVMSetOperand(term, 1, jmp_block);
+                        } else if(LLVMGetBasicBlockName(candidate).getString().equals(LLVMPrintValueToString(op2).getString())){
+                            LLVMSetOperand(term, 2, jmp_block);
                         }
-                        LLVMDisposeBuilder(builder);
                     }
                 }
             }
