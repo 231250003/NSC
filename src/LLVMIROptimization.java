@@ -424,18 +424,29 @@ public class LLVMIROptimization {
         List<LLVMValueRef> toErase = new ArrayList<>();
         for (LLVMValueRef instr : allInstrs) {
             boolean shouldKeep = false;
+            int opcode = LLVM.LLVMGetInstructionOpcode(instr);
             if (usedInstrs.contains(instr)) {
                 shouldKeep = true;
             }
-            int numOperands = LLVM.LLVMGetNumOperands(instr);
-            for (int i = 0; i < numOperands && !shouldKeep; i++) {
-                LLVMValueRef operand = LLVM.LLVMGetOperand(instr, i);
-                if (operand != null && !operand.isNull() && usedInstrs.contains(operand)) {
-                    shouldKeep = true;
+            else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
+                    opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
+                    opcode == LLVM.LLVMSRem || opcode == LLVM.LLVMURem ||
+                    opcode == LLVM.LLVMUDiv||opcode == LLVM.LLVMICmp || opcode == LLVM.LLVMZExt||opcode == LLVM.LLVMLoad||opcode== LLVMRet) {
+                int numOperands = LLVM.LLVMGetNumOperands(instr);
+                for (int i = 0; i < numOperands; i++) {
+                    LLVMValueRef operand = LLVM.LLVMGetOperand(instr, i);
+                    if (operand != null && !operand.isNull()) {
+                        if (usedInstrs.contains(operand))shouldKeep=true;
+                    }
+                }
+            }
+            else if(opcode==LLVM.LLVMStore){
+                LLVMValueRef operand = LLVM.LLVMGetOperand(instr, 1);
+                if (operand != null && !operand.isNull()) {
+                    if (usedInstrs.contains(operand))shouldKeep=true;
                 }
             }
             if (!shouldKeep) {
-                int opcode = LLVM.LLVMGetInstructionOpcode(instr);
                 if (opcode != LLVM.LLVMRet &&
                         opcode != LLVM.LLVMBr &&
                         opcode != LLVM.LLVMSwitch &&
