@@ -7,4 +7,5 @@ int main() {
         sum = sum +i+1;
         return sum;
      }
+     return sum+5;
 }
