@@ -668,7 +668,7 @@ public class LLVMIROptimization {
             }
             if(!toRemove.isEmpty()) break;
         }
-        System.out.println("cannanl");
+        System.out.println("cannanl1");
         boolean ret=false;
         for (LLVMBasicBlockRef bb : toRemove) {
             if(bb!=null){
@@ -676,6 +676,7 @@ public class LLVMIROptimization {
                 ret=true;
             }
         }
+        System.out.println("cannanlend");
         if(ret)buildgraph();
         return ret;
     }
