@@ -1,27 +1,50 @@
 int main() {
-    // 基础算术指令测试
-    int a = 15;         // li 指令测试
-    int b = 3;          // 立即数加载
-    int c = 18;      // ADD (18)
-    int d = 12;      // SUB (12)
-    int e = 45;      // MUL (45)
-    int f = 5;      // DIV (5)
-    int g = 0;      // REM (0)
-    // 循环控制测试
-    int sum = 0;
-        int n = 0;
-         while (n < 5) {
-              sum = sum + n;
-              n = n + 1;
-            }
+  int i = 0;
+  int max = 5;
+  int count = 0;
 
-     int mem_test = 0;
-     mem_test = c;
-     int load_test = mem_test;
+  while (i < max) {
 
-    // 复合条件验证
-    return (c - 18)    // 验证加法
-         + (d - 12)    // 验证减法
-         + (e - 45)    // 验证乘法
-         + (sum - 10);  // 验证循环
+    int x1  = 10;
+    int x2  = 10;
+    int x3  = 10;
+    int x4  = 10;
+    int x5  = 10;
+    int x6  = 10;
+    int x7  = 10;
+    int x8  = 10;
+    int x9  = 10;
+    int x10 = 10;
+    int x11 = 10;
+    int x12 = 10;
+    int x13 = 10;
+    int x14 = 10;
+    int x15 = 10;
+    int x16 = 10;
+    int x17 = 10;
+    int x18 = 10;
+    int x19 = 10;
+    int x20 = 10;
+    int x21 = 10;
+    int x22 = 10;
+    int x23 = 10;
+    int x24 = 10;
+    int x25 = 10;
+    int x26 = 10;
+    int x27 = 10;
+    int x28 = 10;
+    int x29 = 10;
+    int x30 = 10;
+    int x31 = 10;
+    int x32 = 10;
+
+    count = count + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9;
+    count = count + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19;
+    count = count + x20 + x21 + x22 + x23 + x24 + x25 + x26 + x27 + x28 + x29;
+    count = count + x30 + x31 + x32;
+
+    i = i + 1;
+  }
+
+  return count;
 }
