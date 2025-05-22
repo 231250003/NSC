@@ -11,7 +11,6 @@ int main() {
         } else {
             b = b - a;
         }
-        x=x+1;
     }
     int result = a;
 	return result;

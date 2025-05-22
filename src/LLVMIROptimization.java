@@ -617,10 +617,7 @@ public class LLVMIROptimization {
         return ret;
     }
     public void simplifySingleInstructionBlocks(){
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module);
-             func != null && !func.isNull();
-             func = LLVM.LLVMGetNextFunction(func)) {
-
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 LLVMValueRef firstInst = LLVM.LLVMGetFirstInstruction(bb);
                 if (firstInst == null || firstInst.isNull()) continue;
@@ -628,6 +625,7 @@ public class LLVMIROptimization {
                 if (secondInst != null && !secondInst.isNull()) {
                     continue;
                 }
+                if(LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(func)))) continue;
                 for (LLVMBasicBlockRef pred = LLVM.LLVMGetFirstBasicBlock(func); pred != null && !pred.isNull(); pred = LLVM.LLVMGetNextBasicBlock(pred)) {
                     LLVMValueRef term = LLVM.LLVMGetBasicBlockTerminator(pred);
                     if (term == null || term.isNull()) continue;
