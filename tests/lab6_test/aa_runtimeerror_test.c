@@ -1,5 +1,6 @@
 int main() {
   int i = 0;
+  return i;
   while(i<=3){
       i=i+1;
   }

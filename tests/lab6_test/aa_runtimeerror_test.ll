@@ -29,10 +29,7 @@ while.cond:                                       ; preds = %while.stmt, %mainEn
 
 merge:                                            ; preds = %if.else, %if.then
   %load_lval10 = load i32, i32* %i, align 4
-  %add11 = add i32 %load_lval10, 3
-  store i32 %add11, i32* %i, align 4
-  %load_lval12 = load i32, i32* %i, align 4
-  ret i32 %load_lval12
+  ret i32 %load_lval10
 
 if.then:                                          ; preds = %cur
   %load_lval6 = load i32, i32* %i, align 4
