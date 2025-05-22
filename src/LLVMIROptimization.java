@@ -646,19 +646,19 @@ public class LLVMIROptimization {
                     for(LLVMValueRef term=LLVMGetFirstInstruction(block);term!=null;term=LLVMGetNextInstruction(term)) {
                         if (LLVMGetInstructionOpcode(term) != LLVMBr) continue;
                         int numOps = LLVMGetNumOperands(term);
-                        System.out.println((LLVMGetBasicBlockName(candidate).getString()));
-                        System.out.println(LLVMPrintValueToString(LLVM.LLVMGetOperand(term, 0)).getString());
-                        System.out.println("-----------");
                         if (numOps == 1) {
-                            if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMPrintValueToString(LLVM.LLVMGetOperand(term, 0)).getString())) {
+                            System.out.println((LLVMGetBasicBlockName(candidate).getString()));
+                            System.out.println((LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString());
+                            System.out.println("-----------");
+                            if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString())) {
                                 LLVMSetOperand(term, 0, jmp_block);
                             }
                         } else if (numOps == 3) {
                             LLVMValueRef op1 = LLVMGetOperand(term, 1);
                             LLVMValueRef op2 = LLVMGetOperand(term, 2);
-                            if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMPrintValueToString(op1).getString())) {
+                            if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMGetValueName(op1).getString())) {
                                 LLVMSetOperand(term, 1, jmp_block);
-                            } else if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMPrintValueToString(op2).getString())) {
+                            } else if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMGetValueName(op2).getString())) {
                                 LLVMSetOperand(term, 2, jmp_block);
                             }
                         }
