@@ -5,7 +5,6 @@ int main() {
         a=a-2;
         if(a==45) break;
         else if(a==48){
-            b=b-3;
             a=a+1;
          }
     }
