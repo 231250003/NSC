@@ -694,6 +694,7 @@ public class LLVMIROptimization {
             }
             toRemove.add(candidate);
         }
+        System.out.println("start canal");
         boolean changed = false;
         for (LLVMBasicBlockRef bb : toRemove) {
             LLVMValueRef parent = LLVMGetBasicBlockParent(bb);
@@ -702,7 +703,7 @@ public class LLVMIROptimization {
                 changed = true;
             }
         }
-
+        System.out.println("canal end");
         if (changed) buildgraph();
         return changed;
     }
