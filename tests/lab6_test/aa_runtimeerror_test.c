@@ -1,6 +1,3 @@
-int x = 56;
-int y = 98;
-
 int main() {
   int a = 56;
     int b = 98;
