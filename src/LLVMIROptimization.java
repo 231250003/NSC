@@ -618,6 +618,7 @@ public class LLVMIROptimization {
         buildgraph();
         while(remove_redundant_block());
         boolean ret2=simplifySingleInstructionBlocks();
+        LLVMDumpModule(module);
         return ret||ret2;
     }
     public boolean simplifySingleInstructionBlocks(){
