@@ -1,13 +1,8 @@
 int main() {
-  int n, i, res;
-    n   = 5;    // 读入 n
-    i   = 1;
-    res = 1;
-    while (i <= n) {   // 唯一的 while 循环
-        res = res * i;
-        i   = i + 1;
-        if(i>=6) break;
-        else continue;
-    }
-    return res;
+    int i, sum;
+    i = 0;
+    sum = 0;
+    while (i < 10)
+        sum = sum + (i = i + 1);  // 单语句 while，i 先加再加到 sum 中
+    return sum;
 }
