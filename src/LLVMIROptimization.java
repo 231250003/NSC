@@ -641,7 +641,7 @@ public class LLVMIROptimization {
             }
         }
         for (LLVMBasicBlockRef candidate : candidateBlocks) {
-            LLVMValueRef terminator=LLVMGetFirstInstruction(candidate)
+            LLVMValueRef terminator=LLVMGetFirstInstruction(candidate);
             if (terminator == null) continue;
             int termOpcode = LLVMGetInstructionOpcode(terminator);
             LLVMValueRef termOperand0 = null;
