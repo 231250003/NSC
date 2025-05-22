@@ -614,7 +614,7 @@ public class LLVMIROptimization {
         }
         cleanUnreachableBlocks();
         buildgraph();
-        //while(simplifySingleInstructionBlocks());
+        while(simplifySingleInstructionBlocks());
         while(remove_redundant_block());
         return ret;
     }
@@ -697,6 +697,7 @@ public class LLVMIROptimization {
                 changed = true;
             }
         }
+        LLVMDumpModule(module);
         if (changed) buildgraph();
         return changed;
     }
