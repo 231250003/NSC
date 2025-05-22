@@ -78,7 +78,7 @@ public class Main {
         LLVMIROptimization optimization=new LLVMIROptimization(module);
         clean_terminator_inst(module);
         LLVMDumpModule(module);
-        remove_blocks_without_predecessors(func);
+        while(remove_blocks_without_predecessors(func));
         boolean flag1=true,flag2=true,flag3=true;
         while(flag1||flag2||flag3) {
             flag1=optimization.constprop();
@@ -158,7 +158,7 @@ public class Main {
             }
         }
     }
-    public static void remove_blocks_without_predecessors(LLVMValueRef mainFunction) {
+    public static boolean remove_blocks_without_predecessors(LLVMValueRef mainFunction) {
         List<LLVMBasicBlockRef> toDelete = new ArrayList<>();
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(mainFunction); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             if (LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(mainFunction))))continue;
@@ -182,9 +182,11 @@ public class Main {
                 toDelete.add(bb);
             }
         }
+        boolean ret=false;
         for (LLVMBasicBlockRef bb : toDelete) {
+            if(bb!=null) ret=true;
             LLVM.LLVMDeleteBasicBlock(bb);
         }
+        return ret;
     }
-
 }
