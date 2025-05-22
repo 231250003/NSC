@@ -647,9 +647,9 @@ public class LLVMIROptimization {
                         if (LLVMGetInstructionOpcode(term) != LLVMBr) continue;
                         int numOps = LLVMGetNumOperands(term);
                         if (numOps == 1) {
-                            System.out.println((LLVMGetBasicBlockName(candidate).getString()));
-                            System.out.println((LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString()));
-                            System.out.println("-----------");
+//                            System.out.println((LLVMGetBasicBlockName(candidate).getString()));
+//                            System.out.println((LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString()));
+//                            System.out.println("-----------");
                             if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString())) {
                                 LLVMSetOperand(term, 0, jmp_block);
                             }
@@ -668,7 +668,7 @@ public class LLVMIROptimization {
             toRemove.add(candidate);
         }
         //LLVMDumpModule(module);
-        System.out.println("-----------end of change");
+        //System.out.println("-----------end of change");
         boolean changed = false;
         for (LLVMBasicBlockRef bb : toRemove) {
             LLVMValueRef parent = LLVMGetBasicBlockParent(bb);
