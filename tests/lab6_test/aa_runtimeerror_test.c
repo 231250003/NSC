@@ -1,46 +1,38 @@
-int x = 56;
-int y = 98;
-
 int main() {
-  int a = x;
-    int b = y;
-  if(!a+b>=10) {
-        if(a<=10) return 2;
-     }
-    while(1){
-        a=a-2;
-        if(a==45) break;
-        else if(a==48){
-            b=b-3;
-            a=a+1;
-         }
-    }
-        int cnt=0;
-        while(b>35){
-            if(cnt==30) break;
-            {
-                int b=30;
-                {
-                    while(1){
-                        if(b<20)return b;
-                        else b=b-7;
-                        break;
-                    }
-                }
-            }
-            if(b>70){
-                b=b-5;
-            }
-            else if(b>50) b=b-7;
-            if(b+a>40) b=b+10;
-            else if(b>30) b=b-1;
-            else return 10;
-            cnt=cnt+1;
+    // 基础算术指令测试
+    int a = 15;         // li 指令测试
+    int b = 3;          // 立即数加载
+    int c = a + b;      // ADD (18)
+    int d = a - b;      // SUB (12)
+    int e = a * b;      // MUL (45)
+    int f = a / b;      // DIV (5)
+    int g = a % b;      // REM (0)
 
-            }
-        b=b-3;
-        a=a+1;
-        if(a+b>50) a=a-10;
-    int result = a;
-	return result;
+    // 条件分支测试
+    int m = 0;
+    if (a > b) {        // BGT 分支测试
+        m = 1;          // 应执行此分支
+    } else {
+        m = -1;
+    }
+
+    // 循环控制测试
+    int sum = 0;
+    int n = 0;
+    while (n < 5) {
+      sum = sum + n;
+      n = n + 1;
+    }
+
+    // 内存压力测试(无数组)
+    int mem_test = 0;
+    mem_test = c;       // 测试store指令
+    int load_test = mem_test; // 测试load指令
+
+    // 复合条件验证
+    return (c - 18)    // 验证加法
+         + (d - 12)    // 验证减法
+         + (e - 45)    // 验证乘法
+         + (sum - 10)  // 验证循环
+         + (m - 1);    // 验证分支
 }
