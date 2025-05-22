@@ -3,8 +3,9 @@ int main() {
     i = 0;
     sum = 0;
     while (i < 10){
-        i=i+1;
-        sum = sum +i;
+        (i = i + 1)
+        sum = sum +i+1;
+        return sum;
      }
-    return sum;
+   // return sum;
 }
