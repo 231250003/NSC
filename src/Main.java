@@ -77,7 +77,6 @@ public class Main {
         var_num=get_var_num(module);
         LLVMIROptimization optimization=new LLVMIROptimization(module);
         clean_terminator_inst(module);
-        LLVMDumpModule(module);
         while(remove_blocks_without_predecessors(func));
         boolean flag1=true,flag2=true,flag3=true;
         while(flag1||flag2||flag3) {
@@ -167,8 +166,6 @@ public class Main {
                 LLVMValueRef terminator = LLVM.LLVMGetBasicBlockTerminator(otherBB);
                 if (terminator == null || terminator.isNull()) continue;
                 int numSucc = LLVM.LLVMGetNumSuccessors(terminator);
-                System.out.println(LLVMPrintValueToString(terminator).getString());
-                System.out.println(numSucc);
                 for (int i = 0; i < numSucc; ++i) {
                     LLVMBasicBlockRef succ = LLVM.LLVMGetSuccessor(terminator, i);
                     if (LLVMBasicBlockAsValue(succ).equals(LLVMBasicBlockAsValue(bb))){
