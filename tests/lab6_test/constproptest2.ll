@@ -3,4 +3,7 @@ source_filename = "my_module"
 
 @global_var = global i32 1
 
-declare i32 @main()
+define i32 @main() {
+mainEntry:
+  ret i32 4
+}
