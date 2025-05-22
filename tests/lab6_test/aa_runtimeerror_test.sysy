@@ -4,7 +4,6 @@ int y = 98;
 int main() {
   int a = x;
     int b = y;
-
     while(1){
         a=a-2;
         if(a==45) break;
@@ -14,8 +13,6 @@ int main() {
          }
     }
 
-        b=b-3;
-        a=a+1;
         if(a+b>50) a=a-10;
     int result = a;
 	return result;
