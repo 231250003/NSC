@@ -663,6 +663,7 @@ public class LLVMIROptimization {
             toRemove.add(candidate);
         }
         LLVMDumpModule(module);
+        System.out.println("-----------end of change");
         boolean changed = false;
         for (LLVMBasicBlockRef bb : toRemove) {
             LLVMValueRef parent = LLVMGetBasicBlockParent(bb);
