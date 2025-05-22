@@ -440,11 +440,12 @@ public class LLVMIROptimization {
                         opcode != LLVM.LLVMSwitch &&
                         opcode != LLVM.LLVMUnreachable) {
                     ret=true;
+                    System.out.println(LLVMPrintValueToString(instr).getString());
                     LLVM.LLVMInstructionEraseFromParent(instr);
                 }
             }
         }
-        //LLVMDumpModule(module);
+        LLVMDumpModule(module);
         System.out.println("-----------");
         return ret;
     }
