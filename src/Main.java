@@ -167,6 +167,7 @@ public class Main {
                 LLVMValueRef terminator = LLVM.LLVMGetBasicBlockTerminator(otherBB);
                 if (terminator == null || terminator.isNull()) continue;
                 int numSucc = LLVM.LLVMGetNumSuccessors(terminator);
+                System.out.println(LLVMPrintValueToString(terminator).getString());
                 System.out.println(numSucc);
                 for (int i = 0; i < numSucc; ++i) {
                     LLVMBasicBlockRef succ = LLVM.LLVMGetSuccessor(terminator, i);
