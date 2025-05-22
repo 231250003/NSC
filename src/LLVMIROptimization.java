@@ -613,7 +613,68 @@ public class LLVMIROptimization {
         cleanUnreachableBlocks();
         buildgraph();
         while(remove_redundant_block());
+        simplifySingleInstructionBlocks();
         return ret;
+    }
+    public void simplifySingleInstructionBlocks(){
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module);
+             func != null && !func.isNull();
+             func = LLVM.LLVMGetNextFunction(func)) {
+
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                LLVMValueRef firstInst = LLVM.LLVMGetFirstInstruction(bb);
+                if (firstInst == null || firstInst.isNull()) continue;
+                LLVMValueRef secondInst = LLVM.LLVMGetNextInstruction(firstInst);
+                if (secondInst != null && !secondInst.isNull()) {
+                    continue;
+                }
+                for (LLVMBasicBlockRef pred = LLVM.LLVMGetFirstBasicBlock(func); pred != null && !pred.isNull(); pred = LLVM.LLVMGetNextBasicBlock(pred)) {
+                    LLVMValueRef term = LLVM.LLVMGetBasicBlockTerminator(pred);
+                    if (term == null || term.isNull()) continue;
+                    int numSucc = LLVM.LLVMGetNumSuccessors(term);
+                    for (int i = 0; i < numSucc; i++) {
+                        LLVMBasicBlockRef succ = LLVM.LLVMGetSuccessor(term, i);
+                        if (succ.equals(bb)) {
+                            LLVMBuilderRef builder = LLVM.LLVMCreateBuilder();
+                            LLVM.LLVMPositionBuilderBefore(builder, term);
+                            LLVMValueRef cloned = tryCloneInstruction(builder, firstInst);
+                            LLVM.LLVMInstructionEraseFromParent(term);
+                            LLVM.LLVMInsertIntoBuilder(builder, cloned);
+                            LLVM.LLVMDisposeBuilder(builder);
+                        }
+                    }
+                }
+
+                // 删除当前块（必须没有前驱）
+                if (LLVM.LLVMGetBasicBlockParent(bb) != null) {
+                    LLVM.LLVMDeleteBasicBlock(bb);
+                }
+            }
+        }
+    }
+    private static LLVMValueRef tryCloneInstruction(LLVMBuilderRef builder, LLVMValueRef inst) {
+        int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+        if (opcode == LLVM.LLVMRet) {
+            if (LLVM.LLVMGetNumOperands(inst) == 0) {
+                return LLVM.LLVMBuildRetVoid(builder);
+            } else {
+                LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
+                return LLVM.LLVMBuildRet(builder, retVal);
+            }
+        }
+
+        if (opcode == LLVM.LLVMBr) {
+            if (LLVM.LLVMIsConditional(inst) != 0) {
+                LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
+                LLVMBasicBlockRef tBB = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 1));
+                LLVMBasicBlockRef fBB = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 2));
+                return LLVM.LLVMBuildCondBr(builder, cond, tBB, fBB);
+            } else {
+                LLVMBasicBlockRef target = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 0));
+                return LLVM.LLVMBuildBr(builder, target);
+            }
+        }
+        throw new RuntimeException();
     }
     public void cleanUnreachableBlocks() {
         Set<LLVMBasicBlockRef> unreachableBlocks = new HashSet<>();
