@@ -44,45 +44,5 @@ mainEntry:
   store i32 36, i32* @o, align 4
   store i32 38, i32* @p, align 4
   store i32 40, i32* @q, align 4
-  %load_lval117 = load i32, i32* @x, align 4
-  %add118 = add i32 420, %load_lval117
-  %load_lval119 = load i32, i32* @y, align 4
-  %add120 = add i32 %add118, %load_lval119
-  %load_lval121 = load i32, i32* @z, align 4
-  %add122 = add i32 %add120, %load_lval121
-  %load_lval123 = load i32, i32* @a, align 4
-  %add124 = add i32 %add122, %load_lval123
-  %load_lval125 = load i32, i32* @b, align 4
-  %add126 = add i32 %add124, %load_lval125
-  %load_lval127 = load i32, i32* @c, align 4
-  %add128 = add i32 %add126, %load_lval127
-  %load_lval129 = load i32, i32* @d, align 4
-  %add130 = add i32 %add128, %load_lval129
-  %load_lval131 = load i32, i32* @e, align 4
-  %add132 = add i32 %add130, %load_lval131
-  %load_lval133 = load i32, i32* @f, align 4
-  %add134 = add i32 %add132, %load_lval133
-  %load_lval135 = load i32, i32* @g, align 4
-  %add136 = add i32 %add134, %load_lval135
-  %load_lval137 = load i32, i32* @h, align 4
-  %add138 = add i32 %add136, %load_lval137
-  %load_lval139 = load i32, i32* @i, align 4
-  %add140 = add i32 %add138, %load_lval139
-  %load_lval141 = load i32, i32* @j, align 4
-  %add142 = add i32 %add140, %load_lval141
-  %load_lval143 = load i32, i32* @k, align 4
-  %add144 = add i32 %add142, %load_lval143
-  %load_lval145 = load i32, i32* @l, align 4
-  %add146 = add i32 %add144, %load_lval145
-  %load_lval147 = load i32, i32* @m, align 4
-  %add148 = add i32 %add146, %load_lval147
-  %load_lval149 = load i32, i32* @n, align 4
-  %add150 = add i32 %add148, %load_lval149
-  %load_lval151 = load i32, i32* @o, align 4
-  %add152 = add i32 %add150, %load_lval151
-  %load_lval153 = load i32, i32* @p, align 4
-  %add154 = add i32 %add152, %load_lval153
-  %load_lval155 = load i32, i32* @q, align 4
-  %add156 = add i32 %add154, %load_lval155
-  ret i32 %add156
+  ret i32 840
 }
