@@ -2,8 +2,8 @@ int x = 56;
 int y = 98;
 
 int main() {
-  int a = x;
-    int b = y;
+  int a = 56;
+    int b = 98;
     while(1){
         a=a-2;
         if(a==45) break;
@@ -12,7 +12,5 @@ int main() {
             a=a+1;
          }
     }
-
-    int result = a;
-	return result;
+	return a;
 }
