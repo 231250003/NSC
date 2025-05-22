@@ -434,6 +434,8 @@ public class LLVMIROptimization {
                     shouldKeep = true;
                 }
             }
+            System.out.println(LLVMPrintValueToString(instr).getString());
+            System.out.println("-----------");
             if (!shouldKeep) {
                 int opcode = LLVM.LLVMGetInstructionOpcode(instr);
                 if (opcode != LLVM.LLVMRet &&
@@ -441,12 +443,10 @@ public class LLVMIROptimization {
                         opcode != LLVM.LLVMSwitch &&
                         opcode != LLVM.LLVMUnreachable) {
                     ret=true;
-                    System.out.println(LLVMPrintValueToString(instr).getString());
                     LLVM.LLVMInstructionEraseFromParent(instr);
                 }
             }
         }
-        System.out.println("-----------");
         LLVMDumpModule(module);
         return ret;
     }
