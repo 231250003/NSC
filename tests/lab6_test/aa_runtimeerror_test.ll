@@ -10,10 +10,10 @@ mainEntry:
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %load_lval13 = load i32, i32* %sum, align 4
-  %sub14 = sub i32 %load_lval13, 10
-  %add15 = add i32 0, %sub14
-  ret i32 %add15
+  %load_lval14 = load i32, i32* %sum, align 4
+  %sub15 = sub i32 %load_lval14, 10
+  %add16 = add i32 0, %sub15
+  ret i32 %add16
 
 while.stmt:                                       ; preds = %while.cond
   %load_lval1 = load i32, i32* %sum, align 4
