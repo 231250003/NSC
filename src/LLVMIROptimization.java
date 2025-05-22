@@ -619,6 +619,7 @@ public class LLVMIROptimization {
         return ret;
     }
     public boolean simplifySingleInstructionBlocks(){
+        LLVMDumpModule(module);
         Set<LLVMBasicBlockRef> toRemove = new HashSet<>();
         List<LLVMBasicBlockRef> candidateBlocks = new ArrayList<>();
         for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(function)) {
