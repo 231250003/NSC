@@ -20,6 +20,7 @@ public class Main {
     public static boolean is_run_time_error_test=false;
     public static boolean used_interpreter=false;
     public static int var_num;
+    public static double radical_optimize;
     public static void main(String[] args) throws IOException {
         /* if (args.length < 1) {
             System.err.println("input path is required");
@@ -82,9 +83,9 @@ public class Main {
         }
         var_num=get_var_num(module);
         LLVMIROptimization optimization=new LLVMIROptimization(module);
+        radical_optimize=Math.random();
         boolean flag1=true,flag2=true,flag3=true;
         while(flag1||flag2||flag3) {
-            //LLVMDumpModule(module);
             flag1=optimization.constprop();
             flag2=optimization.elem_unused();
             flag3=optimization.elem_dead_code();
