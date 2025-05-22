@@ -110,12 +110,6 @@ public class LLVMIROptimization {
         }
         while (!worklist.isEmpty()) {
             LLVMValueRef inst = worklist.iterator().next();
-            if(in_inst.get(inst)==null&&worklist.contains(inst)) {
-                LLVMDumpModule(module);
-                System.out.println(LLVMGetBasicBlockName(LLVMGetInstructionParent(inst)).getString());
-                System.out.println("crzzzzzz");
-                System.out.println(LLVMPrintValueToString(inst).getString());
-            }
             worklist.remove(inst);
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
             int predecessor_count=0;
