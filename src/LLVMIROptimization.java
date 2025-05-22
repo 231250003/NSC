@@ -413,7 +413,7 @@ public class LLVMIROptimization {
                         for (int i = 0; i<1; i++) {
                             LLVMValueRef operand = LLVM.LLVMGetOperand(inst, i);
                             if (operand != null && !operand.isNull()) {
-                                if (!LLVMGetValueName(operand).getString().isEmpty()) usedInstrs.add(operand);
+                                 usedInstrs.add(operand);
                             }
                         }
                     }
