@@ -121,7 +121,10 @@ public class LLVMIROptimization {
                 for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
                     String key = entry.getKey();
                     ConstPropValueHolder value = entry.getValue();
-                    if(in_inst.get(inst)==null) System.out.println("crzzzzzz");
+                    if(in_inst.get(inst)==null) {
+                        System.out.println("crzzzzzz");
+                        System.out.println(LLVMPrintValueToString(inst).getString());
+                    }
                     if (value.getKind() == ConstPropValueHolder.Kind.NAC)
                         in_inst.get(inst).put(key, ConstPropValueHolder.NAC);
                     else if (value.getKind() == ConstPropValueHolder.Kind.INT) {
