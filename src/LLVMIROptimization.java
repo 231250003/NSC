@@ -670,6 +670,7 @@ public class LLVMIROptimization {
                 changed = true;
             }
         }
+        System.out.println("crzzzz");
         if (changed) buildgraph();
         return changed;
     }
