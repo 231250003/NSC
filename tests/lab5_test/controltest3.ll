@@ -70,12 +70,30 @@ if.else:                                          ; preds = %while.stmt
   br label %merge
 
 merge13:                                          ; preds = %if.then19, %cur
+  store i32 57, i32* @x, align 4
+  store i32 100, i32* @y, align 4
+  store i32 6, i32* @z, align 4
   %load_lval29 = load i32, i32* %a, align 4
   %add30 = add i32 %load_lval29, 4
   store i32 %add30, i32* %a, align 4
   %load_lval31 = load i32, i32* %b, align 4
   %add32 = add i32 %load_lval31, 5
   store i32 %add32, i32* %b, align 4
+  store i32 12, i32* @c, align 4
+  store i32 14, i32* @d, align 4
+  store i32 16, i32* @e, align 4
+  store i32 18, i32* @f, align 4
+  store i32 20, i32* @g, align 4
+  store i32 22, i32* @h, align 4
+  store i32 24, i32* @i, align 4
+  store i32 26, i32* @j, align 4
+  store i32 28, i32* @k, align 4
+  store i32 30, i32* @l, align 4
+  store i32 32, i32* @m, align 4
+  store i32 34, i32* @n, align 4
+  store i32 36, i32* @o, align 4
+  store i32 38, i32* @p, align 4
+  store i32 40, i32* @q, align 4
   %load_lval102 = load i32, i32* %a, align 4
   %add104 = add i32 %load_lval102, 2
   %add106 = add i32 %add104, 4
