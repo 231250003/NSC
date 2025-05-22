@@ -638,6 +638,7 @@ public class LLVMIROptimization {
             }
         }
         for (LLVMBasicBlockRef candidate : candidateBlocks) {
+            System.out.println(LLVMGetBasicBlockName(candidate).getString());
             LLVMValueRef terminator=LLVMGetFirstInstruction(candidate);
             LLVMValueRef jmp_block=LLVM.LLVMGetOperand(terminator,0);
             for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(function)) {
