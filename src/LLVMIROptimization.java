@@ -613,64 +613,58 @@ public class LLVMIROptimization {
         cleanUnreachableBlocks();
         buildgraph();
         while(remove_redundant_block());
-        simplifySingleInstructionBlocks();
-        return ret;
+        boolean ret2=simplifySingleInstructionBlocks();
+        return ret||ret2;
     }
-    public void simplifySingleInstructionBlocks(){
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
-            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                LLVMValueRef firstInst = LLVM.LLVMGetFirstInstruction(bb);
-                if (firstInst == null || firstInst.isNull()) continue;
-                LLVMValueRef secondInst = LLVM.LLVMGetNextInstruction(firstInst);
-                if (secondInst != null && !secondInst.isNull()) {
-                    continue;
-                }
-                if(LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(func)))) continue;
-                for (LLVMBasicBlockRef pred = LLVM.LLVMGetFirstBasicBlock(func); pred != null && !pred.isNull(); pred = LLVM.LLVMGetNextBasicBlock(pred)) {
-                    LLVMValueRef term = LLVM.LLVMGetBasicBlockTerminator(pred);
-                    if (term == null || term.isNull()) continue;
-                    int numSucc = LLVM.LLVMGetNumSuccessors(term);
-                    for (int i = 0; i < numSucc; i++) {
-                        LLVMBasicBlockRef succ = LLVM.LLVMGetSuccessor(term, i);
-                        if (succ.equals(bb)) {
-                            LLVMBuilderRef builder = LLVM.LLVMCreateBuilder();
-                            LLVM.LLVMPositionBuilderBefore(builder, term);
-                            System.out.println("canal1");
-                            LLVMValueRef cloned = tryCloneInstruction(builder, firstInst);
-                            System.out.println("canal2");
-                            LLVM.LLVMInstructionEraseFromParent(term);
-                            LLVM.LLVMInsertIntoBuilder(builder, cloned);
-                            LLVM.LLVMDisposeBuilder(builder);
+    public boolean simplifySingleInstructionBlocks(){
+        Set<LLVMBasicBlockRef> toRemove = new HashSet<>();
+        for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(function)) {
+            for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(function); block != null; block = LLVMGetNextBasicBlock(block)) {
+                LLVMValueRef term = LLVMGetBasicBlockTerminator(block);
+                if (term!=null && LLVMGetInstructionOpcode(term) == LLVM.LLVMBr) {
+                    if (LLVMGetNumSuccessors(term) == 1) {
+                        LLVMBasicBlockRef target = LLVMGetSuccessor(term, 0);
+                        LLVMValueRef targetInstr = LLVMGetFirstInstruction(target);
+                        if (targetInstr!=null) {
+                            int opcode = LLVMGetInstructionOpcode(targetInstr);
+                            if (opcode == LLVM.LLVMRet || opcode == LLVM.LLVMUnreachable||opcode== LLVMBr) {
+                                LLVMBuilderRef builder = LLVMCreateBuilder();
+                                LLVMPositionBuilderAtEnd(builder, block);
+                                LLVMInstructionEraseFromParent(term);
+                                if (opcode == LLVM.LLVMRet) {
+                                    LLVMValueRef retVal = LLVMGetOperand(targetInstr, 0);
+                                    LLVMBuildRet(builder, retVal);
+                                } else if (opcode == LLVM.LLVMUnreachable) {
+                                    LLVMBuildUnreachable(builder);
+                                } else {
+                                    int numSucc = LLVMGetNumSuccessors(targetInstr);
+                                    if (numSucc == 1) {
+                                        LLVMBasicBlockRef nextTarget = LLVMGetSuccessor(targetInstr, 0);
+                                        LLVMBuildBr(builder, nextTarget);
+                                    } else if (numSucc == 2) {
+                                        LLVMValueRef cond = LLVMGetOperand(targetInstr, 0);
+                                        LLVMBasicBlockRef trueDest = LLVMGetSuccessor(targetInstr, 0);
+                                        LLVMBasicBlockRef falseDest = LLVMGetSuccessor(targetInstr, 1);
+                                        LLVMBuildCondBr(builder, cond, trueDest, falseDest);
+                                    }
+                                }
+                                LLVMDisposeBuilder(builder);
+                                toRemove.add(target);
+                            }
                         }
                     }
                 }
-                LLVM.LLVMDeleteBasicBlock(bb);
             }
         }
-    }
-    private static LLVMValueRef tryCloneInstruction(LLVMBuilderRef builder, LLVMValueRef inst) {
-        int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-        if (opcode == LLVM.LLVMRet) {
-            if (LLVM.LLVMGetNumOperands(inst) == 0) {
-                return LLVM.LLVMBuildRetVoid(builder);
-            } else {
-                LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
-                return LLVM.LLVMBuildRet(builder, retVal);
+        boolean ret=false;
+        for (LLVMBasicBlockRef bb : toRemove) {
+            if(bb!=null){
+                LLVM.LLVMRemoveBasicBlockFromParent(bb);
+                ret=true;
             }
         }
-
-        if (opcode == LLVM.LLVMBr) {
-            if (LLVM.LLVMIsConditional(inst) != 0) {
-                LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
-                LLVMBasicBlockRef fBB = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 1));
-                LLVMBasicBlockRef tBB = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 2));
-                return LLVM.LLVMBuildCondBr(builder, cond, tBB, fBB);
-            } else {
-                LLVMBasicBlockRef target = new LLVMBasicBlockRef(LLVM.LLVMGetOperand(inst, 0));
-                return LLVM.LLVMBuildBr(builder, target);
-            }
-        }
-        throw new RuntimeException();
+        buildgraph();
+        return ret;
     }
     public void cleanUnreachableBlocks() {
         Set<LLVMBasicBlockRef> unreachableBlocks = new HashSet<>();
