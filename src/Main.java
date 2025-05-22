@@ -169,7 +169,7 @@ public class Main {
                 int numSucc = LLVM.LLVMGetNumSuccessors(terminator);
                 for (int i = 0; i < numSucc; ++i) {
                     LLVMBasicBlockRef succ = LLVM.LLVMGetSuccessor(terminator, i);
-                    if (succ.equals(bb)) {
+                    if (LLVMBasicBlockAsValue(succ).equals(LLVMBasicBlockAsValue(bb))){
                         hasPredecessor = true;
                         break;
                     }
