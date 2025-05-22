@@ -37,7 +37,6 @@ public class LLVMIROptimization {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null; func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-                    //System.out.println("canal1");
                     if (predecessor.get(inst) == null) predecessor.put(inst, new HashSet<>());
                     if (inst != LLVM.LLVMGetFirstInstruction(bb)) predecessor.get(inst).add(LLVM.LLVMGetPreviousInstruction(inst));
                     if(successor.get(inst)==null) successor.put(inst,new HashSet<>());
@@ -449,7 +448,7 @@ public class LLVMIROptimization {
             else if(opcode==LLVM.LLVMStore){
                 LLVMValueRef operand = LLVM.LLVMGetOperand(instr, 1);
                 if (operand != null && !operand.isNull()) {
-                    if (usedInstrs.contains(operand)||LLVM.LLVMIsAGlobalVariable(operand) != null)shouldKeep=true;
+                    if (usedInstrs.contains(operand))shouldKeep=true;
                 }
             }
             if (!shouldKeep) {
