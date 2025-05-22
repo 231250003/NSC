@@ -111,6 +111,7 @@ public class LLVMIROptimization {
         while (!worklist.isEmpty()) {
             LLVMValueRef inst = worklist.iterator().next();
             if(in_inst.get(inst)==null&&worklist.contains(inst)) {
+                System.out.println(LLVMGetBasicBlockName(LLVMGetInstructionParent(inst)).getString());
                 System.out.println("crzzzzzz");
                 System.out.println(LLVMPrintValueToString(inst).getString());
             }
