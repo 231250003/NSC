@@ -648,7 +648,7 @@ public class LLVMIROptimization {
                         int numOps = LLVMGetNumOperands(term);
                         if (numOps == 1) {
                             System.out.println((LLVMGetBasicBlockName(candidate).getString()));
-                            System.out.println((LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString());
+                            System.out.println((LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString()));
                             System.out.println("-----------");
                             if (LLVMGetBasicBlockName(candidate).getString().equals(LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString())) {
                                 LLVMSetOperand(term, 0, jmp_block);
