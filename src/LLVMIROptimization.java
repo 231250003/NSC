@@ -631,7 +631,11 @@ public class LLVMIROptimization {
                     if (LLVMGetNumSuccessors(term) == 1) {
                         LLVMBasicBlockRef target = LLVMGetSuccessor(term, 0);
                         LLVMValueRef targetInstr = LLVMGetFirstInstruction(target);
-                        if (targetInstr!=null) {
+                        boolean can_remove=true;
+                        for(LLVMValueRef inst=targetInstr;inst!=null;inst=LLVMGetNextInstruction(inst)){
+                            if(LLVMGetInstructionOpcode(inst)!=LLVMBr&&LLVMGetInstructionOpcode(inst)==LLVMRet&&LLVMGetInstructionOpcode(inst)==LLVMUnreachable) can_remove=false;
+                        }
+                        if (can_remove) {
                             int opcode = LLVMGetInstructionOpcode(targetInstr);
                             if (opcode == LLVM.LLVMRet || opcode == LLVM.LLVMUnreachable||opcode== LLVMBr) {
                                 LLVMBuilderRef builder = LLVMCreateBuilder();
@@ -665,16 +669,11 @@ public class LLVMIROptimization {
         boolean ret=false;
         for (LLVMBasicBlockRef bb : toRemove) {
             if(bb!=null){
-                for (LLVMValueRef inst = LLVMGetFirstInstruction(bb); inst != null; inst = LLVMGetNextInstruction(inst)) {
-                    predecessor.remove(inst);
-                    successor.remove(inst);
-                }
-                LLVMDeleteBasicBlock(bb);
+                LLVMRemoveBasicBlockFromParent(bb);
                 ret=true;
             }
         }
-        System.out.println("canal");
-        buildgraph();
+        if(ret)buildgraph();
         return ret;
     }
     public void cleanUnreachableBlocks() {
