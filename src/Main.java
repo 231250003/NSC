@@ -85,7 +85,7 @@ public class Main {
         var_num=get_var_num(module);
         LLVMIROptimization optimization=new LLVMIROptimization(module);
         radical_optimize=Math.random();
-        clean_terminator_inst(module);
+        //clean_terminator_inst(module);
         boolean flag1=true,flag2=true,flag3=true;
         while(flag1||flag2||flag3) {
             flag1=optimization.constprop();
