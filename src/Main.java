@@ -177,6 +177,7 @@ public class Main {
                 if (hasPredecessor) break;
             }
             if (!hasPredecessor) {
+                System.out.println("crzzz");
                 toDelete.add(bb);
             }
         }
