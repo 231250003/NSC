@@ -83,6 +83,7 @@ public class Main {
         }
         var_num=get_var_num(module);
         LLVMIROptimization optimization=new LLVMIROptimization(module);
+        System.out.println(IRGenerationVisitor.block_count);
         //clean_terminator_inst(module);
         boolean flag1=true,flag2=true,flag3=true;
         while(flag1||flag2||flag3) {
