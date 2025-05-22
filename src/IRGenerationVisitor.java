@@ -19,7 +19,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     private static final   LLVMValueRef zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);
     public static int while_stmt_count=0;
     public static int if_stmt_count=0;
-    public static int break_count=0;
+    public static int break_count=0,continue_count=0;
     private SymbolTable symbolTable=new SymbolTable();
     public IRGenerationVisitor(LLVMModuleRef module, LLVMBuilderRef builder) {
         this.module = module;
@@ -602,6 +602,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBuildBr(builder, x.getValue());
         }
         else if(ctx.CONTINUE()!=null){
+            continue_count++;
             AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
             LLVMBuildBr(builder, x.getKey());
         }
