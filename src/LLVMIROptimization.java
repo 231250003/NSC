@@ -665,7 +665,11 @@ public class LLVMIROptimization {
         boolean ret=false;
         for (LLVMBasicBlockRef bb : toRemove) {
             if(bb!=null){
-                LLVM.LLVMRemoveBasicBlockFromParent(bb);
+                for (LLVMValueRef inst = LLVMGetFirstInstruction(bb); inst != null; inst = LLVMGetNextInstruction(inst)) {
+                    predecessor.remove(inst);
+                    successor.remove(inst);
+                }
+                LLVMDeleteBasicBlock(bb);
                 ret=true;
             }
         }
