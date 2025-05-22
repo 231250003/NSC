@@ -670,7 +670,7 @@ public class LLVMIROptimization {
                 changed = true;
             }
         }
-        System.out.println("crzzzz");
+        LLVMDumpModule(module);
         if (changed) buildgraph();
         return changed;
     }
