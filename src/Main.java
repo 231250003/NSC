@@ -74,16 +74,10 @@ public class Main {
         visitor.visit(tree);
        // LLVMDumpModule(module);
         LLVMValueRef func = LLVMGetFirstFunction(module);
-        while (func != null && !func.isNull()) {
-            LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func);
-            while (block != null && !block.isNull()) {
-                block = LLVMGetNextBasicBlock(block);
-            }
-            func = LLVMGetNextFunction(func);
-        }
         var_num=get_var_num(module);
         LLVMIROptimization optimization=new LLVMIROptimization(module);
         clean_terminator_inst(module);
+        remove_blocks_without_predecessors(func);
         LLVMDumpModule(module);
         boolean flag1=true,flag2=true,flag3=true;
         while(flag1||flag2||flag3) {
@@ -163,6 +157,32 @@ public class Main {
                 }
             }
         }
-
     }
+    public static void remove_blocks_without_predecessors(LLVMValueRef mainFunction) {
+        List<LLVMBasicBlockRef> toDelete = new ArrayList<>();
+        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(mainFunction); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+            if (LLVMBasicBlockAsValue(bb).equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(mainFunction))))continue;
+            boolean hasPredecessor = false;
+            for (LLVMBasicBlockRef otherBB = LLVM.LLVMGetFirstBasicBlock(mainFunction); otherBB != null && !otherBB.isNull(); otherBB = LLVM.LLVMGetNextBasicBlock(otherBB)) {
+                LLVMValueRef terminator = LLVM.LLVMGetBasicBlockTerminator(otherBB);
+                if (terminator == null || terminator.isNull()) continue;
+                int numSucc = LLVM.LLVMGetNumSuccessors(terminator);
+                for (int i = 0; i < numSucc; ++i) {
+                    LLVMBasicBlockRef succ = LLVM.LLVMGetSuccessor(terminator, i);
+                    if (succ.equals(bb)) {
+                        hasPredecessor = true;
+                        break;
+                    }
+                }
+                if (hasPredecessor) break;
+            }
+            if (!hasPredecessor) {
+                toDelete.add(bb);
+            }
+        }
+        for (LLVMBasicBlockRef bb : toDelete) {
+            LLVM.LLVMDeleteBasicBlock(bb);
+        }
+    }
+
 }
