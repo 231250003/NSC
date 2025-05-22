@@ -27,27 +27,24 @@ while.stmt:                                       ; preds = %while.cond
   %to_bool7 = icmp ne i32 %zext_to_i326, 0
   br i1 %to_bool7, label %if.then, label %if.else
 
-while.cond:                                       ; preds = %merge, %mainEntry
+while.cond:                                       ; preds = %if.else, %if.then, %mainEntry
   %load_lval2 = load i32, i32* %b, align 4
   %cmp = icmp ne i32 %load_lval2, 0
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt, label %cur
 
-merge:                                            ; preds = %if.else, %if.then
-  br label %while.cond
-
 if.then:                                          ; preds = %while.stmt
   %load_lval8 = load i32, i32* %a, align 4
   %load_lval9 = load i32, i32* %b, align 4
   %sub = sub i32 %load_lval8, %load_lval9
   store i32 %sub, i32* %a, align 4
-  br label %merge
+  br label %while.cond
 
 if.else:                                          ; preds = %while.stmt
   %load_lval10 = load i32, i32* %b, align 4
   %load_lval11 = load i32, i32* %a, align 4
   %sub12 = sub i32 %load_lval10, %load_lval11
   store i32 %sub12, i32* %b, align 4
-  br label %merge
+  br label %while.cond
 }

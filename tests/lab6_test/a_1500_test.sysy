@@ -7,6 +7,5 @@ int main() {
         sum = sum + i;
         i   = i + 1;
     }
-    putint(sum);       // 输出结果
     return 0;
 }
