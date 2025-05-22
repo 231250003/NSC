@@ -624,60 +624,87 @@ public class LLVMIROptimization {
     }
     public boolean simplifySingleInstructionBlocks(){
         Set<LLVMBasicBlockRef> toRemove = new HashSet<>();
+        List<LLVMBasicBlockRef> candidateBlocks = new ArrayList<>();
         for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(function)) {
             for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(function); block != null; block = LLVMGetNextBasicBlock(block)) {
-                LLVMValueRef term = LLVMGetBasicBlockTerminator(block);
-                if (term!=null && LLVMGetInstructionOpcode(term) == LLVM.LLVMBr) {
-                    if (LLVMGetNumSuccessors(term) == 1) {
-                        LLVMBasicBlockRef target = LLVMGetSuccessor(term, 0);
-                        LLVMValueRef targetInstr = LLVMGetFirstInstruction(target);
-                        boolean can_remove=true;
-                        for(LLVMValueRef inst=targetInstr;inst!=null;inst=LLVMGetNextInstruction(inst)){
-                            if(LLVMGetInstructionOpcode(inst)!=LLVMBr&&LLVMGetInstructionOpcode(inst)!=LLVMRet&&LLVMGetInstructionOpcode(inst)!=LLVMUnreachable) can_remove=false;
+                boolean onlyTerminator = true;
+                for (LLVMValueRef inst = LLVMGetFirstInstruction(block); inst != null; inst = LLVMGetNextInstruction(inst)) {
+                    int opcode = LLVMGetInstructionOpcode(inst);
+                    if (opcode != LLVMRet && opcode != LLVMBr && opcode != LLVMUnreachable) {
+                        onlyTerminator = false;
+                        break;
+                    }
+                }
+                if (onlyTerminator && LLVMGetFirstInstruction(block) != null) {
+                    candidateBlocks.add(block);
+                }
+            }
+        }
+        for (LLVMBasicBlockRef candidate : candidateBlocks) {
+            LLVMValueRef terminator=LLVMGetFirstInstruction(candidate)
+            if (terminator == null) continue;
+            int termOpcode = LLVMGetInstructionOpcode(terminator);
+            LLVMValueRef termOperand0 = null;
+            LLVMBasicBlockRef succ0 = null;
+            LLVMBasicBlockRef succ1 = null;
+            int numSuccessors = LLVMGetNumSuccessors(terminator);
+            if (termOpcode == LLVMRet) {
+                termOperand0 = LLVMGetOperand(terminator, 0);
+            }
+            if (termOpcode == LLVMBr && numSuccessors == 2) {
+                termOperand0 = LLVMGetOperand(terminator, 0);
+            }
+            if (numSuccessors >= 1) {
+                succ0 = LLVMGetSuccessor(terminator, 0);
+            }
+            if (numSuccessors >= 2) {
+                succ1 = LLVMGetSuccessor(terminator, 1);
+            }
+            for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(function)) {
+                for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(function); block != null; block = LLVMGetNextBasicBlock(block)) {
+                    if(candidateBlocks.contains(block)) continue;
+                    LLVMValueRef term = LLVMGetBasicBlockTerminator(block);
+                    if (term == null) continue;
+                    int opcode = LLVMGetInstructionOpcode(term);
+                    if (opcode != LLVMBr) continue;
+                    int numSucc = LLVMGetNumSuccessors(term);
+                    boolean matched = false;
+                    for (int i = 0; i < numSucc; i++) {
+                        if (LLVMGetSuccessor(term, i).equals(candidate)) {
+                            matched = true;
+                            break;
                         }
-                        if (can_remove) {
-                            int opcode = LLVMGetInstructionOpcode(targetInstr);
-                            if (opcode == LLVM.LLVMRet || opcode == LLVM.LLVMUnreachable||opcode== LLVMBr) {
-                                LLVMBuilderRef builder = LLVMCreateBuilder();
-                                LLVMPositionBuilderAtEnd(builder, block);
-                                LLVMInstructionEraseFromParent(term);
-                                if (opcode == LLVM.LLVMRet) {
-                                    LLVMValueRef retVal = LLVMGetOperand(targetInstr, 0);
-                                    LLVMBuildRet(builder, retVal);
-                                } else if (opcode == LLVM.LLVMUnreachable) {
-                                    LLVMBuildUnreachable(builder);
-                                } else {
-                                    int numSucc = LLVMGetNumSuccessors(targetInstr);
-                                    if (numSucc == 1) {
-                                        LLVMBasicBlockRef nextTarget = LLVMGetSuccessor(targetInstr, 0);
-                                        LLVMBuildBr(builder, nextTarget);
-                                    } else if (numSucc == 2) {
-                                        LLVMValueRef cond = LLVMGetOperand(targetInstr, 0);
-                                        LLVMBasicBlockRef trueDest = LLVMGetSuccessor(targetInstr, 0);
-                                        LLVMBasicBlockRef falseDest = LLVMGetSuccessor(targetInstr, 1);
-                                        LLVMBuildCondBr(builder, cond, trueDest, falseDest);
-                                    }
-                                }
-                                LLVMDisposeBuilder(builder);
-                                toRemove.add(target);
-                                break;
-                            }
+                    }
+                    if (matched) {
+                        LLVMBuilderRef builder = LLVMCreateBuilder();
+                        LLVMPositionBuilderAtEnd(builder, block);
+                        LLVMInstructionEraseFromParent(term);
+                        if (termOpcode == LLVMRet) {
+                            LLVMBuildRet(builder, termOperand0);
+                        } else if (termOpcode == LLVMUnreachable) {
+                            LLVMBuildUnreachable(builder);
+                        } else if (termOpcode == LLVMBr && LLVMGetNumSuccessors(terminator) == 1) {
+                            LLVMBuildBr(builder, succ0);
+                        } else if (termOpcode == LLVMBr && LLVMGetNumSuccessors(terminator) == 2) {
+                            LLVMBuildCondBr(builder, termOperand0, succ0, succ1);
                         }
+                        LLVMDisposeBuilder(builder);
                     }
                 }
             }
-            if(!toRemove.isEmpty()) break;
+            toRemove.add(candidate);
         }
-        boolean ret=false;
+        boolean changed = false;
         for (LLVMBasicBlockRef bb : toRemove) {
-            LLVMValueRef parentFn = LLVMGetBasicBlockParent(bb);
-            if (parentFn != null) {
-                LLVMRemoveBasicBlockFromParent(bb);
-                ret=true;
+            LLVMValueRef parent = LLVMGetBasicBlockParent(bb);
+            if (parent != null) {
+                LLVMDeleteBasicBlock(bb);
+                changed = true;
             }
         }
-        if(ret)buildgraph();
-        return ret;
+
+        if (changed) buildgraph();
+        return changed;
     }
     public void cleanUnreachableBlocks() {
         Set<LLVMBasicBlockRef> unreachableBlocks = new HashSet<>();
