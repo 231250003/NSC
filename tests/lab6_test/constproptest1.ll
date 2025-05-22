@@ -6,5 +6,4 @@ source_filename = "my_module"
 define i32 @main() {
 mainEntry:
   ret i32 2
-  ret i32 2
 }
