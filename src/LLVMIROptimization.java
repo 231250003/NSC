@@ -644,8 +644,6 @@ public class LLVMIROptimization {
                         }
                     }
                 }
-
-                // 删除当前块（必须没有前驱）
                 if (LLVM.LLVMGetBasicBlockParent(bb) != null) {
                     LLVM.LLVMDeleteBasicBlock(bb);
                 }
