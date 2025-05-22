@@ -9,6 +9,5 @@ source_filename = "my_module"
 define i32 @main() {
 mainEntry:
   store i32 2, i32* @b, align 4
-  %load_lval5 = load i32, i32* @b, align 4
-  ret i32 %load_lval5
+  ret i32 2
 }
