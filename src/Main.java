@@ -167,6 +167,7 @@ public class Main {
                 LLVMValueRef terminator = LLVM.LLVMGetBasicBlockTerminator(otherBB);
                 if (terminator == null || terminator.isNull()) continue;
                 int numSucc = LLVM.LLVMGetNumSuccessors(terminator);
+                System.out.println(numSucc);
                 for (int i = 0; i < numSucc; ++i) {
                     LLVMBasicBlockRef succ = LLVM.LLVMGetSuccessor(terminator, i);
                     if (LLVMBasicBlockAsValue(succ).equals(LLVMBasicBlockAsValue(bb))){
@@ -177,7 +178,6 @@ public class Main {
                 if (hasPredecessor) break;
             }
             if (!hasPredecessor) {
-                System.out.println("crzzz");
                 toDelete.add(bb);
             }
         }
