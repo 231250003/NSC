@@ -421,6 +421,7 @@ public class LLVMIROptimization {
             }
         }
         LLVMDumpModule(module);
+        System.out.println("-----------");
         for (LLVMValueRef instr : allInstrs) {
             boolean shouldKeep = false;
             if (usedInstrs.contains(instr)) {
@@ -445,8 +446,8 @@ public class LLVMIROptimization {
                 }
             }
         }
-        LLVMDumpModule(module);
         System.out.println("-----------");
+        LLVMDumpModule(module);
         return ret;
     }
     public boolean remove_redundant_block(){
