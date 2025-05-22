@@ -614,12 +614,11 @@ public class LLVMIROptimization {
         }
         cleanUnreachableBlocks();
         buildgraph();
-        while(simplifySingleInstructionBlocks());
+       // while(simplifySingleInstructionBlocks());
         while(remove_redundant_block());
         return ret;
     }
     public boolean simplifySingleInstructionBlocks(){
-        LLVMDumpModule(module);
         Set<LLVMBasicBlockRef> toRemove = new HashSet<>();
         List<LLVMBasicBlockRef> candidateBlocks = new ArrayList<>();
         for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(function)) {
@@ -698,7 +697,6 @@ public class LLVMIROptimization {
                 changed = true;
             }
         }
-        LLVMDumpModule(module);
         if (changed) buildgraph();
         return changed;
     }
