@@ -11,7 +11,7 @@ mainEntry:
   store i32 1, i32* %res, align 4
   br label %while.cond
 
-cur:                                              ; preds = %while.stmt, %while.cond
+cur:                                              ; preds = %if.then, %while.cond
   %load_lval9 = load i32, i32* %res, align 4
   ret i32 %load_lval9
 
@@ -27,12 +27,23 @@ while.stmt:                                       ; preds = %while.cond
   %cmp6 = icmp sge i32 %load_lval5, 6
   %zext_to_i327 = zext i1 %cmp6 to i32
   %to_bool8 = icmp ne i32 %zext_to_i327, 0
-  br i1 %to_bool8, label %cur, label %while.cond
+  br i1 %to_bool8, label %if.then, label %if.else
 
-while.cond:                                       ; preds = %while.stmt, %mainEntry
+while.cond:                                       ; preds = %merge, %if.else, %mainEntry
   %load_lval = load i32, i32* %i, align 4
   %cmp = icmp sle i32 %load_lval, 5
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt, label %cur
+
+merge:                                            ; preds = %if.else, %if.then
+  br label %while.cond
+
+if.then:                                          ; preds = %while.stmt
+  br label %cur
+  br label %merge
+
+if.else:                                          ; preds = %while.stmt
+  br label %while.cond
+  br label %merge
 }
