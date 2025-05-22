@@ -445,6 +445,7 @@ public class LLVMIROptimization {
             }
         }
         LLVMDumpModule(module);
+        System.out.println("-----------");
         return ret;
     }
     public boolean remove_redundant_block(){
