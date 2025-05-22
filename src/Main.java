@@ -82,10 +82,10 @@ public class Main {
         }
         var_num=get_var_num(module);
         LLVMIROptimization optimization=new LLVMIROptimization(module);
-        boolean flag1=true,flag2=true,flag3=true;
+        boolean flag1=true,flag2=false,flag3=true;
         while(flag1||flag2||flag3) {
             flag1=optimization.constprop();
-            flag2=optimization.elem_unused();
+            //flag2=optimization.elem_unused();
             flag3=optimization.elem_dead_code();
         }
         BytePointer error = new BytePointer((Pointer) null);
