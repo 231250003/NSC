@@ -85,7 +85,6 @@ public class Main {
         boolean flag1=true,flag2=true,flag3=true;
         while(flag1||flag2||flag3) {
             flag1=optimization.constprop();
-            System.out.println("------------------------------- end of 1");
             flag2=optimization.elem_unused();
             flag3=optimization.elem_dead_code();
         }

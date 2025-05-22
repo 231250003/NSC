@@ -633,7 +633,7 @@ public class LLVMIROptimization {
                         LLVMValueRef targetInstr = LLVMGetFirstInstruction(target);
                         boolean can_remove=true;
                         for(LLVMValueRef inst=targetInstr;inst!=null;inst=LLVMGetNextInstruction(inst)){
-                            if(LLVMGetInstructionOpcode(inst)!=LLVMBr&&LLVMGetInstructionOpcode(inst)==LLVMRet&&LLVMGetInstructionOpcode(inst)==LLVMUnreachable) can_remove=false;
+                            if(LLVMGetInstructionOpcode(inst)!=LLVMBr&&LLVMGetInstructionOpcode(inst)!=LLVMRet&&LLVMGetInstructionOpcode(inst)!=LLVMUnreachable) can_remove=false;
                         }
                         if (can_remove) {
                             int opcode = LLVMGetInstructionOpcode(targetInstr);
@@ -660,11 +660,14 @@ public class LLVMIROptimization {
                                 }
                                 LLVMDisposeBuilder(builder);
                                 toRemove.add(target);
+                                break;
                             }
                         }
                     }
                 }
+                if(!toRemove.isEmpty()) break;
             }
+            if(!toRemove.isEmpty()) break;
         }
         boolean ret=false;
         for (LLVMBasicBlockRef bb : toRemove) {
