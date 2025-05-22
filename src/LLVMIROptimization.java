@@ -662,7 +662,6 @@ public class LLVMIROptimization {
             }
             for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(function)) {
                 for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(function); block != null; block = LLVMGetNextBasicBlock(block)) {
-                    if(candidateBlocks.contains(block)) continue;
                     LLVMValueRef term = LLVMGetBasicBlockTerminator(block);
                     if (term == null) continue;
                     int opcode = LLVMGetInstructionOpcode(term);
@@ -694,7 +693,6 @@ public class LLVMIROptimization {
             }
             toRemove.add(candidate);
         }
-        System.out.println("start canal");
         boolean changed = false;
         for (LLVMBasicBlockRef bb : toRemove) {
             LLVMValueRef parent = LLVMGetBasicBlockParent(bb);
@@ -703,7 +701,6 @@ public class LLVMIROptimization {
                 changed = true;
             }
         }
-        System.out.println("canal end");
         if (changed) buildgraph();
         return changed;
     }
