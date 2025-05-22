@@ -665,10 +665,10 @@ public class LLVMIROptimization {
                         }
                     }
                 }
-                if(!toRemove.isEmpty()) break;
             }
             if(!toRemove.isEmpty()) break;
         }
+        System.out.println("cannanl");
         boolean ret=false;
         for (LLVMBasicBlockRef bb : toRemove) {
             if(bb!=null){
