@@ -614,7 +614,7 @@ public class LLVMIROptimization {
         }
         cleanUnreachableBlocks();
         buildgraph();
-        while(simplifySingleInstructionBlocks());
+        //while(simplifySingleInstructionBlocks());
         while(remove_redundant_block());
         return ret;
     }
