@@ -673,6 +673,7 @@ public class LLVMIROptimization {
                 ret=true;
             }
         }
+        System.out.println("canal");
         buildgraph();
         return ret;
     }
