@@ -1,10 +1,5 @@
 int main() {
-  int i = 0;
-  return i;
-  while(i<=3){
-      i=i+1;
-  }
-  if(i==3) i=i+1;
-    else i=i+2;
-    return i;
+    int i=0;
+    if(i==0) return 1;
+    else return 2;
 }
