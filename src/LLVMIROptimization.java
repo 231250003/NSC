@@ -301,7 +301,7 @@ public class LLVMIROptimization {
 //                System.out.println(entry.getValue());
 //            }
 //            System.out.println("--------------");
-//            out_inst.put(inst, new_out);
+            out_inst.put(inst, new_out);
         }
         System.out.println("end of const prop");
         Set<String> is_constant=new HashSet<>();
