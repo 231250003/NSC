@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -90,6 +91,7 @@ public class Main {
             flag2=optimization.elem_unused();
             flag3=optimization.elem_dead_code();
         }
+        clean_terminator_inst(module);
         BytePointer error = new BytePointer((Pointer) null);
         if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
             LLVMDisposeMessage(error);
@@ -136,5 +138,32 @@ public class Main {
             }
         }
         return allVariables.size();
+    }
+    public static void clean_terminator_inst(LLVMModuleRef module){
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module);
+             func != null && !func.isNull();
+             func = LLVM.LLVMGetNextFunction(func)) {
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func);
+                 bb != null && !bb.isNull();
+                 bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                boolean seenTerminator = false;
+                List<LLVMValueRef> instructions = new ArrayList<>();
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    instructions.add(inst);
+                }
+                for (LLVMValueRef inst : instructions) {
+                    if (seenTerminator) {
+                        if (LLVM.LLVMIsATerminatorInst(inst) != null) {
+                            LLVM.LLVMInstructionEraseFromParent(inst);
+                        }
+                    } else {
+                        if (LLVM.LLVMIsATerminatorInst(inst) != null) {
+                            seenTerminator = true;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
