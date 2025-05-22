@@ -444,7 +444,7 @@ public class LLVMIROptimization {
                 }
             }
         }
-        LLVMDumpModule(module);
+        //LLVMDumpModule(module);
         System.out.println("-----------");
         return ret;
     }
