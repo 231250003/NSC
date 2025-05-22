@@ -110,6 +110,10 @@ public class LLVMIROptimization {
         }
         while (!worklist.isEmpty()) {
             LLVMValueRef inst = worklist.iterator().next();
+            if(in_inst.get(inst)==null&&worklist.contains(inst)) {
+                System.out.println("crzzzzzz");
+                System.out.println(LLVMPrintValueToString(inst).getString());
+            }
             worklist.remove(inst);
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
             int predecessor_count=0;
@@ -121,10 +125,6 @@ public class LLVMIROptimization {
                 for (Map.Entry<String, ConstPropValueHolder> entry : out_inst.get(x).entrySet()) {
                     String key = entry.getKey();
                     ConstPropValueHolder value = entry.getValue();
-                    if(in_inst.get(inst)==null) {
-                        System.out.println("crzzzzzz");
-                        System.out.println(LLVMPrintValueToString(inst).getString());
-                    }
                     if (value.getKind() == ConstPropValueHolder.Kind.NAC)
                         in_inst.get(inst).put(key, ConstPropValueHolder.NAC);
                     else if (value.getKind() == ConstPropValueHolder.Kind.INT) {
