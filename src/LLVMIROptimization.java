@@ -662,6 +662,7 @@ public class LLVMIROptimization {
             }
             toRemove.add(candidate);
         }
+        LLVMDumpModule(module);
         boolean changed = false;
         for (LLVMBasicBlockRef bb : toRemove) {
             LLVMValueRef parent = LLVMGetBasicBlockParent(bb);
@@ -670,7 +671,6 @@ public class LLVMIROptimization {
                 changed = true;
             }
         }
-        LLVMDumpModule(module);
         if (changed) buildgraph();
         return changed;
     }
