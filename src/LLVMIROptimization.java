@@ -458,7 +458,6 @@ public class LLVMIROptimization {
         for (LLVMValueRef instr : toErase) {
             LLVM.LLVMInstructionEraseFromParent(instr);
         }
-        LLVMDumpModule(module);
         return ret;
     }
     public boolean remove_redundant_block(){
