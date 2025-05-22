@@ -13,7 +13,6 @@ int main() {
          }
     }
 
-        if(a+b>50) a=a-10;
     int result = a;
 	return result;
 }
