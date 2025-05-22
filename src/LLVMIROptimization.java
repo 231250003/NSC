@@ -619,8 +619,8 @@ public class LLVMIROptimization {
         cleanUnreachableBlocks();
         buildgraph();
         while(remove_redundant_block());
-        boolean ret2=simplifySingleInstructionBlocks();
-        return ret||ret2;
+        while(simplifySingleInstructionBlocks());
+        return ret;
     }
     public boolean simplifySingleInstructionBlocks(){
         Set<LLVMBasicBlockRef> toRemove = new HashSet<>();
