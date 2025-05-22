@@ -114,6 +114,7 @@ public class LLVMIROptimization {
                 System.out.println(LLVMGetBasicBlockName(LLVMGetInstructionParent(inst)).getString());
                 System.out.println("crzzzzzz");
                 System.out.println(LLVMPrintValueToString(inst).getString());
+                LLVMDumpModule(module);
             }
             worklist.remove(inst);
             Map<String, ConstPropValueHolder> old_out = out_inst.get(inst);
@@ -619,7 +620,6 @@ public class LLVMIROptimization {
         buildgraph();
         while(remove_redundant_block());
         boolean ret2=simplifySingleInstructionBlocks();
-        LLVMDumpModule(module);
         return ret||ret2;
     }
     public boolean simplifySingleInstructionBlocks(){
