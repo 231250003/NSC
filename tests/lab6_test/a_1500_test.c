@@ -6,6 +6,8 @@ int main() {
     while (i <= n) {   // 唯一的 while 循环
         res = res * i;
         i   = i + 1;
+        if(i>=6) break;
+        else continue;
     }
     return res;
 }
