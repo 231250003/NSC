@@ -421,7 +421,7 @@ public class LLVMIROptimization {
             }
         }
         LLVMDumpModule(module);
-        System.out.println("-----------");
+        List<LLVMValueRef> toErase = new ArrayList<>();
         for (LLVMValueRef instr : allInstrs) {
             boolean shouldKeep = false;
             if (usedInstrs.contains(instr)) {
@@ -434,18 +434,19 @@ public class LLVMIROptimization {
                     shouldKeep = true;
                 }
             }
-            System.out.println(LLVMPrintValueToString(instr).getString());
-            System.out.println("-----------");
             if (!shouldKeep) {
                 int opcode = LLVM.LLVMGetInstructionOpcode(instr);
                 if (opcode != LLVM.LLVMRet &&
                         opcode != LLVM.LLVMBr &&
                         opcode != LLVM.LLVMSwitch &&
                         opcode != LLVM.LLVMUnreachable) {
-                    ret=true;
-                    LLVM.LLVMInstructionEraseFromParent(instr);
+                    ret = true;
+                    toErase.add(instr);
                 }
             }
+        }
+        for (LLVMValueRef instr : toErase) {
+            LLVM.LLVMInstructionEraseFromParent(instr);
         }
         LLVMDumpModule(module);
         return ret;
