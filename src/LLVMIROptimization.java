@@ -644,9 +644,7 @@ public class LLVMIROptimization {
                         }
                     }
                 }
-                if (LLVM.LLVMGetBasicBlockParent(bb) != null) {
-                    LLVM.LLVMDeleteBasicBlock(bb);
-                }
+                LLVM.LLVMDeleteBasicBlock(bb);
             }
         }
     }
