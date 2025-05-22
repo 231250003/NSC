@@ -1,50 +1,93 @@
 int main() {
-  int i = 0;
-  int max = 5;
-  int count = 0;
+    /* 质数计算部分 */
+    int prime_counter = 0;
+    int current_num = 2;
+    int max_check = 50;
+    int total_primes = 0;
 
-  while (i < max) {
+    /* 斐波那契部分 */
+    int fib_a = 0;
+    int fib_b = 1;
+    int fib_temp;
+    int fib_count = 1;
+    int even_fib_sum = 0;
 
-    int x1  = 10;
-    int x2  = 10;
-    int x3  = 10;
-    int x4  = 10;
-    int x5  = 10;
-    int x6  = 10;
-    int x7  = 10;
-    int x8  = 10;
-    int x9  = 10;
-    int x10 = 10;
-    int x11 = 10;
-    int x12 = 10;
-    int x13 = 10;
-    int x14 = 10;
-    int x15 = 10;
-    int x16 = 10;
-    int x17 = 10;
-    int x18 = 10;
-    int x19 = 10;
-    int x20 = 10;
-    int x21 = 10;
-    int x22 = 10;
-    int x23 = 10;
-    int x24 = 10;
-    int x25 = 10;
-    int x26 = 10;
-    int x27 = 10;
-    int x28 = 10;
-    int x29 = 10;
-    int x30 = 10;
-    int x31 = 10;
-    int x32 = 10;
+    /* 阶乘计算部分 */
+    int factorial = 1;
+    int fact_num = 5;
+    int fact_counter = 1;
 
-    count = count + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9;
-    count = count + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19;
-    count = count + x20 + x21 + x22 + x23 + x24 + x25 + x26 + x27 + x28 + x29;
-    count = count + x30 + x31 + x32;
+    // 第一层循环：质数筛选
+    while (current_num < max_check) {
+        int is_prime = 1;
+        int divisor = 2;
 
-    i = i + 1;
-  }
+        // 质数判断循环
+        while (divisor * divisor <= current_num) {
+            if (current_num % divisor == 0) {
+                is_prime = 0;
+                break;
+            }
+            divisor = divisor + 1;
+        }
 
-  return count;
+        // 条件分支处理
+        if (is_prime == 1) {
+            total_primes = total_primes + current_num;
+            if (current_num > 10) {
+                prime_counter = prime_counter + 1;
+            }
+        } else {
+            prime_counter = prime_counter - 1;
+        }
+        current_num = current_num + 1;
+    }
+
+    // 第二层循环：斐波那契计算
+    while (fib_count < 15) {
+        if (fib_a % 2 == 0) {
+            even_fib_sum = even_fib_sum + fib_a;
+        } else {
+            even_fib_sum = even_fib_sum - (fib_a / 2);
+        }
+
+        // 生成下一个斐波那契数
+        fib_temp = fib_a + fib_b;
+        fib_a = fib_b;
+        fib_b = fib_temp;
+        fib_count = fib_count + 1;
+    }
+
+    // 第三层循环：阶乘计算
+    while (fact_counter <= fact_num) {
+        factorial = factorial * fact_counter;
+        if (fact_counter % 2 == 0) {
+            fact_counter = fact_counter + 2;
+        } else {
+            fact_counter = fact_counter + 1;
+        }
+    }
+
+    // 最终结果聚合
+    int final_result = 0;
+    if (total_primes > even_fib_sum) {
+        final_result = factorial - prime_counter;
+    } else if (total_primes < even_fib_sum) {
+        final_result = factorial + prime_counter;
+    } else {
+        final_result = prime_counter * 2;
+    }
+
+    // 条件嵌套验证
+    while (final_result > 0) {
+        if (final_result % 3 == 0) {
+            final_result = final_result / 2;
+        } else if (final_result % 4 == 1) {
+            final_result = final_result - 5;
+        } else {
+            final_result = final_result - 1;
+        }
+    }
+
+    return final_result;
 }
