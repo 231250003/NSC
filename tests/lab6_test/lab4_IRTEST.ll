@@ -1,4 +1,7 @@
 ; ModuleID = 'my_module'
 source_filename = "my_module"
 
-declare i32 @main()
+define i32 @main() {
+mainEntry:
+  ret i32 4
+}
