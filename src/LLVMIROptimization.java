@@ -445,11 +445,12 @@ public class LLVMIROptimization {
                 }
             }
             System.out.println(LLVMPrintValueToString(instr).getString());
-            System.out.println("end");
         }
+        System.out.println("end");
         for (LLVMValueRef instr : toErase) {
             LLVM.LLVMInstructionEraseFromParent(instr);
         }
+        System.out.println("end2");
         LLVMDumpModule(module);
         return ret;
     }
