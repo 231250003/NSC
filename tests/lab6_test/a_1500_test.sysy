@@ -5,6 +5,6 @@ int main() {
     while (i < 10){
         i = i + 1;
         sum = sum +i+1;
-        return sum;
      }
+     return sum;
 }
