@@ -635,7 +635,7 @@ public class LLVMIROptimization {
                         break;
                     }
                 }
-                if (onlyTerminator && LLVMGetFirstInstruction(block) != null) {
+                if (onlyTerminator && LLVMGetFirstInstruction(block) != null&&!LLVMBasicBlockAsValue(block).equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(function)))) {
                     candidateBlocks.add(block);
                 }
             }
