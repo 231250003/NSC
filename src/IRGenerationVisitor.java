@@ -17,6 +17,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     private final LLVMBuilderRef builder;
     private static final LLVMTypeRef i32Type = LLVMInt32Type();
     private static final   LLVMValueRef zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);
+    public static int while_stmt_count=0;
     private SymbolTable symbolTable=new SymbolTable();
     public IRGenerationVisitor(LLVMModuleRef module, LLVMBuilderRef builder) {
         this.module = module;
@@ -570,6 +571,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
         else if(ctx.WHILE()!=null){
+            while_stmt_count++;
             LLVMValueRef function = symbolTable.get_cur_scope_func();
             LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "cur");
             LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, "while.stmt");
