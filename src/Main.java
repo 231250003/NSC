@@ -83,7 +83,7 @@ public class Main {
         var_num=get_var_num(module);
         LLVMIROptimization optimization=new LLVMIROptimization(module);
         boolean flag1=true,flag2=true,flag3=true;
-       for(int i=1;i<=100;i++) {
+       for(int i=1;i<=1000;i++) {
             flag1=optimization.constprop();
             flag2=optimization.elem_unused();
             flag3=optimization.elem_dead_code();
