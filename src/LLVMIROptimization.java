@@ -447,7 +447,7 @@ public class LLVMIROptimization {
             else if(opcode==LLVM.LLVMStore){
                 LLVMValueRef operand = LLVM.LLVMGetOperand(instr, 1);
                 if (operand != null && !operand.isNull()) {
-                    if (usedInstrs.contains(operand))shouldKeep=true;
+                    if (usedInstrs.contains(operand)||LLVM.LLVMIsAGlobalVariable(operand) != null)shouldKeep=true;
                 }
             }
             if (!shouldKeep) {
