@@ -444,7 +444,7 @@ public class LLVMIROptimization {
                     toErase.add(instr);
                 }
             }
-            System.out.println(LLVMPrintValueToString(instr));
+            System.out.println(LLVMPrintValueToString(instr).getString());
             System.out.println("end");
         }
         for (LLVMValueRef instr : toErase) {
