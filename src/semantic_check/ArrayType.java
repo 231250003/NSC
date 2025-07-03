@@ -7,7 +7,7 @@ import java.util.List;
 public class ArrayType extends Type {
     public Type elementType;
     public List<Integer> dimensions=new ArrayList<>();
-    int dim;
+    public int dim;
     public ArrayType(Type elementType, List<Integer>  dim) {
         this.elementType = elementType;
         this.dimensions = dim;
