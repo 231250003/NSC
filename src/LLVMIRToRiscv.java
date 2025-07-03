@@ -145,7 +145,8 @@ public class LLVMIRToRiscv {
             if (!"main".equals(funcName)) continue;
             asm.label("main");
             // Prologue
-            int stackSize = Main.var_num*4+4;
+            int var_num=get_var_num(module);
+            int stackSize = var_num*4+4;
             asm.instr("addi", "sp", "sp", "-" + stackSize);
             asm.j("mainEntry");
             for(int i=4;i<=stackSize;i+=4){
@@ -412,7 +413,22 @@ public class LLVMIRToRiscv {
         }
         asm.switchToText();
     }
-
+    public static int get_var_num(LLVMModuleRef module){
+        Set<String> allVariables = new HashSet<>();
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)){
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
+                     inst != null && !inst.isNull();
+                     inst = LLVM.LLVMGetNextInstruction(inst)){
+                    String line = LLVM.LLVMPrintValueToString(inst).getString();
+                    for(String var:LLVMIRToRiscv.extractVariables(line)){
+                        allVariables.add(var);
+                    }
+                }
+            }
+        }
+        return allVariables.size();
+    }
     private String freshReg() {
         return "t" + (regCount++ % 3);
     }

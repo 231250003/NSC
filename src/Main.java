@@ -15,55 +15,45 @@ import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
+import semantic_check.OutputHelper;
 
 import static org.bytedeco.llvm.global.LLVM.*;
+
 public class Main {
     public static boolean is_run_time_error_test=false;
-    public static boolean used_interpreter=false;
-    public static int var_num;
+    //public static boolean used_interpreter=false;
     public static void main(String[] args) throws IOException {
         /* if (args.length < 1) {
             System.err.println("input path is required");
         }*/
           String source = args[0];
-         // if(args[0].contains("normaltes12t0"))  return;
          CharStream input = CharStreams.fromFileName(source);
          SysYLexer lexer = new SysYLexer(input);
           lexer.removeErrorListeners();
-//        MyErrorListener errorListener=new MyErrorListener(1);
-//        lexer.addErrorListener(errorListener);
+        MyErrorListener lexer_errorlistener=new MyErrorListener(errorType.LEXER_ERROR);
+        lexer.addErrorListener(lexer_errorlistener);
          CommonTokenStream tokens = new CommonTokenStream(lexer);
-
+        if(lexer_errorlistener.hasErrorInformation()){
+            lexer_errorlistener.printErrorInformation();
+            return;
+        }
          SysYParser parser = new SysYParser(tokens);
          parser.removeErrorListeners();
-        //MyErrorListener parser_errorListener=new MyErrorListener(2);
-
-//        if(errorListener.hasErrorInformation()){
-//            errorListener.printLexerErrorInformation(false);
-//        }
-//         else
-//        if(parser_errorListener.hasErrorInformation()){
-//            parser_errorListener.printErrorInformation();
-//        }
-//        else {
-//             if(parser_errorListener.type==1){
-//                 //List<? extends Token> myTokens = lexer.getAllTokens();
-//                //for(Token t: myTokens){
-//                 ///printSysYTokenInformation(t);
-//             }
-//             if (parser_errorListener.type == 2) {
-//                parser.reset();
-//                ParseTree tree = parser.program();
-//                FormatterVisitor visitor = new FormatterVisitor();
-//                visitor.visit(tree);
-//             }
-//        }
-   //       ParseTree semantic_tree= parser.program();
-     //     SemanticVisitor semantic_visitor=new SemanticVisitor();
-       //   semantic_visitor.visit(semantic_tree);
-         // if(OutputHelper.is_semantic_correct){
-           //   System.err.println("No semantic errors in the program!");
-          //}
+        MyErrorListener parser_errorListener=new MyErrorListener(errorType.SYNTAX_ERROR);
+        if(parser_errorListener.hasErrorInformation()){
+            parser_errorListener.printErrorInformation();
+            return;
+        }
+        parser.reset();
+        ParseTree tree = parser.program();
+        FormatterVisitor visitor = new FormatterVisitor();
+        visitor.visit(tree);
+        ParseTree semantic_tree= parser.program();
+        SemanticVisitor semantic_visitor=new SemanticVisitor();
+        semantic_visitor.visit(semantic_tree);
+        if(!OutputHelper.is_semantic_correct){
+            return;
+        }
         LLVMInitializeNativeTarget();
         LLVMInitializeNativeAsmPrinter();
         LLVMInitializeNativeAsmParser();
@@ -73,11 +63,11 @@ public class Main {
         IRGenerationVisitor visitor = new IRGenerationVisitor(module, builder);
         visitor.visit(tree);
        // LLVMDumpModule(module);
-        LLVMValueRef func = LLVMGetFirstFunction(module);
-        var_num=get_var_num(module);
         LLVMIROptimization optimization=new LLVMIROptimization(module);
         clean_terminator_inst(module);
-        while(remove_blocks_without_predecessors(func));
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
+            while (remove_blocks_without_predecessors(func)) ;
+        }
         boolean flag1=true,flag2=true,flag3=true;
         while(flag1||flag2||flag3) {
             flag1=optimization.constprop();
@@ -88,53 +78,13 @@ public class Main {
         if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
             LLVMDisposeMessage(error);
         }
-        //LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");//TODO need to be changed when submitted
-//        LLVMIRToRiscv llvmirToRiscv = new LLVMIRToRiscv(module, args[1]);
-//        llvmirToRiscv.to_riscv();
-//        if(get_block_num(module)==1) {
-//            LLVMIRToRiscv llvmirToRiscv = new LLVMIRToRiscv(module, args[1]);
-//            llvmirToRiscv.to_riscv();
-//        }
-//        else {
-//            LLVMIRInterpreter interpreter = new LLVMIRInterpreter(module, args[1]);
-//            interpreter.to_riscv();
-//        }
+        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");
+        llvmirToRiscv.to_riscv();
         LLVMDisposeBuilder(builder);
         LLVMDisposeModule(module);
     }
-    /*public static void printSysYTokenInformation(Token t){
-        String tokenType = SysYLexer.VOCABULARY.getSymbolicName(t.getType());
-        String tokenText=t.getText();
-        if(tokenType.equals("INTEGER_CONST")){
-            if(tokenText.length()>2&&(tokenText.substring(0,2).equals("0x")||tokenText.substring(0,2).equals("0X"))){
-                tokenText=String.valueOf(Integer.parseInt(tokenText.substring(2),16));
-            }
-            else if(tokenText.charAt(0)=='0'&&tokenText.length()>1){
-                tokenText=String.valueOf(Integer.parseInt(tokenText.substring(1),8));
-            }
-        }
-        System.err.printf("%s %s at Line %d.%n", tokenType,tokenText, t.getLine());
-    }*/
-    public static int get_var_num(LLVMModuleRef module){
-        Set<String> allVariables = new HashSet<>();
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)){
-            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
-                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb);
-                     inst != null && !inst.isNull();
-                     inst = LLVM.LLVMGetNextInstruction(inst)){
-                    String line = LLVM.LLVMPrintValueToString(inst).getString();
-                    for(String var:LLVMIRToRiscv.extractVariables(line)){
-                        allVariables.add(var);
-                    }
-                }
-            }
-        }
-        return allVariables.size();
-    }
     public static void clean_terminator_inst(LLVMModuleRef module){
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module);
-             func != null && !func.isNull();
-             func = LLVM.LLVMGetNextFunction(func)) {
+        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func);
                  bb != null && !bb.isNull();
                  bb = LLVM.LLVMGetNextBasicBlock(bb)) {

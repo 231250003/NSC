@@ -5,8 +5,8 @@ import java.util.List;
 
 public class MyErrorListener extends BaseErrorListener{
     private List<String> errors=new ArrayList<>();
-    public int type; // 1代表词法，2代表语法
-    public MyErrorListener(int type) {
+    public errorType type;
+    public MyErrorListener(errorType type) {
         this.type = type;
     }
     public void syntaxError(Recognizer<?, ?> recognizer,
@@ -15,11 +15,11 @@ public class MyErrorListener extends BaseErrorListener{
                             String msg,
                             RecognitionException e){
         String x="";
-        if(type==1) {
-            x = String.format("Error type A at Line %d: %s", line, msg);
+        if(type==errorType.LEXER_ERROR) {
+            x = String.format("lexer error at Line %d: %s", line, msg);
         }
-        else if(type==2){
-                x = String.format("Error type B at Line %d: %s", line, msg);
+        else if(type==errorType.SYNTAX_ERROR){
+                x = String.format("Syntax Error at Line %d: %s", line, msg);
         }
         errors.add(x);
     }
@@ -31,16 +31,7 @@ public class MyErrorListener extends BaseErrorListener{
     }
     public void printErrorInformation(){
         for(String error:errors){
-           if(type==1)System.err.println(error);
-            else
-                System.out.println(error);
+            System.out.println(error);
         }
-//        if(errors.size()==1){
-//            boolean x=false;
-//            for(String error:errors){
-//                if(error.contains("5")) x=true;
-//            }
-//            if(x==true) System.out.println("Error type B at Line 4: idk");
-//        }
     }
 }
