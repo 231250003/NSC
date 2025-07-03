@@ -332,7 +332,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                     return null;
                 }
                 for(int i=0;i<r_params.size();i++){
-                    System.out.print(f_params.get(i).toString());
+                    System.out.print(f_params.get(i).type.toString());
                     System.out.println(r_params.get(i).toString());
                     if(!f_params.get(i).type.equals(r_params.get(i))){
                         OutputHelper.printSemanticError(ErrorType.FUNCTION_ARGUMENT_MISMATCH,ctx.getStart().getLine());
