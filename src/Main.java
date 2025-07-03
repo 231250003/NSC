@@ -72,10 +72,10 @@ public class Main {
 //            flag2=optimization.elem_unused();
 //            flag3=optimization.elem_dead_code();
 //        }
-//        BytePointer error = new BytePointer((Pointer) null);
-//        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
-//            LLVMDisposeMessage(error);
-//        }
+        BytePointer error = new BytePointer((Pointer) null);
+        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
+            LLVMDisposeMessage(error);
+        }
 //        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");
 //        llvmirToRiscv.to_riscv();
         LLVMDisposeBuilder(builder);
