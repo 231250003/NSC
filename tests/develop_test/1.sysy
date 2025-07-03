@@ -2,9 +2,9 @@ int z=3;
 int print(){
     return z+3;
 }
-int main(int argc,int argv[200][300][400]){
+int main(int argc,int argv[][300][400]){
     int x=1;
     int t=print();
-    int arg[argc];
+    int arg[200];
     main(print(),argv[0]);
 }
