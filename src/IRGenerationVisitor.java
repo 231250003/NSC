@@ -443,11 +443,14 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             System.out.println("ccc");
             if (ctx.exp().isEmpty()) {
                 System.out.println("crzzz1");
+                LLVMValueRef[] idxArray = new LLVMValueRef[]{
+                        LLVMConstInt(LLVMInt32Type(), 0, 0)
+                };
                 return LLVMBuildGEP(
                         builder,
                         ptr,
-                        new PointerPointer<>(LLVMConstInt(LLVMInt32Type(), 0, 0)),
-                        1,
+                        new PointerPointer<>(idxArray),
+                        idxArray.length,
                         "gep_addr"
                 );
             }
