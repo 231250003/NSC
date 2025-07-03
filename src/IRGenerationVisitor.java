@@ -335,7 +335,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (LLVMGetTypeKind(LLVMTypeOf(value)) ==LLVMPointerTypeKind&&pointer_need_load) {
                 System.out.println("crzzz12");
                 castToI32(LLVMBuildLoad(builder, value, "load_lval"));
-                System.out.println("crzzz1919");
                 return castToI32(LLVMBuildLoad(builder, value, "load_lval"));
             } else {
                 return castToI32(value);
@@ -488,6 +487,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
         if(ctx.exp()!=null){
             System.out.println("crzzzzzzzzz");
+            visit(ctx.exp());
+            System.out.println("crzzz1919");
             LLVMValueRef value = visit(ctx.exp());
             System.out.println("crzzz4");
             if(LLVMGetTypeKind(LLVMTypeOf(value))==LLVMPointerTypeKind) System.out.println("crzzz6");
