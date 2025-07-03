@@ -3,7 +3,7 @@ int print(){
     return z+3;
 }
 int main(){
-    const int a[6][6]={};
+    //const int a[6][6]={};
     int x=1;
     //int t=print();
     //int arg[200];
