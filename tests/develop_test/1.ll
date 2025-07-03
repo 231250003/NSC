@@ -14,15 +14,15 @@ define i32 @main() {
 mainEntry:
   %a = alloca [6 x [6 x i32]], align 4
   %elemPtr = getelementptr [6 x [6 x i32]], [6 x [6 x i32]]* %a, i32 0, i32 0, i32 0
-  store i32 0, i32* %elemPtr, align 4
+  store i32 1, i32* %elemPtr, align 4
   %elemPtr1 = getelementptr [6 x [6 x i32]], [6 x [6 x i32]]* %a, i32 0, i32 0, i32 1
-  store i32 0, i32* %elemPtr1, align 4
+  store i32 2, i32* %elemPtr1, align 4
   %elemPtr2 = getelementptr [6 x [6 x i32]], [6 x [6 x i32]]* %a, i32 0, i32 0, i32 2
-  store i32 0, i32* %elemPtr2, align 4
+  store i32 3, i32* %elemPtr2, align 4
   %elemPtr3 = getelementptr [6 x [6 x i32]], [6 x [6 x i32]]* %a, i32 0, i32 0, i32 3
-  store i32 0, i32* %elemPtr3, align 4
+  store i32 3, i32* %elemPtr3, align 4
   %elemPtr4 = getelementptr [6 x [6 x i32]], [6 x [6 x i32]]* %a, i32 0, i32 0, i32 4
-  store i32 0, i32* %elemPtr4, align 4
+  store i32 4, i32* %elemPtr4, align 4
   %elemPtr5 = getelementptr [6 x [6 x i32]], [6 x [6 x i32]]* %a, i32 0, i32 0, i32 5
   store i32 0, i32* %elemPtr5, align 4
   %elemPtr6 = getelementptr [6 x [6 x i32]], [6 x [6 x i32]]* %a, i32 0, i32 1, i32 0
