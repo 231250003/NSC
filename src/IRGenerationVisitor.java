@@ -440,7 +440,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else{
             LLVMValueRef ptr = s.reference;
+            System.out.println("ccc");
             if (ctx.exp().isEmpty()) {
+                System.out.println("crzzz1");
                 return LLVMBuildGEP(
                         builder,
                         ptr,
