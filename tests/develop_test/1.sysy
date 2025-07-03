@@ -5,7 +5,5 @@ int print(){
 int main(){
     int a[4][4]={{1,2,3},{3,4}};
     int x=1;
-    //int t=print();
-    //int arg[200];
     return 0;
 }
