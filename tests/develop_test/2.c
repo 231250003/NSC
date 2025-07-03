@@ -1,5 +1,5 @@
 int sort_arr[5];
-int combine(int arr1[], int arr1_length, int arr2[], int arr2_length) {
+int combine(int arr1[2], int arr1_length, int arr2[3], int arr2_length) {
     int i = 0;
     int j = 0;
    return 0;
