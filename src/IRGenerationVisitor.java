@@ -439,15 +439,25 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             return s.reference;
         }
         else{
+            LLVMValueRef ptr = s.reference;
+            if (ctx.exp().isEmpty()) {
+                return LLVMBuildGEP(
+                        builder,
+                        ptr,
+                        new PointerPointer<>(LLVMConstInt(LLVMInt32Type(), 0, 0)),
+                        1,
+                        "gep_addr"
+                );
+            }
             List<LLVMValueRef> gepIndices = new ArrayList<>();
-            gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+            gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0)); // 初始偏移
             for (SysYParser.ExpContext expCtx : ctx.exp()) {
-                LLVMValueRef idx = visit(expCtx); // 调用 visit 获取下标表达式的值
+                LLVMValueRef idx = visit(expCtx);
                 gepIndices.add(idx);
             }
             LLVMValueRef elementPtr = LLVMBuildGEP(
                     builder,
-                    s.reference,
+                    ptr,
                     new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])),
                     gepIndices.size(),
                     "elemPtr"
