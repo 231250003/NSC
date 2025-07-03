@@ -360,7 +360,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 if(x.type.equals(new IntType())) paramTypeList.add(LLVMInt32Type());
                 else if (x.type instanceof ArrayType) {
                     LLVMTypeRef arrTy = getLLVMArrayType((ArrayType) x.type);
-                    paramTypeList.add(arrTy);
+                    paramTypeList.add(LLVMPointerType(arrTy, 0));
                 }
                 else throw new RuntimeException("Unsupported parameter type: " + x.type);
             }
