@@ -230,7 +230,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             } else {
                 // 全局数组：构造 constant initializer
                 LLVMTypeRef arrTy = getLLVMArrayType((ArrayType)symbol.type);
-                LLVMValueRef init = getConstArrayInitializer((ArrayType)symbol.type, ctx.constInitVal());
+                LLVMValueRef init = LLVM.getConstArrayInitializer((ArrayType)symbol.type, ctx.constInitVal());
 
                 LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);
                 LLVMSetInitializer(globalPtr, init);
