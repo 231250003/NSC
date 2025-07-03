@@ -353,7 +353,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             params=new ArrayList<>(getFuncFParams(ctx.funcFParams()));
             for (Symbol x: params) {
                 if(x.type.equals(new IntType())) paramTypeList.add(LLVMInt32Type());
-                 //TODO adding array type params
                 else if (x.type instanceof ArrayType) {
                     // ✅ 构造多维数组类型
                     LLVMTypeRef arrTy = getLLVMArrayType((ArrayType) x.type);
@@ -434,20 +433,28 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
-        //LLVMValueRef func =symbolTable.get_cur_scope_func();
         String name=ctx.IDENT().getText();
-//        int paramCount = LLVMCountParams(func);
-//        for (int i = 0; i < paramCount; i++) {
-//            //System.err.println("crzzz");
-//            LLVMValueRef param = LLVMGetParam(func, i);
-//            //System.err.println(LLVMGetValueName(param).getString());
-//            if (LLVMGetValueName(param).getString().equals(name)) {
-//                return param;
-//            }
-//        }
         // TODO  array type value
-        Symbol s=symbolTable.get_name_matched_symbol(name);
-        return s.reference;
+        Symbol s = symbolTable.get_name_matched_symbol(name);
+        if(ctx.L_BRACKT()==null) {
+            return s.reference;
+        }
+        else{
+            List<LLVMValueRef> gepIndices = new ArrayList<>();
+            gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+            for (SysYParser.ExpContext expCtx : ctx.exp()) {
+                LLVMValueRef idx = visit(expCtx); // 调用 visit 获取下标表达式的值
+                gepIndices.add(idx);
+            }
+            LLVMValueRef elementPtr = LLVMBuildGEP(
+                    builder,
+                    s.reference,
+                    new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])),
+                    gepIndices.size(),
+                    "elemPtr"
+            );
+            return elementPtr;
+        }
     }
 
     @Override

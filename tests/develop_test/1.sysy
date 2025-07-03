@@ -7,5 +7,5 @@ int main(){
     int x=1;
     //int t=print();
     //int arg[200];
-    return 0;
+    return a[1][2]+a[1][3];
 }
