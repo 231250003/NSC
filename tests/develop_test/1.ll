@@ -3,10 +3,10 @@ source_filename = "my_module"
 
 @sort_arr = global [5 x i32] zeroinitializer
 
-define i32 @combine(i32* %arr1, i32 %arr1_length, i32* %arr2, i32 %arr2_length) {
+define i32 @combine([10 x i32]* %arr1, i32 %arr1_length, i32* %arr2, i32 %arr2_length) {
 combineEntry:
-  %param0_addr = alloca i32*, align 8
-  store i32* %arr1, i32** %param0_addr, align 8
+  %param0_addr = alloca [10 x i32]*, align 8
+  store [10 x i32]* %arr1, [10 x i32]** %param0_addr, align 8
   %param1_addr = alloca i32, align 4
   store i32 %arr1_length, i32* %param1_addr, align 4
   %param2_addr = alloca i32*, align 8
@@ -22,22 +22,30 @@ combineEntry:
 
 define i32 @main() {
 mainEntry:
-  %a = alloca [2 x i32], align 4
-  %elemPtr = getelementptr [2 x i32], [2 x i32]* %a, i32 0, i32 0
+  %a = alloca [2 x [3 x i32]], align 4
+  %elemPtr = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %a, i32 0, i32 0, i32 0
   store i32 1, i32* %elemPtr, align 4
-  %elemPtr1 = getelementptr [2 x i32], [2 x i32]* %a, i32 0, i32 1
+  %elemPtr1 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %a, i32 0, i32 0, i32 1
   store i32 5, i32* %elemPtr1, align 4
+  %elemPtr2 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %a, i32 0, i32 0, i32 2
+  store i32 0, i32* %elemPtr2, align 4
+  %elemPtr3 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %a, i32 0, i32 1, i32 0
+  store i32 0, i32* %elemPtr3, align 4
+  %elemPtr4 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %a, i32 0, i32 1, i32 1
+  store i32 0, i32* %elemPtr4, align 4
+  %elemPtr5 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %a, i32 0, i32 1, i32 2
+  store i32 0, i32* %elemPtr5, align 4
   %b = alloca [3 x i32], align 4
-  %elemPtr2 = getelementptr [3 x i32], [3 x i32]* %b, i32 0, i32 0
-  store i32 1, i32* %elemPtr2, align 4
-  %elemPtr3 = getelementptr [3 x i32], [3 x i32]* %b, i32 0, i32 1
-  store i32 4, i32* %elemPtr3, align 4
-  %elemPtr4 = getelementptr [3 x i32], [3 x i32]* %b, i32 0, i32 2
-  store i32 14, i32* %elemPtr4, align 4
-  %elemPtr5 = getelementptr [2 x i32], [2 x i32]* %a, i32 0
-  %load_lval = load [2 x i32], [2 x i32]* %elemPtr5, align 4
-  %elemPtr6 = getelementptr [3 x i32], [3 x i32]* %b, i32 0
-  %load_lval7 = load [3 x i32], [3 x i32]* %elemPtr6, align 4
-  %combine = call i32 @combine([2 x i32] %load_lval, i32 2, [3 x i32] %load_lval7, i32 3)
+  %elemPtr6 = getelementptr [3 x i32], [3 x i32]* %b, i32 0, i32 0
+  store i32 1, i32* %elemPtr6, align 4
+  %elemPtr7 = getelementptr [3 x i32], [3 x i32]* %b, i32 0, i32 1
+  store i32 4, i32* %elemPtr7, align 4
+  %elemPtr8 = getelementptr [3 x i32], [3 x i32]* %b, i32 0, i32 2
+  store i32 14, i32* %elemPtr8, align 4
+  %elemPtr9 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %a, i32 0
+  %load_lval = load [2 x [3 x i32]], [2 x [3 x i32]]* %elemPtr9, align 4
+  %elemPtr10 = getelementptr [3 x i32], [3 x i32]* %b, i32 0
+  %load_lval11 = load [3 x i32], [3 x i32]* %elemPtr10, align 4
+  %combine = call i32 @combine([2 x [3 x i32]] %load_lval, i32 2, [3 x i32] %load_lval11, i32 3)
   ret i32 %combine
 }
