@@ -23,9 +23,6 @@ combineEntry:
 
 if.then:                                          ; preds = %combineEntry
   ret i32 0
-  %load_lval = load i32, i32* %i, align 4
-  %add = add i32 %load_lval, 1
-  store i32 %add, i32* %i, align 4
 
 if.else:                                          ; preds = %combineEntry
   ret i32 0
