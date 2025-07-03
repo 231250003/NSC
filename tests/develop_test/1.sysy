@@ -7,5 +7,4 @@ int main(int argc,int argv[200][300][400]){
     int t=print();
     int arg[2003];
     main(2+5-x+arg[3],argv)
-    main(print(),arg);
 }
