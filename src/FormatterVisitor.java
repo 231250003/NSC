@@ -410,11 +410,10 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     public Void visitFuncFParam(SysYParser.FuncFParamContext ctx) {
         visit(ctx.bType());
         System.out.print(ctx.IDENT().getText());
-        if (ctx.L_BRACKT().size() > 0) {
-            System.out.print("[]");
-            for (int i = 1; i < ctx.L_BRACKT().size(); i++) {
+        if (ctx.L_BRACKT()!=null&&ctx.L_BRACKT().size() > 0) {
+            for (int i = 0; i < ctx.L_BRACKT().size(); i++) {
                 System.out.print("[");
-                visit(ctx.number(i - 1));
+                visit(ctx.number(i));
                 System.out.print("]");
             }
         }

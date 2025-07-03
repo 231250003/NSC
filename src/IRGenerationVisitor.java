@@ -359,10 +359,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             for (Symbol x: params) {
                 if(x.type.equals(new IntType())) paramTypeList.add(LLVMInt32Type());
                 else if (x.type instanceof ArrayType) {
-                    // ✅ 构造多维数组类型
                     LLVMTypeRef arrTy = getLLVMArrayType((ArrayType) x.type);
-                    LLVMTypeRef ptrToArray = LLVMPointerType(arrTy, 0);
-                    paramTypeList.add(ptrToArray);
+                    paramTypeList.add(arrTy);
                 }
                 else throw new RuntimeException("Unsupported parameter type: " + x.type);
             }
@@ -398,7 +396,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             int dimSize = Integer.decode(expCtx.INTEGER_CONST().getText());
             dims.add(dimSize);
         }
-        if (ctx.L_BRACKT().size() > 0) {
+        if (ctx.L_BRACKT()!=null&&ctx.L_BRACKT().size() > 0) {
             type=new ArrayType(new IntType(), ctx.L_BRACKT().size());
             ((ArrayType)type).dimensions=new ArrayList<>(dims);
         }

@@ -79,7 +79,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     public AbstractMap.SimpleEntry<String,Type> getFuncFParam(SysYParser.FuncFParamContext ctx) {
         Type type;
         String name=ctx.IDENT().getText();
-        if (ctx.L_BRACKT().size() > 0) {
+        if (ctx.L_BRACKT()!=null&&ctx.L_BRACKT().size() > 0) {
             type=new ArrayType(new IntType(),ctx.L_BRACKT().size());
         }
         else type=new IntType();
