@@ -298,7 +298,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                             new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), "elemPtr");
                     LLVMValueRef val;
 
-                    
+
                 }
                 symbol.reference = pointer;
             } else {
