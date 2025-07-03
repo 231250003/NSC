@@ -1,7 +1,10 @@
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.PointerPointer;
+import org.antlr.v4.runtime.tree.RuleNode;
 import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
 import semantic_check.*;
@@ -232,7 +235,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     private LLVMValueRef getZeroArray(List<Integer> dims) {
         if (dims.isEmpty()) {
-            return LLVMConstInt(LLVMInt32Type(), 0, false);
+            return LLVMConstInt(LLVMInt32Type(), 0, 0);
         }
         ArrayType zeroType = new ArrayType(new IntType(), dims);
         LLVMTypeRef ty = getLLVMArrayType(zeroType);
