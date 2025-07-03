@@ -269,7 +269,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             return LLVMBuildZExt(builder, val, LLVMInt32Type(), "zext_to_i32");
         }
         System.out.println("crzzz13");
-        if(val.isNull())System.out.println("crzzz14");
         return val;
     }
     @Override
@@ -491,6 +490,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             System.out.println("crzzz4");
             if(LLVMGetTypeKind(LLVMTypeOf(value))==LLVMPointerTypeKind) System.out.println("crzzz6");
             if(LLVMGetTypeKind(LLVMTypeOf(value))==LLVMIntegerTypeKind) System.out.println("crzzz8");
+            System.out.println("crzzz1010");
             return castToI32(value);
         }
         else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {
