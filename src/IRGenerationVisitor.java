@@ -280,18 +280,14 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
             PointerPointer<LLVMValueRef> args = new PointerPointer<>(0);;
             int argCount = 0;
-//            symbolTable.enterScope();
             if (ctx.funcRParams() != null) {
                 args=getFuncRParams(ctx.funcRParams());
                 argCount = ctx.funcRParams().param().size();
-//                symbolTable.set_r_params(funcName,args);
             }
             if( (((FunctionType)(symbolTable.get_name_matched_function(funcName).type)).getReturnType() ).toString().equals("void")){
                 LLVMBuildCall(builder, function, args, argCount, "");
-                //symbolTable.exitScope();
                 return null;
             }
-            //symbolTable.exitScope();
             return castToI32(LLVMBuildCall(builder, function, args, argCount, funcName));
         }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
@@ -358,6 +354,13 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             for (Symbol x: params) {
                 if(x.type.equals(new IntType())) paramTypeList.add(LLVMInt32Type());
                  //TODO adding array type params
+                else if (x.type instanceof ArrayType) {
+                    // ✅ 构造多维数组类型
+                    LLVMTypeRef arrTy = getLLVMArrayType((ArrayType) x.type);
+                    LLVMTypeRef ptrToArray = LLVMPointerType(arrTy, 0);
+                    paramTypeList.add(ptrToArray);
+                }
+                else throw new RuntimeException("Unsupported parameter type: " + x.type);
             }
         }
         PointerPointer<LLVMTypeRef> paramTypes = new PointerPointer<>(paramTypeList.size());

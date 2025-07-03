@@ -1,5 +1,5 @@
 int z=3;
-int print(){
+int print(int x[][2003][3003]){
     return z+3;
 }
 int main(){
