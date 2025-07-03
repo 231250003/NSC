@@ -493,6 +493,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 left = LLVMBuildLoad(builder, left, "load_left");
             }
             pointer_need_load=false;
+            System.out.println("crzzz3");
             LLVMValueRef right = visit(ctx.cond(1));
             System.out.println("crzzz2");
             if(right==null)      System.out.println("crzzz1");
