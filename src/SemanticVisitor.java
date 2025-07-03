@@ -134,13 +134,10 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     public Symbol getConstdef(SysYParser.ConstDefContext ctx) {
        Symbol symbol=new Symbol();
        symbol.name=ctx.IDENT().getText();
-        if(!ctx.constExp().isEmpty()) {//gurantee that assignof the array on the right side always correct
+        if(!ctx.number().isEmpty()) {//gurantee that assignof the array on the right side always correct
             symbol.type=new ArrayType();
-            ((ArrayType)symbol.type).dim= ctx.constExp().size();
+            ((ArrayType)symbol.type).dim= ctx.number().size();
             ((ArrayType)symbol.type).elementType=new IntType();
-            for (int i = 0; i < ctx.constExp().size(); i++) {
-                if(getConstExp(ctx.constExp().get(i))==null) return null;//null means there is an error in constEXP,ele return the expTYPE
-            }
         }
         else{
             Type y=getConstinitvalue(ctx.constInitVal());
@@ -199,24 +196,18 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         Symbol symbol=new Symbol();
         symbol.name=ctx.IDENT().getText();
         if(ctx.initVal()==null) {
-            if (!ctx.constExp().isEmpty()) {
+            if (!ctx.number().isEmpty()) {
                 symbol.type = new ArrayType();
-                ((ArrayType) symbol.type).dim = ctx.constExp().size();
+                ((ArrayType) symbol.type).dim = ctx.number().size();
                 ((ArrayType) symbol.type).elementType = new IntType();
-                for (int i = 0; i < ctx.constExp().size(); i++) {
-                    if (getConstExp(ctx.constExp().get(i)) == null) return null;
-                }
             }
             else symbol.type=new IntType();
         }
         else{
-            if(!ctx.constExp().isEmpty()) {
+            if(!ctx.number().isEmpty()) {
                 symbol.type=new ArrayType();
-                ((ArrayType)symbol.type).dim= ctx.constExp().size();
+                ((ArrayType)symbol.type).dim= ctx.number().size();
                 ((ArrayType)symbol.type).elementType=new IntType();
-                for (int i = 0; i < ctx.constExp().size(); i++) {
-                    if(getConstExp(ctx.constExp().get(i))==null) return null;
-                }
             }
             else{
                 symbol.type=new IntType();
