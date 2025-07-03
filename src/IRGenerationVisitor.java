@@ -17,6 +17,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     private static final   LLVMValueRef zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);
     public static int while_stmt_count=0;
     public static int block_count=0;
+    Boolean pointer_need_load=false;
     private SymbolTable symbolTable=new SymbolTable();
     public IRGenerationVisitor(LLVMModuleRef module, LLVMBuilderRef builder) {
         this.module = module;
@@ -291,8 +292,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             return castToI32(LLVMBuildCall(builder, function, args, argCount, funcName));
         }
         else if (ctx.exp().size() == 1 && ctx.unaryOp() != null) {
+            pointer_need_load=false;
             LLVMValueRef val = visit(ctx.exp(0));
-            if (LLVMGetTypeKind(LLVMTypeOf(val)) == LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(val)) == LLVMPointerTypeKind&&pointer_need_load) {
                 val = LLVMBuildLoad(builder, val, "load_val");
             }
             switch (ctx.unaryOp().getText()) {
@@ -303,12 +305,14 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
         }
         else if (ctx.exp().size() == 2) {
+            pointer_need_load=false;
             LLVMValueRef left = visit(ctx.exp(0));
-            LLVMValueRef right = visit(ctx.exp(1));
-            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind&&pointer_need_load) {
                 left = LLVMBuildLoad(builder, left, "load_left");
             }
-            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind) {
+            pointer_need_load=false;
+            LLVMValueRef right = visit(ctx.exp(1));
+            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind&&pointer_need_load) {
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
             switch (ctx.getChild(1).getText()) {
@@ -324,8 +328,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             return castToI32(visit(ctx.exp(0)));
         }
         else if(ctx.lVal()!=null){
+            pointer_need_load=false;
             LLVMValueRef value = visit(ctx.lVal());
-            if (LLVMGetTypeKind(LLVMTypeOf(value)) ==LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(value)) ==LLVMPointerTypeKind&&pointer_need_load) {
                 return castToI32(LLVMBuildLoad(builder, value, "load_lval"));
             } else {
                 return castToI32(value);
@@ -415,8 +420,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         int paramCount = ctx.param().size();
         PointerPointer<LLVMValueRef> args = new PointerPointer<>(paramCount);
         for (int i = 0; i < paramCount; i++) {
+            pointer_need_load=false;
             LLVMValueRef argValue = visit(ctx.param(i));
-            if (LLVMGetTypeKind(LLVMTypeOf(argValue)) == LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(argValue)) == LLVMPointerTypeKind&&pointer_need_load) {
                 argValue = LLVMBuildLoad(builder, argValue, "arg");
             }
             args.put(i, argValue);
@@ -436,6 +442,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         String name=ctx.IDENT().getText();
         Symbol s = symbolTable.get_name_matched_symbol(name);
         if(s.type instanceof IntType) {
+            pointer_need_load=true;
             return s.reference;
         }
         else{
@@ -479,12 +486,14 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {
             // 处理 <, >, <=, >=
+            pointer_need_load=false;
             LLVMValueRef left = visit(ctx.cond(0));
-            LLVMValueRef right = visit(ctx.cond(1));
-            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind&&pointer_need_load) {
                 left = LLVMBuildLoad(builder, left, "load_left");
             }
-            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind) {
+            pointer_need_load=false;
+            LLVMValueRef right = visit(ctx.cond(1));
+            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind&&pointer_need_load) {
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
             int predicate;
@@ -500,20 +509,23 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             return castToI32(LLVMBuildICmp(builder, predicate, left, right, "cmp"));
         }
         else if (ctx.EQ() != null || ctx.NEQ() != null) {
+            pointer_need_load=false;
             LLVMValueRef left = visit(ctx.cond(0));
-            LLVMValueRef right = visit(ctx.cond(1));
             int predicate = (ctx.EQ() != null) ? LLVMIntEQ : LLVMIntNE;
-            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind&&pointer_need_load) {
                 left = LLVMBuildLoad(builder, left, "load_left");
             }
-            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind) {
+            pointer_need_load=false;
+            LLVMValueRef right = visit(ctx.cond(1));
+            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind&&pointer_need_load) {
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
             return  castToI32(LLVMBuildICmp(builder, predicate, left, right, "cmp"));
         }
         else if (ctx.AND() != null) {
+            pointer_need_load=false;
             LLVMValueRef lhs = visit(ctx.cond(0));
-            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind&&pointer_need_load) {
                 lhs = LLVMBuildLoad(builder, lhs, "load_lhs");
             }
             if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMIntegerTypeKind &&
@@ -534,8 +546,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
             // ===== rhs block =====
             LLVMPositionBuilderAtEnd(builder, rhsBlock);
+            pointer_need_load=false;
             LLVMValueRef rhs = visit(ctx.cond(1));
-            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind&&pointer_need_load) {
                 rhs = LLVMBuildLoad(builder, rhs, "load_rhs");
             }
             if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMIntegerTypeKind &&
@@ -567,8 +580,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             return castToI32(phi);
         }
         else if (ctx.OR() != null) {
+            pointer_need_load=false;
             LLVMValueRef lhs = visit(ctx.cond(0));
-            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind&&pointer_need_load) {
                 lhs = LLVMBuildLoad(builder, lhs, "load_lhs");
             }
             if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMIntegerTypeKind &&
@@ -588,8 +602,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
             // === 右侧块 ===
             LLVMPositionBuilderAtEnd(builder, rhsBlock);
+            pointer_need_load=false;
             LLVMValueRef rhs = visit(ctx.cond(1));
-            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind) {
+            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind&&pointer_need_load) {
                 rhs = LLVMBuildLoad(builder, rhs, "load_rhs");
             }
             if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMIntegerTypeKind &&
@@ -628,8 +643,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMValueRef returnValue;
             if(ctx.exp() != null || symbolTable.get_cur_scope_return_type() instanceof IntType){
                 if(ctx.exp()!=null) {
+                    pointer_need_load=false;
                     returnValue = visit(ctx.exp());
-                    if (LLVMGetTypeKind(LLVMTypeOf(returnValue)) == LLVMPointerTypeKind) {
+                    if (LLVMGetTypeKind(LLVMTypeOf(returnValue)) == LLVMPointerTypeKind&&pointer_need_load) {
                         returnValue = LLVMBuildLoad(builder, returnValue, "load_return");
                     }
                 }
