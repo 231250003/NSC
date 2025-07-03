@@ -75,9 +75,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 result.add(new Symbol(entry.getKey(), entry.getValue()));
             }
             else{
-                //if(!entry.getValue().equals(seenKeys.get(entry.getKey()))){
-                    OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
-                //}
+                OutputHelper.printSemanticError(ErrorType.REPEATED_VARIABLE_DECLARATION,ctx.getStart().getLine());
             }
         }
         return result;
@@ -87,7 +85,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         Type type;
         String name=ctx.IDENT().getText();
         if (ctx.L_BRACKT().size() > 0) {
-            type=new ArrayType(new IntType(),1);
+            type=new ArrayType(new IntType(),ctx.L_BRACKT().size());
         }
         else type=new IntType();
         return new AbstractMap.SimpleEntry<>(name,type);
