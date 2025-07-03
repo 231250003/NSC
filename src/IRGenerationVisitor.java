@@ -300,7 +300,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         Type type;
         String name=ctx.IDENT().getText();
         if (ctx.L_BRACKT().size() > 0) {
-            System.out.println(ctx.L_BRACKT().size());
             type=new ArrayType(new IntType(),ctx.L_BRACKT().size());
         }
         else type=new IntType();
