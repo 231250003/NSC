@@ -40,12 +40,13 @@ public class Main {
          SysYParser parser = new SysYParser(tokens);
          parser.removeErrorListeners();
         MyErrorListener parser_errorListener=new MyErrorListener(errorType.SYNTAX_ERROR);
+        ParseTree tree = parser.program();  // 或 parser.compUnit()
         if(parser_errorListener.hasErrorInformation()){
             parser_errorListener.printErrorInformation();
             return;
         }
         parser.reset();
-        ParseTree tree = parser.program();
+        tree = parser.program();
         FormatterVisitor formatter_visitor = new FormatterVisitor();
         formatter_visitor.visit(tree);
         SemanticVisitor semantic_visitor=new SemanticVisitor();
