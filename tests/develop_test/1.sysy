@@ -3,6 +3,9 @@ int print(){
     return z+3;
 }
 int main(){
-   int a={2};
-   return a;
+    const int a[6][6]={{}};
+    int x=1;
+    //int t=print();
+    //int arg[200];
+    return 0;
 }

@@ -214,7 +214,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 Type x=getinitvalue(ctx.initVal());
                 if(x!=null&&(!(x instanceof IntType)))
                 {
-                    System.out.println("crzzz");
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
                 }
             }

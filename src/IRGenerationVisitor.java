@@ -1,14 +1,11 @@
-import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.PointerPointer;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.bytedeco.llvm.LLVM.*;
-import org.bytedeco.llvm.global.LLVM;
 import semantic_check.*;
-import org.antlr.v4.runtime.ParserRuleContext;
+
 import java.util.*;
 
 import static org.bytedeco.llvm.global.LLVM.*;
@@ -19,8 +16,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     private static final LLVMTypeRef i32Type = LLVMInt32Type();
     private static final   LLVMValueRef zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);
     public static int while_stmt_count=0;
-    public static int if_stmt_count=0;
-    public static int break_count=0,continue_count=0,block_count=0;
+    public static int block_count=0;
     private SymbolTable symbolTable=new SymbolTable();
     public IRGenerationVisitor(LLVMModuleRef module, LLVMBuilderRef builder) {
         this.module = module;
@@ -252,6 +248,21 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             ans.add(pos);
         }
     }
+    void get_const_init_val(List<LLVMValueRef> ans, SysYParser.ConstInitValContext constInitValContext){
+        if(constInitValContext.constExp()!=null){
+            LLVMValueRef val = visitConstExp(constInitValContext.constExp());
+            if (val != null && LLVMIsAConstantInt(val) != null) {
+                long constVal = LLVMConstIntGetSExtValue(val); // 提取整数值（有符号）
+                ans.add(LLVMConstInt(LLVMInt32Type(), constVal, 1));
+            }
+            else ans.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+        }
+        else{
+            for(int i=0;i<constInitValContext.constInitVal().size();i++){
+                get_const_init_val(ans,constInitValContext.constInitVal(i));
+            }
+        }
+    }
     public Symbol getConstDef(SysYParser.ConstDefContext ctx) {
         Symbol symbol=new Symbol();
         symbol.name=ctx.IDENT().getText();
@@ -286,6 +297,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 //                fillArrayInLocal(pointer, (ArrayType)symbol.type, ctx.constInitVal(), new ArrayList<>());
 //                System.out.println("crz2");
                 int totalSize=((ArrayType)symbol.type).getTotalSize();
+                List<LLVMValueRef> init_val_list=new ArrayList<>();
+                get_const_init_val(init_val_list,ctx.constInitVal());
+                while(init_val_list.size()<totalSize){
+                    init_val_list.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+                }
                 for(int i=0;i<totalSize;i++){
                     List<LLVMValueRef> gepIndices = new ArrayList<>();
                     gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
@@ -296,9 +312,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     }
                     LLVMValueRef elementPtr = LLVMBuildGEP(builder, pointer,
                             new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), "elemPtr");
-                    LLVMValueRef val;
-
-
+                    LLVMBuildStore(builder, init_val_list.get(i), elementPtr);
                 }
                 symbol.reference = pointer;
             } else {
@@ -707,7 +721,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             visit_block(ctx.block());
         }
         else if(ctx.IF()!=null){
-            if_stmt_count++;
             LLVMValueRef function = symbolTable.get_cur_scope_func();
             LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "merge");
             LLVMPositionBuilderAtEnd(builder, LLVMGetInsertBlock(builder));
@@ -756,12 +769,10 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
         else if(ctx.BREAK()!=null){
-            break_count++;
             AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
             LLVMBuildBr(builder, x.getValue());
         }
         else if(ctx.CONTINUE()!=null){
-            continue_count++;
             AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
             LLVMBuildBr(builder, x.getKey());
         }
