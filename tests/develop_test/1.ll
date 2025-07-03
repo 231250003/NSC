@@ -2,7 +2,7 @@
 source_filename = "my_module"
 
 @z = global i32 3
-@a = constant [4 x [4 x i32]] [[4 x i32] [i32 1, i32 2, i32 3, i32 3], [4 x i32] [i32 4, i32 0, i32 0, i32 0], [4 x i32] zeroinitializer, [4 x i32] zeroinitializer]
+@a = global [4 x [4 x i32]] [[4 x i32] [i32 1, i32 2, i32 3, i32 3], [4 x i32] [i32 4, i32 0, i32 0, i32 0], [4 x i32] zeroinitializer, [4 x i32] zeroinitializer]
 
 define i32 @print() {
 printEntry:
