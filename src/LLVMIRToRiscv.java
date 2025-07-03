@@ -129,7 +129,7 @@ public class LLVMIRToRiscv {
             blockCount++;
         }
         if (blockCount == 1) {
-            
+
             //Main.used_interpreter = false;
         }
         else{
