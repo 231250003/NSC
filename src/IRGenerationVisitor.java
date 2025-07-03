@@ -435,26 +435,24 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
         String name=ctx.IDENT().getText();
         Symbol s = symbolTable.get_name_matched_symbol(name);
-        if(symbolTable.get_name_matched_symbol(name).type instanceof IntType) {
+        if(ctx.L_BRACKT()==null) {
             return s.reference;
         }
         else{
-            LLVMValueRef ptr = s.reference;
             List<LLVMValueRef> gepIndices = new ArrayList<>();
             gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
             for (SysYParser.ExpContext expCtx : ctx.exp()) {
-                gepIndices.add(visit(expCtx));
+                LLVMValueRef idx = visit(expCtx);
+                gepIndices.add(idx);
             }
             LLVMValueRef elementPtr = LLVMBuildGEP(
                     builder,
-                    ptr,
+                    s.reference,
                     new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])),
                     gepIndices.size(),
                     "elemPtr"
             );
-            LLVMValueRef tmpAddr = LLVMBuildAlloca(builder, LLVMPointerType(LLVMInt32Type(), 0), "tmpPtr");
-            LLVMBuildStore(builder, elementPtr, tmpAddr);
-            return tmpAddr;
+            return elementPtr;
         }
     }
 

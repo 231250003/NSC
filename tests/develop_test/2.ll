@@ -34,10 +34,16 @@ mainEntry:
   store i32 4, i32* %elemPtr3, align 4
   %elemPtr4 = getelementptr [3 x i32], [3 x i32]* %b, i32 0, i32 2
   store i32 14, i32* %elemPtr4, align 4
-  %gep_addr = getelementptr [2 x i32], [2 x i32]* %a, i32 0
-  %load_lval = load [2 x i32], [2 x i32]* %gep_addr, align 4
-  %gep_addr5 = getelementptr [3 x i32], [3 x i32]* %b, i32 0
-  %load_lval6 = load [3 x i32], [3 x i32]* %gep_addr5, align 4
-  %combine = call i32 @combine([2 x i32] %load_lval, i32 2, [3 x i32] %load_lval6, i32 3)
+  %elemPtr5 = getelementptr [2 x i32], [2 x i32]* %a, i32 0
+  %tmpPtr = alloca i32*, align 8
+  store [2 x i32]* %elemPtr5, i32** %tmpPtr, align 8
+  %load_lval = load i32*, i32** %tmpPtr, align 8
+  %arg = load i32, i32* %load_lval, align 4
+  %elemPtr6 = getelementptr [3 x i32], [3 x i32]* %b, i32 0
+  %tmpPtr7 = alloca i32*, align 8
+  store [3 x i32]* %elemPtr6, i32** %tmpPtr7, align 8
+  %load_lval8 = load i32*, i32** %tmpPtr7, align 8
+  %arg9 = load i32, i32* %load_lval8, align 4
+  %combine = call i32 @combine(i32 %arg, i32 2, i32 %arg9, i32 3)
   ret i32 %combine
 }
