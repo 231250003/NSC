@@ -17,6 +17,17 @@ combineEntry:
   store i32 0, i32* %i, align 4
   %j = alloca i32, align 4
   store i32 0, i32* %j, align 4
+  %k = alloca i32, align 4
+  store i32 0, i32* %k, align 4
+  br i1 true, label %if.then, label %if.else
+
+if.then:                                          ; preds = %combineEntry
+  ret i32 0
+  %load_lval = load i32, i32* %i, align 4
+  %add = add i32 %load_lval, 1
+  store i32 %add, i32* %i, align 4
+
+if.else:                                          ; preds = %combineEntry
   ret i32 0
 }
 
@@ -35,7 +46,9 @@ mainEntry:
   %elemPtr4 = getelementptr [3 x i32], [3 x i32]* %b, i32 0, i32 2
   store i32 14, i32* %elemPtr4, align 4
   %elemPtr5 = getelementptr [2 x i32], [2 x i32]* %a, i32 0
+  %load_lval = load [2 x i32], [2 x i32]* %elemPtr5, align 4
   %elemPtr6 = getelementptr [3 x i32], [3 x i32]* %b, i32 0
-  %combine = call i32 @combine([2 x i32]* %elemPtr5, i32 2, [3 x i32]* %elemPtr6, i32 3)
+  %load_lval7 = load [3 x i32], [3 x i32]* %elemPtr6, align 4
+  %combine = call i32 @combine([2 x i32] %load_lval, i32 2, [3 x i32] %load_lval7, i32 3)
   ret i32 %combine
 }

@@ -93,9 +93,7 @@ public class Main {
                 }
                 for (LLVMValueRef inst : instructions) {
                     if (seenTerminator) {
-                        if (LLVM.LLVMIsATerminatorInst(inst) != null) {
-                            LLVM.LLVMInstructionEraseFromParent(inst);
-                        }
+                        LLVM.LLVMInstructionEraseFromParent(inst);
                     } else {
                         if (LLVM.LLVMIsATerminatorInst(inst) != null) {
                             seenTerminator = true;
