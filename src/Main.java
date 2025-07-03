@@ -41,7 +41,7 @@ public class Main {
          parser.removeErrorListeners();
         MyErrorListener parser_errorListener=new MyErrorListener(errorType.SYNTAX_ERROR);
         parser.addErrorListener(parser_errorListener);
-        ParseTree tree = parser.program();  
+        ParseTree tree = parser.program();
         if(parser_errorListener.hasErrorInformation()){
             parser_errorListener.printErrorInformation();
             return;
