@@ -4,7 +4,7 @@ int combine(int arr1[2], int arr1_length, int arr2[3], int arr2_length) {
     int j = 0;
     int k = 0;
    {
-        if(1<2){
+        if (arr1[i] < arr2[j]) {
             return 0;
             i = i + 1;
         }
