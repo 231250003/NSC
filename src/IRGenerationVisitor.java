@@ -172,8 +172,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 } else {
                     val = LLVMConstInt(LLVMInt32Type(), 0, 0);
                 }
-                System.out.println("crz0");
                 LLVMBuildStore(builder, val, elementPtr);
+                System.out.println("crz0");
             }
         } else {
             int len = type.dimensions.get(indices.size());
