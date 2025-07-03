@@ -64,7 +64,6 @@ mainEntry:
   store i32 0, i32* %elemPtr23, align 4
   %elemPtr24 = getelementptr [4 x [4 x i32]], [4 x [4 x i32]]* %a, i32 0, i32 4
   %elemPtr25 = getelementptr [2 x [2 x [2 x i32]]], [2 x [2 x [2 x i32]]]* %b, i32 0, i32 2, i32 2
-  %load_lval = load [2 x i32], [2 x i32]* %elemPtr25, align 4
-  store [2 x i32] %load_lval, [4 x i32]* %elemPtr24, align 4
+  store [2 x i32]* %elemPtr25, [4 x i32]* %elemPtr24, align 8
   ret i32 0
 }
