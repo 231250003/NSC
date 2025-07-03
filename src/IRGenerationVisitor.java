@@ -353,6 +353,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 //                return param;
 //            }
 //        }
+        // TODO  array type value
         Symbol s=symbolTable.get_name_matched_symbol(name);
         return s.reference;
     }
