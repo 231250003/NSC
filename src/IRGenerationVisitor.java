@@ -483,7 +483,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
         if(ctx.exp()!=null){
             LLVMValueRef value = visit(ctx.exp());
-            if(value==null) System.out.println("crzzz4");
+            System.out.println("crzzz4");
             return castToI32(value);
         }
         else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {
