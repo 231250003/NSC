@@ -177,7 +177,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 LLVMBuildStore(builder, val, elementPtr);
             }
         } else {
-            System.out.println("crz0");
             int len = type.dimensions.get(indices.size());
             List<SysYParser.ConstInitValContext> children = init.constInitVal();
             for (int i = 0; i < len; i++) {
@@ -190,6 +189,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     // 构造全 0 initializer
                     subInit = buildZeroInit(type.dimensions.size() - indices.size() - 1);
                 }
+                System.out.println("crz0");
                 fillArrayInLocal(ptr, type, subInit, newIndices);
             }
         }
