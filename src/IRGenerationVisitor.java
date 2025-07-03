@@ -495,9 +495,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             pointer_need_load=false;
             LLVMValueRef right = visit(ctx.cond(1));
             if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind&&pointer_need_load) {
+                System.out.println("crzzz1");
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
-            System.out.println("crzzz1");
             int predicate;
             if (ctx.LT() != null) {
                 predicate = LLVMIntSLT;
