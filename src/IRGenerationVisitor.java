@@ -440,25 +440,10 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else{
             LLVMValueRef ptr = s.reference;
-            System.out.println("ccc");
-            if (ctx.exp().isEmpty()) {
-                System.out.println("crzzz1");
-                LLVMValueRef[] idxArray = new LLVMValueRef[]{
-                        LLVMConstInt(LLVMInt32Type(), 0, 0)
-                };
-                return LLVMBuildGEP(
-                        builder,
-                        ptr,
-                        new PointerPointer<>(idxArray),
-                        idxArray.length,
-                        "gep_addr"
-                );
-            }
             List<LLVMValueRef> gepIndices = new ArrayList<>();
-            gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0)); // 初始偏移
+            gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
             for (SysYParser.ExpContext expCtx : ctx.exp()) {
-                LLVMValueRef idx = visit(expCtx);
-                gepIndices.add(idx);
+                gepIndices.add(visit(expCtx));
             }
             LLVMValueRef elementPtr = LLVMBuildGEP(
                     builder,
@@ -467,7 +452,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     gepIndices.size(),
                     "elemPtr"
             );
-            return elementPtr;
+            LLVMValueRef tmpAddr = LLVMBuildAlloca(builder, LLVMPointerType(LLVMInt32Type(), 0), "tmpPtr");
+            LLVMBuildStore(builder, elementPtr, tmpAddr);
+            return tmpAddr;
         }
     }
 
