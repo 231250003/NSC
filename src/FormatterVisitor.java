@@ -113,10 +113,10 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     @Override
     public Void visitConstDef(SysYParser.ConstDefContext ctx) {
         System.out.print(ctx.IDENT().getText());
-        if(ctx.constExp()!=null) {
-            for (int i = 0; i < ctx.constExp().size(); i++) {
+        if(ctx.number()!=null) {
+            for (int i = 0; i < ctx.number().size(); i++) {
                 System.out.print(ctx.L_BRACKT().get(i).getText());
-                visit(ctx.constExp().get(i));
+                visit(ctx.number().get(i));
                 System.out.print(ctx.R_BRACKT().get(i).getText());
             }
         }
@@ -171,7 +171,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         if(ctx.L_BRACKT()!=null) {
             for (int i = 0; i < ctx.L_BRACKT().size(); i++) {
                 System.out.print("[");
-                visit(ctx.constExp(i));
+                visit(ctx.number(i));
                 System.out.print("]");
             }
         }
