@@ -488,6 +488,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             System.out.println("crzzzzzzzzz");
             LLVMValueRef value = visit(ctx.exp());
             System.out.println("crzzz4");
+            if(value==null) System.out.println("14141414");
             if(LLVMGetTypeKind(LLVMTypeOf(value))==LLVMPointerTypeKind) System.out.println("crzzz6");
             if(LLVMGetTypeKind(LLVMTypeOf(value))==LLVMIntegerTypeKind) System.out.println("crzzz8");
             System.out.println("crzzz1010");
