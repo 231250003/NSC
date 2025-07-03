@@ -276,6 +276,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
             symbol.type = new ArrayType(new IntType(), dims);
             if (!symbolTable.is_cur_scopeGlobal()) {
+                System.out.println("crz0");
                 LLVMValueRef pointer = LLVMBuildAlloca(builder, getLLVMArrayType((ArrayType)symbol.type), symbol.name);
                 System.out.println("crz1");
                 fillArrayInLocal(pointer, (ArrayType)symbol.type, ctx.constInitVal(), new ArrayList<>());
