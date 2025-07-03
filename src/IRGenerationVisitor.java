@@ -155,6 +155,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else{
             // TODO  assigning array  to initval, no need in lab4
+            List<Integer> dims = new ArrayList<>();
+
             assert(false);
         }
         return symbol;

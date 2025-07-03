@@ -20,7 +20,8 @@ public class ArrayType extends Type {
 
     }
     public int getTotalSize() {
-        return dimensions.stream().reduce(1, (a, b) -> a * b);
+        if(!dimensions.isEmpty())return dimensions.stream().reduce(1, (a, b) -> a * b);
+        else return 0;
     }
 
     public Type getElementType() {

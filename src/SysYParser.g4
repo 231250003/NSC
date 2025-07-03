@@ -17,13 +17,13 @@ constDecl : CONST bType constDef (COMMA constDef)* SEMICOLON;
 
 bType : INT;
 
-constDef : IDENT (L_BRACKT constExp R_BRACKT)* ASSIGN constInitVal;
+constDef : IDENT (L_BRACKT number R_BRACKT)* ASSIGN constInitVal;
 
 constInitVal : constExp | L_BRACE (constInitVal (COMMA constInitVal)*)? R_BRACE;
 
 varDecl : bType varDef (COMMA varDef)* SEMICOLON;
 
-varDef : IDENT (L_BRACKT constExp R_BRACKT)* | IDENT (L_BRACKT constExp R_BRACKT)* ASSIGN initVal;
+varDef : IDENT (L_BRACKT number R_BRACKT)* | IDENT (L_BRACKT number R_BRACKT)* ASSIGN initVal;
 
 initVal : exp | L_BRACE (initVal (COMMA initVal)*)? R_BRACE;
 
