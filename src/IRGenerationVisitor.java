@@ -158,6 +158,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             List<SysYParser.ConstInitValContext> children = init.constInitVal();
 
             for (int i = 0; i < len; i++) {
+                System.out.println("crz0");
                 List<LLVMValueRef> gepIndices = new ArrayList<>();
                 gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0)); // 第一个参数是 GEP 到 %ptr[0]
                 for (int index : indices) {
@@ -189,7 +190,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     // 构造全 0 initializer
                     subInit = buildZeroInit(type.dimensions.size() - indices.size() - 1);
                 }
-                System.out.println("crz0");
                 fillArrayInLocal(ptr, type, subInit, newIndices);
             }
         }
