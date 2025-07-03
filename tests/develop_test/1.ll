@@ -3,8 +3,10 @@ source_filename = "my_module"
 
 @z = global i32 3
 
-define i32 @print() {
+define i32 @print(i32* %x) {
 printEntry:
+  %param0_addr = alloca i32*, align 8
+  store i32* %x, i32** %param0_addr, align 8
   %load_lval = load i32, i32* @z, align 4
   %add = add i32 %load_lval, 3
   ret i32 %add

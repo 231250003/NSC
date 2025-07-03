@@ -389,8 +389,14 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public Symbol getFuncFParam(SysYParser.FuncFParamContext ctx) {
         Type type;
         String name=ctx.IDENT().getText();
+        List<Integer> dims = new ArrayList<>();
+        for (SysYParser.NumberContext expCtx : ctx.number()) {
+            int dimSize = Integer.decode(expCtx.INTEGER_CONST().getText());
+            dims.add(dimSize);
+        }
         if (ctx.L_BRACKT().size() > 0) {
-            type=new ArrayType(new IntType(),ctx.L_BRACKT().size());
+            type=new ArrayType(new IntType(), ctx.L_BRACKT().size());
+            ((ArrayType)type).dimensions=new ArrayList<>(dims);
         }
         else type=new IntType();
         return new Symbol(name,type);
