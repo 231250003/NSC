@@ -312,6 +312,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             SysYParser.FuncFParamContext funcFParam = funcFParams.get(i);
             Symbol x=getFuncFParam(funcFParam);
             result.add(x);
+            System.out.println("crzzz");
+            System.out.println(x.type);
         }
         return result;
     }
