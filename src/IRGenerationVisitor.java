@@ -268,6 +268,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         if (LLVMGetTypeKind(type) == LLVMIntegerTypeKind && LLVMGetIntTypeWidth(type) == 1) {
             return LLVMBuildZExt(builder, val, LLVMInt32Type(), "zext_to_i32");
         }
+        System.out.println("crzzz13");
         return val;
     }
     @Override
