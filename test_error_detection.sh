@@ -2,6 +2,7 @@
 
 GENERATE_RISCV=0
 SYSY_DIR="tests/develop_test"
+filename=$(basename "$sysy_file" .sysy)
 ll_file="$SYSY_DIR/$filename.ll"
 echo "== Batch processing all .sysy files in $SYSY_DIR =="
 for sysy_file in "$SYSY_DIR"/*.sysy; do

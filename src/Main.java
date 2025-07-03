@@ -61,21 +61,21 @@ public class Main {
         IRGenerationVisitor IR_visitor = new IRGenerationVisitor(module, builder);
         IR_visitor.visit(tree);
        // LLVMDumpModule(module);
-        LLVMIROptimization optimization=new LLVMIROptimization(module);
+       // LLVMIROptimization optimization=new LLVMIROptimization(module);
         clean_terminator_inst(module);
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             while (remove_blocks_without_predecessors(func)) ;
         }
-        boolean flag1=true,flag2=true,flag3=true;
-        while(flag1||flag2||flag3) {
-            flag1=optimization.constprop();
-            flag2=optimization.elem_unused();
-            flag3=optimization.elem_dead_code();
-        }
-        BytePointer error = new BytePointer((Pointer) null);
-        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
-            LLVMDisposeMessage(error);
-        }
+//        boolean flag1=true,flag2=true,flag3=true;
+//        while(flag1||flag2||flag3) {
+//            flag1=optimization.constprop();
+//            flag2=optimization.elem_unused();
+//            flag3=optimization.elem_dead_code();
+//        }
+//        BytePointer error = new BytePointer((Pointer) null);
+//        if (LLVMPrintModuleToFile(module, args[1], error) != 0) {
+//            LLVMDisposeMessage(error);
+//        }
 //        LLVMIRToRiscv llvmirToRiscv=new LLVMIRToRiscv(module,args[1].substring(0,args[1].length()-3)+".riscv");
 //        llvmirToRiscv.to_riscv();
         LLVMDisposeBuilder(builder);
