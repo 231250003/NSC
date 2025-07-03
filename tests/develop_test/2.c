@@ -28,7 +28,7 @@ int combine(int arr1[2], int arr1_length, int arr2[3], int arr2_length) {
             i = i + 1;
         }
     }
-    return sort_arr[arr1_length + arr2_length - 1];
+    return 0;
 }
 
 int main() {
