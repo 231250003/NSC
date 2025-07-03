@@ -7,6 +7,7 @@ import org.bytedeco.javacpp.PointerPointer;
 import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
 import semantic_check.*;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.*;
 
@@ -131,7 +132,68 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         return null;
     }
+    private LLVMTypeRef getLLVMArrayType(ArrayType type) {
+        LLVMTypeRef base = LLVMInt32Type();
+        List<Integer> dims = type.dimensions;
+        for (int i = dims.size() - 1; i >= 0; --i) {
+            base = LLVMArrayType(base, dims.get(i));
+        }
+        return base;
+    }
+    private SysYParser.ConstInitValContext buildZeroInit(int depth) {
+        // 用 ANTLR 工具伪造一个 ConstInitValContext，所有子项为空（即补 0）
+        SysYParser.ConstInitValContext ctx = new SysYParser.ConstInitValContext(new ParserRuleContext(), 0);
+        if (depth > 0) {
+            for (int i = 0; i < 1; ++i) {
+                ctx.children = new ArrayList<>();
+                ctx.children.add(buildZeroInit(depth - 1));
+            }
+        }
+        return ctx;
+    }
+    private void fillArrayInLocal(LLVMValueRef ptr, ArrayType type, SysYParser.ConstInitValContext init, List<Integer> indices) {
+        if (type.dimensions.size() == indices.size() + 1) {
+            // 最后一维
+            int len = type.dimensions.get(indices.size());
+            List<SysYParser.ConstInitValContext> children = init.constInitVal();
 
+            for (int i = 0; i < len; i++) {
+                List<LLVMValueRef> gepIndices = new ArrayList<>();
+                gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0)); // 第一个参数是 GEP 到 %ptr[0]
+                for (int index : indices) {
+                    gepIndices.add(LLVMConstInt(LLVMInt32Type(), index, 0));
+                }
+                gepIndices.add(LLVMConstInt(LLVMInt32Type(), i, 0));
+
+                LLVMValueRef elementPtr = LLVMBuildGEP(builder, ptr,
+                        new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), "elemPtr");
+
+                LLVMValueRef val;
+                if (i < children.size()) {
+                    val = getconstinitvalue(children.get(i));
+                } else {
+                    val = LLVMConstInt(LLVMInt32Type(), 0, 0);
+                }
+                LLVMBuildStore(builder, val, elementPtr);
+            }
+        } else {
+            // 还有多维子结构
+            int len = type.dimensions.get(indices.size());
+            List<SysYParser.ConstInitValContext> children = init.constInitVal();
+            for (int i = 0; i < len; i++) {
+                List<Integer> newIndices = new ArrayList<>(indices);
+                newIndices.add(i);
+                SysYParser.ConstInitValContext subInit;
+                if (i < children.size()) {
+                    subInit = children.get(i);
+                } else {
+                    // 构造全 0 initializer
+                    subInit = buildZeroInit(type.dimensions.size() - indices.size() - 1);
+                }
+                fillArrayInLocal(ptr, type, subInit, newIndices);
+            }
+        }
+    }
     public Symbol getConstDef(SysYParser.ConstDefContext ctx) {
         Symbol symbol=new Symbol();
         symbol.name=ctx.IDENT().getText();
@@ -156,8 +218,25 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         else{
             // TODO  assigning array  to initval, no need in lab4
             List<Integer> dims = new ArrayList<>();
+            for (SysYParser.NumberContext expCtx : ctx.number()) {
+                int dimSize = Integer.decode(expCtx.INTEGER_CONST().getText());
+                dims.add(dimSize);
+            }
+            symbol.type = new ArrayType(new IntType(), dims);
+            if (!symbolTable.is_cur_scopeGlobal()) {
+                LLVMValueRef pointer = LLVMBuildAlloca(builder, getLLVMArrayType((ArrayType)symbol.type), symbol.name);
+                fillArrayInLocal(pointer, (ArrayType)symbol.type, ctx.constInitVal(), new ArrayList<>());
+                symbol.reference = pointer;
+            } else {
+                // 全局数组：构造 constant initializer
+                LLVMTypeRef arrTy = getLLVMArrayType((ArrayType)symbol.type);
+                LLVMValueRef init = getConstArrayInitializer((ArrayType)symbol.type, ctx.constInitVal());
 
-            assert(false);
+                LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);
+                LLVMSetInitializer(globalPtr, init);
+                LLVMSetGlobalConstant(globalPtr, 1);
+                symbol.reference = globalPtr;
+            }
         }
         return symbol;
     }
