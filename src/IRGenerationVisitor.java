@@ -205,7 +205,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
         }
         else{
-            // TODO  assigning array  to initval, no need in lab4
             List<Integer> dims = new ArrayList<>();
             for (SysYParser.NumberContext expCtx : ctx.number()) {
                 int dimSize = Integer.decode(expCtx.INTEGER_CONST().getText());
@@ -260,10 +259,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef getconstinitvalue(SysYParser.ConstInitValContext ctx) {
         if(ctx.L_BRACE()==null){
             return visit(ctx.constExp());
-        }
-        else {
-            // TODO  assigning array to initval, no need in lab4
-            assert(false);
         }
         return null;
     }
@@ -424,10 +419,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef getinitvalue(SysYParser.InitValContext ctx) {
         if(ctx.L_BRACE()==null){
             return visit(ctx.exp());
-        }
-        else {
-            // TODO  assigning array to initval, no need in lab4
-            assert(false);
         }
         return null;
     }
@@ -712,7 +703,21 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         return null;
     }
-
+    void get_init_val(List<LLVMValueRef> ans, SysYParser.InitValContext InitValContext){
+        if(InitValContext.exp()!=null){
+            LLVMValueRef val = visitExp(InitValContext.exp());
+            if (val != null && LLVMIsAConstantInt(val) != null) {
+                long constVal = LLVMConstIntGetSExtValue(val); // 提取整数值（有符号）
+                ans.add(LLVMConstInt(LLVMInt32Type(), constVal, 1));
+            }
+            else ans.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+        }
+        else{
+            for(int i=0;i<InitValContext.initVal().size();i++){
+                get_init_val(ans,InitValContext.initVal(i));
+            }
+        }
+    }
     public Symbol getVardef(SysYParser.VarDefContext ctx) {
         Symbol symbol=new Symbol();
         symbol.name=ctx.IDENT().getText();
@@ -720,7 +725,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if(ctx.L_BRACKT().isEmpty()) {
                 symbol.type = new IntType();
                 LLVMValueRef pointer;
-                //May be wrong but is in the manual
                 if (symbolTable.is_cur_scopeGlobal()) {
                     pointer = LLVMAddGlobal(module, i32Type, symbol.name);
                     LLVMSetInitializer(pointer, zero);
@@ -732,8 +736,41 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 symbol.reference = pointer;
             }
             else{
-                // TODO adding array to symbol table, no need in lab4
-                assert(false);
+                if(symbolTable.is_cur_scopeGlobal()) {
+                    ArrayType arrayType = (ArrayType) symbol.type;
+                    LLVMTypeRef arrTy = getLLVMArrayType(arrayType);
+                    List<LLVMValueRef> initValList = new ArrayList<>();
+                    int totalSize = arrayType.getTotalSize();
+                    while (initValList.size() < totalSize) {
+                        initValList.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+                    }
+                    LLVMValueRef init = buildConstArrayInitializer(initValList, arrayType.dimensions, 0);
+                    LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);
+                    LLVMSetInitializer(globalPtr, init);
+                    LLVMSetGlobalConstant(globalPtr, 1);
+                    symbol.reference = globalPtr;
+                }
+                else{
+                    LLVMValueRef pointer = LLVMBuildAlloca(builder, getLLVMArrayType((ArrayType)symbol.type), symbol.name);
+                    int totalSize=((ArrayType)symbol.type).getTotalSize();
+                    List<LLVMValueRef> init_val_list=new ArrayList<>();
+                    while(init_val_list.size()<totalSize){
+                        init_val_list.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+                    }
+                    for(int i=0;i<totalSize;i++){
+                        List<LLVMValueRef> gepIndices = new ArrayList<>();
+                        gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+                        List<Integer>indices=new ArrayList<>();
+                        get_indicies(((ArrayType)symbol.type).dimensions,i,indices);
+                        for (int index : indices) {
+                            gepIndices.add(LLVMConstInt(LLVMInt32Type(), index, 0));
+                        }
+                        LLVMValueRef elementPtr = LLVMBuildGEP(builder, pointer,
+                                new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), "elemPtr");
+                        LLVMBuildStore(builder, init_val_list.get(i), elementPtr);
+                    }
+                    symbol.reference = pointer;
+                }
             }
         }
         else{
@@ -756,8 +793,43 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 }
             }
             else{
-                // TODO adding array to symbol table, no need in lab4
-                assert(false);
+                if(symbolTable.is_cur_scopeGlobal()) {
+                    ArrayType arrayType = (ArrayType) symbol.type;
+                    LLVMTypeRef arrTy = getLLVMArrayType(arrayType);
+                    List<LLVMValueRef> initValList = new ArrayList<>();
+                    int totalSize = arrayType.getTotalSize();
+                    get_init_val(initValList,ctx.initVal());
+                    while (initValList.size() < totalSize) {
+                        initValList.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+                    }
+                    LLVMValueRef init = buildConstArrayInitializer(initValList, arrayType.dimensions, 0);
+                    LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);
+                    LLVMSetInitializer(globalPtr, init);
+                    LLVMSetGlobalConstant(globalPtr, 1);
+                    symbol.reference = globalPtr;
+                }
+                else{
+                    LLVMValueRef pointer = LLVMBuildAlloca(builder, getLLVMArrayType((ArrayType)symbol.type), symbol.name);
+                    int totalSize=((ArrayType)symbol.type).getTotalSize();
+                    List<LLVMValueRef> init_val_list=new ArrayList<>();
+                    get_init_val(init_val_list,ctx.initVal());
+                    while(init_val_list.size()<totalSize){
+                        init_val_list.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+                    }
+                    for(int i=0;i<totalSize;i++){
+                        List<LLVMValueRef> gepIndices = new ArrayList<>();
+                        gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+                        List<Integer>indices=new ArrayList<>();
+                        get_indicies(((ArrayType)symbol.type).dimensions,i,indices);
+                        for (int index : indices) {
+                            gepIndices.add(LLVMConstInt(LLVMInt32Type(), index, 0));
+                        }
+                        LLVMValueRef elementPtr = LLVMBuildGEP(builder, pointer,
+                                new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), "elemPtr");
+                        LLVMBuildStore(builder, init_val_list.get(i), elementPtr);
+                    }
+                    symbol.reference = pointer;
+                }
             }
         }
         return symbol;
