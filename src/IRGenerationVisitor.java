@@ -268,7 +268,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         if (LLVMGetTypeKind(type) == LLVMIntegerTypeKind && LLVMGetIntTypeWidth(type) == 1) {
             return LLVMBuildZExt(builder, val, LLVMInt32Type(), "zext_to_i32");
         }
-        System.out.println("crzzzzzzzz");
         return val;
     }
     @Override
@@ -331,7 +330,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         else if(ctx.lVal()!=null){
             pointer_need_load=false;
             LLVMValueRef value = visit(ctx.lVal());
+            System.out.println("crzzz11");
             if (LLVMGetTypeKind(LLVMTypeOf(value)) ==LLVMPointerTypeKind&&pointer_need_load) {
+                System.out.println("crzzz12");
                 return castToI32(LLVMBuildLoad(builder, value, "load_lval"));
             } else {
                 return castToI32(value);
