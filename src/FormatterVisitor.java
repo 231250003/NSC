@@ -414,7 +414,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             System.out.print("[]");
             for (int i = 1; i < ctx.L_BRACKT().size(); i++) {
                 System.out.print("[");
-                visit(ctx.exp(i - 1));
+                visit(ctx.number(i - 1));
                 System.out.print("]");
             }
         }
