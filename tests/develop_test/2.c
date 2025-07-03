@@ -5,7 +5,7 @@ int combine(int arr1[2], int arr1_length, int arr2[3], int arr2_length) {
     int k = 0;
     while (i < arr1_length && j < arr2_length) {
         if (arr1[i] < arr2[j]) {
-            sort_arr[k] = arr1[i];
+            //sort_arr[k] = arr1[i];
             i = i + 1;
         }
         else {
