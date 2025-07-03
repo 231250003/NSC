@@ -14,20 +14,6 @@ int combine(int arr1[2], int arr1_length, int arr2[3], int arr2_length) {
         }
         k = k + 1;
     }
-    if (i == arr1_length) {
-        while (j < arr2_length) {
-            sort_arr[k] = arr2[j];
-            k = k + 1;
-            j = j + 1;
-        }
-    }
-    else {
-        while (i < arr1_length) {
-            sort_arr[k] = arr2[i];
-            k = k + 1;
-            i = i + 1;
-        }
-    }
     return 0;
 }
 
