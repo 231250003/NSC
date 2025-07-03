@@ -46,11 +46,10 @@ public class Main {
         }
         parser.reset();
         ParseTree tree = parser.program();
-        FormatterVisitor visitor = new FormatterVisitor();
-        visitor.visit(tree);
-        ParseTree semantic_tree= parser.program();
+        FormatterVisitor formatter_visitor = new FormatterVisitor();
+        formatter_visitor.visit(tree);
         SemanticVisitor semantic_visitor=new SemanticVisitor();
-        semantic_visitor.visit(semantic_tree);
+        semantic_visitor.visit(tree);
         if(!OutputHelper.is_semantic_correct){
             return;
         }
@@ -59,9 +58,8 @@ public class Main {
         LLVMInitializeNativeAsmParser();
         LLVMModuleRef module = LLVMModuleCreateWithName("my_module");
         LLVMBuilderRef builder = LLVMCreateBuilder();
-        ParseTree tree = parser.program();
-        IRGenerationVisitor visitor = new IRGenerationVisitor(module, builder);
-        visitor.visit(tree);
+        IRGenerationVisitor IR_visitor = new IRGenerationVisitor(module, builder);
+        IR_visitor.visit(tree);
        // LLVMDumpModule(module);
         LLVMIROptimization optimization=new LLVMIROptimization(module);
         clean_terminator_inst(module);

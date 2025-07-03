@@ -128,7 +128,10 @@ public class LLVMIRToRiscv {
              bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             blockCount++;
         }
-        if (blockCount == 1) Main.used_interpreter = false;
+        if (blockCount == 1) {
+            
+            //Main.used_interpreter = false;
+        }
         else{
             if (Main.is_run_time_error_test) {
                 allocator = new NewControlFlowRegisterAllocator(module, reg_list);
