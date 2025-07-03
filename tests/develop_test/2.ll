@@ -34,10 +34,8 @@ mainEntry:
   store i32 4, i32* %elemPtr3, align 4
   %elemPtr4 = getelementptr [3 x i32], [3 x i32]* %b, i32 0, i32 2
   store i32 14, i32* %elemPtr4, align 4
-  %elemPtr5 = getelementptr [2 x i32], [2 x i32]* %a, i32 0
-  %load_lval = load [2 x i32], [2 x i32]* %elemPtr5, align 4
-  %elemPtr6 = getelementptr [3 x i32], [3 x i32]* %b, i32 0
-  %load_lval7 = load [3 x i32], [3 x i32]* %elemPtr6, align 4
-  %combine = call i32 @combine([2 x i32] %load_lval, i32 2, [3 x i32] %load_lval7, i32 3)
+  %load_lval = load [2 x i32], [2 x i32]* %a, align 4
+  %load_lval5 = load [3 x i32], [3 x i32]* %b, align 4
+  %combine = call i32 @combine([2 x i32] %load_lval, i32 2, [3 x i32] %load_lval5, i32 3)
   ret i32 %combine
 }
