@@ -6,6 +6,6 @@ int main(int argc,int argv[][300][400]){
     //const int a[6][6]={};
     int x=1;
     int t=print();
-    int arg[200];
+    //int arg[200];
     return 0;
 }
