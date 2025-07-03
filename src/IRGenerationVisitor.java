@@ -751,6 +751,12 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 symbol.reference = pointer;
             }
             else{
+                List<Integer> dims = new ArrayList<>();
+                for (SysYParser.NumberContext expCtx : ctx.number()) {
+                    int dimSize = Integer.decode(expCtx.INTEGER_CONST().getText());
+                    dims.add(dimSize);
+                }
+                symbol.type = new ArrayType(new IntType(), dims);
                 if(symbolTable.is_cur_scopeGlobal()) {
                     ArrayType arrayType = (ArrayType) symbol.type;
                     LLVMTypeRef arrTy = getLLVMArrayType(arrayType);
