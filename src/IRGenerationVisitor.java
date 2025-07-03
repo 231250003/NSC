@@ -451,7 +451,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 gepIndices.add(idx);
             }
             if ((ctx.exp().size() == ((ArrayType)s.type).dimensions.size()||ctx.exp().size() == ((ArrayType)s.type).dim)&&ctx.exp().size()!=0) {
-                System.out.println("crzzzzz");
                 pointer_need_load = true;
             }
             LLVMValueRef elementPtr = LLVMBuildGEP(
@@ -496,7 +495,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             pointer_need_load=false;
             LLVMValueRef right = visit(ctx.cond(1));
             if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind&&pointer_need_load) {
+                System.out.println("crzzz1");
                 right = LLVMBuildLoad(builder, right, "load_right");
+                System.out.println("crzzz2");
             }
             int predicate;
             if (ctx.LT() != null) {
