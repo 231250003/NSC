@@ -170,7 +170,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         LLVMValueRef[] nested = new LLVMValueRef[dim];
         for (int i = 0; i < dim; i++) {
             if (depth == dims.size() - 1) {
-                // 最后一维
                 nested[i] = flatVals.get(i);
             } else {
                 int start = i * stride;
@@ -246,7 +245,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 LLVMValueRef init = buildConstArrayInitializer(initValList, arrayType.dimensions, 0);
                 LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);
                 LLVMSetInitializer(globalPtr, init);
-                LLVMSetGlobalConstant(globalPtr, 1);  // const 修饰
+                LLVMSetGlobalConstant(globalPtr, 1);
                 symbol.reference = globalPtr;
             }
         }
