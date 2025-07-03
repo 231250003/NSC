@@ -177,7 +177,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 LLVMBuildStore(builder, val, elementPtr);
             }
         } else {
-            // 还有多维子结构
+            System.out.println("crz0");
             int len = type.dimensions.get(indices.size());
             List<SysYParser.ConstInitValContext> children = init.constInitVal();
             for (int i = 0; i < len; i++) {
@@ -268,7 +268,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
         }
         else{
-            System.out.println("crz0");
             // TODO  assigning array  to initval, no need in lab4
             List<Integer> dims = new ArrayList<>();
             for (SysYParser.NumberContext expCtx : ctx.number()) {
@@ -278,7 +277,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             symbol.type = new ArrayType(new IntType(), dims);
             if (!symbolTable.is_cur_scopeGlobal()) {
                 LLVMValueRef pointer = LLVMBuildAlloca(builder, getLLVMArrayType((ArrayType)symbol.type), symbol.name);
-                System.out.println("crz1");
                 fillArrayInLocal(pointer, (ArrayType)symbol.type, ctx.constInitVal(), new ArrayList<>());
                 System.out.println("crz2");
                 symbol.reference = pointer;
