@@ -435,11 +435,10 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
         String name=ctx.IDENT().getText();
         Symbol s = symbolTable.get_name_matched_symbol(name);
-        if(ctx.L_BRACKT()==null||ctx.L_BRACKT().isEmpty()) {
+        if(symbolTable.get_name_matched_symbol(name).type instanceof IntType) {
             return s.reference;
         }
         else{
-            System.out.println("crzzzzzz");
             LLVMValueRef ptr = s.reference;
             if (ctx.exp().isEmpty()) {
                 return LLVMBuildGEP(
