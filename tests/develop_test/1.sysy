@@ -6,7 +6,7 @@ int combine(int arr1[][10], int arr1_length, int arr2[], int arr2_length) {
 }
 
 int main() {
-    int a[2] = { 1,5 };
+    int a[2][3] = { 1,5 };
     int b[3] = { 1,4,14 };
     return combine(a, 2, b, 3);
 }
