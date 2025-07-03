@@ -140,58 +140,58 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         return base;
     }
-    private SysYParser.ConstInitValContext buildZeroInit(int depth) {
-        // 用 ANTLR 工具伪造一个 ConstInitValContext，所有子项为空（即补 0）
-        SysYParser.ConstInitValContext ctx = new SysYParser.ConstInitValContext(new ParserRuleContext(), 0);
-        if (depth > 0) {
-            for (int i = 0; i < 1; ++i) {
-                ctx.children = new ArrayList<>();
-                ctx.children.add(buildZeroInit(depth - 1));
-            }
-        }
-        return ctx;
-    }
-    private void fillArrayInLocal(LLVMValueRef ptr, ArrayType type, SysYParser.ConstInitValContext init, List<Integer> indices) {
-        if (type.dimensions.size() == indices.size() + 1) {
-            // 最后一维
-            int len = type.dimensions.get(indices.size());
-            List<SysYParser.ConstInitValContext> children = init.constInitVal();
-
-            for (int i = 0; i < len; i++) {
-                List<LLVMValueRef> gepIndices = new ArrayList<>();
-                gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0)); // 第一个参数是 GEP 到 %ptr[0]
-                for (int index : indices) {
-                    gepIndices.add(LLVMConstInt(LLVMInt32Type(), index, 0));
-                }
-                gepIndices.add(LLVMConstInt(LLVMInt32Type(), i, 0));
-                LLVMValueRef elementPtr = LLVMBuildGEP(builder, ptr,
-                        new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), "elemPtr");
-                LLVMValueRef val;
-                if (i < children.size()) {
-                    val = getconstinitvalue(children.get(i));
-                } else {
-                    val = LLVMConstInt(LLVMInt32Type(), 0, 0);
-                }
-                System.out.println(val);
-                LLVMBuildStore(builder, val, elementPtr);
-            }
-        } else {
-            int len = type.dimensions.get(indices.size());
-            List<SysYParser.ConstInitValContext> children = init.constInitVal();
-            for (int i = 0; i < len; i++) {
-                List<Integer> newIndices = new ArrayList<>(indices);
-                newIndices.add(i);
-                SysYParser.ConstInitValContext subInit;
-                if (i < children.size()) {
-                    subInit = children.get(i);
-                } else {
-                    // 构造全 0 initializer
-                    subInit = buildZeroInit(type.dimensions.size() - indices.size() - 1);
-                }
-                fillArrayInLocal(ptr, type, subInit, newIndices);
-            }
-        }
-    }
+//    private SysYParser.ConstInitValContext buildZeroInit(int depth) {
+//        // 用 ANTLR 工具伪造一个 ConstInitValContext，所有子项为空（即补 0）
+//        SysYParser.ConstInitValContext ctx = new SysYParser.ConstInitValContext(new ParserRuleContext(), 0);
+//        if (depth > 0) {
+//            for (int i = 0; i < 1; ++i) {
+//                ctx.children = new ArrayList<>();
+//                ctx.children.add(buildZeroInit(depth - 1));
+//            }
+//        }
+//        return ctx;
+//    }
+//    private void fillArrayInLocal(LLVMValueRef ptr, ArrayType type, SysYParser.ConstInitValContext init, List<Integer> indices) {
+//        if (type.dimensions.size() == indices.size() + 1) {
+//            // 最后一维
+//            int len = type.dimensions.get(indices.size());
+//            List<SysYParser.ConstInitValContext> children = init.constInitVal();
+//
+//            for (int i = 0; i < len; i++) {
+//                List<LLVMValueRef> gepIndices = new ArrayList<>();
+//                gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0)); // 第一个参数是 GEP 到 %ptr[0]
+//                for (int index : indices) {
+//                    gepIndices.add(LLVMConstInt(LLVMInt32Type(), index, 0));
+//                }
+//                gepIndices.add(LLVMConstInt(LLVMInt32Type(), i, 0));
+//                LLVMValueRef elementPtr = LLVMBuildGEP(builder, ptr,
+//                        new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), "elemPtr");
+//                LLVMValueRef val;
+//                if (i < children.size()) {
+//                    val = getconstinitvalue(children.get(i));
+//                } else {
+//                    val = LLVMConstInt(LLVMInt32Type(), 0, 0);
+//                }
+//                System.out.println(val);
+//                LLVMBuildStore(builder, val, elementPtr);
+//            }
+//        } else {
+//            int len = type.dimensions.get(indices.size());
+//            List<SysYParser.ConstInitValContext> children = init.constInitVal();
+//            for (int i = 0; i < len; i++) {
+//                List<Integer> newIndices = new ArrayList<>(indices);
+//                newIndices.add(i);
+//                SysYParser.ConstInitValContext subInit;
+//                if (i < children.size()) {
+//                    subInit = children.get(i);
+//                } else {
+//                    // 构造全 0 initializer
+//                    subInit = buildZeroInit(type.dimensions.size() - indices.size() - 1);
+//                }
+//                fillArrayInLocal(ptr, type, subInit, newIndices);
+//            }
+//        }
+//    }
     private LLVMValueRef getConstArrayInitializer(ArrayType arrType, SysYParser.ConstInitValContext ctx) {
         return buildConstArrayInit(arrType, ctx);
     }
@@ -243,7 +243,15 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         return LLVMConstArray(getLLVMArrayType(new ArrayType(new IntType(), dims.subList(1, dims.size()))), new PointerPointer<>(zeros), dims.get(0));
     }
 
-
+    public void get_indicies(List<Integer> x,int ind,List<Integer> ans){
+        int pos=ind%x.get(x.size()-1);
+        int next_ind=(ind-pos)/x.get(x.size()-1);
+        if(x.size()==1) ans.add(pos);
+        else {
+            get_indicies(x.subList(0,x.size()-1),next_ind,ans);
+            ans.add(pos);
+        }
+    }
     public Symbol getConstDef(SysYParser.ConstDefContext ctx) {
         Symbol symbol=new Symbol();
         symbol.name=ctx.IDENT().getText();
@@ -275,8 +283,23 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             symbol.type = new ArrayType(new IntType(), dims);
             if (!symbolTable.is_cur_scopeGlobal()) {
                 LLVMValueRef pointer = LLVMBuildAlloca(builder, getLLVMArrayType((ArrayType)symbol.type), symbol.name);
-                fillArrayInLocal(pointer, (ArrayType)symbol.type, ctx.constInitVal(), new ArrayList<>());
-                System.out.println("crz2");
+//                fillArrayInLocal(pointer, (ArrayType)symbol.type, ctx.constInitVal(), new ArrayList<>());
+//                System.out.println("crz2");
+                int totalSize=((ArrayType)symbol.type).getTotalSize();
+                for(int i=0;i<totalSize;i++){
+                    List<LLVMValueRef> gepIndices = new ArrayList<>();
+                    gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));
+                    List<Integer>indices=new ArrayList<>();
+                    get_indicies(((ArrayType)symbol.type).dimensions,i,indices);
+                    for (int index : indices) {
+                        gepIndices.add(LLVMConstInt(LLVMInt32Type(), index, 0));
+                    }
+                    LLVMValueRef elementPtr = LLVMBuildGEP(builder, pointer,
+                            new PointerPointer<>(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), "elemPtr");
+                    LLVMValueRef val;
+
+                    
+                }
                 symbol.reference = pointer;
             } else {
                 // 全局数组：构造 constant initializer
