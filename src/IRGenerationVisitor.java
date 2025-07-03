@@ -747,7 +747,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     LLVMValueRef init = buildConstArrayInitializer(initValList, arrayType.dimensions, 0);
                     LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);
                     LLVMSetInitializer(globalPtr, init);
-                    LLVMSetGlobalConstant(globalPtr, 1);
                     symbol.reference = globalPtr;
                 }
                 else{
@@ -811,7 +810,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     LLVMValueRef init = buildConstArrayInitializer(initValList, arrayType.dimensions, 0);
                     LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);
                     LLVMSetInitializer(globalPtr, init);
-                    LLVMSetGlobalConstant(globalPtr, 1);
                     symbol.reference = globalPtr;
                 }
                 else{
