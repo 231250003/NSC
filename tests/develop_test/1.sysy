@@ -7,5 +7,5 @@ int main(int argc,int argv[][300][400]){
     int x=1;
     int t=print();
     int arg[200];
-    main(print(),argv[0]);
+    return 0;
 }
