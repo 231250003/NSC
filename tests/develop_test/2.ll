@@ -164,27 +164,21 @@ mainEntry:
   store i32 1, i32* %elemPtr, align 4
   %elemPtr1 = getelementptr [2 x i32], [2 x i32]* %a, i32 0, i32 1
   store i32 5, i32* %elemPtr1, align 4
-  %b = alloca [3 x [3 x i32]], align 4
-  %elemPtr2 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 0, i32 0
+  %b = alloca [3 x [2 x i32]], align 4
+  %elemPtr2 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %b, i32 0, i32 0, i32 0
   store i32 1, i32* %elemPtr2, align 4
-  %elemPtr3 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 0, i32 1
+  %elemPtr3 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %b, i32 0, i32 0, i32 1
   store i32 4, i32* %elemPtr3, align 4
-  %elemPtr4 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 0, i32 2
+  %elemPtr4 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %b, i32 0, i32 1, i32 0
   store i32 14, i32* %elemPtr4, align 4
-  %elemPtr5 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 1, i32 0
+  %elemPtr5 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %b, i32 0, i32 1, i32 1
   store i32 1, i32* %elemPtr5, align 4
-  %elemPtr6 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 1, i32 1
+  %elemPtr6 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %b, i32 0, i32 2, i32 0
   store i32 4, i32* %elemPtr6, align 4
-  %elemPtr7 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 1, i32 2
+  %elemPtr7 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %b, i32 0, i32 2, i32 1
   store i32 14, i32* %elemPtr7, align 4
-  %elemPtr8 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 2, i32 0
-  store i32 1, i32* %elemPtr8, align 4
-  %elemPtr9 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 2, i32 1
-  store i32 4, i32* %elemPtr9, align 4
-  %elemPtr10 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 2, i32 2
-  store i32 14, i32* %elemPtr10, align 4
-  %elemPtr11 = getelementptr [2 x i32], [2 x i32]* %a, i32 0
-  %elemPtr12 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 1
-  %combine = call i32 @combine([2 x i32]* %elemPtr11, i32 2, [3 x i32]* %elemPtr12, i32 3)
+  %elemPtr8 = getelementptr [2 x i32], [2 x i32]* %a, i32 0
+  %elemPtr9 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %b, i32 0, i32 1
+  %combine = call i32 @combine([2 x i32]* %elemPtr8, i32 2, [2 x i32]* %elemPtr9, i32 3)
   ret i32 %combine
 }

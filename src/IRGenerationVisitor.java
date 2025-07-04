@@ -267,12 +267,10 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         return null;
     }
     private LLVMValueRef castToI32(LLVMValueRef val) {
-        System.out.println("visiting casrTOI32");
         LLVMTypeRef type = LLVMTypeOf(val);
         if (LLVMGetTypeKind(type) == LLVMIntegerTypeKind && LLVMGetIntTypeWidth(type) == 1) {
             return LLVMBuildZExt(builder, val, LLVMInt32Type(), "zext_to_i32");
         }
-        System.out.println("crzzz13");
         return val;
     }
     @Override
@@ -336,9 +334,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         else if(ctx.lVal()!=null){
             pointer_need_load=false;
             LLVMValueRef value = visit(ctx.lVal());
-            System.out.println("crzzz11");
             if (LLVMGetTypeKind(LLVMTypeOf(value)) ==LLVMPointerTypeKind&&pointer_need_load) {
-                System.out.println("crzzz12");
                 return castToI32(LLVMBuildLoad(builder, value, "load_lval"));
             } else {
                 return castToI32(value);
@@ -501,12 +497,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
         System.out.println("visiting cond");
         if(ctx.exp()!=null){
-            System.out.println("crzzzzzzzzz");
             LLVMValueRef value = visit(ctx.exp());
-            System.out.println("crzzz4");
-            if(LLVMGetTypeKind(LLVMTypeOf(value))==LLVMPointerTypeKind) System.out.println("crzzz6");
-            if(LLVMGetTypeKind(LLVMTypeOf(value))==LLVMIntegerTypeKind) System.out.println("crzzz8");
-            System.out.println("crzzz1010");
             return castToI32(value);
         }
         else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {
@@ -517,10 +508,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 left = LLVMBuildLoad(builder, left, "load_left");
             }
             pointer_need_load=false;
-            System.out.println("crzzz3");
             LLVMValueRef right = visit(ctx.cond(1));
-            System.out.println("crzzz2");
-            if(right==null)      System.out.println("crzzz1");
             if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind&&pointer_need_load) {
                 right = LLVMBuildLoad(builder, right, "load_right");
             }
