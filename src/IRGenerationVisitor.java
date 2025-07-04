@@ -78,7 +78,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             for (int i = 0; i < paramCount; i++) {
                 LLVMValueRef param = LLVMGetParam(function, i);
                 LLVMTypeRef paramType = LLVMTypeOf(param);
-                if(LLVMGetTypeKind(LLVMTypeOf(param))==LLVMPointerTypeKind) System.out.println("this is it");
+                //if(LLVMGetTypeKind(LLVMTypeOf(param))==LLVMPointerTypeKind) System.out.println("this is it");
                 LLVMValueRef paramAddr = LLVMBuildAlloca(builder, paramType, "param" + i + "_addr");
                 LLVMBuildStore(builder, param, paramAddr);
                 Symbol symbol = symbols.get(i);
