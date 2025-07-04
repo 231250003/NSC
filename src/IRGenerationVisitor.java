@@ -264,6 +264,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         return null;
     }
     private LLVMValueRef castToI32(LLVMValueRef val) {
+        System.out.println("visiting casrTOI32");
         LLVMTypeRef type = LLVMTypeOf(val);
         if (LLVMGetTypeKind(type) == LLVMIntegerTypeKind && LLVMGetIntTypeWidth(type) == 1) {
             return LLVMBuildZExt(builder, val, LLVMInt32Type(), "zext_to_i32");
@@ -273,6 +274,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     }
     @Override
     public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
+        System.out.println("visiting EXP");
         if (ctx.number() != null) return visit(ctx.number());
         else if (ctx.IDENT() != null && ctx.L_PAREN() != null) {
             String funcName = ctx.IDENT().getText();
@@ -440,6 +442,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
+        System.out.println("visiting LVAL");
+
         String name=ctx.IDENT().getText();
         Symbol s = symbolTable.get_name_matched_symbol(name);
         if(s.type instanceof IntType) {
@@ -484,11 +488,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     }
     @Override
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
+        System.out.println("visiting cond");
         if(ctx.exp()!=null){
             System.out.println("crzzzzzzzzz");
-            visit(ctx.exp());
+            LLVMValueRef value = visit(ctx.exp());
             System.out.println("crzzz4");
-            LLVMValueRef value =  visit(ctx.exp());
             if(LLVMGetTypeKind(LLVMTypeOf(value))==LLVMPointerTypeKind) System.out.println("crzzz6");
             if(LLVMGetTypeKind(LLVMTypeOf(value))==LLVMIntegerTypeKind) System.out.println("crzzz8");
             System.out.println("crzzz1010");
