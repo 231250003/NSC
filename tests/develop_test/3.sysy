@@ -11,7 +11,7 @@ int main(){
     	while(v<=m)
     	{
     		if(v>=w[i]) {
-    		    return max(f[i-1][v-w[i]]+c[i],f[i-1][v]);
+    		    return f[i-1][v-w[i]]+c[i];
     		    f[i][v]=max(f[i-1][v-w[i]]+c[i],f[i-1][v]);
     		}
     		else f[i][v]=f[i-1][v];
