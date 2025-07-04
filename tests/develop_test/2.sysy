@@ -33,6 +33,6 @@ int combine(int arr1[2], int arr1_length, int arr2[3], int arr2_length) {
 
 int main() {
     int a[2] = { 1,5 };
-    int b[3] = { 1,4,14 };
-    return combine(a, 2, b, 3);
+    int b[3][3] = { 1,4,14,1,4,14,1,4,14 };
+    return combine(a, 2, b[1], 3);
 }
