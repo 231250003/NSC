@@ -467,6 +467,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     gepIndices.size(),
                     "elemPtr"
             );
+            if(elementPtr!=null) System.out.println("is null pointer");
+            System.out.println("end of val");
             return elementPtr;
         }
     }
