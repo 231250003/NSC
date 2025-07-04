@@ -447,6 +447,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         String name=ctx.IDENT().getText();
         Symbol s = symbolTable.get_name_matched_symbol(name);
         if(s.type instanceof IntType) {
+            System.out.println(name);
+            System.out.println("end of val");
             pointer_need_load=true;
             return s.reference;
         }
@@ -467,8 +469,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                     gepIndices.size(),
                     "elemPtr"
             );
-            if(elementPtr!=null) System.out.println("is null pointer");
-            System.out.println("end of val");
             return elementPtr;
         }
     }
