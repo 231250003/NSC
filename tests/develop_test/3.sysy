@@ -12,9 +12,9 @@ int main(){
     	{
     		if(v>=w[i]) f[i][v]=max(f[i-1][v-w[i]]+c[i],f[i-1][v]);
     		else f[i][v]=f[i-1][v];
-    		v++;
+    		v=v+1;
 		}
-		i++;
+		i=i+1;
 	}
 	return f[n][m];
 }
