@@ -442,13 +442,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
-        System.out.println("visiting LVAL");
-
         String name=ctx.IDENT().getText();
         Symbol s = symbolTable.get_name_matched_symbol(name);
         if(s.type instanceof IntType) {
-            System.out.println(name);
-            System.out.println("end of val");
             pointer_need_load=true;
             return s.reference;
         }
@@ -463,10 +459,10 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if ((ctx.exp().size() == ((ArrayType)s.type).dimensions.size()||ctx.exp().size() == ((ArrayType)s.type).dim)&&ctx.exp().size()!=0) {
                 pointer_need_load = true;
             }
-            System.out.println("s.reference type: " + LLVMPrintTypeToString(LLVMTypeOf(s.reference)).getString());
-            for (LLVMValueRef index : gepIndices) {
-                System.out.println("index type: " + LLVMPrintTypeToString(LLVMTypeOf(index)).getString());
-            }
+//            System.out.println("s.reference type: " + LLVMPrintTypeToString(LLVMTypeOf(s.reference)).getString());
+//            for (LLVMValueRef index : gepIndices) {
+//                System.out.println("index type: " + LLVMPrintTypeToString(LLVMTypeOf(index)).getString());
+//            }
             LLVMValueRef elementPtr = LLVMBuildGEP(
                     builder,
                     s.reference,
