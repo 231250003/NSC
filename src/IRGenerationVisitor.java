@@ -464,7 +464,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 pointer_need_load = true;
             }
             System.out.println(gepIndices.size());
-            if(gepIndices.get(0)==null) System.out.println("1212121");
+           for(int i=0;i<gepIndices.size();i++){
+               System.out.println(gepIndices.get(i));
+           }
             LLVMValueRef elementPtr = LLVMBuildGEP(
                     builder,
                     s.reference,
