@@ -459,6 +459,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 LLVMValueRef idx = visit(expCtx);
                 gepIndices.add(idx);
             }
+            System.out.println("debugging ");
             if ((ctx.exp().size() == ((ArrayType)s.type).dimensions.size()||ctx.exp().size() == ((ArrayType)s.type).dim)&&ctx.exp().size()!=0) {
                 pointer_need_load = true;
             }
