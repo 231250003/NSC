@@ -78,7 +78,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             for (int i = 0; i < paramCount; i++) {
                 LLVMValueRef param = LLVMGetParam(function, i);
                 LLVMTypeRef paramType = LLVMTypeOf(param);
-                //if(LLVMGetTypeKind(LLVMTypeOf(param))==LLVMPointerTypeKind) System.out.println("this is it");
+                if(LLVMGetTypeKind(LLVMTypeOf(param))==LLVMPointerTypeKind) System.out.println("this is it");
                 LLVMValueRef paramAddr = LLVMBuildAlloca(builder, paramType, "param" + i + "_addr");
                 LLVMBuildStore(builder, param, paramAddr);
                 Symbol symbol = symbols.get(i);
@@ -367,7 +367,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 else if (x.type instanceof ArrayType) {
                     LLVMTypeRef arrTy = getLLVMArrayType((ArrayType) x.type);
                     paramTypeList.add(LLVMPointerType(arrTy, 0));
-                    paramTypeList.add(arrTy);
+                    //paramTypeList.add(arrTy);
                 }
                 else throw new RuntimeException("Unsupported parameter type: " + x.type);
             }
