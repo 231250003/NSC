@@ -492,7 +492,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     }
     @Override
     public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
-        System.out.println("visiting cond");
+      //  System.out.println("visiting cond");
         if(ctx.exp()!=null){
             LLVMValueRef value = visit(ctx.exp());
             return castToI32(value);
