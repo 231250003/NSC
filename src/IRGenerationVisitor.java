@@ -461,6 +461,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             }
             pointer_need_load=false;
             if ((ctx.exp().size() == ((ArrayType)s.type).dimensions.size()||ctx.exp().size() == ((ArrayType)s.type).dim)&&ctx.exp().size()!=0) {
+                System.out.println("hahaha");
                 pointer_need_load = true;
             }
             LLVMValueRef elementPtr = LLVMBuildGEP(
