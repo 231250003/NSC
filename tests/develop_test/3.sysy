@@ -2,7 +2,7 @@ int max(int a,int b){
     if(a>b) return a;
     else return b;
 }
-int main()
+int main(){
     int w[1001]={2,3,4,7},c[1001]={1,3,5,9},f[101][1001];
 	int n=10;m=4;
 	int i=1,j=1;
