@@ -275,7 +275,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     }
     @Override
     public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
-        System.out.println("visiting EXP");
+        //System.out.println("visiting EXP");
         if (ctx.number() != null) return visit(ctx.number());
         else if (ctx.IDENT() != null && ctx.L_PAREN() != null) {
             String funcName = ctx.IDENT().getText();
@@ -442,6 +442,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 
     @Override
     public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
+        //System.out.println("visiting LVAL");
         String name=ctx.IDENT().getText();
         Symbol s = symbolTable.get_name_matched_symbol(name);
         if(s.type instanceof IntType) {
