@@ -3,14 +3,10 @@ source_filename = "my_module"
 
 @sort_arr = global [5 x i32] zeroinitializer
 
-define i32 @combine([2 x i32] %arr1, i32 %arr1_length, [3 x i32] %arr2, i32 %arr2_length) {
+define i32 @combine([2 x i32]* %arr1, i32 %arr1_length, [3 x i32]* %arr2, i32 %arr2_length) {
 combineEntry:
-  %param0_addr = alloca [2 x i32], align 4
-  store [2 x i32] %arr1, [2 x i32]* %param0_addr, align 4
   %param1_addr = alloca i32, align 4
   store i32 %arr1_length, i32* %param1_addr, align 4
-  %param2_addr = alloca [3 x i32], align 4
-  store [3 x i32] %arr2, [3 x i32]* %param2_addr, align 4
   %param3_addr = alloca i32, align 4
   store i32 %arr2_length, i32* %param3_addr, align 4
   %i = alloca i32, align 4
@@ -20,7 +16,7 @@ combineEntry:
   %k = alloca i32, align 4
   store i32 0, i32* %k, align 4
   %load_lval = load i32, i32* %j, align 4
-  %elemPtr = getelementptr [3 x i32], [3 x i32]* %param2_addr, i32 0, i32 %load_lval
+  %elemPtr = getelementptr [3 x i32], [3 x i32]* %arr2, i32 0, i32 %load_lval
   %load_lval1 = load i32, i32* %elemPtr, align 4
   %cmp = icmp slt i32 1, %load_lval1
   %zext_to_i32 = zext i1 %cmp to i32
