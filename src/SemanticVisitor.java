@@ -265,6 +265,9 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 visit(ctx.stmt(i));
             }
         }
+        else if (ctx.FOR()!=null){
+            
+        }
         else if (ctx.BREAK() != null) {
            return null;
         }

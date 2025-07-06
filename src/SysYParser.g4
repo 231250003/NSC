@@ -45,6 +45,7 @@ stmt
    | block
    | IF L_PAREN cond R_PAREN stmt (ELSE stmt)?
    | WHILE L_PAREN cond R_PAREN stmt
+   | FOR (varDecl | stmt)  (cond|SEMICOLON) ((lVal ASSIGN exp SEMICOLON)|SEMICOLON)
    | BREAK SEMICOLON
    | CONTINUE SEMICOLON
    | RETURN (exp)? SEMICOLON

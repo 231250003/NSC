@@ -2,9 +2,31 @@
 
 GENERATE_RISCV=0
 SYSY_DIR="tests/develop_test"
-echo "== Batch processing all .sysy files in $SYSY_DIR =="
+SPECIFIC_FILE=""
 
-for sysy_file in "$SYSY_DIR"/*.sysy; do
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -f|--file)
+            SPECIFIC_FILE="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown option: $1"
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -n "$SPECIFIC_FILE" ]]; then
+    echo "== Processing specific file: $SPECIFIC_FILE =="
+    FILE_LIST=("$SYSY_DIR/$SPECIFIC_FILE")
+else
+    echo "== Batch processing all .sysy files in $SYSY_DIR =="
+    FILE_LIST=("$SYSY_DIR"/*.sysy)
+fi
+
+for sysy_file in "${FILE_LIST[@]}"; do
     filename=$(basename "$sysy_file" .sysy)
     c_file="$SYSY_DIR/$filename.c"
     exe_file="$SYSY_DIR/$filename"

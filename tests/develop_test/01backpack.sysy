@@ -10,7 +10,6 @@ int main(){
 
     int n=4, m=10;
     int i=0;  // 从0开始
-    
     while(i<n)  // i < n而不是i <= n
     {
         int v=1;  // 每次外层循环都要重置v

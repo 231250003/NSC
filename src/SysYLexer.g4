@@ -7,6 +7,7 @@ IF          : 'if';
 ELSE        : 'else';
 WHILE       : 'while';
 BREAK       : 'break';
+FOR         : 'for';
 CONTINUE    : 'continue';
 RETURN      : 'return';
 PLUS        : '+';
