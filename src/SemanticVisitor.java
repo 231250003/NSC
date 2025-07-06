@@ -270,7 +270,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 visit(ctx.varDecl());
             }
             else{
-                if(ctx.exp()
+                
             }
             if (ctx.stmt()!=null) {
                 for(int i=0;i<ctx.stmt().size();i++){
