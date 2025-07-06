@@ -730,6 +730,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "cur");
             LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, "for.stmt");
             LLVMBasicBlockRef condBlock = LLVMAppendBasicBlock(function, "for.cond");
+
         }
         else if(ctx.BREAK()!=null){
             AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();

@@ -240,7 +240,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 return null;
             }
            // System.out.println(ctx.exp());
-           Type right=getExp(ctx.exp().get(0));
+           Type right=getExp(ctx.exp());
 //            System.out.println(left.toString());
 //
 //            System.out.println(right);
@@ -269,9 +269,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             if (ctx.varDecl()!= null) {
                 visit(ctx.varDecl());
             }
-            else{
-                if(ctx.exp().size()>1) visit(ctx.exp().get(0));
-            }
             if (ctx.stmt()!=null) {
                 for(int i=0;i<ctx.stmt().size();i++){
                     visit(ctx.stmt(i));
@@ -285,9 +282,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                     return null;
                 }
                 // System.out.println(ctx.exp());
-                Type right;
-                if(ctx.exp().size()>=2) right=getExp(ctx.exp().get(1));
-                else right=getExp(ctx.exp().get(0));
+                Type right=getExp(ctx.exp());
 //            System.out.println(left.toString());
 //
 //            System.out.println(right);
@@ -307,7 +302,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         else if (ctx.RETURN() != null) {
             Type stmt_return_type=symbolTable.get_cur_scope_return_type();
             if(ctx.exp()!=null){
-                Type y=getExp(ctx.exp().get(0));
+                Type y=getExp(ctx.exp());
                 if(y!=null &&(   (!(y instanceof IntType))    &&   stmt_return_type instanceof IntType  )){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
                 }
@@ -323,7 +318,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if (ctx.SEMICOLON() != null) {
             if(ctx.exp()!=null){
-                getExp(ctx.exp().get(0));
+                getExp(ctx.exp());
                 return null;
             }
         }
