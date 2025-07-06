@@ -704,7 +704,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
         else if(ctx.WHILE()!=null){
-            while_stmt_count++;
             LLVMValueRef function = symbolTable.get_cur_scope_func();
             LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "cur");
             LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, "while.stmt");
@@ -725,6 +724,12 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             else  visit(ctx.stmt(0));
             LLVMBuildBr(builder, condBlock);
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
+        }
+        else if(ctx.FOR()!=null){
+            LLVMValueRef function = symbolTable.get_cur_scope_func();
+            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "cur");
+            LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, "for.stmt");
+            LLVMBasicBlockRef condBlock = LLVMAppendBasicBlock(function, "for.cond");
         }
         else if(ctx.BREAK()!=null){
             AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
