@@ -270,7 +270,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 visit(ctx.varDecl());
             }
             else{
-                
+                if(ctx.exp().size()>1) visit(ctx.exp().get(0));
             }
             if (ctx.stmt()!=null) {
                 for(int i=0;i<ctx.stmt().size();i++){
@@ -285,7 +285,9 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                     return null;
                 }
                 // System.out.println(ctx.exp());
-                Type right=getExp(ctx.exp());
+                Type right;
+                if(ctx.exp().size()>=2) right=getExp(ctx.exp().get(1));
+                else right=getExp(ctx.exp().get(0));
 //            System.out.println(left.toString());
 //
 //            System.out.println(right);
