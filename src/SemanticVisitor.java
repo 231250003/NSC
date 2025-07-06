@@ -240,7 +240,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 return null;
             }
            // System.out.println(ctx.exp());
-           Type right=getExp(ctx.exp());
+           Type right=getExp(ctx.exp().get(0));
 //            System.out.println(left.toString());
 //
 //            System.out.println(right);
@@ -307,7 +307,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         else if (ctx.RETURN() != null) {
             Type stmt_return_type=symbolTable.get_cur_scope_return_type();
             if(ctx.exp()!=null){
-                Type y=getExp(ctx.exp());
+                Type y=getExp(ctx.exp().get(0));
                 if(y!=null &&(   (!(y instanceof IntType))    &&   stmt_return_type instanceof IntType  )){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
                 }
@@ -323,7 +323,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if (ctx.SEMICOLON() != null) {
             if(ctx.exp()!=null){
-                getExp(ctx.exp());
+                getExp(ctx.exp().get(0));
                 return null;
             }
         }
