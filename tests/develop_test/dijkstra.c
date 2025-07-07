@@ -24,6 +24,7 @@ int main()
 	            }
 	            x=x+1;
 	        }
+	        x=x+2;
 	        {
 	            {if(x>30) break;}
 	        }
