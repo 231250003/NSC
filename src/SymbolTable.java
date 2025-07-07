@@ -9,33 +9,33 @@ import java.util.*;
 
 public class SymbolTable {
     private Stack<List<Symbol>> scopeStack;
-    private Stack<loop_stored_element> is_while_scope;
+    private Stack<loop_stored_element> loop_scope;
     public SymbolTable() {
         scopeStack = new Stack<>();
-        is_while_scope=new Stack<>();
+        loop_scope=new Stack<>();
         enterScope(); // 初始化全局作用域
     }
 
     // 进入新作用域
     public void enterScope() {
         scopeStack.push(new ArrayList<>());
-        is_while_scope.push(null);
+        loop_scope.push(null);
     }
     public void enterScope(LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock) {
         scopeStack.push(new ArrayList<>());
-        is_while_scope.push(new loop_stored_element(condblock,mergeblock,null));
+        loop_scope.push(new loop_stored_element(condblock,mergeblock,null));
     }
     public void enterScope(LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock,SysYParser.StmtContext ctx) {
         scopeStack.push(new ArrayList<>());
-        is_while_scope.push(new loop_stored_element(condblock,mergeblock,ctx));
+        loop_scope.push(new loop_stored_element(condblock,mergeblock,ctx));
     }
     // 退出当前作用域
     public void exitScope() {
         if (!scopeStack.isEmpty()) {
             scopeStack.pop();
         }
-        if(!is_while_scope.isEmpty()){
-            is_while_scope.pop();
+        if(!loop_scope.isEmpty()){
+            loop_scope.pop();
         }
     }
 
@@ -104,8 +104,8 @@ public class SymbolTable {
         return (Globalscope.get(Globalscope.size()-1).reference);
     }
     public  loop_stored_element get_current_while(){
-        for(int i=is_while_scope.size()-1;i>=0;i--){
-            if(is_while_scope.get(i)!=null) return is_while_scope.get(i);
+        for(int i=loop_scope.size()-1;i>=0;i--){
+            if(loop_scope.get(i)!=null) return loop_scope.get(i);
         }
         assert(false);
         return null;
