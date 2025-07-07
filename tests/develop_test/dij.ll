@@ -141,7 +141,7 @@ for.cond37:                                       ; preds = %for.stmt36, %cur3
   br i1 %to_bool43, label %for.stmt36, label %cur35
 
 cur51:                                            ; preds = %for.cond53
-  %load_lval141 = load i32, i32* getelementptr inbounds ([15 x i32], [15 x i32]* @dis, i32 0, i32 2), align 4
+  %load_lval141 = load i32, i32* getelementptr inbounds ([15 x i32], [15 x i32]* @dis, i32 0, i32 3), align 4
   ret i32 %load_lval141
 
 for.stmt52:                                       ; preds = %for.cond53
