@@ -15,7 +15,6 @@ import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
-import semantic_check.OutputHelper;
 
 import static org.bytedeco.llvm.global.LLVM.*;
 
