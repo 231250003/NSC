@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.*;
 
-import semantic_check.*;
 public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     private SymbolTable symbolTable=new SymbolTable();
     public Void visitProgram(SysYParser.ProgramContext ctx) {
