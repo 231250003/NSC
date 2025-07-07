@@ -31,7 +31,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     }
     public Void visit_block(SysYParser.BlockContext ctx,LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock) {
         block_count++;
-        ParseTree parent = ctx.getParent();
+//        ParseTree parent = ctx.getParent();
 //        if ((parent instanceof SysYParser.StmtContext)) {
 //            SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
 //            ParseTree grandparent = stmtCtx.getParent();
@@ -53,7 +53,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
 //                symbolTable.enterScope();
 //            }
 //        }
-//        else symbolTable.enterScope();
+//        else symbolTable.enterScope();忘了当时怎么想的了
         symbolTable.enterScope(condblock,mergeblock);
         for(int i=0;i<ctx.blockItem().size();i++){
             visit(ctx.blockItem(i));
