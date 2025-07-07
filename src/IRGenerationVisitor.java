@@ -744,6 +744,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);
             }
             else  {
+                System.out.println("12232133432");
                 symbolTable.enterScope(condBlock,mergeBlock);
                 visit(ctx.stmt(0));
                 symbolTable.exitScope();
