@@ -741,6 +741,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             if(ctx.stmt(0).block()!=null){
                 //System.err.println("1234");
+                System.out.println("liladedede");
                 visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);
             }
             else  visit(ctx.stmt(0));
@@ -761,7 +762,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         }
         else if(ctx.CONTINUE()!=null){
             AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
-            if(x==null) System.out.println("12231");
             LLVMBuildBr(builder, x.getKey());
         }
         else if(ctx.block()!=null){
