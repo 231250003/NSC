@@ -720,7 +720,40 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, "cur");
             LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, "for.stmt");
             LLVMBasicBlockRef condBlock = LLVMAppendBasicBlock(function, "for.cond");
-
+            if(ctx.varDecl()!=null) {
+                symbolTable.enterScope();
+                visitVarDecl(ctx.varDecl());
+            }
+            else{
+                if(ctx.exp().size()>1) visitExp(ctx.exp().get(0));
+            }
+            LLVMBuildBr(builder,condBlock);
+            LLVMPositionBuilderAtEnd(builder, condBlock);
+            if(ctx.cond()!=null) {
+                LLVMValueRef firstCond = visitCond(ctx.cond());
+                LLVMTypeRef condType = LLVMTypeOf(firstCond);
+                if (LLVMGetTypeKind(condType) != LLVMIntegerTypeKind || LLVMGetIntTypeWidth(condType) != 1) {
+                    firstCond = LLVMBuildICmp(builder, LLVMIntNE, firstCond, LLVMConstInt(condType, 0, 0), "to_bool");
+                }
+                LLVMBuildCondBr(builder, firstCond, thenBlock,mergeBlock);
+            }
+            else  LLVMBuildBr(builder,thenBlock);
+            LLVMPositionBuilderAtEnd(builder, thenBlock);
+            if(ctx.stmt(0).block()!=null){
+                //System.err.println("1234");
+                visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);
+            }
+            else  visit(ctx.stmt(0));
+            if(ctx.lVal()!=null){
+                LLVMValueRef x=visitLVal(ctx.lVal());
+                LLVMValueRef y;
+                if(ctx.exp().size()>1) y=visitExp(ctx.exp().get(1));
+                else y=visitExp(ctx.exp().get(0));
+                LLVMBuildStore(builder, y, x);
+            }
+            LLVMBuildBr(builder, condBlock);
+            LLVMPositionBuilderAtEnd(builder, mergeBlock);
+            if(ctx.varDecl()!=null)symbolTable.exitScope();
         }
         else if(ctx.BREAK()!=null){
             AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
