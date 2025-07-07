@@ -711,7 +711,11 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 //System.err.println("1234");
                 visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);
             }
-            else  visit(ctx.stmt(0));
+            else  {
+                symbolTable.enterScope(condBlock,mergeBlock);
+                visit(ctx.stmt(0));
+                symbolTable.exitScope();
+            }
             LLVMBuildBr(builder, condBlock);
             LLVMPositionBuilderAtEnd(builder, mergeBlock);
         }
@@ -744,7 +748,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);
             }
             else  {
-                System.out.println("12232133432");
                 symbolTable.enterScope(condBlock,mergeBlock);
                 visit(ctx.stmt(0));
                 symbolTable.exitScope();
