@@ -70,8 +70,13 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         symbolTable.exitScope();
         return null;
     }
-    public void visit_block(SysYParser.BlockContext block, LLVMBasicBlockRef condBlock, LLVMBasicBlockRef mergeBlock, SysYParser.StmtContext ctx) {
-        symbolTable.enterScope(condblock,mergeblock);
+    public Void visit_block(SysYParser.BlockContext block, LLVMBasicBlockRef condBlock, LLVMBasicBlockRef mergeBlock, SysYParser.StmtContext ctx) {
+        symbolTable.enterScope(condBlock,mergeBlock,ctx);
+        for(int i=0;i<block.blockItem().size();i++){
+            visit(block.blockItem(i));
+        }
+        symbolTable.exitScope();
+        return null;
     }
     public Void visit_block(SysYParser.BlockContext ctx, List<Symbol> symbols) {
         block_count++;
@@ -767,12 +772,22 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if(ctx.varDecl()!=null)symbolTable.exitScope();
         }
         else if(ctx.BREAK()!=null){
-            AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
-            LLVMBuildBr(builder, x.getValue());
+            loop_stored_element x=symbolTable.get_current_while();
+            LLVMBuildBr(builder, x.merge_block);
         }
         else if(ctx.CONTINUE()!=null){
-            AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> x=symbolTable.get_current_while();
-            LLVMBuildBr(builder, x.getKey());
+            loop_stored_element x=symbolTable.get_current_while();
+            if(x.ctx==null)LLVMBuildBr(builder, x.cond_block);
+            else {
+                if(ctx.lVal()!=null){
+                    LLVMValueRef leftx=visitLVal(ctx.lVal());
+                    LLVMValueRef y;
+                    if(ctx.exp().size()>1) y=visitExp(ctx.exp().get(1));
+                    else y=visitExp(ctx.exp().get(0));
+                    LLVMBuildStore(builder, y, leftx);
+                }
+                LLVMBuildBr(builder, x.cond_block);
+            }
         }
         else if(ctx.block()!=null){
             visit_block(ctx.block());

@@ -9,7 +9,7 @@ import java.util.*;
 
 public class SymbolTable {
     private Stack<List<Symbol>> scopeStack;
-    private Stack<AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef>> is_while_scope;
+    private Stack<loop_stored_element> is_while_scope;
     public SymbolTable() {
         scopeStack = new Stack<>();
         is_while_scope=new Stack<>();
@@ -23,7 +23,11 @@ public class SymbolTable {
     }
     public void enterScope(LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock) {
         scopeStack.push(new ArrayList<>());
-        is_while_scope.push(new AbstractMap.SimpleEntry<>(condblock,mergeblock));
+        is_while_scope.push(new loop_stored_element(condblock,mergeblock,null));
+    }
+    public void enterScope(LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock,SysYParser.StmtContext ctx) {
+        scopeStack.push(new ArrayList<>());
+        is_while_scope.push(new loop_stored_element(condblock,mergeblock,ctx));
     }
     // 退出当前作用域
     public void exitScope() {
@@ -99,7 +103,7 @@ public class SymbolTable {
         assert (((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof VoidType || ((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof IntType);
         return (Globalscope.get(Globalscope.size()-1).reference);
     }
-    public  AbstractMap.SimpleEntry<LLVMBasicBlockRef, LLVMBasicBlockRef> get_current_while(){
+    public  loop_stored_element get_current_while(){
         for(int i=is_while_scope.size()-1;i>=0;i--){
             if(is_while_scope.get(i)!=null) return is_while_scope.get(i);
         }
