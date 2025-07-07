@@ -750,7 +750,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             else  LLVMBuildBr(builder,thenBlock);
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             if(ctx.stmt(0).block()!=null){
-                //System.err.println("1234");
+                if(ctx.lVal()!=null) System.err.println("1234");
                 visit_block(ctx.stmt(0).block(),condBlock,mergeBlock,ctx);
             }
             else  {
@@ -777,7 +777,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             loop_stored_element x=symbolTable.get_current_while();
             if(x.ctx==null)LLVMBuildBr(builder, x.cond_block);
             else {
-                System.out.println("crzzzzz");
                 if(ctx.lVal()!=null){
                     LLVMValueRef leftx=visitLVal(ctx.lVal());
                     LLVMValueRef y;
