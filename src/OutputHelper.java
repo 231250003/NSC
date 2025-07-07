@@ -1,5 +1,3 @@
-package semantic_check;
-
 public class OutputHelper {
     public static boolean is_semantic_correct=true;
     public static void printSemanticError(ErrorType errorType, int line) {
