@@ -233,14 +233,14 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     }
 
     public Void visitStmt(SysYParser.StmtContext ctx) {
-        if (ctx.lVal() != null && ctx.exp() != null) {
+        if (ctx.lVal() != null && ctx.exp() != null&&ctx.exp().size()>0) {
            Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
             if(left instanceof FunctionType){
                 OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
                 return null;
             }
            // System.out.println(ctx.exp());
-           Type right=getExp(ctx.exp());
+           Type right=getExp(ctx.exp().get(0));
 //            System.out.println(left.toString());
 //
 //            System.out.println(right);
@@ -267,28 +267,57 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if (ctx.FOR()!=null){
             if (ctx.varDecl()!= null) {
+                symbolTable.enterScope();
                 visit(ctx.varDecl());
-            }
-            if (ctx.stmt()!=null) {
-                for(int i=0;i<ctx.stmt().size();i++){
-                    visit(ctx.stmt(i));
+                if(ctx.exp().size()>1) getExp(ctx.exp().get(0));
+                if(ctx.cond()!=null) getCond(ctx.cond());
+                if(ctx.lVal()!=null){
+                    Type left=getlVal(ctx.lVal());
+                    if(left instanceof FunctionType){
+                        OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
+                        return null;
+                    }
+                    Type right;
+                    if(ctx.exp().size()>1)   right=getExp(ctx.exp().get(1));
+                    else right=getExp(ctx.exp().get(0));
+                    if(left!=null && right!=null){
+                        if(!left.equals(right)){
+                            OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
+                        }
+                    }
                 }
-            }
-            if(ctx.cond()!=null) getCond(ctx.cond());
-            if(ctx.lVal()!=null){
-                Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
-                if(left instanceof FunctionType){
-                    OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
-                    return null;
+                if (ctx.stmt()!=null) {
+                    for(int i=0;i<ctx.stmt().size();i++){
+                        visit(ctx.stmt(i));
+                    }
                 }
-                // System.out.println(ctx.exp());
-                Type right=getExp(ctx.exp());
+                symbolTable.exitScope();
+            }
+            else{
+                if(ctx.exp().size()>1) getExp(ctx.exp().get(0));
+                if(ctx.cond()!=null) getCond(ctx.cond());
+                if(ctx.lVal()!=null){
+                    Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
+                    if(left instanceof FunctionType){
+                        OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
+                        return null;
+                    }
+                    // System.out.println(ctx.exp());
+                    Type right;
+                    if(ctx.exp().size()>1)   right=getExp(ctx.exp().get(1));
+                    else right=getExp(ctx.exp().get(0));
 //            System.out.println(left.toString());
 //
 //            System.out.println(right);
-                if(left!=null && right!=null){
-                    if(!left.equals(right)){
-                        OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
+                    if(left!=null && right!=null){
+                        if(!left.equals(right)){
+                            OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
+                        }
+                    }
+                }
+                if (ctx.stmt()!=null) {
+                    for(int i=0;i<ctx.stmt().size();i++){
+                        visit(ctx.stmt(i));
                     }
                 }
             }
@@ -301,8 +330,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if (ctx.RETURN() != null) {
             Type stmt_return_type=symbolTable.get_cur_scope_return_type();
-            if(ctx.exp()!=null){
-                Type y=getExp(ctx.exp());
+            if(ctx.exp()!=null&&ctx.exp().size()>0){
+                Type y=getExp(ctx.exp().get(0));
                 if(y!=null &&(   (!(y instanceof IntType))    &&   stmt_return_type instanceof IntType  )){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
                 }
@@ -317,8 +346,8 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             }
         }
         else if (ctx.SEMICOLON() != null) {
-            if(ctx.exp()!=null){
-                getExp(ctx.exp());
+            if(ctx.exp()!=null&&ctx.exp().size()>0){
+                getExp(ctx.exp().get(0));
                 return null;
             }
         }

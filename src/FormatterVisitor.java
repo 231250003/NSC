@@ -202,11 +202,11 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     }
 
     public Void visitStmt(SysYParser.StmtContext ctx) {
-        if (ctx.lVal() != null && ctx.exp() != null) {
+        if (ctx.lVal() != null && ctx.exp() != null&&ctx.exp().size()>0) {
             printIndent();
             visit(ctx.lVal());
             System.out.print(" = ");
-            visit(ctx.exp());
+            visit(ctx.exp().get(0));
             System.out.println(";");
         }
         else if (ctx.block() != null) {
@@ -277,18 +277,51 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             printIndent();
             System.out.println("continue;");
         }
+        else if(ctx.FOR()!=null){
+            printIndent();
+            System.out.println("for (");
+            if (ctx.varDecl()!= null) {
+                visit(ctx.varDecl());
+            }
+            else{
+                if(ctx.exp().size()>1) visitExp(ctx.exp().get(0));
+                else System.out.print(";");
+
+            }
+            if(ctx.cond()!=null) visit(ctx.cond());
+            System.out.print(";");
+            if (ctx.lVal() != null && ctx.exp() != null&&ctx.exp().size()>0) {
+                visit(ctx.lVal());
+                System.out.print(" = ");
+                if(ctx.exp().size()>1)visit(ctx.exp().get(1));
+                else visit(ctx.exp().get(0));
+                System.out.print(";");
+            }
+            System.out.print(")");
+            if(ctx.stmt(0).block()==null){
+                indentLevel++;
+                System.out.println();
+                visit(ctx.stmt(0));
+                indentLevel--;
+                System.out.println();
+            }
+            else {
+                is_if_while=true;
+                visit(ctx.stmt(0));
+            }
+        }
         else if (ctx.RETURN() != null) {
             printIndent();
             System.out.print("return");
-            if (ctx.exp() != null) {
+            if (ctx.exp() != null&&ctx.exp().size()>0) {
                 System.out.print(" ");
-                visit(ctx.exp());
+                visit(ctx.exp().get(0));
             }
             System.out.println(";");
         }
         else if (ctx.SEMICOLON() != null) {
             printIndent();
-            if(ctx.exp()!=null) visit(ctx.exp());
+            if(ctx.exp()!=null&&ctx.exp().size()>0) visit(ctx.exp().get(0));
             System.out.println(";");
         }
         return null;
