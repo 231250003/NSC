@@ -275,14 +275,15 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
             System.out.print("for (");
             if (ctx.varDecl()!= null) {
                 visit(ctx.varDecl());
+                System.out.print(" ");
             }
             else{
                 if(ctx.exp().size()>1) visitExp(ctx.exp().get(0));
-                else System.out.print(";");
+                else System.out.print("; ");
 
             }
             if(ctx.cond()!=null) visit(ctx.cond());
-            System.out.print(";");
+            System.out.print("; ");
             if (ctx.lVal() != null && ctx.exp() != null&&ctx.exp().size()>0) {
                 visit(ctx.lVal());
                 System.out.print(" = ");
