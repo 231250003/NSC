@@ -202,14 +202,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
     }
 
     public Void visitStmt(SysYParser.StmtContext ctx) {
-        if (ctx.lVal() != null && ctx.exp() != null&&ctx.exp().size()>0) {
-            printIndent();
-            visit(ctx.lVal());
-            System.out.print(" = ");
-            visit(ctx.exp().get(0));
-            System.out.println(";");
-        }
-        else if (ctx.block() != null) {
+        if (ctx.block() != null) {
             visit(ctx.block());
         }
         else if (ctx.IF() != null) {
@@ -317,6 +310,13 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                 System.out.print(" ");
                 visit(ctx.exp().get(0));
             }
+            System.out.println(";");
+        }
+        else if (ctx.lVal() != null && ctx.exp() != null&&ctx.exp().size()>0) {
+            printIndent();
+            visit(ctx.lVal());
+            System.out.print(" = ");
+            visit(ctx.exp().get(0));
             System.out.println(";");
         }
         else if (ctx.SEMICOLON() != null) {

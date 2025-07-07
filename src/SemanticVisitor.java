@@ -233,24 +233,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     }
 
     public Void visitStmt(SysYParser.StmtContext ctx) {
-        if (ctx.lVal() != null && ctx.exp() != null&&ctx.exp().size()>0) {
-           Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
-            if(left instanceof FunctionType){
-                OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
-                return null;
-            }
-           // System.out.println(ctx.exp());
-           Type right=getExp(ctx.exp().get(0));
-//            System.out.println(left.toString());
-//
-//            System.out.println(right);
-            if(left!=null && right!=null){
-                if(!left.equals(right)){
-                    OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
-                }
-           }
-        }
-        else if (ctx.block() != null) {
+        if (ctx.block() != null) {
             visit_block(ctx.block());
         }
         else if (ctx.IF() != null) {
@@ -342,6 +325,23 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
             else{
                 if(stmt_return_type instanceof IntType){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_RETURN,ctx.getStart().getLine());
+                }
+            }
+        }
+        else if (ctx.lVal() != null && ctx.exp() != null&&ctx.exp().size()>0) {
+            Type left=getlVal(ctx.lVal());//lval guarantees that it is an var or array like a,a[],a[][]
+            if(left instanceof FunctionType){
+                OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
+                return null;
+            }
+            // System.out.println(ctx.exp());
+            Type right=getExp(ctx.exp().get(0));
+//            System.out.println(left.toString());
+//
+//            System.out.println(right);
+            if(left!=null && right!=null){
+                if(!left.equals(right)){
+                    OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
                 }
             }
         }
