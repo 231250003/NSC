@@ -1,7 +1,7 @@
 int e[15][15],dis[15],book[15];
 int main()
 {
-	for(int i=0;i<14;i++){
+	for(int i=0;i<14;i=i+1){
 	    book[i]=0;
 	}
 	int n=6,m=9,a,b,c;
