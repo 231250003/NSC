@@ -4,8 +4,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.bytedeco.javacpp.PointerPointer;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.bytedeco.llvm.LLVM.*;
-import semantic_check.loop_stored_element;
-
 import java.util.*;
 
 import static org.bytedeco.llvm.global.LLVM.*;
