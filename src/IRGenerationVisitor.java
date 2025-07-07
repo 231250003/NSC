@@ -778,6 +778,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if(x.ctx==null)LLVMBuildBr(builder, x.cond_block);
             else {
                 if(ctx.lVal()!=null){
+                    System.out.println("crzzzzz");
                     LLVMValueRef leftx=visitLVal(ctx.lVal());
                     LLVMValueRef y;
                     if(ctx.exp().size()>1) y=visitExp(ctx.exp().get(1));
