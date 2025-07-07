@@ -70,6 +70,9 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         symbolTable.exitScope();
         return null;
     }
+    public void visit_block(SysYParser.BlockContext block, LLVMBasicBlockRef condBlock, LLVMBasicBlockRef mergeBlock, SysYParser.StmtContext ctx) {
+        symbolTable.enterScope(condblock,mergeblock);
+    }
     public Void visit_block(SysYParser.BlockContext ctx, List<Symbol> symbols) {
         block_count++;
         symbolTable.enterScope();
@@ -745,7 +748,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             if(ctx.stmt(0).block()!=null){
                 //System.err.println("1234");
-                visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);
+                visit_block(ctx.stmt(0).block(),condBlock,mergeBlock,ctx);
             }
             else  {
                 symbolTable.enterScope(condBlock,mergeBlock);
