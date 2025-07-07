@@ -272,7 +272,7 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
         }
         else if(ctx.FOR()!=null){
             printIndent();
-            System.out.println("for (");
+            System.out.print("for (");
             if (ctx.varDecl()!= null) {
                 visit(ctx.varDecl());
             }
@@ -288,7 +288,6 @@ public class FormatterVisitor extends SysYParserBaseVisitor<Void> {
                 System.out.print(" = ");
                 if(ctx.exp().size()>1)visit(ctx.exp().get(1));
                 else visit(ctx.exp().get(0));
-                System.out.print(";");
             }
             System.out.print(")");
             if(ctx.stmt(0).block()==null){
