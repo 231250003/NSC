@@ -1,6 +1,7 @@
 ; ModuleID = 'my_module'
 source_filename = "my_module"
 
+@x = global [2003 x i32] zeroinitializer
 @y = global i32 0
 
 define void @p() {
