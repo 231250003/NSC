@@ -1,6 +1,8 @@
 ; ModuleID = 'my_module'
 source_filename = "my_module"
 
+@a = global [5 x [5 x i32]] zeroinitializer
+
 define i32 @max(i32 %a, i32 %b) {
 maxEntry:
   %param0_addr = alloca i32, align 4
