@@ -47,7 +47,7 @@ int main()
 			}
 		}
 	}
-    return dis[2];
+    return dis[3];
 }
 /*
 6 9
