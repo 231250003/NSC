@@ -33,7 +33,9 @@ mainEntry:
   br label %for.cond
 
 cur:                                              ; preds = %for.cond
-  ret i32 0
+  %elemPtr59 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %arr, i32 0, i32 2, i32 2
+  %load_lval60 = load i32, i32* %elemPtr59, align 4
+  ret i32 %load_lval60
 
 for.stmt:                                         ; preds = %for.cond
   %j13 = alloca i32, align 4
