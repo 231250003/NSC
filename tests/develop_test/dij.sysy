@@ -1,7 +1,9 @@
-int e[101][101],dis[1001],book[1001];
+int e[15][15],dis[15],book[15];
 int main()
 {
-	memset(book,0,sizeof(book));
+	for(int i=0;i<14;i++){
+	    book[i]=0;
+	}
 	int n=6,m=9,a,b,c;
     for(int i=1;i<=n;i=i+1)
     {
