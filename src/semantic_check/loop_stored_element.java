@@ -1,7 +1,17 @@
 package semantic_check;
 
 import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
+import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.bytedeco.javacpp.PointerPointer;
+import org.antlr.v4.runtime.tree.RuleNode;
+import org.bytedeco.llvm.LLVM.*;
 
+
+import java.util.*;
+
+import static org.bytedeco.llvm.global.LLVM.*;
 public class loop_stored_element{
     public LLVMBasicBlockRef cond_block;
     public LLVMBasicBlockRef merge_block;
