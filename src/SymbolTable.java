@@ -1,4 +1,4 @@
-package semantic_check;
+
 
 import org.bytedeco.javacpp.PointerPointer;
 import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;

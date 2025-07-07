@@ -1,5 +1,3 @@
-package semantic_check;
-
 public enum ErrorType {
     UNDECLARED_VARIABLE(1, "变量未声明"),
     UNDECLARED_FUNCTION(2, "函数未定义"),

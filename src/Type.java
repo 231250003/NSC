@@ -1,5 +1,3 @@
-package semantic_check;
-
 import java.util.ArrayList;
 import java.util.List;
 
