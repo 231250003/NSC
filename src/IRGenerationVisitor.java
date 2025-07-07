@@ -40,6 +40,7 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
                 SysYParser.StmtContext whileStmt = (SysYParser.StmtContext) grandparent;
                 if (whileStmt.WHILE() != null) {
                     if (whileStmt.stmt(0) == stmtCtx) {
+                        System.out.println("fuckifidsnfi");
                         symbolTable.enterScope(condblock,mergeblock);
                     } else {
                         symbolTable.enterScope();
@@ -741,7 +742,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             LLVMPositionBuilderAtEnd(builder, thenBlock);
             if(ctx.stmt(0).block()!=null){
                 //System.err.println("1234");
-                System.out.println("liladedede");
                 visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);
             }
             else  visit(ctx.stmt(0));
