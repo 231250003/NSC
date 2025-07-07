@@ -38,9 +38,8 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
             if (grandparent instanceof SysYParser.StmtContext)
             {
                 SysYParser.StmtContext whileStmt = (SysYParser.StmtContext) grandparent;
-                if (whileStmt.WHILE() != null) {
+                if (whileStmt.WHILE() != null||whileStmt.FOR()!=null) {
                     if (whileStmt.stmt(0) == stmtCtx) {
-                        System.out.println("fuckifidsnfi");
                         symbolTable.enterScope(condblock,mergeblock);
                     } else {
                         symbolTable.enterScope();
