@@ -17,5 +17,5 @@ int main() {
         }
     }
 
-    return 0;
+    return arr[2][2];
 }
