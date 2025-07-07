@@ -1,6 +1,3 @@
-#include<iostream>
-#include<cstring>
-using namespace std;
 int e[101][101],dis[1001],book[1001];
 int main()
 {
