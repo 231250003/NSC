@@ -3,5 +3,5 @@ int f(int x){
     else return f(x-1)+f(x-2);
 }
 int main(){
-    return f(10);
+    return f(5);
 }
