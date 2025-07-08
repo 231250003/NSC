@@ -27,6 +27,6 @@ if.else:                                          ; preds = %fEntry
 
 define i32 @main() {
 mainEntry:
-  %f = call i32 @f(i32 10)
+  %f = call i32 @f(i32 5)
   ret i32 %f
 }
