@@ -16,16 +16,4 @@ public class StackOnlyRegisterAllocator implements RegisterAllocator {
         // 以 sp 为基准偏移，栈增长方向向下（负偏移）
         return String.format("%d(sp)", varOffset.get(varName));
     }
-
-    @Override
-    public int getStackSize() {
-        return nextOffset;
-    }
-    @Override
-    public void processInstruction(int lineNumber, String instruction){
-        return;
-    }
-    public void preprocess_blobk(LLVMBasicBlockRef bb){
-        return;
-    }
 }

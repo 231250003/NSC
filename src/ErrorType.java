@@ -9,7 +9,8 @@ public enum ErrorType {
     FUNCTION_ARGUMENT_MISMATCH(8, "函数参数不适用"),
     INDEXING_NON_ARRAY(9, "对非数组使用下标运算符"),
     CALLING_NON_FUNCTION(10, "对变量使用函数调用"),
-    INVALID_ASSIGNMENT_TARGET(11, "赋值号左侧非变量或数组元素");
+    INVALID_ASSIGNMENT_TARGET(11, "赋值号左侧非变量或数组元素"),
+    ASSIGNING_TO_ARRAY_TYPE(12, "不能对数组赋值");
 
     private final int errorCode;
     private final String message;

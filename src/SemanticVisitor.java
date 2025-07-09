@@ -342,6 +342,9 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 if(!left.equals(right)){
                     OutputHelper.printSemanticError(ErrorType.TYPE_MISMATCH_ASSIGNMENT,ctx.getStart().getLine());
                 }
+                else if(left instanceof ArrayType){
+                    OutputHelper.printSemanticError(ErrorType.ASSIGNING_TO_ARRAY_TYPE,ctx.getStart().getLine());
+                }
             }
         }
         else if (ctx.SEMICOLON() != null) {

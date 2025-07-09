@@ -35,12 +35,6 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                     String line = LLVM.LLVMPrintValueToString(inst).getString();
                     if (line.contains("br")||line.contains("alloca")) continue;
-                    for (String var : LLVMIRToRiscv.extractVariables(line)) {
-                        if(!varOffset.containsKey(var)){
-                            nextOffset += 4;
-                            varOffset.put(var, nextOffset);
-                        }
-                    }
                     String line3;
                     if(line.contains("=")) line3= line.substring(line.indexOf("=")+1);
                     else if(line.contains("store")&&line.contains("i32* %")) {
@@ -254,8 +248,4 @@ class NewControlFlowRegisterAllocator implements RegisterAllocator{
         return varToLocation.get(varName);
     }
 
-    @Override
-    public int getStackSize() {
-        return nextOffset;
-    }
 }
