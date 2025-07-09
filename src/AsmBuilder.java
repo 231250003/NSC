@@ -26,38 +26,10 @@ public class AsmBuilder {
     }
 
     public void instr(String op, String... args) {
-        boolean flag=false;
-//        if(op.equals("lw")){
-//            flag=true;
-//            String dest = args[0];
-//            String addr = args[1];
-//            int parenIndex = addr.indexOf('(');
-//            String offset = addr.substring(0, parenIndex).trim();
-//            String base = addr.substring(parenIndex + 1, addr.length() - 1).trim();
-//            op = "LOAD_WORD(";
-//            args = new String[]{dest, base, offset};
-//        }
-//        if(op.equals("sw")&&Main.used_interpreter&&Main.is_run_time_error_test){
-//            double randomValue = Math.random();
-//            if(randomValue>=0.4) return;
-//        }
-        if(op.equals("sw")){
-            String addr=args[1];
-            LLVMIRToRiscv.is_offset_init.put(Integer.parseInt(addr.substring(0,addr.indexOf("("))),true);
-        }
-        else if(op.equals("lw")){
-            String addr=args[1];
-            int offset=Integer.parseInt(addr.substring(0,addr.indexOf("(")));
-            if(offset!=0&&LLVMIRToRiscv.is_offset_init.get(offset)==false){
-                current.append("  "+"sw"+"  "+"x0,"+"  "+addr);
-                current.append("\n");
-            }
-        }
         current.append("  ").append(op);
         if (args.length > 0) {
              current.append(" ").append(String.join(", ", args));
         }
-        if(flag)current.append(")");
         current.append("\n");
     }
 
