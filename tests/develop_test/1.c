@@ -1,5 +1,6 @@
 int z=3;
 int print(){
+    z=z+3;
     return z+3;
 }
 int main(){
