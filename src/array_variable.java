@@ -7,7 +7,7 @@ public class array_variable {
     String array_name;
     List<Integer> array_size;
     int array_dim;
-    List<Objects> cur_offset=new ArrayList<>();
+    List<Object> cur_offset=new ArrayList<>();
     public array_variable(String variable_name,String array_name,int array_dim,List<Object> cur_offset,List<Integer> array_size){
         this.variable_name=variable_name;
         this.array_name=array_name;
