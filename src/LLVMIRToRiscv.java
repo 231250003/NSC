@@ -41,12 +41,44 @@ public class LLVMIRToRiscv {
             asm.label(funcName);
             if ("main".equals(funcName)) asm.instr("addi", "sp", "sp", "-" + 2044);
             allocator = new GraphColoringRegisterAllocator(func);
+            List<array_variable> array_variable_ref=new ArrayList<>();//在函数调用中参数涉及函数时会用到
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(label);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-                    if (opcode == LLVM.LLVMAlloca) {
+                    if(opcode==LLVM.LLVMGetElementPtr){//注意getelementptr的下标可能是变量
+                        if(allocator.allocate(LLVM.LLVMGetValueName(inst).getString())==null) continue;
+                        String variable_name = LLVM.LLVMGetValueName(inst).getString();
+                        LLVMValueRef base_ptr = LLVM.LLVMGetOperand(inst, 0);
+                        String array_name = LLVM.LLVMGetValueName(base_ptr).getString();
+                        LLVMTypeRef base_type = LLVM.LLVMTypeOf(base_ptr);
+                        LLVMTypeRef array_type = LLVM.LLVMGetElementType(base_type);
+                        int array_dim = 0;
+                        List<Integer> array_size = new ArrayList<>();
+                        LLVMTypeRef current = array_type;
+                        while (LLVM.LLVMGetTypeKind(current) == LLVM.LLVMArrayTypeKind) {
+                            long len = LLVM.LLVMGetArrayLength(current);
+                            array_size.add((int) len);
+                            array_dim++;
+                            current = LLVM.LLVMGetElementType(current);
+                        }
+                        int operand_count = LLVM.LLVMGetNumOperands(inst);
+                        List<Object> cur_offset = new ArrayList<>();
+                        for (int i = 1; i < operand_count; i++) {
+                            LLVMValueRef index = LLVM.LLVMGetOperand(inst, i);
+                            if (LLVM.LLVMIsAConstant(index) != null) {
+                                long val = LLVM.LLVMConstIntGetZExtValue(index);
+                                cur_offset.add((int) val);
+                            } else {
+                                String var_name = LLVM.LLVMGetValueName(index).getString();
+                                cur_offset.add(var_name);
+                            }
+                        }
+                        array_variable av = new array_variable(variable_name, array_name, array_dim, cur_offset, array_size);
+                        array_variable_ref.add(av);
+                    }
+                    else if (opcode == LLVM.LLVMAlloca) {
                         LLVMTypeRef ty = LLVM.LLVMGetAllocatedType(inst);
                         if (LLVM.LLVMGetTypeKind(ty) == LLVM.LLVMArrayTypeKind) {
                             int total = 1;
@@ -138,24 +170,34 @@ public class LLVMIRToRiscv {
                         }
                         asm.op2(op, destReg, reg1, reg2);
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        if (addr.contains("sp")) {
-                            asm.instr("sw", destReg, addr);
+                        if(addr.isEmpty()) continue;
+                        if (addr.contains("stack")) {
+                            if(value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset))==null) next_offset+=4;
+                            asm.instr("sw", destReg, value_stack_addr.get(LLVM.LLVMGetValueName(inst).getString()));
                         } else asm.instr("mv", addr, destReg);
                     } else if (opcode == LLVM.LLVMRet) {
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
                         String reg = evaluate(retVal);
-                        asm.mv("a0", reg);
-                        asm.instr("addi", "sp", "sp", "" + 2044); // Epilogue
-                        asm.li("a7", 93);  // syscall exit
-                        asm.instr("ecall");
+                        if(LLVM.LLVMGetValueName(func).getString().equals("main")) {
+                            asm.mv("x10", reg);
+                            asm.instr("addi", "sp", "sp", "" + 2044); // Epilogue
+                            asm.li("a7", 93);  // syscall exit
+                            asm.instr("ecall");
+                        }
+                        else{
+                            asm.mv("x10", reg);
+                            asm.instr("ret");
+                        }
                     } else if (opcode == LLVM.LLVMZExt) {
                         LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
                         String srcReg = evaluate(operand);
                         String destReg = freshReg();
                         asm.mv(destReg, srcReg);
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        if (addr.contains("sp")) {
-                            asm.instr("sw", destReg, addr);
+                        if(addr.isEmpty()) continue;
+                        if (addr.contains("stack")) {
+                            if(value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset))==null) next_offset+=4;
+                            asm.instr("sw", destReg, value_stack_addr.get(LLVM.LLVMGetValueName(inst).getString()));
                         } else asm.instr("mv", addr, destReg);
                     } else if (opcode == LLVM.LLVMICmp) {
                         int pred = LLVM.LLVMGetICmpPredicate(inst);  // 获取谓词
@@ -191,8 +233,11 @@ public class LLVMIRToRiscv {
                                 throw new RuntimeException("Unsupported icmp predicate: " + pred);
                         }
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(inst).getString());
-                        if (addr.contains("sp")) asm.instr("sw", destReg, addr);
-                        else asm.instr("mv", addr, destReg);
+                        if(addr.isEmpty()) continue;
+                        if (addr.contains("stack")) {
+                            if(value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset))==null) next_offset+=4;
+                            asm.instr("sw", destReg, value_stack_addr.get(LLVM.LLVMGetValueName(inst).getString()));
+                        } else asm.instr("mv", addr, destReg);
                     } else if (opcode == LLVM.LLVMBr) {
                         int numOperands = LLVM.LLVMGetNumOperands(inst);
                         if (numOperands == 1) {

@@ -7,7 +7,10 @@ define i32 @print() {
 printEntry:
   %load_lval = load i32, i32* @z, align 4
   %add = add i32 %load_lval, 3
-  ret i32 %add
+  store i32 %add, i32* @z, align 4
+  %load_lval1 = load i32, i32* @z, align 4
+  %add2 = add i32 %load_lval1, 3
+  ret i32 %add2
 }
 
 define i32 @main() {
