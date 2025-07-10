@@ -1,5 +1,6 @@
 import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
 import org.bytedeco.llvm.LLVM.LLVMModuleRef;
+import org.bytedeco.llvm.LLVM.LLVMTypeRef;
 import org.bytedeco.llvm.LLVM.LLVMValueRef;
 import org.bytedeco.llvm.global.LLVM;
 
@@ -14,7 +15,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
     private Map<String, Set<String>> live_variable_block_out = new HashMap<>();
     private Map<String,Set<String>> graph=new HashMap<>();
     private Map<LLVMValueRef,Set<String>> in_inst=new HashMap<>();
-    private Map<LLVMValueRef,Set<String>> out_inst=new HashMap<>();
+    private static Map<LLVMValueRef,Set<String>> out_inst=new HashMap<>();
     private Map<String,String> valueMap=new HashMap<>();
     Map<String,Integer> var_used_num=new HashMap<>();
     public void cal_def_use(LLVMValueRef func) {
@@ -26,9 +27,23 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 String line = LLVM.LLVMPrintValueToString(inst).getString();
                 if (line.contains("br") || line.contains("alloca")) continue;
                 for (String var : LLVMIRToRiscv.extractVariables(line)) {
-                    valueMap.put(var,"");
+                    valueMap.putIfAbsent(var,"");
                     var_used_num.putIfAbsent(var,0);
                     var_used_num.put(var,var_used_num.get(var)+1);
+                }
+                if(LLVM.LLVMGetInstructionOpcode(inst)==LLVM.LLVMGetElementPtr){
+                    String variable_name = LLVM.LLVMGetValueName(inst).getString();
+                    LLVMValueRef base_ptr = LLVM.LLVMGetOperand(inst, 0);
+                    LLVMTypeRef base_type = LLVM.LLVMTypeOf(base_ptr);
+                    LLVMTypeRef array_type = LLVM.LLVMGetElementType(base_type);
+                    int array_dim = 0;
+                    LLVMTypeRef current = array_type;
+                    while (LLVM.LLVMGetTypeKind(current) == LLVM.LLVMArrayTypeKind) {
+                        array_dim++;
+                        current = LLVM.LLVMGetElementType(current);
+                    }
+                    int operand_count = LLVM.LLVMGetNumOperands(inst);
+                    if(operand_count-1<array_dim) valueMap.put(variable_name,"stack");
                 }
                 String line3;
                 if (line.contains("=")) line3 = line.substring(line.indexOf("=") + 1);
@@ -200,6 +215,9 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             }
         }
         color_no_spill_reg();
+    }
+    public static Set<String>get_after_cur_inst_live_variable(LLVMValueRef x){
+        return out_inst.get(x);
     }
     public GraphColoringRegisterAllocator(LLVMValueRef func) {
         variable_def_in_block = new HashMap<>();

@@ -48,6 +48,9 @@ public class AsmBuilder {
     public void op2(String op, String dest, String lhs, String rhs) {
         instr(op, dest, lhs, rhs);
     }
+    public void op2(String op, String dest, String lhs, Integer rhs) {
+        instr(op, dest, lhs, String.valueOf(rhs));
+    }
 
     public void word(String label, long value) {
         label(label);
