@@ -70,50 +70,45 @@ for.stmt:
   lw x17, 0(x17)
   mv x9, x17
   add t2, x11, x9
-  mv x11, t2
-  la t0, z
-  lw t0, 0(t0)
-  mv x9, t0
-  add t1, x11, x9
-  mv x9, t1
+  mv x9, t2
   mv x11, x9
   mv x9, x12
-  li t2, 1
-  add t0, x9, t2
-  mv x9, t0
+  li t0, 1
+  add t1, x9, t0
+  mv x9, t1
   mv x12, x9
-  lw t1, 16(sp),
-  sw x17, 0(t1)
+  lw t2, 16(sp),
+  sw x17, 0(t2)
   j for.cond
 for.cond:
   mv x9, x12
-  li t2, 3
-  slt t0, x9, t2
-  mv x9, t0
-  mv t1, x9
+  li t0, 3
+  slt t1, x9, t0
   mv x9, t1
-  li t2, 0
-  xor t0, x9, t2
-  snez t0, t0
-  mv x9, t0
+  mv t2, x9
+  mv x9, t2
+  li t0, 0
+  xor t1, x9, t0
+  snez t1, t1
+  mv x9, t1
   bnez x9, for.stmt
   j cur
 print:
   j printEntry
 printEntry:
-  la t1, z
-  lw t1, 0(t1)
-  mv x8, t1
-  li t2, 3
-  add t0, x8, t2
-  mv x8, t0
-  la t1, z
-  sw x8, 0(t1)
   la t2, z
   lw t2, 0(t2)
   mv x8, t2
   li t0, 3
   add t1, x8, t0
   mv x8, t1
+  la t2, z
+  sw x8, 0(t2)
+  la t0, z
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 3
+  add t2, x8, t1
+  mv x8, t2
   mv x10, x8
   ret
