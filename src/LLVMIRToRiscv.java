@@ -136,8 +136,9 @@ public class LLVMIRToRiscv {
                         for (int i = 1; i < operand_count; i++) {
                             LLVMValueRef index = LLVM.LLVMGetOperand(inst, i);
                             if (LLVM.LLVMIsAConstant(index) != null) {
-                                System.out.println("crzzzzz");
                                 long val = LLVM.LLVMConstIntGetZExtValue(index);
+                                System.out.println(val);
+                                System.out.println("crzzzz");
                                 cur_offset.add((int) val);
                             } else {
                                 has_variable_index = true;
