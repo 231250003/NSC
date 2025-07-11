@@ -101,22 +101,3 @@ for.cond:
   lw t0, 104(sp)
   bnez t0, for.stmt
   j cur
-print:
-  j printEntry
-printEntry:
-  la t1, z
-  lw t1, 0(t1)
-  mv x8, t1
-  li t2, 3
-  add t0, x8, t2
-  mv x8, t0
-  la t1, z
-  sw x8, 0(t1)
-  la t2, z
-  lw t2, 0(t2)
-  mv x8, t2
-  li t0, 3
-  add t1, x8, t0
-  mv x8, t1
-  mv x10, x8
-  ret

@@ -58,7 +58,10 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         array_dim++;
                         current = LLVM.LLVMGetElementType(current);
                     }
-                    if(operand_count-2<array_dim) valueMap.put(variable_name,"stack");
+                    if(operand_count-2<array_dim) {
+                        valueMap.put(variable_name,"stack");
+                        System.out.println("crzzzz");
+                    }
                     array_variable av = new array_variable(variable_name, LLVM.LLVMGetValueName(base_ptr).getString(), array_dim, cur_offset, array_size);
                     array_variable_ref.add(av);
                 }
