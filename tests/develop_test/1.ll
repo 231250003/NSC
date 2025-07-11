@@ -40,7 +40,7 @@ for.stmt:                                         ; preds = %for.cond
 
 for.cond:                                         ; preds = %for.stmt, %mainEntry
   %load_lval = load i32, i32* %i, align 4
-  %cmp = icmp slt i32 %load_lval, 2
+  %cmp = icmp slt i32 %load_lval, 1
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %for.stmt, label %cur
