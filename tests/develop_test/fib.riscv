@@ -1,0 +1,92 @@
+
+  .text
+  .globl main
+main:
+  addi sp, sp, -2044
+  j mainEntry
+mainEntry:
+  sw x8, 0(sp)
+  sw x1, 4(sp)
+  addi x10, sp, 0
+  addi sp, sp, 8
+  jal x1, fib
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x8, 0(sp)
+  mv x8, x10
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+fib:
+  mv x8, x10
+  j fibEntry
+fibEntry:
+  mv x9, x8
+  mv x8, x9
+  li t0, 0
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  bnez x8, if.then
+  j if.else
+if.then:
+  li t2, 1
+  mv x10, t2
+  ret
+if.else:
+  mv x8, x9
+  li t0, 2
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  bnez x8, if.then5
+  j if.else6
+if.then5:
+  li t2, 2
+  mv x10, t2
+  ret
+if.else6:
+  mv x8, x9
+  sw x9, 0(sp)
+  sw x8, 4(sp)
+  sw x1, 8(sp)
+  addi x10, sp, 4
+  addi sp, sp, 12
+  jal x1, fib
+  addi sp, sp, -12
+  lw x1, 8(sp)
+  lw x9, 0(sp)
+  lw x8, 4(sp)
+  mv x8, x10
+  mv x9, x9
+  li t0, 1
+  sub t1, x9, t0
+  mv x9, t1
+  sw x9, 0(sp)
+  sw x8, 4(sp)
+  sw x1, 8(sp)
+  addi x10, sp, 4
+  addi sp, sp, 12
+  jal x1, fib10
+  addi sp, sp, -12
+  lw x1, 8(sp)
+  lw x9, 0(sp)
+  lw x8, 4(sp)
+  mv x9, x10
+  add t2, x8, x9
+  mv x8, t2
+  mv x10, x8
+  ret
