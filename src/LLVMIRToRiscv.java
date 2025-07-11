@@ -351,6 +351,7 @@ public class LLVMIRToRiscv {
                                 total *= len;
                                 ty = LLVM.LLVMGetElementType(ty);
                             }
+                            System.out.println(LLVM.LLVMGetValueName(inst).getString());
                             if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null)
                                 next_offset += total*4;
                         } else if (allocator.allocate(LLVM.LLVMGetValueName(inst).getString()).equals("stack")) {
