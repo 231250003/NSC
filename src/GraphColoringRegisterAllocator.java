@@ -125,6 +125,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     line3 = line.substring(0, line.indexOf(","));
                 }
                 else if(line.contains("br")){
+                    System.out.println("crzzzzzzzzz");
                     if(line.contains(",")) line3=line.substring(0, line.indexOf(","));
                     else line3="";
                 }
