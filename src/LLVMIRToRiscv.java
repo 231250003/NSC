@@ -223,8 +223,8 @@ public class LLVMIRToRiscv {
                             if (value_stack_addr.get(variable_name).contains("("))
                                 asm.instr("lw", allocator.allocate(variable_name), value_stack_addr.get(variable_name));
                             else {
-                                asm.instr("lw", allocator.allocate(LLVM.LLVMGetValueName(inst).getString()), String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()))));
-                                asm.instr("lw", allocator.allocate(LLVM.LLVMGetValueName(inst).getString()), "0(" + allocator.allocate(LLVM.LLVMGetValueName(inst).getString()) + ")");
+                                asm.instr("lw", allocator.allocate(LLVM.LLVMGetValueName(inst).getString()), String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(variable_name))));
+                                asm.instr("lw", allocator.allocate(LLVM.LLVMGetValueName(inst).getString()), "0(" + allocator.allocate(variable_name) + ")");
                             }
                         }
                     }
