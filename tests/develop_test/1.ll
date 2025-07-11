@@ -52,25 +52,27 @@ mainEntry:
   store i32 1, i32* %x, align 4
   %sum = alloca i32, align 4
   store i32 0, i32* %sum, align 4
-  %print = call i32 @print()
   %i = alloca i32, align 4
   store i32 0, i32* %i, align 4
   br label %for.cond
 
 cur:                                              ; preds = %for.cond
-  %load_lval22 = load i32, i32* %sum, align 4
-  ret i32 %load_lval22
+  %load_lval24 = load i32, i32* %sum, align 4
+  ret i32 %load_lval24
 
 for.stmt:                                         ; preds = %for.cond
+  %print = call i32 @print()
   %load_lval16 = load i32, i32* %sum, align 4
   %load_lval17 = load i32, i32* %i, align 4
   %elemPtr18 = getelementptr [4 x [4 x i32]], [4 x [4 x i32]]* %a, i32 0, i32 0, i32 %load_lval17
   %load_lval19 = load i32, i32* %elemPtr18, align 4
   %add = add i32 %load_lval16, %load_lval19
-  store i32 %add, i32* %sum, align 4
-  %load_lval20 = load i32, i32* %i, align 4
-  %add21 = add i32 %load_lval20, 1
-  store i32 %add21, i32* %i, align 4
+  %load_lval20 = load i32, i32* @z, align 4
+  %add21 = add i32 %add, %load_lval20
+  store i32 %add21, i32* %sum, align 4
+  %load_lval22 = load i32, i32* %i, align 4
+  %add23 = add i32 %load_lval22, 1
+  store i32 %add23, i32* %i, align 4
   br label %for.cond
 
 for.cond:                                         ; preds = %for.stmt, %mainEntry

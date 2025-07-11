@@ -42,11 +42,6 @@ mainEntry:
   sw t0, 60(sp)
   li t1, 0
   sw t1, 64(sp)
-  sw x1, 68(sp)
-  addi sp, sp, 72
-  jal x1, print
-  addi sp, sp, -72
-  lw x1, 68(sp)
   li t2, 0
   sw t2, 68(sp)
   j for.cond
@@ -59,6 +54,11 @@ cur:
   li a7, 93
   ecall
 for.stmt:
+  sw x1, 76(sp)
+  addi sp, sp, 80
+  jal x1, print
+  addi sp, sp, -80
+  lw x1, 76(sp)
   lw t2, 64(sp)
   sw t2, 76(sp)
   lw t0, 68(sp)
@@ -82,55 +82,62 @@ for.stmt:
   lw t1, 88(sp)
   add t2, t0, t1
   sw t2, 92(sp)
-  lw t0, 92(sp)
-  sw t0, 64(sp)
-  lw t1, 68(sp)
-  sw t1, 96(sp)
+  la t0, z
+  lw t0, 0(t0)
+  sw t0, 96(sp)
+  lw t1, 92(sp)
   lw t2, 96(sp)
-  li t0, 1
-  add t1, t2, t0
-  sw t1, 100(sp)
-  lw t2, 100(sp)
-  sw t2, 68(sp)
+  add t0, t1, t2
+  sw t0, 100(sp)
+  lw t1, 100(sp)
+  sw t1, 64(sp)
+  lw t2, 68(sp)
+  sw t2, 104(sp)
+  lw t0, 104(sp)
+  li t1, 1
+  add t2, t0, t1
+  sw t2, 108(sp)
+  lw t0, 108(sp)
+  sw t0, 68(sp)
   j for.cond
 for.cond:
-  lw t0, 68(sp)
-  sw t0, 104(sp)
-  lw t1, 104(sp)
-  li t2, 3
-  slt t0, t1, t2
-  sw t0, 108(sp)
-  lw t1, 108(sp)
-  mv t2, t1
-  sw t2, 112(sp)
-  lw t0, 112(sp)
-  li t1, 0
-  xor t2, t0, t1
-  snez t2, t2
-  sw t2, 116(sp)
-  lw t0, 116(sp)
-  bnez t0, for.stmt
+  lw t1, 68(sp)
+  sw t1, 112(sp)
+  lw t2, 112(sp)
+  li t0, 3
+  slt t1, t2, t0
+  sw t1, 116(sp)
+  lw t2, 116(sp)
+  mv t0, t2
+  sw t0, 120(sp)
+  lw t1, 120(sp)
+  li t2, 0
+  xor t0, t1, t2
+  snez t0, t0
+  sw t0, 124(sp)
+  lw t1, 124(sp)
+  bnez t1, for.stmt
   j cur
 print:
   j printEntry
 printEntry:
+  la t2, z
+  lw t2, 0(t2)
+  sw t2, 0(sp)
+  lw t0, 0(sp)
+  li t1, 3
+  add t2, t0, t1
+  sw t2, 4(sp)
+  lw t0, 4(sp)
   la t1, z
-  lw t1, 0(t1)
-  sw t1, 0(sp)
-  lw t2, 0(sp)
-  li t0, 3
-  add t1, t2, t0
-  sw t1, 4(sp)
-  lw t2, 4(sp)
-  la t0, z
-  sw t2, 0(t0)
-  la t1, z
-  lw t1, 0(t1)
-  sw t1, 8(sp)
-  lw t2, 8(sp)
-  li t0, 3
-  add t1, t2, t0
-  sw t1, 12(sp)
-  lw t2, 12(sp)
-  mv x10, t2
+  sw t0, 0(t1)
+  la t2, z
+  lw t2, 0(t2)
+  sw t2, 8(sp)
+  lw t0, 8(sp)
+  li t1, 3
+  add t2, t0, t1
+  sw t2, 12(sp)
+  lw t0, 12(sp)
+  mv x10, t0
   ret
