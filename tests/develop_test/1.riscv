@@ -8,103 +8,112 @@ main:
   addi sp, sp, -2044
   j mainEntry
 mainEntry:
+  lw x8, 0(sp)
   li t0, 1
-  sw t0, 0(sp)
+  mv x8, t0
+  lw x13, 4(sp)
   li t1, 2
-  sw t1, 4(sp)
+  mv x13, t1
+  lw x14, 8(sp)
   li t2, 3
-  sw t2, 8(sp)
+  mv x14, t2
+  lw x15, 12(sp)
   li t0, 0
-  sw t0, 12(sp)
+  mv x15, t0
   li t1, 0
-  sw t1, 16(sp)
+  mv x11, t1
   li t2, 0
-  sw t2, 20(sp)
+  mv x12, t2
+  sw x8, 0(sp)
+  sw x13, 4(sp)
+  sw x14, 8(sp)
+  sw x15, 12(sp)
   j for.cond
 cur:
-  lw t0, 16(sp)
-  sw t0, 24(sp)
-  lw t1, 24(sp)
-  mv x10, t1
+  mv x8, x11
+  mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
 for.stmt:
-  sw x1, 28(sp)
-  addi sp, sp, 32
+  sw x16, 16(sp)
+  sw x15, 20(sp)
+  sw x14, 24(sp)
+  sw x13, 28(sp)
+  sw x12, 32(sp)
+  sw x11, 36(sp)
+  sw x8, 40(sp)
+  sw x1, 44(sp)
+  addi sp, sp, 48
   jal x1, print
-  addi sp, sp, -32
-  lw x1, 28(sp)
-  lw t2, 16(sp)
-  sw t2, 28(sp)
-  lw t0, 20(sp)
-  sw t0, 32(sp)
+  addi sp, sp, -48
+  lw x1, 44(sp)
+  lw x16, 16(sp)
+  lw x15, 20(sp)
+  lw x14, 24(sp)
+  lw x13, 28(sp)
+  lw x12, 32(sp)
+  lw x11, 36(sp)
+  lw x8, 40(sp)
+  mv x11, x11
+  mv x9, x12
   li t2, 0
-  lw t1, 32(sp)
   li t0, 1
-  mul t0, t1, t0
+  mul t0, x9, t0
   add t2, t2, t0
   slli t2, t2, 2
-  li t0, 0
-  add t2, t2, t0
+  li t1, 16
+  add t2, t2, t1
   add t2, t2, sp
-  sw t2, 36(sp)
-  lw t1, 36(sp),
-  lw t1, 0(t1)
-  sw t1, 40(sp)
-  lw t2, 28(sp)
-  lw t0, 40(sp)
-  add t1, t2, t0
-  sw t1, 44(sp)
-  lw t2, 44(sp)
   sw t2, 16(sp)
-  lw t0, 20(sp)
-  sw t0, 48(sp)
-  lw t1, 48(sp)
+  lw x17, 16(sp),
+  lw x17, 0(x17)
+  mv x9, x17
+  add t2, x11, x9
+  mv x11, t2
+  la t0, z
+  lw t0, 0(t0)
+  mv x9, t0
+  add t1, x11, x9
+  mv x9, t1
+  mv x11, x9
+  mv x9, x12
   li t2, 1
-  add t0, t1, t2
-  sw t0, 52(sp)
-  lw t1, 52(sp)
-  sw t1, 20(sp)
+  add t0, x9, t2
+  mv x9, t0
+  mv x12, x9
+  lw t1, 16(sp),
+  sw x17, 0(t1)
   j for.cond
 for.cond:
-  lw t2, 20(sp)
-  sw t2, 56(sp)
-  lw t0, 56(sp)
-  li t1, 3
-  slt t2, t0, t1
-  sw t2, 60(sp)
-  lw t0, 60(sp)
-  mv t1, t0
-  sw t1, 64(sp)
-  lw t2, 64(sp)
-  li t0, 0
-  xor t1, t2, t0
-  snez t1, t1
-  sw t1, 68(sp)
-  lw t2, 68(sp)
-  bnez t2, for.stmt
+  mv x9, x12
+  li t2, 3
+  slt t0, x9, t2
+  mv x9, t0
+  mv t1, x9
+  mv x9, t1
+  li t2, 0
+  xor t0, x9, t2
+  snez t0, t0
+  mv x9, t0
+  bnez x9, for.stmt
   j cur
 print:
   j printEntry
 printEntry:
-  la t0, z
-  lw t0, 0(t0)
-  sw t0, 0(sp)
-  lw t1, 0(sp)
+  la t1, z
+  lw t1, 0(t1)
+  mv x8, t1
   li t2, 3
-  add t0, t1, t2
-  sw t0, 4(sp)
-  lw t1, 4(sp)
+  add t0, x8, t2
+  mv x8, t0
+  la t1, z
+  sw x8, 0(t1)
   la t2, z
-  sw t1, 0(t2)
-  la t0, z
-  lw t0, 0(t0)
-  sw t0, 8(sp)
-  lw t1, 8(sp)
-  li t2, 3
-  add t0, t1, t2
-  sw t0, 12(sp)
-  lw t1, 12(sp)
-  mv x10, t1
+  lw t2, 0(t2)
+  mv x8, t2
+  li t0, 3
+  add t1, x8, t0
+  mv x8, t1
+  mv x10, x8
   ret
