@@ -335,7 +335,10 @@ public class LLVMIRToRiscv {
                         LLVMValueRef val = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
                         String addr = allocator.allocate(LLVM.LLVMGetValueName(ptr).getString());
-                        if (addr.isEmpty()) continue;
+                        if (addr.isEmpty()) {
+                            System.out.println("crzzzz");
+                            continue;
+                        }
                         String valReg = evaluate(val);
                         if (addr != null) {
                             if (addr.contains("stack")) {
