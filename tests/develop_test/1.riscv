@@ -35,7 +35,7 @@ for.stmt:
   li t1, 1
   mul t1, x9, t1
   add t2, t2, t1
-  muli t2, t2, 4
+  slli t2, t2, 2
   li t0, 0
   add t2, t2, t0
   add t2, t2, sp
