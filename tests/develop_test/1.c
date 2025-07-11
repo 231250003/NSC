@@ -7,9 +7,9 @@ int main(){
     int a[4][4]={{1,2,3},{3,4}};
     int x=1;
     int sum=0;
-    print();
     for(int i=0;i<3;i=i+1){
-        sum=sum+a[0][i];
+        print();
+        sum=sum+a[0][i]+z;
     }
     return sum;
 }
