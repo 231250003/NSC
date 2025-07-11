@@ -37,6 +37,7 @@ cur:                                              ; preds = %for.cond
   ret i32 %load_lval12
 
 for.stmt:                                         ; preds = %for.cond
+  %print = call i32 @print()
   %load_lval4 = load i32, i32* %sum, align 4
   %load_lval5 = load i32, i32* %i, align 4
   %elemPtr6 = getelementptr [4 x i32], [4 x i32]* %a, i32 0, i32 %load_lval5
