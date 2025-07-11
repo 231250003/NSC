@@ -36,25 +36,23 @@ cur:
   li a7, 93
   ecall
 for.stmt:
-  sw x16, 16(sp)
-  sw x15, 20(sp)
-  sw x14, 24(sp)
-  sw x13, 28(sp)
-  sw x12, 32(sp)
-  sw x11, 36(sp)
-  sw x8, 40(sp)
-  sw x1, 44(sp)
-  addi sp, sp, 48
+  sw x15, 16(sp)
+  sw x14, 20(sp)
+  sw x13, 24(sp)
+  sw x12, 28(sp)
+  sw x11, 32(sp)
+  sw x8, 36(sp)
+  sw x1, 40(sp)
+  addi sp, sp, 44
   jal x1, print
-  addi sp, sp, -48
-  lw x1, 44(sp)
-  lw x16, 16(sp)
-  lw x15, 20(sp)
-  lw x14, 24(sp)
-  lw x13, 28(sp)
-  lw x12, 32(sp)
-  lw x11, 36(sp)
-  lw x8, 40(sp)
+  addi sp, sp, -44
+  lw x1, 40(sp)
+  lw x15, 16(sp)
+  lw x14, 20(sp)
+  lw x13, 24(sp)
+  lw x12, 28(sp)
+  lw x11, 32(sp)
+  lw x8, 36(sp)
   mv x11, x11
   mv x9, x12
   li t2, 0
@@ -62,13 +60,13 @@ for.stmt:
   mul t0, x9, t0
   add t2, t2, t0
   slli t2, t2, 2
-  li t1, 16
+  li t1, 0
   add t2, t2, t1
   add t2, t2, sp
   sw t2, 16(sp)
-  lw x17, 16(sp),
-  lw x17, 0(x17)
-  mv x9, x17
+  lw x16, 16(sp),
+  lw x16, 0(x16)
+  mv x9, x16
   add t2, x11, x9
   mv x9, t2
   mv x11, x9
@@ -78,7 +76,7 @@ for.stmt:
   mv x9, t1
   mv x12, x9
   lw t2, 16(sp),
-  sw x17, 0(t2)
+  sw x16, 0(t2)
   j for.cond
 for.cond:
   mv x9, x12
