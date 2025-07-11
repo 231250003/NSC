@@ -8,12 +8,16 @@ main:
   addi sp, sp, -2044
   j mainEntry
 mainEntry:
+  lw x8, 0(sp)
   li t0, 1
   mv x8, t0
+  lw x13, 4(sp)
   li t1, 2
   mv x13, t1
+  lw x14, 8(sp)
   li t2, 3
   mv x14, t2
+  lw x15, 12(sp)
   li t0, 0
   mv x15, t0
   li t1, 0
@@ -43,6 +47,8 @@ for.stmt:
   add t2, t2, t1
   add t2, t2, sp
   sw t2, 16(sp)
+  lw x17, 16(sp),
+  lw x17, 0(x17)
   mv x9, x17
   add t2, x11, x9
   mv x9, t2
