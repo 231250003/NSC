@@ -337,10 +337,10 @@ public class LLVMIRToRiscv {
                             int total = 1;
                             while (LLVM.LLVMGetTypeKind(ty) == LLVM.LLVMArrayTypeKind) {
                                 int len = LLVM.LLVMGetArrayLength(ty);
-                                System.out.println(len);
                                 total *= len;
                                 ty = LLVM.LLVMGetElementType(ty);
                             }
+                            System.out.println(total);
                             if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null)
                                 next_offset += total;
                         } else if (allocator.allocate(LLVM.LLVMGetValueName(inst).getString()).equals("stack")) {
