@@ -13,30 +13,29 @@ mainEntry:
   jal x1, print
   addi sp, sp, -4
   lw x1, 0(sp)
-  la t1, z
-  lw t1, 0(t1)
-  mv x8, t1
+  la t0, z
+  lw t0, 0(t0)
+  mv x8, t0
   mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
-
 print:
   j printEntry
 printEntry:
-  la t0, z
-  lw t0, 0(t0)
-  mv x8, t0
-  li t1, 3
-  add t2, x8, t1
-  mv x8, t2
-  la t0, z
-  sw x8, 0(t0)
   la t1, z
   lw t1, 0(t1)
   mv x8, t1
   li t2, 3
   add t0, x8, t2
   mv x8, t0
+  la t1, z
+  sw x8, 0(t1)
+  la t2, z
+  lw t2, 0(t2)
+  mv x8, t2
+  li t0, 3
+  add t1, x8, t0
+  mv x8, t1
   mv x10, x8
   ret
