@@ -29,12 +29,34 @@ public class LLVMIRToRiscv {
         }
         return variables;
     }
-
+    public  List<LLVMValueRef> reorderFunctionsWithMainFirst(LLVMModuleRef module){
+        LLVMValueRef mainFunc = LLVM.LLVMGetNamedFunction(module, "main");
+        if (mainFunc == null || mainFunc.isNull()) {
+            throw new RuntimeException("main function not found");
+        }
+        List<LLVMValueRef> functions = new ArrayList<>();
+        LLVMValueRef mainFunction = null;
+        for (LLVMValueRef func = LLVMGetFirstFunction(module);
+             func != null;
+             func = LLVMGetNextFunction(func)) {
+            String name = LLVMGetValueName(func).getString();
+            if ("main".equals(name)) {
+                mainFunction = func;
+            } else {
+                functions.add(func);
+            }
+        }
+        List<LLVMValueRef> newOrder = new ArrayList<>();
+        newOrder.add(mainFunction);
+        newOrder.addAll(functions);
+        return newOrder;
+    }
     public void to_riscv() {
         emitGlobalVariables();
         asm.directive("text");
         asm.directive("globl main");
-        for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
+        List<LLVMValueRef> all_function=reorderFunctionsWithMainFirst(module);
+        for (LLVMValueRef func :all_function) {
             //TODO function parameter getting
             value_stack_addr = new HashMap<>();
             String funcName = LLVM.LLVMGetValueName(func).getString();

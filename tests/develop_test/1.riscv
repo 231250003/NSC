@@ -20,7 +20,7 @@ mainEntry:
   addi sp, sp, 2044
   li a7, 93
   ecall
-  
+
 print:
   j printEntry
 printEntry:
@@ -40,4 +40,3 @@ printEntry:
   mv x8, t0
   mv x10, x8
   ret
-
