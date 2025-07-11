@@ -280,6 +280,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     System.out.print(x);
                     System.out.print(" ");
             }
+            System.out.println();
             System.out.println("out");
             for(String x:live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
                 System.out.print(x);
