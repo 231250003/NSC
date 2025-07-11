@@ -1,11 +1,23 @@
-int main() {    // Local variables
+int x = 1;
+int y = 2;
+int z = 3;
+
+int main() {
+    // Local variables
     int x1 = 1;
     int x2 = 2;
     int x3 = 3;
     int x4 = 4;
 
+    // Perform some operations on global variables
+    x = x + 1;
+    y = y + 2;
+    z = z + 3;
+
     // Perform some operations on local variables
     x1 = x1 * 2;
     x2 = x2 * 2;
-    return x1 + x2 + x3+ x4  ;
+
+    return x1 + x2 + x3 + x4 +
+    + x + y + z ;
 }
