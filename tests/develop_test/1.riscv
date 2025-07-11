@@ -16,8 +16,8 @@ mainEntry:
   mv x9, t2
   li t0, 0
   mv x11, t0
-  j for.cond
   sw x8, 0(sp)
+  j for.cond
 cur:
   mv x8, x9
   mv x10, x8
