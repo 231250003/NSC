@@ -210,6 +210,7 @@ public class LLVMIRToRiscv {
                                 value_stack_addr.putIfAbsent(variable_name, String.valueOf(next_offset));
                                 next_offset += 4;
                             } else {
+                                System.out.println("crzzzzz");
                                 int start_arr_addr = Integer.parseInt(value_stack_addr.get(array_name));
                                 String reg = freshReg(2);
                                 asm.instr("lw", reg, String.format("%d(sp)", start_arr_addr));
