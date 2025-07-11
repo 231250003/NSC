@@ -157,6 +157,7 @@ public class LLVMIRToRiscv {
                                 }
                                 offset += idx * multiplier;//maybe be an array
                             }
+                            offset*=4;
                             if (value_stack_addr.get(array_name).contains("(")) {
                                 int start_arr_addr = Integer.parseInt(value_stack_addr.get(array_name).substring(0, value_stack_addr.get(array_name).indexOf("(")));
                                 offset = offset + start_arr_addr;
@@ -197,6 +198,7 @@ public class LLVMIRToRiscv {
                                     asm.op2("add", offset_reg, offset_reg, reg1);
                                 }
                             }
+                            asm.op2("muli", offset_reg, offset_reg, 4);
                             if (value_stack_addr.get(array_name).contains("(")) {
                                 int start_arr_addr = Integer.parseInt(value_stack_addr.get(array_name).substring(0, value_stack_addr.get(array_name).indexOf("(")));
                                 String tmp_reg = freshReg(2);
@@ -340,9 +342,8 @@ public class LLVMIRToRiscv {
                                 total *= len;
                                 ty = LLVM.LLVMGetElementType(ty);
                             }
-                            System.out.println(total);
                             if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null)
-                                next_offset += total;
+                                next_offset += total*4;
                         } else if (allocator.allocate(LLVM.LLVMGetValueName(inst).getString()).equals("stack")) {
                             if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null)
                                 next_offset += 4;
