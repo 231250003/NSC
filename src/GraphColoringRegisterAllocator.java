@@ -124,7 +124,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 else if (line.contains("store") && line.contains("i32* %")) {
                     line3 = line.substring(0, line.indexOf(","));
                 }
-                else if(line.contains("br")){
+                else if(line.contains("br")&&line.contains("label")){
                     System.out.println(LLVM.LLVMPrintValueToString(instr).getString());
                     if(line.contains(",")) line3=line.substring(0, line.indexOf(","));
                     else line3="";
