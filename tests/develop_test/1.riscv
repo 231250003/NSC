@@ -24,54 +24,33 @@ for.stmt:
   mv x8, x12
   li t0, 0
   add t2, t2, t0
-  li t1, 0
+  li t1, 1
+  mul t1, x8, t1
   add t2, t2, t1
-  li t0, 1
-  mul t0, x8, t0
+  li t0, 0
   add t2, t2, t0
-  li t1, 0
-  add t2, t2, t1
   add t2, t2, sp
-  sw t2, 16(sp)
+  sw t2, 4(sp)
   mv x8, x8
-  add t0, x9, x8
-  mv x8, t0
+  add t2, x9, x8
+  mv x8, t2
   mv x9, x8
   mv x8, x12
-  li t1, 1
-  add t2, x8, t1
-  mv x8, t2
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
   mv x12, x8
   j for.cond
 for.cond:
   mv x8, x12
-  li t0, 3
-  slt t1, x8, t0
+  li t2, 3
+  slt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
   mv x8, t1
-  mv t2, x8
-  mv x8, t2
-  li t0, 0
-  xor t1, x8, t0
-  snez t1, t1
-  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
   bnez x8, for.stmt
   j cur
-print:
-  j printEntry
-printEntry:
-  la t2, z
-  lw t2, 0(t2)
-  mv x8, t2
-  li t0, 3
-  add t1, x8, t0
-  mv x8, t1
-  la t2, z
-  sw x8, 0(t2)
-  la t0, z
-  lw t0, 0(t0)
-  mv x8, t0
-  li t1, 3
-  add t2, x8, t1
-  mv x8, t2
-  mv x10, x8
-  ret
