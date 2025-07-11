@@ -125,7 +125,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     line3 = line.substring(0, line.indexOf(","));
                 }
                 else if(line.contains("br")&&line.contains("label")){
-                    System.out.println(LLVM.LLVMPrintValueToString(instr).getString());
                     if(line.contains(",")) line3=line.substring(0, line.indexOf(","));
                     else line3="";
                 }
@@ -137,7 +136,10 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 Set<String> def=new HashSet<>();
                 if (line.contains("=") || (line.contains("store") && line.contains("i32* %"))) {
                     String line2;
-                    if (line.contains("=")) line2 = line.substring(0, line.indexOf("="));
+                    if (line.contains("=")) {
+                        line2 = line.substring(0, line.indexOf("="));
+                        System.out.println(line2);
+                    }
                     else line2 = line.substring(line.indexOf(",") + 1);
                     for (String var : LLVMIRToRiscv.extractVariables(line2)) {
                         def.add(var);
