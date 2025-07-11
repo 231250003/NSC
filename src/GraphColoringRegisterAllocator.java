@@ -178,6 +178,17 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         for(Map.Entry<String, Set<String>> entry : graph.entrySet()){
             String key=entry.getKey();
             Set<String> value=entry.getValue();
+            System.out.print(key);
+            System.out.print(" ");
+            for(String x:value){
+                System.out.print(x);
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
+        for(Map.Entry<String, Set<String>> entry : graph.entrySet()){
+            String key=entry.getKey();
+            Set<String> value=entry.getValue();
             List<String> can_use_reg=new ArrayList<>(available_register);
             for(String x:value){
                 if(!valueMap.get(x).equals("stack")){
