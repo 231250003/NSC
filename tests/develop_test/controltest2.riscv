@@ -17,7 +17,7 @@ mainEntry:
   mv x8, x8
   la t1, y
   lw t1, 0(t1)
-  mv x8, t1
+  mv x9, t1
   mv x8, x8
   mv x8, x8
   mv x8, x8
