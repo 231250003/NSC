@@ -22,5 +22,7 @@ mainEntry:
   %add = add i32 %load_lval3, %load_lval4
   %load_lval5 = load i32, i32* %x3, align 4
   %add6 = add i32 %add, %load_lval5
-  ret i32 %add6
+  %load_lval7 = load i32, i32* %x4, align 4
+  %add8 = add i32 %add6, %load_lval7
+  ret i32 %add8
 }
