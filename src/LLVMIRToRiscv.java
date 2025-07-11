@@ -41,7 +41,6 @@ public class LLVMIRToRiscv {
             asm.label(funcName);
             if ("main".equals(funcName)) asm.instr("addi", "sp", "sp", "-" + 2044);
             allocator = new GraphColoringRegisterAllocator(func);
-            System.out.println("end of alloca");
             List<array_variable> array_variable_ref = new ArrayList<>();//在函数调用中参数涉及函数时会用到
             next_offset = 0;
             int paramCount = LLVM.LLVMCountParams(func);
@@ -66,6 +65,7 @@ public class LLVMIRToRiscv {
                     throw new RuntimeException("Unsupported  param type");
                 }
             }
+            System.out.println("crzzzzz");
             for (int i = 0; i <= 7; i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
                 String paramName = LLVM.LLVMGetValueName(param).getString();
@@ -88,7 +88,6 @@ public class LLVMIRToRiscv {
                 }
             }
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-                System.out.println("crzzzzz");
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(label);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
