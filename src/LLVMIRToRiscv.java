@@ -136,6 +136,7 @@ public class LLVMIRToRiscv {
                         for (int i = 1; i < operand_count; i++) {
                             LLVMValueRef index = LLVM.LLVMGetOperand(inst, i);
                             if (LLVM.LLVMIsAConstant(index) != null) {
+                                System.out.println("crzzzzz");
                                 long val = LLVM.LLVMConstIntGetZExtValue(index);
                                 cur_offset.add((int) val);
                             } else {
@@ -176,8 +177,6 @@ public class LLVMIRToRiscv {
                             asm.instr("li","t2","0");
                             for (int i = 0; i < cur_offset.size(); i++) {
                                 Object index = cur_offset.get(i);
-                                System.out.println(index);
-                                System.out.println("crzzzz");
                                 if (index instanceof Integer) {
                                     String reg1 = freshReg(2);
                                     int idx = (Integer) index;
