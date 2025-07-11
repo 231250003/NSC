@@ -14,14 +14,84 @@ mainEntry:
   la t0, x
   lw t0, 0(t0)
   mv x8, t0
-  mv x8, x8
+  mv x11, x8
   la t1, y
   lw t1, 0(t1)
-  mv x9, t1
-  mv x8, x8
+  mv x8, t1
+  mv x12, x8
+  mv x8, x11
+  li t2, 2
+  rem t0, x8, t2
+  mv x8, t0
+  li t1, 1
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  bnez x8, if.then
+  j merge
+merge:
+  j while.cond
+if.then:
+  mv x8, x11
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  j merge
+cur:
+  mv x8, x11
   mv x8, x8
   mv x8, x8
   mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
+while.stmt:
+  mv x9, x11
+  mv x8, x12
+  sgt t2, x9, x8
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  bnez x8, if.then13
+  j if.else
+while.cond:
+  mv x8, x12
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  bnez x8, while.stmt
+  j cur
+merge8:
+  j while.cond
+if.then13:
+  mv x8, x11
+  mv x9, x12
+  sub t2, x8, x9
+  mv x8, t2
+  mv x11, x8
+  j merge8
+if.else:
+  mv x8, x12
+  mv x9, x11
+  sub t0, x8, x9
+  mv x8, t0
+  mv x12, x8
+  j merge8
