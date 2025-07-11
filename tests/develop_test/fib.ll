@@ -26,11 +26,12 @@ if.then5:                                         ; preds = %if.else
 
 if.else6:                                         ; preds = %if.else
   %load_lval8 = load i32, i32* %param0_addr, align 4
-  %fib = call i32 @fib(i32 %load_lval8)
+  %sub = sub i32 %load_lval8, 1
+  %fib = call i32 @fib(i32 %sub)
   %load_lval9 = load i32, i32* %param0_addr, align 4
-  %sub = sub i32 %load_lval9, 1
-  %fib10 = call i32 @fib(i32 %sub)
-  %add = add i32 %fib, %fib10
+  %sub10 = sub i32 %load_lval9, 2
+  %fib11 = call i32 @fib(i32 %sub10)
+  %add = add i32 %fib, %fib11
   ret i32 %add
 }
 
