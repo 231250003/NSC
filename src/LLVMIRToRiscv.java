@@ -307,7 +307,7 @@ public class LLVMIRToRiscv {
                         LLVMTypeRef retType = LLVMTypeOf(inst);
                         if(LLVMGetTypeKind(retType)== LLVMIntegerTypeKind){
                             String name = LLVMGetValueName(inst).getString();
-                            if(allocator.allocate(name)==null||allocator.allocate(name).isEmpty()) continue;
+                            if(allocator.allocate(name)==null||allocator.allocate(name).isEmpty()||name==null||name.isEmpty()) continue;
                             else if(allocator.allocate(name).contains("x")) asm.instr("mv",allocator.allocate(name),"x10");
                             else{
                                 if(value_stack_addr.putIfAbsent(name,String.format("%d(sp)",next_offset))==null){
