@@ -9,7 +9,6 @@ int main(){
     int sum=0;
     print();
     for(int i=0;i<3;i=i+1){
-        sum=sum+z;
         sum=sum+a[0][i];
     }
     return sum;

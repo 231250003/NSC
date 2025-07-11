@@ -42,9 +42,20 @@ mainEntry:
   sw t0, 60(sp)
   li t1, 0
   mv x9, t1
+  sw x12, 64(sp)
+  sw x9, 68(sp)
+  sw x8, 72(sp)
+  sw x1, 76(sp)
+  addi sp, sp, 80
+  jal x1, print
+  addi sp, sp, -80
+  lw x1, 76(sp)
+  lw x12, 64(sp)
+  lw x9, 68(sp)
+  lw x8, 72(sp)
   li t2, 0
   mv x11, t2
-  sw x8, 0(sp)
+  sw x8, 72(sp)
   j for.cond
 cur:
   mv x8, x9
@@ -53,19 +64,6 @@ cur:
   li a7, 93
   ecall
 for.stmt:
-  sw x12, 64(sp)
-  sw x11, 68(sp)
-  sw x9, 72(sp)
-  sw x8, 76(sp)
-  sw x1, 80(sp)
-  addi sp, sp, 84
-  jal x1, print
-  addi sp, sp, -84
-  lw x1, 80(sp)
-  lw x12, 64(sp)
-  lw x11, 68(sp)
-  lw x9, 72(sp)
-  lw x8, 76(sp)
   mv x9, x9
   la t0, z
   lw t0, 0(t0)

@@ -52,6 +52,7 @@ mainEntry:
   store i32 1, i32* %x, align 4
   %sum = alloca i32, align 4
   store i32 0, i32* %sum, align 4
+  %print = call i32 @print()
   %i = alloca i32, align 4
   store i32 0, i32* %i, align 4
   br label %for.cond
@@ -61,7 +62,6 @@ cur:                                              ; preds = %for.cond
   ret i32 %load_lval25
 
 for.stmt:                                         ; preds = %for.cond
-  %print = call i32 @print()
   %load_lval16 = load i32, i32* %sum, align 4
   %load_lval17 = load i32, i32* @z, align 4
   %add = add i32 %load_lval16, %load_lval17
