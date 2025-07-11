@@ -21,62 +21,33 @@ mainEntry:
   li t2, 3
   sw t2, 4(sp)
   li t0, 4
-  sw t0, 4(sp)
-  la t1, x
-  lw t1, 0(t1)
-  sw t1, 12(sp)
-  lw t2, 12(sp)
-  li t0, 1
-  add t1, t2, t0
-  sw t1, 16(sp)
-  lw t2, 16(sp)
-  la t0, x
-  sw t2, 0(t0)
-  la t1, y
-  lw t1, 0(t1)
-  sw t1, 20(sp)
-  lw t2, 20(sp)
-  li t0, 2
-  add t1, t2, t0
-  mv x11, t1
-  la t2, y
-  sw x11, 0(t2)
-  la t0, z
-  lw t0, 0(t0)
-  sw t0, 24(sp)
-  lw t1, 24(sp)
-  li t2, 3
-  add t0, t1, t2
   mv x11, t0
-  la t1, z
-  sw x11, 0(t1)
-  sw x8, 28(sp)
-  lw t2, 28(sp)
+  sw x8, 8(sp)
+  lw t1, 8(sp)
+  li t2, 2
+  mul t0, t1, t2
+  sw t0, 12(sp)
+  lw t1, 12(sp)
+  mv x8, t1
+  sw x9, 16(sp)
+  lw t2, 16(sp)
   li t0, 2
   mul t1, t2, t0
-  sw t1, 32(sp)
-  lw t2, 32(sp)
-  mv x8, t2
-  sw x9, 36(sp)
-  lw t0, 36(sp)
-  li t1, 2
-  mul t2, t0, t1
-  sw t2, 40(sp)
-  lw t0, 40(sp)
-  mv x9, t0
-  sw x8, 44(sp)
-  mv x8, x9
-  lw t1, 44(sp)
-  add t2, t1, x8
-  mv x8, t2
-  lw t0, 0(sp)
-  mv x9, t0
-  add t1, x8, x9
+  mv x9, t1
+  mv x9, x9
+  sw x8, 20(sp)
+  sw x9, 24(sp)
+  lw t2, 20(sp)
+  lw t0, 24(sp)
+  add t1, t2, t0
   mv x8, t1
-  lw t2, 8(sp)
+  lw t2, 0(sp)
   mv x9, t2
   add t0, x8, x9
-  mv x8, t0
+  mv x9, t0
+  mv x8, x11
+  add t1, x9, x8
+  mv x8, t1
   mv x10, x8
   addi sp, sp, 2044
   li a7, 93
