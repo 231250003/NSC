@@ -36,7 +36,7 @@ for.stmt:
   add t2, t2, sp
   sw t2, 12(sp)
   lw t0, 12(sp),
-  sw t0, 0(t0)
+  lw t0, 0(t0)
   sw t0, 16(sp)
   lw t1, 8(sp)
   lw t2, 16(sp)
