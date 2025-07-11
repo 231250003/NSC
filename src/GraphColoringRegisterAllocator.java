@@ -131,15 +131,13 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 else line3 = line;
                 Set<String> used=new HashSet<>();
                 for (String var : LLVMIRToRiscv.extractVariables(line3)) {
+                    System.out.println(var);
                     used.add(var);
                 }
                 Set<String> def=new HashSet<>();
                 if (line.contains("=") || (line.contains("store") && line.contains("i32* %"))) {
                     String line2;
-                    if (line.contains("=")) {
-                        line2 = line.substring(0, line.indexOf("="));
-                        System.out.println(line2);
-                    }
+                    if (line.contains("=")) line2 = line.substring(0, line.indexOf("="));
                     else line2 = line.substring(line.indexOf(",") + 1);
                     for (String var : LLVMIRToRiscv.extractVariables(line2)) {
                         def.add(var);
