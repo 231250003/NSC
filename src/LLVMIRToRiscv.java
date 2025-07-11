@@ -173,6 +173,7 @@ public class LLVMIRToRiscv {
                             }
                         } else {
                             String offset_reg = "t2";
+                            asm.instr("li","t2","0");
                             for (int i = 0; i < cur_offset.size(); i++) {
                                 Object index = cur_offset.get(i);
                                 if (index instanceof Integer) {
