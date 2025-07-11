@@ -248,14 +248,7 @@ public class LLVMIRToRiscv {
                                     if (!x.array_name.equals(current_param_ref.array_name)) continue;
                                     if (x.cur_offset.size() != x.array_size.size()) continue;
                                     boolean need_saved_to_stack = false;
-                                    for (int j = 0; j < current_param_ref.cur_offset.size(); j++) {
-                                        if (current_param_ref.cur_offset.get(i) instanceof Integer && x.cur_offset.get(i) instanceof Integer && current_param_ref.cur_offset.get(i).equals(x.cur_offset.get(i)))
-                                            continue;
-                                        else {
-                                            need_saved_to_stack = true;
-                                            break;
-                                        }
-                                    }
+                                    need_saved_to_stack=GraphColoringRegisterAllocator.naive_alias_may_analysis(current_param_ref,x);
                                     if (need_saved_to_stack) {
                                         if (allocator.allocate(x.variable_name).contains("x")) {
                                             String reg = allocator.allocate(x.variable_name);

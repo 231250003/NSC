@@ -15,4 +15,5 @@ public class array_variable {
         this.cur_offset=new ArrayList<>(cur_offset);
         this.array_size=new ArrayList<>(array_size);
     }
+    public array_variable(){}
 }

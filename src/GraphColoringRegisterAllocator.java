@@ -19,6 +19,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
     private Map<String,String> valueMap=new HashMap<>();
     private Stack<String> color_order=new Stack<>();
     Map<String,Integer> var_used_num=new HashMap<>();
+    List<array_variable> array_variable_ref = new ArrayList<>();//在跨块分析活跃变量时例如定义a[1]后后面访问a[i],a[1]可能是活跃的
     public void cal_def_use(LLVMValueRef func) {
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             variable_def_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
@@ -39,12 +40,27 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     LLVMTypeRef array_type = LLVM.LLVMGetElementType(base_type);
                     int array_dim = 0;
                     LLVMTypeRef current = array_type;
+                    List<Integer> array_size = new ArrayList<>();
+                    int operand_count = LLVM.LLVMGetNumOperands(inst);
+                    List<Object> cur_offset = new ArrayList<>();
+                    for (int i = 1; i < operand_count; i++) {
+                        LLVMValueRef index = LLVM.LLVMGetOperand(inst, i);
+                        if (LLVM.LLVMIsAConstant(index) != null) {
+                            long val = LLVM.LLVMConstIntGetZExtValue(index);
+                            cur_offset.add((int) val);
+                        } else {
+                            cur_offset.add(index);
+                        }
+                    }
                     while (LLVM.LLVMGetTypeKind(current) == LLVM.LLVMArrayTypeKind) {
+                        long len = LLVM.LLVMGetArrayLength(current);
+                        array_size.add((int) len);
                         array_dim++;
                         current = LLVM.LLVMGetElementType(current);
                     }
-                    int operand_count = LLVM.LLVMGetNumOperands(inst);
                     if(operand_count-1<array_dim) valueMap.put(variable_name,"stack");
+                    array_variable av = new array_variable(variable_name, LLVM.LLVMGetValueName(base_ptr).getString(), array_dim, cur_offset, array_size);
+                    array_variable_ref.add(av);
                 }
                 String line3;
                 if (line.contains("=")) line3 = line.substring(line.indexOf("=") + 1);
@@ -71,6 +87,23 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 }
             }
         }
+        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
+                if(LLVM.LLVMGetInstructionOpcode(inst)==LLVM.LLVMGetElementPtr){
+                    String variable_name = LLVM.LLVMGetValueName(inst).getString();
+                    array_variable cur=new array_variable();
+                    for(array_variable x:array_variable_ref){
+                        if(x.variable_name.equals(variable_name)) {
+                            cur=x;
+                            break;
+                        }
+                    }
+                    for(array_variable x:array_variable_ref){
+                        if(naive_alias_may_analysis(x,cur)==true) variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).add(x.variable_name);
+                    }
+                }
+            }
+        }
          var_used_num= var_used_num.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue()) // 按 Value 排序
@@ -81,7 +114,16 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         LinkedHashMap::new // 使用 LinkedHashMap 保持顺序
                 ));
     }
-
+    public static boolean naive_alias_may_analysis(array_variable dest,array_variable src){
+        if (!dest.array_name.equals(src.array_name)) return false;
+        for (int i = 0; i < Math.min(dest.cur_offset.size(),src.cur_offset.size()); i++){
+            if ((!(dest.cur_offset.get(i) instanceof Integer)) ||(!(src.cur_offset.get(i) instanceof Integer))) return true;
+            else {
+                if(!dest.cur_offset.get(i).equals(src.cur_offset.get(i))) return false;
+            }
+        }
+        return true;
+    }
     public void cal_in_out_block(LLVMValueRef func) {
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             live_variable_block_in.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
@@ -131,7 +173,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 else line3 = line;
                 Set<String> used=new HashSet<>();
                 for (String var : LLVMIRToRiscv.extractVariables(line3)) {
-                    System.out.println(var);
                     used.add(var);
                 }
                 Set<String> def=new HashSet<>();
@@ -243,6 +284,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
     public static Set<String>get_after_cur_inst_live_variable(LLVMValueRef x){
         return out_inst.get(x);
     }
+
     public GraphColoringRegisterAllocator(LLVMValueRef func) {
         variable_def_in_block = new HashMap<>();
         variable_use_in_block = new HashMap<>();
@@ -255,6 +297,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         valueMap=new HashMap<>();
         var_used_num=new HashMap<>();
         color_order=new Stack<>();
+        array_variable_ref = new ArrayList<>();
         cal_def_use(func);
         cal_in_out_block(func);
         create_graph(func);
