@@ -258,37 +258,37 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         cal_in_out_block(func);
         create_graph(func);
         color_graph();
-//        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
-//            System.out.println();
-//            System.out.println();
-//            System.out.println();
-//            System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-//            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
-//                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-//                for(String x:out_inst.get(inst)){
-//                    System.out.print(x);
-//                    System.out.print(" ");
-//                }
-//                System.out.println();
-//            }
-//        }
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
             System.out.println();
+            System.out.println();
+            System.out.println();
             System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-            System.out.println("in");
-            for(String x:live_variable_block_in.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
+            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
+                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                for(String x:out_inst.get(inst)){
                     System.out.print(x);
                     System.out.print(" ");
+                }
+                System.out.println();
             }
-            System.out.println();
-            System.out.println("out");
-            for(String x:live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
-                System.out.print(x);
-                System.out.print(" ");
-            }
-            System.out.println();
-
         }
+//        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+//            System.out.println();
+//            System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//            System.out.println("in");
+//            for(String x:live_variable_block_in.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
+//                    System.out.print(x);
+//                    System.out.print(" ");
+//            }
+//            System.out.println();
+//            System.out.println("out");
+//            for(String x:live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
+//                System.out.print(x);
+//                System.out.print(" ");
+//            }
+//            System.out.println();
+//
+//        }
         for(Map.Entry<String, String> entry : valueMap.entrySet()){
             System.out.print(entry.getKey());
             System.out.print(" ");
