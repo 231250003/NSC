@@ -17,6 +17,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
     private Map<LLVMValueRef,Set<String>> in_inst=new HashMap<>();
     private static Map<LLVMValueRef,Set<String>> out_inst=new HashMap<>();
     private Map<String,String> valueMap=new HashMap<>();
+    private Stack<String> color_order=new Stack<>();
     Map<String,Integer> var_used_num=new HashMap<>();
     public void cal_def_use(LLVMValueRef func) {
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
@@ -186,20 +187,20 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
 //            }
 //            System.out.println();
 //        }
-        for(Map.Entry<String, Set<String>> entry : graph.entrySet()){
-            String key=entry.getKey();
-            Set<String> value=entry.getValue();
-            List<String> can_use_reg=new ArrayList<>(available_register);
-            for(String x:value){
+        while(!color_order.isEmpty()) {
+            String key = color_order.pop();
+            Set<String> value = graph.get(key);
+            List<String> can_use_reg = new ArrayList<>(available_register);
+            for (String x : value) {
                 System.out.println(x);
                 System.out.println(valueMap.get(x));
-                if(valueMap.get(x)==null) continue;
-                if(!valueMap.get(x).equals("stack")){
+                if (valueMap.get(x) == null) continue;
+                if (!valueMap.get(x).equals("stack")) {
                     can_use_reg.remove(valueMap.get(x));
                 }
             }
             String reg = can_use_reg.get(0);
-            valueMap.put(key,reg);
+            valueMap.put(key, reg);
         }
     }
     public void color_graph(){
@@ -221,6 +222,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         part_graph.get(x).remove(key);
                     }
                     part_graph.remove(key);
+                    color_order.push(key);
                     break;
                 }
             }
@@ -256,6 +258,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         out_inst=new HashMap<>();
         valueMap=new HashMap<>();
         var_used_num=new HashMap<>();
+        color_order=new Stack<>();
         cal_def_use(func);
         cal_in_out_block(func);
         create_graph(func);
