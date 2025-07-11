@@ -233,7 +233,7 @@ public class LLVMIRToRiscv {
                     else if (opcode == LLVMCall) {
                         System.out.println(LLVMPrintValueToString(LLVM.LLVMGetOperand(inst, 0)).getString());
                         String callfuncName =  LLVMPrintValueToString(LLVM.LLVMGetOperand(inst, 0)).getString();
-                        System.out.println(callfuncName);
+                        //System.out.println(callfuncName);
                         int argCount = LLVM.LLVMGetNumArgOperands(inst);
                         Set<String> live_var = new HashSet<>(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(inst));
                         for (String x : live_var) {
