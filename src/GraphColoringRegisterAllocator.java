@@ -122,7 +122,12 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 if (line.contains("=")) line3 = line.substring(line.indexOf("=") + 1);
                 else if (line.contains("store") && line.contains("i32* %")) {
                     line3 = line.substring(0, line.indexOf(","));
-                } else line3 = line;
+                }
+                else if(line.contains("br")){
+                    if(line.contains(",")) line3=line.substring(0, line.indexOf(","));
+                    else line3="";
+                }
+                else line3 = line;
                 Set<String> used=new HashSet<>();
                 for (String var : LLVMIRToRiscv.extractVariables(line3)) {
                     used.add(var);
@@ -175,7 +180,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             Set<String> value=entry.getValue();
             List<String> can_use_reg=new ArrayList<>(available_register);
             for(String x:value){
-                System.out.println(x);
                 if(!valueMap.get(x).equals("stack"))can_use_reg.remove(valueMap.get(x));
             }
             Random random = new Random();
