@@ -7,9 +7,9 @@ define i32 @main() {
 mainEntry:
   %a = alloca [2 x i32], align 4
   %elemPtr = getelementptr [2 x i32], [2 x i32]* %a, i32 0, i32 0
-  store i32 1, i32* %elemPtr, align 4
+  store i32 10, i32* %elemPtr, align 4
   %elemPtr1 = getelementptr [2 x i32], [2 x i32]* %a, i32 0, i32 1
-  store i32 2, i32* %elemPtr1, align 4
+  store i32 11, i32* %elemPtr1, align 4
   %sum = alloca i32, align 4
   store i32 0, i32* %sum, align 4
   %i = alloca i32, align 4

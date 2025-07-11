@@ -450,6 +450,20 @@ public class LLVMIRToRiscv {
                             asm.instr("sw", destReg, value_stack_addr.get(LLVM.LLVMGetValueName(inst).getString()));
                         } else asm.instr("mv", addr, destReg);
                     } else if (opcode == LLVM.LLVMRet) {
+                        for(array_variable x:array_variable_ref){
+                            for(String y:GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(LLVM.LLVMGetLastInstruction(bb))){
+                                if(x.variable_name.equals(y)&&allocator.allocate(x.variable_name)!=null&&allocator.allocate(x.variable_name).contains("x")){
+                                    if (value_stack_addr.get(x.variable_name).contains("(")){
+                                        asm.instr("sw", allocator.allocate(x.variable_name), value_stack_addr.get(x.variable_name));
+                                    }
+                                    else {
+                                        String reg=freshReg();
+                                        asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(x.variable_name))));
+                                        asm.instr("sw", allocator.allocate(x.variable_name), "0(" +reg + ")");
+                                    }
+                                }
+                            }
+                        }
                         LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
                         String reg = evaluate(retVal);
                         if (LLVM.LLVMGetValueName(func).getString().equals("main")) {
@@ -518,6 +532,20 @@ public class LLVMIRToRiscv {
                         if (numOperands == 1) {
                             LLVMValueRef dest = LLVM.LLVMGetOperand(inst, 0);
                             String loop_label = LLVM.LLVMGetValueName(dest).getString();
+                            for(array_variable x:array_variable_ref){
+                                for(String y:GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(LLVM.LLVMGetLastInstruction(bb))){
+                                    if(x.variable_name.equals(y)&&allocator.allocate(x.variable_name)!=null&&allocator.allocate(x.variable_name).contains("x")){
+                                        if (value_stack_addr.get(x.variable_name).contains("(")){
+                                            asm.instr("sw", allocator.allocate(x.variable_name), value_stack_addr.get(x.variable_name));
+                                        }
+                                        else {
+                                            String reg=freshReg();
+                                            asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(x.variable_name))));
+                                            asm.instr("sw", allocator.allocate(x.variable_name), "0(" +reg + ")");
+                                        }
+                                    }
+                                }
+                            }
                             asm.j(loop_label);
                         } else if (numOperands == 3) {
                             //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
@@ -527,26 +555,26 @@ public class LLVMIRToRiscv {
                             String condReg = evaluate(cond);
                             String trueLabel = LLVM.LLVMGetValueName(ifTrue).getString();
                             String falseLabel = LLVM.LLVMGetValueName(ifFalse).getString();
+                            for(array_variable x:array_variable_ref){
+                                for(String y:GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(LLVM.LLVMGetLastInstruction(bb))){
+                                    if(x.variable_name.equals(y)&&allocator.allocate(x.variable_name)!=null&&allocator.allocate(x.variable_name).contains("x")){
+                                        if (value_stack_addr.get(x.variable_name).contains("(")){
+                                            asm.instr("sw", allocator.allocate(x.variable_name), value_stack_addr.get(x.variable_name));
+                                        }
+                                        else {
+                                            String reg=freshReg();
+                                            asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(x.variable_name))));
+                                            asm.instr("sw", allocator.allocate(x.variable_name), "0(" +reg + ")");
+                                        }
+                                    }
+                                }
+                            }
                             asm.bnez(condReg, trueLabel);
                             asm.j(falseLabel);
                         }
                     } else {
                         System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
-                    }
-                }
-                for(array_variable x:array_variable_ref){
-                    for(String y:GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(LLVM.LLVMGetLastInstruction(bb))){
-                        if(x.variable_name.equals(y)&&allocator.allocate(x.variable_name)!=null&&allocator.allocate(x.variable_name).contains("x")){
-                            if (value_stack_addr.get(x.variable_name).contains("(")){
-                                asm.instr("sw", allocator.allocate(x.variable_name), value_stack_addr.get(x.variable_name));
-                            }
-                            else {
-                                String reg=freshReg();
-                                asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(x.variable_name))));
-                                asm.instr("sw", allocator.allocate(x.variable_name), "0(" +reg + ")");
-                            }
-                        }
                     }
                 }
             }

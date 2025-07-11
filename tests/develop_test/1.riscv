@@ -8,9 +8,9 @@ main:
   addi sp, sp, -2044
   j mainEntry
 mainEntry:
-  li t0, 1
+  li t0, 10
   mv x8, t0
-  li t1, 2
+  li t1, 11
   sw t1, 4(sp)
   li t2, 0
   mv x9, t2
