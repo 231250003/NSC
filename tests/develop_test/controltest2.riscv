@@ -13,84 +13,84 @@ mainEntry:
   la t0, x
   lw t0, 0(t0)
   mv x8, t0
-  mv x19, x8
+  mv x8, x8
   la t1, y
   lw t1, 0(t1)
-  mv x21, t1
-  mv x18, x21
-  mv x26, x19
+  mv x8, t1
+  mv x8, x8
+  mv x8, x8
   li t2, 2
-  rem t0, x26, t2
-  mv x18, t0
+  rem t0, x8, t2
+  mv x8, t0
   li t1, 1
-  xor t2, x18, t1
+  xor t2, x8, t1
   seqz t2, t2
-  mv x26, t2
-  mv t0, x26
-  mv x12, t0
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
   li t1, 0
-  xor t2, x12, t1
+  xor t2, x8, t1
   snez t2, t2
-  mv x18, t2
-  bnez x18, if.then
+  mv x8, t2
+  bnez x8, if.then
   j merge
 merge:
   j while.cond
 if.then:
-  mv x15, x19
+  mv x8, x8
   li t0, 1
-  add t1, x15, t0
-  mv x25, t1
-  mv x19, x25
+  add t1, x8, t0
+  mv x8, t1
+  mv x8, x8
   j merge
 cur:
-  mv x28, x19
-  mv x28, x28
-  mv x31, x28
-  mv x10, x31
+  mv x8, x8
+  mv x8, x8
+  mv x8, x8
+  mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
 while.stmt:
-  mv x21, x19
-  mv x13, x18
-  sgt t2, x21, x13
-  mv x31, t2
-  mv t0, x31
-  mv x28, t0
+  mv x8, x8
+  mv x8, x8
+  sgt t2, x8, x8
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
   li t1, 0
-  xor t2, x28, t1
+  xor t2, x8, t1
   snez t2, t2
-  mv x17, t2
-  bnez x17, if.then13
+  mv x8, t2
+  bnez x8, if.then13
   j if.else
 while.cond:
-  mv x26, x18
+  mv x8, x8
   li t0, 0
-  xor t1, x26, t0
+  xor t1, x8, t0
   snez t1, t1
-  mv x22, t1
-  mv t2, x22
-  mv x19, t2
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
   li t0, 0
-  xor t1, x19, t0
+  xor t1, x8, t0
   snez t1, t1
-  mv x17, t1
-  bnez x17, while.stmt
+  mv x8, t1
+  bnez x8, while.stmt
   j cur
 merge8:
   j while.cond
 if.then13:
-  mv x19, x19
-  mv x21, x18
-  sub t2, x19, x21
-  mv x24, t2
-  mv x19, x24
+  mv x8, x8
+  mv x8, x8
+  sub t2, x8, x8
+  mv x8, t2
+  mv x8, x8
   j merge8
 if.else:
-  mv x25, x18
-  mv x31, x19
-  sub t0, x25, x31
-  mv x13, t0
-  mv x18, x13
+  mv x8, x8
+  mv x8, x8
+  sub t0, x8, x8
+  mv x8, t0
+  mv x8, x8
   j merge8
