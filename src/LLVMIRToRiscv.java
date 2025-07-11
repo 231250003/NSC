@@ -65,8 +65,8 @@ public class LLVMIRToRiscv {
                     throw new RuntimeException("Unsupported  param type");
                 }
             }
-            System.out.println("crzzzzz");
-            for (int i = 0; i <= 7; i++) {
+
+            for (int i = 0; i < Math.min(8,paramCount); i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
                 String paramName = LLVM.LLVMGetValueName(param).getString();
                 LLVMTypeRef paramType = LLVM.LLVMTypeOf(param);
