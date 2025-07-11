@@ -1,0 +1,77 @@
+  .data
+z:
+  .word 3
+
+  .text
+  .globl main
+print:
+  j printEntry
+printEntry:
+  la t0, z
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 3
+  add t2, x8, t1
+  mv x8, t2
+  la t0, z
+  sw x8, 0(t0)
+  la t1, z
+  lw t1, 0(t1)
+  mv x8, t1
+  li t2, 3
+  add t0, x8, t2
+  mv x8, t0
+  mv x10, x8
+  ret
+main:
+  addi sp, sp, -2044
+  j mainEntry
+mainEntry:
+  li t1, 0
+  mv x9, t1
+  li t2, 0
+  mv x12, t2
+  j for.cond
+cur:
+  mv x8, x9
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+for.stmt:
+  mv x9, x9
+  mv x8, x12
+  li t1, 0
+  add t2, t2, t1
+  li t0, 0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  li t0, 0
+  add t2, t2, t0
+  add t2, t2, sp
+  sw t2, 16(sp)
+  mv x8, x8
+  add t1, x9, x8
+  mv x8, t1
+  mv x9, x8
+  mv x8, x12
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x12, x8
+  j for.cond
+for.cond:
+  mv x8, x12
+  li t1, 3
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  bnez x8, for.stmt
+  j cur
