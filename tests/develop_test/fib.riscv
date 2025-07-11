@@ -42,7 +42,7 @@ if.then:
   ret
 if.else:
   mv x8, x9
-  li t0, 2
+  li t0, 1
   xor t1, x8, t0
   seqz t1, t1
   mv x8, t1

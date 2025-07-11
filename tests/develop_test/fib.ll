@@ -16,7 +16,7 @@ if.then:                                          ; preds = %fibEntry
 
 if.else:                                          ; preds = %fibEntry
   %load_lval2 = load i32, i32* %param0_addr, align 4
-  %cmp3 = icmp eq i32 %load_lval2, 2
+  %cmp3 = icmp eq i32 %load_lval2, 1
   %zext_to_i324 = zext i1 %cmp3 to i32
   %to_bool7 = icmp ne i32 %zext_to_i324, 0
   br i1 %to_bool7, label %if.then5, label %if.else6
