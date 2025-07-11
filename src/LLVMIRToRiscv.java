@@ -341,7 +341,7 @@ public class LLVMIRToRiscv {
                             if (addr.contains("stack")) {
                                 if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null){
                                     next_offset += 4;
-                                    System.out.println("crzzzz");
+                                    System.out.println(LLVM.LLVMGetValueName(inst).getString());
                                 }
 
                                 if (value_stack_addr.get(LLVM.LLVMGetValueName(inst).getString()).contains("("))
