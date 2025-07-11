@@ -149,7 +149,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 instr = LLVM.LLVMGetPreviousInstruction(instr);
                 if(instr!=null) out_inst.put(instr,in_instr_live_set);
             }
-            for (Map.Entry<LLVMValueRef, Set<String>> entry : in_inst.entrySet()) {
+            for (Map.Entry<LLVMValueRef, Set<String>> entry : out_inst.entrySet()) {
                 Set<String> value = entry.getValue();
                 for(String x:value){
                     for(String y:value){
@@ -246,7 +246,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
             for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
                 System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                for(String x:in_inst.get(inst)){
+                for(String x:out_inst.get(inst)){
                     System.out.print(x);
                     System.out.print(" ");
                 }
