@@ -175,17 +175,17 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         }
     }
     void color_no_spill_reg(){
-        for(Map.Entry<String, Set<String>> entry : graph.entrySet()){
-            String key=entry.getKey();
-            Set<String> value=entry.getValue();
-            System.out.print(key);
-            System.out.print(" ");
-            for(String x:value){
-                System.out.print(x);
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
+//        for(Map.Entry<String, Set<String>> entry : graph.entrySet()){
+//            String key=entry.getKey();
+//            Set<String> value=entry.getValue();
+//            System.out.print(key);
+//            System.out.print(" ");
+//            for(String x:value){
+//                System.out.print(x);
+//                System.out.print(" ");
+//            }
+//            System.out.println();
+//        }
         for(Map.Entry<String, Set<String>> entry : graph.entrySet()){
             String key=entry.getKey();
             Set<String> value=entry.getValue();
@@ -209,6 +209,9 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             for (Map.Entry<String, Set<String>> entry : part_graph.entrySet()){
                 String key=entry.getKey();
                 Set<String> value = entry.getValue();
+                System.out.print(entry.getKey());
+                System.out.print(" ");
+                System.out.println(value.size());
                 if(value.size()<available_register.size()){
                     need_spill=false;
                     for(String x:value){
