@@ -83,8 +83,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
 
     public void cal_in_out_block(LLVMValueRef func) {
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-            variable_def_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
-            variable_use_in_block.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
             live_variable_block_in.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
             live_variable_block_out.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
 
@@ -178,7 +176,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             Set<String> value=entry.getValue();
             List<String> can_use_reg=new ArrayList<>(available_register);
             for(String x:value){
-                System.out.println(x);
                 if(!valueMap.get(x).equals("stack"))can_use_reg.remove(valueMap.get(x));
             }
             Random random = new Random();
