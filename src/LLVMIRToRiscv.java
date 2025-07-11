@@ -1,3 +1,4 @@
+import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.llvm.LLVM.*;
 import org.bytedeco.llvm.global.LLVM;
 
@@ -231,9 +232,9 @@ public class LLVMIRToRiscv {
                     }
                     //TODO calling function saving register passing parameter watch out the parameter could be array
                     else if (opcode == LLVMCall) {
-                        //System.out.println(LLVMPrintValueToString(LLVM.LLVMGetOperand(inst, 0)).getString());
-                        String callfuncName =  LLVMPrintValueToString(LLVM.LLVMGetOperand(inst, 0)).getString();
-                        //System.out.println(callfuncName);
+                        LLVMValueRef calledFunction = LLVM.LLVMGetCalledValue(inst);;
+                        String callfuncName = LLVM.LLVMGetValueName(calledFunction).getString();
+                        System.out.println("Function name: " + callfuncName);
                         int argCount = LLVM.LLVMGetNumArgOperands(inst);
                         Set<String> live_var = new HashSet<>(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(inst));
                         for (String x : live_var) {
