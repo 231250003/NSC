@@ -192,7 +192,10 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         }
     }
     public void color_graph(){
-        Map<String,Set<String>> part_graph=new HashMap<>(graph);
+        Map<String,Set<String>> part_graph=new HashMap<>();
+        for(Map.Entry<String, Set<String>> entry : graph.entrySet()){
+            part_graph.put(entry.getKey(),new HashSet<>(entry.getValue()));
+        }
         while(part_graph.size()>0){
             boolean need_spill=true;
             for (Map.Entry<String, Set<String>> entry : part_graph.entrySet()){
