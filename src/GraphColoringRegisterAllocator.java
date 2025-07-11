@@ -243,7 +243,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 }
             }
             String reg = can_use_reg.get(0);
-            valueMap.putIfAbsent(key, reg);
+            valueMap.put(key, reg);
         }
     }
     public void color_graph(){
