@@ -9,6 +9,9 @@ main:
   j mainEntry
 mainEntry:
   sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
   lw x1, 0(sp)
   la t1, z
   lw t1, 0(t1)
@@ -17,6 +20,7 @@ mainEntry:
   addi sp, sp, 2044
   li a7, 93
   ecall
+  
 print:
   j printEntry
 printEntry:
@@ -36,3 +40,4 @@ printEntry:
   mv x8, t0
   mv x10, x8
   ret
+
