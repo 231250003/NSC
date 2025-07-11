@@ -240,10 +240,10 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         create_graph(func);
         color_graph();
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+            System.out.println();
+            System.out.println();
+            System.out.println();
             System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-            System.out.println();
-            System.out.println();
-            System.out.println();
             for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
                 System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                 for(String x:in_inst.get(inst)){
