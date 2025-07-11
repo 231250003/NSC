@@ -6,8 +6,6 @@ int print(){
 int main(){
     int x=1;
     int sum=0;
-    for(int i=0;i<3;i=i+1){
-        sum=sum+z;
-    }
-    return sum;
+    print();
+    return z;
 }
