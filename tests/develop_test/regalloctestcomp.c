@@ -9,11 +9,6 @@ int main() {
     int x3 = 3;
     int x4 = 4;
 
-    // Perform some operations on global variables
-    x = x + 1;
-    y = y + 2;
-    z = z + 3;
-
     // Perform some operations on local variables
     x1 = x1 * 2;
     x2 = x2 * 2;

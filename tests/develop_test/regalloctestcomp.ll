@@ -37,11 +37,5 @@ mainEntry:
   %add12 = add i32 %add10, %load_lval11
   %load_lval13 = load i32, i32* %x4, align 4
   %add14 = add i32 %add12, %load_lval13
-  %load_lval15 = load i32, i32* @x, align 4
-  %add16 = add i32 %add14, %load_lval15
-  %load_lval17 = load i32, i32* @y, align 4
-  %add18 = add i32 %add16, %load_lval17
-  %load_lval19 = load i32, i32* @z, align 4
-  %add20 = add i32 %add18, %load_lval19
-  ret i32 %add20
+  ret i32 %add14
 }
