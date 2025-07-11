@@ -88,6 +88,7 @@ public class LLVMIRToRiscv {
                 }
             }
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+                System.out.println("crzzzzz");
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(label);
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
