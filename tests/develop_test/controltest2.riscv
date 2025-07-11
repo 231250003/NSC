@@ -1,0 +1,96 @@
+  .data
+x:
+  .word 56
+  .data
+y:
+  .word 98
+
+  .text
+  .globl main
+main:
+  addi sp, sp, -2044
+mainEntry:
+  la t0, x
+  lw t0, 0(t0)
+  mv x24, t0
+  mv x28, x24
+  la t1, y
+  lw t1, 0(t1)
+  mv x21, t1
+  mv x19, x21
+  mv x18, x28
+  li t2, 2
+  rem t0, x18, t2
+  mv x13, t0
+  li t1, 1
+  xor t2, x13, t1
+  seqz t2, t2
+  mv x19, t2
+  mv t0, x19
+  mv x27, t0
+  li t1, 0
+  xor t2, x27, t1
+  snez t2, t2
+  mv x22, t2
+  bnez x22, if.then
+  j merge
+merge:
+  j while.cond
+if.then:
+  mv x26, x28
+  li t0, 1
+  add t1, x26, t0
+  mv x30, t1
+  mv x28, x30
+  j merge
+cur:
+  mv x14, x28
+  mv x18, x14
+  mv x9, x18
+  mv x10, x9
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+while.stmt:
+  mv x29, x28
+  mv x29, x19
+  sgt t2, x29, x29
+  mv x8, t2
+  mv t0, x8
+  mv x30, t0
+  li t1, 0
+  xor t2, x30, t1
+  snez t2, t2
+  mv x9, t2
+  bnez x9, if.then13
+  j if.else
+while.cond:
+  mv x11, x19
+  li t0, 0
+  xor t1, x11, t0
+  snez t1, t1
+  mv x25, t1
+  mv t2, x25
+  mv x28, t2
+  li t0, 0
+  xor t1, x28, t0
+  snez t1, t1
+  mv x26, t1
+  bnez x26, while.stmt
+  j cur
+merge8:
+  j while.cond
+if.then13:
+  mv x8, x28
+  mv x19, x19
+  sub t2, x8, x19
+  mv x13, t2
+  mv x28, x13
+  j merge8
+if.else:
+  mv x24, x19
+  mv x15, x28
+  sub t0, x24, x15
+  mv x19, t0
+  mv x19, x19
+  j merge8
