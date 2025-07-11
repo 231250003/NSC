@@ -231,7 +231,7 @@ public class LLVMIRToRiscv {
                     }
                     //TODO calling function saving register passing parameter watch out the parameter could be array
                     else if (opcode == LLVMCall) {
-                        System.out.println(LLVMPrintValueToString(LLVM.LLVMGetOperand(inst, 0)).getString());
+                        //System.out.println(LLVMPrintValueToString(LLVM.LLVMGetOperand(inst, 0)).getString());
                         String callfuncName =  LLVMPrintValueToString(LLVM.LLVMGetOperand(inst, 0)).getString();
                         //System.out.println(callfuncName);
                         int argCount = LLVM.LLVMGetNumArgOperands(inst);
