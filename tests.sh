@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GENERATE_RISCV=0
+GENERATE_RISCV=1
 SYSY_DIR="tests/develop_test"
 SPECIFIC_FILE=""
 
