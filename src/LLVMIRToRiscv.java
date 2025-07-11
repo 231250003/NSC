@@ -287,7 +287,7 @@ public class LLVMIRToRiscv {
                         if (argCount > 8) {
                             asm.op2("addi", "sp", "sp", next_offset - (argCount - 8) * 4);
                             asm.instr("jal", "x1", callfuncName);
-                            asm.op2("addi", "sp", "sp", -(next_offset + (argCount - 8) * 4));
+                            asm.op2("addi", "sp", "sp", -(next_offset - (argCount - 8) * 4));
                             next_offset = next_offset - (argCount - 8) * 4;
                         } else {
                             asm.op2("addi", "sp", "sp", next_offset);
@@ -303,6 +303,18 @@ public class LLVMIRToRiscv {
                             }
                         }
                         //TODO GETTING THE RETURN VALUE AND need_saved_to_stack
+                        LLVMTypeRef retType = LLVMTypeOf(inst);
+                        if(LLVMGetTypeKind(retType)== LLVMIntegerTypeKind){
+                            String name = LLVMGetValueName(inst).getString();
+                            if(allocator.allocate(name)==null||allocator.allocate(name).isEmpty()) continue;
+                            else if(allocator.allocate(name).contains("x")) asm.instr("mv",allocator.allocate(name),"x10");
+                            else{
+                                if(value_stack_addr.putIfAbsent(name,String.format("%d(sp)",next_offset))==null){
+                                    next_offset+=4;
+                                }
+                                asm.instr("sw","x10",value_stack_addr.get(name));
+                            }
+                        }
                     } else if (opcode == LLVM.LLVMAlloca) {
                         LLVMTypeRef ty = LLVM.LLVMGetAllocatedType(inst);
                         if (LLVM.LLVMGetTypeKind(ty) == LLVM.LLVMArrayTypeKind) {
