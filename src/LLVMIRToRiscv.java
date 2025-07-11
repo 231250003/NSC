@@ -63,7 +63,6 @@ public class LLVMIRToRiscv {
             asm.label(funcName);
             if ("main".equals(funcName)) asm.instr("addi", "sp", "sp", "-" + 2044);
             allocator = new GraphColoringRegisterAllocator(func);
-            List<array_variable> array_variable_ref = new ArrayList<>();//在函数调用中参数涉及函数时会用到
             next_offset = 0;
             int paramCount = LLVM.LLVMCountParams(func);
             for (int i = 8; i < paramCount; i++) {
@@ -112,6 +111,7 @@ public class LLVMIRToRiscv {
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(label);
+                List<array_variable> array_variable_ref = new ArrayList<>();//在函数调用中参数涉及函数时会用到
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     if (opcode == LLVM.LLVMGetElementPtr) {//注意getelementptr的下标可能是变量
@@ -535,6 +535,20 @@ public class LLVMIRToRiscv {
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }
                 }
+                for(array_variable x:array_variable_ref){
+                    for(String y:GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(LLVM.LLVMGetLastInstruction(bb))){
+                        if(x.variable_name.equals(y)&&allocator.allocate(x.variable_name)!=null&&allocator.allocate(x.variable_name).contains("x")){
+                            if (value_stack_addr.get(x.variable_name).contains("(")){
+                                asm.instr("sw", allocator.allocate(x.variable_name), value_stack_addr.get(x.variable_name));
+                            }
+                            else {
+                                String reg=freshReg();
+                                asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(x.variable_name))));
+                                asm.instr("sw", allocator.allocate(x.variable_name), "0(" +reg + ")");
+                            }
+                        }
+                    }
+                }
             }
         }
         asm.writeToFile(file_path);
@@ -554,7 +568,7 @@ public class LLVMIRToRiscv {
                     asm.instr("lw", reg, value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()));
                 else {
                     asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()))));
-                    asm.instr("sw", reg, "0(" + reg + ")");
+                    asm.instr("lw", reg, "0(" + reg + ")");
                 }
                 return reg;
             } else return allocator.allocate(LLVM.LLVMGetValueName(val).getString());
@@ -575,7 +589,7 @@ public class LLVMIRToRiscv {
         }
     }
 
-    private String evaluate(LLVMValueRef val, int num) {
+    private String evaluate(LLVMValueRef val,int num) {
         LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(val);
         if (constInt != null && !constInt.isNull()) {
             long imm = LLVM.LLVMConstIntGetSExtValue(constInt);
@@ -585,7 +599,12 @@ public class LLVMIRToRiscv {
         } else if (allocator.allocate(LLVM.LLVMGetValueName(val).getString()) != null) {
             if (allocator.allocate(LLVM.LLVMGetValueName(val).getString()).contains("stack")) {
                 String reg = freshReg(num);
-                asm.instr("lw", reg, value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()));
+                if (value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()).contains("("))
+                    asm.instr("lw", reg, value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()));
+                else {
+                    asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()))));
+                    asm.instr("lw", reg, "0(" + reg + ")");
+                }
                 return reg;
             } else return allocator.allocate(LLVM.LLVMGetValueName(val).getString());
         } else if (LLVM.LLVMIsAGlobalVariable(val) != null) {
@@ -604,6 +623,7 @@ public class LLVMIRToRiscv {
             throw new RuntimeException("Unsupported operand: " + valStr);
         }
     }
+
 
     private void emitGlobalVariables() {
         // TODO array value ininitlization
