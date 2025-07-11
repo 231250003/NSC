@@ -26,6 +26,7 @@ cur:
 for.stmt:
   sw x9, 8(sp)
   mv x9, x11
+  li t2, 0
   li t0, 0
   add t2, t2, t0
   li t1, 1

@@ -176,6 +176,8 @@ public class LLVMIRToRiscv {
                             asm.instr("li","t2","0");
                             for (int i = 0; i < cur_offset.size(); i++) {
                                 Object index = cur_offset.get(i);
+                                System.out.println(index);
+                                System.out.println("crzzzz");
                                 if (index instanceof Integer) {
                                     String reg1 = freshReg(2);
                                     int idx = (Integer) index;
