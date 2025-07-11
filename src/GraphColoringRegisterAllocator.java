@@ -181,6 +181,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             List<String> can_use_reg=new ArrayList<>(available_register);
             for(String x:value){
                 if(!valueMap.get(x).equals("stack")){
+                    System.out.println("1428384");
                     System.out.println(valueMap.get(x));
                     can_use_reg.remove(valueMap.get(x));
                 }
