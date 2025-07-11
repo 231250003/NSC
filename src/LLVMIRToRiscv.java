@@ -337,6 +337,7 @@ public class LLVMIRToRiscv {
                             int total = 1;
                             while (LLVM.LLVMGetTypeKind(ty) == LLVM.LLVMArrayTypeKind) {
                                 int len = LLVM.LLVMGetArrayLength(ty);
+                                System.out.println(len);
                                 total *= len;
                                 ty = LLVM.LLVMGetElementType(ty);
                             }
