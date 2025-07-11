@@ -330,6 +330,8 @@ public class LLVMIRToRiscv {
                         } else if (allocator.allocate(LLVM.LLVMGetValueName(inst).getString()).equals("stack")) {
                             if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null)
                                 next_offset += 4;
+                            System.out.println(LLVM.LLVMGetValueName(inst).getString());
+                            System.out.println(value_stack_addr.get((LLVM.LLVMGetValueName(inst).getString())));
                         }
                     } else if (opcode == LLVM.LLVMStore) {
                         LLVMValueRef val = LLVM.LLVMGetOperand(inst, 0);
