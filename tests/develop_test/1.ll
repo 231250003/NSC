@@ -10,8 +10,6 @@ mainEntry:
   store i32 1, i32* %elemPtr, align 4
   %elemPtr1 = getelementptr [2 x i32], [2 x i32]* %a, i32 0, i32 1
   store i32 2, i32* %elemPtr1, align 4
-  %x = alloca i32, align 4
-  store i32 1, i32* %x, align 4
   %sum = alloca i32, align 4
   store i32 0, i32* %sum, align 4
   %i = alloca i32, align 4
