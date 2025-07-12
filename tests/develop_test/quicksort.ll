@@ -45,11 +45,24 @@ quickSortEntry:
   store i32 %low, i32* %param1_addr, align 4
   %param2_addr = alloca i32, align 4
   store i32 %high, i32* %param2_addr, align 4
-  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
   %load_lval = load i32, i32* %param1_addr, align 4
   %load_lval1 = load i32, i32* %param2_addr, align 4
-  %partition = call i32 @partition([6 x i32]* %elemPtr, i32 %load_lval, i32 %load_lval1)
+  %cmp = icmp slt i32 %load_lval, %load_lval1
+  %zext_to_i32 = zext i1 %cmp to i32
+  %to_bool = icmp ne i32 %zext_to_i32, 0
+  br i1 %to_bool, label %if.then, label %merge
+
+merge:                                            ; preds = %if.then, %quickSortEntry
   ret void
+
+if.then:                                          ; preds = %quickSortEntry
+  %pi = alloca i32, align 4
+  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %load_lval2 = load i32, i32* %param1_addr, align 4
+  %load_lval3 = load i32, i32* %param2_addr, align 4
+  %partition = call i32 @partition([6 x i32]* %elemPtr, i32 %load_lval2, i32 %load_lval3)
+  store i32 %partition, i32* %pi, align 4
+  br label %merge
 }
 
 define i32 @main() {

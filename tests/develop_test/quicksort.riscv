@@ -151,18 +151,40 @@ quickSort:
   j quickSort_quickSortEntry
 quickSort_quickSortEntry:
   mv x8, x8
-  mv x9, x9
-  lw t0, 0(sp)
-  addi t0, t0, 0
-  sw t0, 4(sp)
-  mv x11, x8
-  mv x8, x9
-  sw x1, 8(sp)
-  lw x10, 4(sp)
-  mv x11, x11
+  mv x11, x9
   mv x12, x8
-  addi sp, sp, 12
-  jal x1, partition
-  addi sp, sp, -12
-  lw x1, 8(sp)
+  mv x9, x11
+  slt t0, x12, x9
+  mv x9, t0
+  mv t1, x9
+  mv x9, t1
+  li t2, 0
+  xor t0, x9, t2
+  snez t0, t0
+  mv x9, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  bnez x9, quickSort_if.then
+  j quickSort_merge
+quickSort_merge:
   ret
+quickSort_if.then:
+  lw t2, 0(sp)
+  addi t2, t2, 0
+  sw t2, 4(sp)
+  mv x9, x8
+  mv x8, x11
+  sw x8, 8(sp)
+  sw x1, 12(sp)
+  lw x10, 4(sp)
+  mv x11, x9
+  mv x12, x8
+  addi sp, sp, 16
+  jal x1, partition
+  addi sp, sp, -16
+  lw x1, 12(sp)
+  lw x8, 8(sp)
+  mv x8, x10
+  li t0, 2
+  sw t0, 1600(sp)
+  j quickSort_merge
