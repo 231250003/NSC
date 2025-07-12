@@ -37,49 +37,47 @@ bEntry:
   %load_lval1 = load i32, i32* %elemPtr, align 4
   store i32 %load_lval1, i32* %pivot, align 4
   %i = alloca i32, align 4
-  %load_lval2 = load i32, i32* %param1_addr, align 4
-  %sub = sub i32 %load_lval2, 1
-  store i32 %sub, i32* %i, align 4
+  store i32 1, i32* %i, align 4
   %j = alloca i32, align 4
-  %load_lval3 = load i32, i32* %param1_addr, align 4
-  store i32 %load_lval3, i32* %j, align 4
+  %load_lval2 = load i32, i32* %param1_addr, align 4
+  store i32 %load_lval2, i32* %j, align 4
   br label %for.cond
 
 cur:                                              ; preds = %for.cond
   ret void
 
 for.stmt:                                         ; preds = %for.cond
-  %load_lval6 = load i32, i32* %j, align 4
-  %elemPtr7 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 %load_lval6
-  %load_lval8 = load i32, i32* %elemPtr7, align 4
-  %load_lval9 = load i32, i32* %pivot, align 4
-  %cmp10 = icmp sle i32 %load_lval8, %load_lval9
-  %zext_to_i3211 = zext i1 %cmp10 to i32
-  %to_bool12 = icmp ne i32 %zext_to_i3211, 0
-  br i1 %to_bool12, label %if.then, label %merge
+  %load_lval5 = load i32, i32* %j, align 4
+  %elemPtr6 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 %load_lval5
+  %load_lval7 = load i32, i32* %elemPtr6, align 4
+  %load_lval8 = load i32, i32* %pivot, align 4
+  %cmp9 = icmp sle i32 %load_lval7, %load_lval8
+  %zext_to_i3210 = zext i1 %cmp9 to i32
+  %to_bool11 = icmp ne i32 %zext_to_i3210, 0
+  br i1 %to_bool11, label %if.then, label %merge
 
 for.cond:                                         ; preds = %merge, %bEntry
-  %load_lval4 = load i32, i32* %j, align 4
-  %load_lval5 = load i32, i32* %param2_addr, align 4
-  %cmp = icmp slt i32 %load_lval4, %load_lval5
+  %load_lval3 = load i32, i32* %j, align 4
+  %load_lval4 = load i32, i32* %param2_addr, align 4
+  %cmp = icmp slt i32 %load_lval3, %load_lval4
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %for.stmt, label %cur
 
 merge:                                            ; preds = %if.then, %for.stmt
-  %load_lval17 = load i32, i32* %j, align 4
-  %add18 = add i32 %load_lval17, 1
-  store i32 %add18, i32* %j, align 4
+  %load_lval16 = load i32, i32* %j, align 4
+  %add17 = add i32 %load_lval16, 1
+  store i32 %add17, i32* %j, align 4
   br label %for.cond
 
 if.then:                                          ; preds = %for.stmt
-  %load_lval13 = load i32, i32* %i, align 4
-  %add = add i32 %load_lval13, 1
+  %load_lval12 = load i32, i32* %i, align 4
+  %add = add i32 %load_lval12, 1
   store i32 %add, i32* %i, align 4
-  %elemPtr14 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
-  %load_lval15 = load i32, i32* %i, align 4
-  %load_lval16 = load i32, i32* %j, align 4
-  call void @swap([6 x i32]* %elemPtr14, i32 %load_lval15, i32 %load_lval16)
+  %elemPtr13 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %load_lval14 = load i32, i32* %i, align 4
+  %load_lval15 = load i32, i32* %j, align 4
+  call void @swap([6 x i32]* %elemPtr13, i32 %load_lval14, i32 %load_lval15)
   br label %merge
 }
 

@@ -5,7 +5,7 @@ void swap(int arr[6], int i, int j) {
 }
 void b(int arr[6], int low, int high) {
          int pivot = arr[high];  // 选择最后一个元素作为基准
-           int i = 1;        // i是小于基准的区域的边界
+           int i = low-1;        // i是小于基准的区域的边界
            for (int j = low; j < high; j =j+ 1) {
                if (arr[j] <= pivot) {
                    i = i+1;
