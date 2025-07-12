@@ -13,7 +13,7 @@ int partition(int arr[6], int low, int high) {
 
 // 快速排序主函数
 void quickSort(int arr[6], int low, int high) {
-        int pi = partition(arr, low, high);
+       partition(arr, low, high);
 }
 
 // 打印数组
