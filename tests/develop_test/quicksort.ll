@@ -128,26 +128,18 @@ if.then:                                          ; preds = %quickSortEntry
 
 define i32 @main() {
 mainEntry:
-  %arr = alloca [6 x i32], align 4
-  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 0
+  %arr = alloca [2 x i32], align 4
+  %elemPtr = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 0
   store i32 10, i32* %elemPtr, align 4
-  %elemPtr1 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 1
-  store i32 7, i32* %elemPtr1, align 4
-  %elemPtr2 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 2
-  store i32 8, i32* %elemPtr2, align 4
-  %elemPtr3 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 3
-  store i32 9, i32* %elemPtr3, align 4
-  %elemPtr4 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 4
-  store i32 1, i32* %elemPtr4, align 4
-  %elemPtr5 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 5
-  store i32 5, i32* %elemPtr5, align 4
+  %elemPtr1 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 1
+  store i32 1, i32* %elemPtr1, align 4
   %n = alloca i32, align 4
-  store i32 6, i32* %n, align 4
-  %elemPtr6 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  store i32 2, i32* %n, align 4
+  %elemPtr2 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0
   %load_lval = load i32, i32* %n, align 4
   %sub = sub i32 %load_lval, 1
-  call void @quickSort([6 x i32]* %elemPtr6, i32 0, i32 %sub)
-  %elemPtr7 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 5
-  %load_lval8 = load i32, i32* %elemPtr7, align 4
-  ret i32 %load_lval8
+  call void @quickSort([2 x i32]* %elemPtr2, i32 0, i32 %sub)
+  %elemPtr3 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 5
+  %load_lval4 = load i32, i32* %elemPtr3, align 4
+  ret i32 %load_lval4
 }
