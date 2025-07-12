@@ -3,7 +3,7 @@ void swap(int arr[6], int i, int j) {
     arr[i] = arr[j];
     arr[j] = temp;
 }
-void quickSort(int arr[6], int low, int high) {
+void b(int arr[6], int low, int high) {
          int pivot = arr[high];  // 选择最后一个元素作为基准
            int i = low-1;        // i是小于基准的区域的边界
            for (int j = low; j < high; j =j+ 1) {
@@ -16,6 +16,6 @@ void quickSort(int arr[6], int low, int high) {
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
-    quickSort(arr, 2, n - 1);
+    b(arr, 2, n - 1);
     return arr[2];
 }
