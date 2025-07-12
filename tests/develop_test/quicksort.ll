@@ -139,7 +139,7 @@ mainEntry:
   %load_lval = load i32, i32* %n, align 4
   %sub = sub i32 %load_lval, 1
   call void @quickSort([2 x i32]* %elemPtr2, i32 0, i32 %sub)
-  %elemPtr3 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 5
+  %elemPtr3 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 1
   %load_lval4 = load i32, i32* %elemPtr3, align 4
   ret i32 %load_lval4
 }

@@ -40,7 +40,7 @@ void quickSort(int arr[2], int low, int high) {
 int main() {
     int arr[2] = {10,1};
     int n = 2;
-    quickSort(arr, 0, n - 1);
-
+    //quickSort(arr, 0, n - 1);
+    swap(arr,0,1);
     return arr[1];
 }
