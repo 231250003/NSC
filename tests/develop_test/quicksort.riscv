@@ -140,7 +140,7 @@ partition_partitionEntry:
   lw t2, 4(sp),
   sw x8, 0(t2)
   li t0, 0
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   j partition_for.cond
 partition_cur:
   lw t1, 0(sp)
@@ -193,7 +193,7 @@ partition_for.stmt:
   lw t0, 12(sp),
   sw x16, 0(t0)
   li t1, 2
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   bnez x11, partition_if.then
   j partition_merge
 partition_for.cond:
@@ -208,7 +208,7 @@ partition_for.cond:
   snez t2, t2
   mv x11, t2
   li t0, 3
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   bnez x11, partition_for.stmt
   j partition_cur
 partition_merge:
@@ -218,7 +218,7 @@ partition_merge:
   mv x9, t2
   mv x9, x9
   li t0, 4
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   j partition_for.cond
 partition_if.then:
   mv x11, x12
@@ -252,7 +252,7 @@ partition_if.then:
   lw x8, 36(sp)
   lw x16, 40(sp)
   li t1, 5
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j partition_merge
 quickSort:
   sw x10, 0(sp)
@@ -274,7 +274,7 @@ quickSort_quickSortEntry:
   snez t0, t0
   mv x8, t0
   li t1, 0
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   bnez x8, quickSort_if.then
   j quickSort_merge
 quickSort_merge:
@@ -337,5 +337,5 @@ quickSort_if.then:
   addi sp, sp, -20
   lw x1, 16(sp)
   li t0, 2
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   j quickSort_merge
