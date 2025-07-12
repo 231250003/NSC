@@ -138,7 +138,7 @@ while.stmt:                                       ; preds = %while.cond
 
 while.cond:                                       ; preds = %while.stmt, %mainEntry
   %load_lval = load i32, i32* %i, align 4
-  %cmp = icmp slt i32 %load_lval, 5
+  %cmp = icmp slt i32 %load_lval, 4
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt, label %cur
