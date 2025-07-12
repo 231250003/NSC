@@ -117,33 +117,6 @@ swap_swapEntry:
   lw t0, 16(sp)
   sw x9, 0(t0)
   ret
-partition:
-  sw x10, 0(sp)
-  mv x8, x11
-  mv t1, x12
-  mv x11, t1
-  j partition_partitionEntry
-partition_partitionEntry:
-  mv x9, x8
-  mv x8, x11
-  lw t2, 0(sp)
-  addi t2, t2, 0
-  sw t2, 4(sp)
-  mv x11, x9
-  mv x8, x8
-  sw x9, 8(sp)
-  sw x1, 12(sp)
-  lw x10, 4(sp)
-  mv x11, x11
-  mv x12, x8
-  addi sp, sp, 16
-  jal x1, swap
-  addi sp, sp, -16
-  lw x1, 12(sp)
-  lw x9, 8(sp)
-  mv x8, x9
-  mv x10, x8
-  ret
 quickSort:
   sw x10, 0(sp)
   mv x8, x11
@@ -152,9 +125,9 @@ quickSort:
 quickSort_quickSortEntry:
   mv x8, x8
   mv x9, x9
-  lw t0, 0(sp)
-  addi t0, t0, 0
-  sw t0, 4(sp)
+  lw t1, 0(sp)
+  addi t1, t1, 0
+  sw t1, 4(sp)
   mv x11, x8
   mv x8, x9
   sw x1, 8(sp)
