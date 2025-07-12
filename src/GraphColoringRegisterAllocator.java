@@ -253,7 +253,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     }
                 }
             }
-            System.out.println("crzzzz");
         }
     }
 
@@ -320,6 +319,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 }
             }
         }
+        System.out.println("crzzzz");
         color_no_spill_reg();
     }
 
