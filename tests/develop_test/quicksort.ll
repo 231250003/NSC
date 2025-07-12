@@ -36,13 +36,11 @@ partitionEntry:
   %sub = sub i32 %load_lval, 1
   store i32 %sub, i32* %i, align 4
   %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
-  %load_lval1 = load i32, i32* %i, align 4
-  %add = add i32 %load_lval1, 1
+  %load_lval1 = load i32, i32* %param1_addr, align 4
   %load_lval2 = load i32, i32* %param2_addr, align 4
-  call void @swap([6 x i32]* %elemPtr, i32 %add, i32 %load_lval2)
-  %load_lval3 = load i32, i32* %i, align 4
-  %add4 = add i32 %load_lval3, 1
-  ret i32 %add4
+  call void @swap([6 x i32]* %elemPtr, i32 %load_lval1, i32 %load_lval2)
+  %load_lval3 = load i32, i32* %param1_addr, align 4
+  ret i32 %load_lval3
 }
 
 define void @quickSort([6 x i32]* %arr, i32 %low, i32 %high) {
