@@ -7,31 +7,13 @@ void swap(int arr[6], int i, int j) {
 
 // 分区函数
 int partition(int arr[6], int low, int high) {
-    //int pivot = arr[high];  // 选择最后一个元素作为基准
-
-    /*for (int j = low; j < high; j =j+ 1) {
-        // 如果当前元素小于或等于基准
-        if (arr[j] <= pivot) {
-            i = i+1;         // 扩大小于基准的区域
-            swap(arr, i, j); // 将当前元素放到该区域内
-        }
-    }*/
-
-    // 将基准放到正确位置
     swap(arr, low, high);
-    return low;           // 返回基准的最终位置
+    return low;
 }
 
 // 快速排序主函数
 void quickSort(int arr[6], int low, int high) {
-    if (low < high) {
-        // 找到分区点
         int pi = partition(arr, low, high);
-
-        // 递归排序分区
-        //quickSort(arr, low, pi - 1);
-        //quickSort(arr, pi + 1, high);
-    }
 }
 
 // 打印数组
