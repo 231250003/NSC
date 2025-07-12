@@ -3,8 +3,8 @@
   .globl main
 main:
   addi sp, sp, -2044
-  j mainEntry
-mainEntry:
+  j main_mainEntry
+main_mainEntry:
   li t0, 2
   sw t0, 0(sp)
   li t1, 3
@@ -163,8 +163,8 @@ mainEntry:
   sw x20, 176(sp)
   sw x24, 184(sp)
   sw x23, 196(sp)
-  j while.cond
-cur:
+  j main_while.cond
+main_cur:
   mv x8, x26
   mv x9, x27
   li t2, 0
@@ -186,11 +186,11 @@ cur:
   addi sp, sp, 2044
   li a7, 93
   ecall
-while.stmt:
+main_while.stmt:
   li t1, 1
   mv x25, t1
-  j while.cond66
-while.cond:
+  j main_while.cond66
+main_while.cond:
   sw x28, 256(sp)
   sw x26, 260(sp)
   lw t2, 256(sp)
@@ -206,9 +206,9 @@ while.cond:
   snez t0, t0
   sw t0, 272(sp)
   lw t1, 272(sp)
-  bnez t1, while.stmt
-  j cur
-cur64:
+  bnez t1, main_while.stmt
+  j main_cur
+main_cur64:
   sw x28, 276(sp)
   lw t2, 276(sp)
   li t0, 1
@@ -216,8 +216,8 @@ cur64:
   sw t1, 280(sp)
   lw t2, 280(sp)
   mv x28, t2
-  j while.cond
-while.stmt65:
+  j main_while.cond
+main_while.stmt65:
   mv x8, x25
   mv x11, x28
   li t2, 0
@@ -244,9 +244,9 @@ while.stmt65:
   snez t2, t2
   sw t2, 296(sp)
   lw t0, 296(sp)
-  bnez t0, if.then
-  j if.else
-while.cond66:
+  bnez t0, main_if.then
+  j main_if.else
+main_while.cond66:
   sw x25, 300(sp)
   sw x27, 304(sp)
   lw t1, 300(sp)
@@ -263,9 +263,9 @@ while.cond66:
   snez t2, t2
   sw t2, 316(sp)
   lw t0, 316(sp)
-  bnez t0, while.stmt65
-  j cur64
-merge:
+  bnez t0, main_while.stmt65
+  j main_cur64
+main_merge:
   sw x25, 320(sp)
   lw t1, 320(sp)
   li t2, 1
@@ -273,8 +273,8 @@ merge:
   sw t0, 324(sp)
   lw t1, 324(sp)
   mv x25, t1
-  j while.cond66
-if.then:
+  j main_while.cond66
+main_if.then:
   sw x28, 328(sp)
   lw t2, 328(sp)
   li t0, 1
@@ -408,8 +408,8 @@ if.then:
   lw t0, 376(sp)
   lw t1, 336(sp),
   sw t1, 0(t1)
-  j merge
-if.else:
+  j main_merge
+main_if.else:
   sw x28, 380(sp)
   lw t2, 380(sp)
   li t0, 1
@@ -452,12 +452,12 @@ if.else:
   lw t1, 408(sp)
   lw t2, 392(sp),
   sw t2, 0(t2)
-  j merge
+  j main_merge
 max:
   mv x9, x10
   mv x8, x11
-  j maxEntry
-maxEntry:
+  j max_maxEntry
+max_maxEntry:
   mv x9, x9
   mv x11, x8
   mv x12, x9
@@ -470,13 +470,13 @@ maxEntry:
   xor t0, x8, t2
   snez t0, t0
   mv x8, t0
-  bnez x8, if.then
-  j if.else
-if.then:
+  bnez x8, max_if.then
+  j max_if.else
+max_if.then:
   mv x8, x9
   mv x10, x8
   ret
-if.else:
+max_if.else:
   mv x8, x11
   mv x10, x8
   ret
