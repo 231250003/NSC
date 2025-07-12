@@ -15,7 +15,7 @@ public class LLVMIRToRiscv {
     RegisterAllocator allocator;
     int next_offset = 0;
     Map<String, String> value_stack_addr = new HashMap<>();
-    int phi_val_storage=400;
+    int phi_val_storage=4;
     public LLVMIRToRiscv(LLVMModuleRef moduleRef, String file_path) {
         this.module = moduleRef;
         this.file_path = file_path;
