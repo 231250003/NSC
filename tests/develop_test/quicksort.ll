@@ -31,23 +31,18 @@ partitionEntry:
   store i32 %low, i32* %param1_addr, align 4
   %param2_addr = alloca i32, align 4
   store i32 %high, i32* %param2_addr, align 4
-  %pivot = alloca i32, align 4
-  %load_lval = load i32, i32* %param2_addr, align 4
-  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 %load_lval
-  %load_lval1 = load i32, i32* %elemPtr, align 4
-  store i32 %load_lval1, i32* %pivot, align 4
   %i = alloca i32, align 4
-  %load_lval2 = load i32, i32* %param1_addr, align 4
-  %sub = sub i32 %load_lval2, 1
+  %load_lval = load i32, i32* %param1_addr, align 4
+  %sub = sub i32 %load_lval, 1
   store i32 %sub, i32* %i, align 4
-  %elemPtr3 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
-  %load_lval4 = load i32, i32* %i, align 4
-  %add = add i32 %load_lval4, 1
-  %load_lval5 = load i32, i32* %param2_addr, align 4
-  call void @swap([6 x i32]* %elemPtr3, i32 %add, i32 %load_lval5)
-  %load_lval6 = load i32, i32* %i, align 4
-  %add7 = add i32 %load_lval6, 1
-  ret i32 %add7
+  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %load_lval1 = load i32, i32* %i, align 4
+  %add = add i32 %load_lval1, 1
+  %load_lval2 = load i32, i32* %param2_addr, align 4
+  call void @swap([6 x i32]* %elemPtr, i32 %add, i32 %load_lval2)
+  %load_lval3 = load i32, i32* %i, align 4
+  %add4 = add i32 %load_lval3, 1
+  ret i32 %add4
 }
 
 define void @quickSort([6 x i32]* %arr, i32 %low, i32 %high) {
