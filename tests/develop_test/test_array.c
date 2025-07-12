@@ -14,12 +14,7 @@ int main(){
         int v=1;  // 每次外层循环都要重置v
         while(v<=m)
         {
-            if(v>=w[i]) {
-                f[i+1][v] =  f[i][v];  // 使用i+1存储结果
-            }
-            else {
-                f[i+1][v] = f[i][v];
-            }
+            f[i+1][v] =  f[i][v];
             v=v+1;
         }
         i=i+1;
