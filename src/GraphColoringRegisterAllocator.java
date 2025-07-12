@@ -277,7 +277,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         }
                         for (array_variable x : array_variable_ref) {
                             System.out.println(x.variable_name);
-                            if(x.variable_name==null) System.out.println("csxsaxas");
+                            if(x.array_name==null) System.out.println("csxsaxas");
                             if (!x.array_name.equals(current_param_ref.array_name)) continue;
                             if (x.cur_offset.size() != x.array_size.size()) continue;
                             boolean is_live_variable = false;
