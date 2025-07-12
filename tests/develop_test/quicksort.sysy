@@ -45,5 +45,4 @@ int main() {
     quickSort(arr, 0, n - 1);
 
     return arr[5];
-    return 0;
 }
