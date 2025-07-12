@@ -37,7 +37,7 @@ void quickSort(int arr[6], int low, int high) {
 */
 int swap2(int arr[6], int i, int j){
     i=i+1;
-    swap(arr[6],i,j);
+    swap(arr,i,j);
     return i;
 }
 // 打印数组
