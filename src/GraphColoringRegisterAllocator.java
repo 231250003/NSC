@@ -131,24 +131,8 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             }
         }
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
-                if (LLVM.LLVMGetInstructionOpcode(inst) == LLVM.LLVMGetElementPtr) {
-                    String variable_name = LLVM.LLVMGetValueName(inst).getString();
-                    array_variable cur = new array_variable();
-                    for (array_variable x : array_variable_ref) {
-                        if (x.variable_name.equals(variable_name)) {
-                            cur = x;
-                            break;
-                        }
-                    }
-                    for (array_variable y : array_variable_ref) {
-                        if (naive_alias_may_analysis(y, cur) == true) {
-                            System.out.println(y.variable_name);
-                            variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).add(cur.variable_name);
-                            break;
-                        }
-                    }
-                }
+            for (array_variable y : array_variable_ref) {
+                variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).add(y.variable_name);
             }
         }
         var_used_num = var_used_num.entrySet()
