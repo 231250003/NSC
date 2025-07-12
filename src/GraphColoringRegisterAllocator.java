@@ -270,6 +270,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         if (kind == LLVM.LLVMPointerTypeKind) {
                             for (array_variable param : array_variable_ref) {
                                 if (param.variable_name.equals(name)) {
+                                    System.out.println("crzzzz");
                                     current_param_ref = param;
                                     break;
                                 }
