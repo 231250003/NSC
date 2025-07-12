@@ -18,10 +18,6 @@ swapEntry:
   %elemPtr5 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 %load_lval4
   %load_lval6 = load i32, i32* %elemPtr5, align 4
   store i32 %load_lval6, i32* %elemPtr3, align 4
-  %load_lval7 = load i32, i32* %param2_addr, align 4
-  %elemPtr8 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 %load_lval7
-  %load_lval9 = load i32, i32* %temp, align 4
-  store i32 %load_lval9, i32* %elemPtr8, align 4
   ret void
 }
 
@@ -36,7 +32,7 @@ mainEntry:
   store i32 2, i32* %n, align 4
   %elemPtr2 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0
   call void @swap([2 x i32]* %elemPtr2, i32 0, i32 1)
-  %elemPtr3 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 1
+  %elemPtr3 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 0
   %load_lval = load i32, i32* %elemPtr3, align 4
   ret i32 %load_lval
 }
