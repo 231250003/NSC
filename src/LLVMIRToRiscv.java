@@ -87,6 +87,7 @@ public class LLVMIRToRiscv {
             allocator = new GraphColoringRegisterAllocator(func);
             next_offset = 0;
             int paramCount = LLVM.LLVMCountParams(func);
+            System.out.println("crzzzzz");
             for (int i = 8; i < paramCount; i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
                 String paramName = LLVM.LLVMGetValueName(param).getString();
@@ -108,7 +109,6 @@ public class LLVMIRToRiscv {
                     throw new RuntimeException("Unsupported  param type");
                 }
             }
-            System.out.println("crzzzzz");
             Map<Integer,Integer> param_conflict_graph=new HashMap<>();
             for (int i = 0; i < Math.min(8,paramCount); i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
