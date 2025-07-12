@@ -7,12 +7,12 @@ int partition(int arr[6], int low, int high) {
     int pivot = arr[high];  // 选择最后一个元素作为基准
     int i = low - 1;        // i是小于基准的区域的边界
 
-   /* for (int j = low; j < high; j =j+ 1) {
+    for (int j = low; j < high; j =j+ 1) {
         if (arr[j] <= pivot) {
-            i = i+1;
+            //i = i+1;
             swap(arr, i, j); // 将当前元素放到该区域内
         }
-    }*/
+    }
     swap(arr, i + 1, high);
     return i + 1;           // 返回基准的最终位置
 }
