@@ -280,6 +280,9 @@ public class LLVMIRToRiscv {
                         }
                         asm.instr("sw", "x1", String.format("%d(sp)", next_offset));
                         next_offset += 4;
+                        Map<String,Integer> const_param_reg=new HashMap<>();
+                        Map<Integer,Integer> calling_pass_param=new HashMap<>();
+                        Map<String,LLVMValueRef> variable_reg=new HashMap<>();
                         for (int i = 0; i < argCount; i++) {
                             LLVMValueRef arg = LLVM.LLVMGetOperand(inst, i);
                             LLVMTypeRef type = LLVM.LLVMTypeOf(arg);
@@ -323,13 +326,20 @@ public class LLVMIRToRiscv {
                                         asm.instr("lw", "x1" + i, String.format("%d(sp)", start_arr_addr));
                                     }
                                 } else if (constInt != null && !constInt.isNull()) {
-                                    asm.li("x1" + i, LLVM.LLVMConstIntGetSExtValue(constInt));
+                                    //asm.li("x1" + i, LLVM.LLVMConstIntGetSExtValue(constInt));
+                                    const_param_reg.put("x1"+i,((int)LLVM.LLVMConstIntGetSExtValue(constInt)));
                                 } else {
-                                    if (allocator.allocate(name).contains("x"))
-                                        asm.mv("x1" + i, allocator.allocate(name));
+                                    if (allocator.allocate(name).contains("x")){
+                                        int src_reg_num=Integer.parseInt(allocator.allocate(name).substring(allocator.allocate(name).indexOf("x")+1));
+                                        if(src_reg_num>=10&&src_reg_num<10 + Math.min(8, paramCount)){
+                                            calling_pass_param.put(src_reg_num,10+i);
+                                        }
+                                        else  asm.mv("x1" + i, allocator.allocate(name));
+                                    }
                                     else {
-                                        String reg = evaluate(arg);
-                                        asm.mv("x1" + i, reg);
+                                        //String reg = evaluate(arg);
+                                        //asm.mv("x1" + i, reg);
+                                        variable_reg.put("x1"+i,arg);
                                     }
                                 }
                             } else {
@@ -348,6 +358,14 @@ public class LLVMIRToRiscv {
                                 asm.instr("sw", reg, String.format("%d(sp)", next_offset));
                                 next_offset += 4;
                             }
+                        }
+                        pass_param(calling_pass_param,asm);
+                        for (Map.Entry<String, Integer> entry : const_param_reg.entrySet()) {
+                            asm.li(entry.getKey(),entry.getValue());
+                        }
+                        for (Map.Entry<String, LLVMValueRef> entry : variable_reg.entrySet()) {
+                            String reg = evaluate(entry.getValue());
+                            asm.mv("x1" + entry.getKey(), reg);
                         }
                         if (argCount > 8) {
                             asm.op2("addi", "sp", "sp", next_offset - (argCount - 8) * 4);
