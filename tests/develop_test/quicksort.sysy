@@ -4,7 +4,7 @@ void swap(int arr[6], int i, int j) {
     arr[i] = arr[j];
     arr[j] = temp;
 }
-/*
+
 // 分区函数
 int partition(int arr[6], int low, int high) {
     int pivot = arr[high];  // 选择最后一个元素作为基准
@@ -34,20 +34,13 @@ void quickSort(int arr[6], int low, int high) {
         quickSort(arr, pi + 1, high);
     }
 }
-*/
-int swap2(int arr[6], int i, int j){
-    i=i+1;
-    swap(arr,i,j);
-    return i;
-}
+
 // 打印数组
 // 测试代码
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
-    //quickSort(arr, 0, n - 1);
-    //return arr[1];
+    quickSort(arr, 0, n - 1);
+    return arr[1];
     //return 0;
-    int x=swap2(arr,2,5);
-    return x+arr[3];
 }
