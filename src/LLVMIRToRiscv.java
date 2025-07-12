@@ -507,16 +507,20 @@ public class LLVMIRToRiscv {
                                 }
                             }
                         }
-                        LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
-                        String reg = evaluate(retVal);
-                        if (LLVM.LLVMGetValueName(func).getString().equals("main")) {
-                            asm.mv("x10", reg);
-                            asm.instr("addi", "sp", "sp", "" + 2044); // Epilogue
-                            asm.li("a7", 93);  // syscall exit
-                            asm.instr("ecall");
-                        } else {
-                            asm.mv("x10", reg);
-                            asm.instr("ret");
+                        LLVMTypeRef funcType = LLVMGetElementType(LLVMTypeOf(func));
+                        LLVMTypeRef retType = LLVMGetReturnType(funcType);
+                        if (LLVMGetTypeKind(retType) == LLVMIntegerTypeKind) {
+                            LLVMValueRef retVal = LLVM.LLVMGetOperand(inst, 0);
+                            String reg = evaluate(retVal);
+                            if (LLVM.LLVMGetValueName(func).getString().equals("main")) {
+                                asm.mv("x10", reg);
+                                asm.instr("addi", "sp", "sp", "" + 2044); // Epilogue
+                                asm.li("a7", 93);  // syscall exit
+                                asm.instr("ecall");
+                            } else {
+                                asm.mv("x10", reg);
+                                asm.instr("ret");
+                            }
                         }
                     } else if (opcode == LLVM.LLVMZExt) {
                         LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
