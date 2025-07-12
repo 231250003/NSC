@@ -59,7 +59,7 @@ public class LLVMIRToRiscv {
             List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(param_conflict_graph.entrySet());
             Integer key=entries.get(0).getKey();
             Integer value=entries.get(0).getValue();
-            asm.mv(reg,"x1"+key);
+            asm.mv(reg,"x"+key);
             param_conflict_graph.remove(key);
             while(!param_conflict_graph.isEmpty()){
                 List<Map.Entry<Integer, Integer>> entry2 = new ArrayList<>(param_conflict_graph.entrySet());
@@ -67,10 +67,10 @@ public class LLVMIRToRiscv {
                 while(param_conflict_graph.get(param_conflict_graph.get(key2))!=null){
                     key2=param_conflict_graph.get(key2);
                 }
-                asm.mv("x1"+param_conflict_graph.get(key2),"x1"+key2);
+                asm.mv("x"+param_conflict_graph.get(key2),"x"+key2);
                 param_conflict_graph.remove(key2);
             }
-            asm.mv("x1"+value,reg);
+            asm.mv("x"+value,reg);
         }
     }
     public void to_riscv() {
@@ -117,7 +117,7 @@ public class LLVMIRToRiscv {
                 if (LLVM.LLVMGetTypeKind(paramType) == LLVMIntegerTypeKind) {
                     if (allocator.allocate(paramName).contains("x")) {
                         int dest_reg_num=Integer.parseInt(allocator.allocate(paramName).substring(allocator.allocate(paramName).indexOf("x")+1));
-                        if(dest_reg_num>=10&&dest_reg_num<10+Math.min(8,paramCount)) param_conflict_graph.put(i,dest_reg_num);
+                        if(dest_reg_num>=10&&dest_reg_num<10+Math.min(8,paramCount)) param_conflict_graph.put(i+10,dest_reg_num);
                         else   asm.mv(allocator.allocate(paramName), "x1" + i);
                     } else if(!allocator.allocate(paramName).contains("x")){
                         asm.instr("sw", "x1" + i, String.format("%d(sp)", next_offset));
