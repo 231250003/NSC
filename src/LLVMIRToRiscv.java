@@ -52,6 +52,27 @@ public class LLVMIRToRiscv {
         newOrder.addAll(functions);
         return newOrder;
     }
+    public void pass_param(Map<Integer,Integer> param_conflict_graph,AsmBuilder asm){
+        if(param_conflict_graph.isEmpty()) return;
+        else{
+            String reg=freshReg();
+            List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(param_conflict_graph.entrySet());
+            Integer key=entries.get(0).getKey();
+            Integer value=entries.get(0).getValue();
+            asm.mv(reg,"x"+key);
+            param_conflict_graph.remove(key);
+            while(!param_conflict_graph.isEmpty()){
+                List<Map.Entry<Integer, Integer>> entry2 = new ArrayList<>(param_conflict_graph.entrySet());
+                Integer key2=entry2.get(0).getKey();
+                while(param_conflict_graph.get(param_conflict_graph.get(key2))!=null){
+                    key2=param_conflict_graph.get(key2);
+                }
+                asm.instr("x"+param_conflict_graph.get(key2),"x"+key2);
+                param_conflict_graph.remove(key2);
+            }
+            asm.instr("x"+value,reg);
+        }
+    }
     public void to_riscv() {
         emitGlobalVariables();
         asm.directive("text");
@@ -87,6 +108,7 @@ public class LLVMIRToRiscv {
                     throw new RuntimeException("Unsupported  param type");
                 }
             }
+            Map<Integer,Integer> param_conflict_graph=new HashMap<>();
             for (int i = 0; i < Math.min(8,paramCount); i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
                 String paramName = LLVM.LLVMGetValueName(param).getString();
@@ -94,8 +116,10 @@ public class LLVMIRToRiscv {
                 if (allocator.allocate(paramName) == null || allocator.allocate(paramName).isEmpty()) continue;
                 if (LLVM.LLVMGetTypeKind(paramType) == LLVMIntegerTypeKind) {
                     if (allocator.allocate(paramName).contains("x")) {
-                        asm.mv(allocator.allocate(paramName), "x1" + i);
-                    } else {
+                        int dest_reg_num=Integer.parseInt(allocator.allocate(paramName).substring(allocator.allocate(paramName).indexOf("x")+1));
+                        if(dest_reg_num>=10&&dest_reg_num<=17) param_conflict_graph.put(i,dest_reg_num);
+                        else   asm.mv(allocator.allocate(paramName), "x1" + i);
+                    } else if(!allocator.allocate(paramName).contains("x")){
                         asm.instr("sw", "x1" + i, String.format("%d(sp)", next_offset));
                         value_stack_addr.putIfAbsent(paramName, String.format("%d(sp)", next_offset));
                         next_offset += 4;
@@ -108,6 +132,7 @@ public class LLVMIRToRiscv {
                     throw new RuntimeException("Unsupported  param type");
                 }
             }
+            pass_param(param_conflict_graph,asm);
             asm.j(funcName+"Entry");
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
