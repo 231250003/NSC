@@ -19,8 +19,8 @@ int partition(int arr[6], int low, int high) {
     }*/
 
     // 将基准放到正确位置
-    swap(arr, i + 1, high);
-    return i + 1;           // 返回基准的最终位置
+    swap(arr, low, high);
+    return low;           // 返回基准的最终位置
 }
 
 // 快速排序主函数
