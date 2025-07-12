@@ -78,6 +78,7 @@ public class LLVMIRToRiscv {
         asm.directive("text");
         asm.directive("globl main");
         List<LLVMValueRef> all_function=reorderFunctionsWithMainFirst(module);
+        System.out.println("crzzzzz");
         for (LLVMValueRef func :all_function) {
             //TODO function parameter getting
             value_stack_addr = new HashMap<>();
@@ -108,7 +109,6 @@ public class LLVMIRToRiscv {
                     throw new RuntimeException("Unsupported  param type");
                 }
             }
-            System.out.println("crzzzzz");
             Map<Integer,Integer> param_conflict_graph=new HashMap<>();
             for (int i = 0; i < Math.min(8,paramCount); i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
