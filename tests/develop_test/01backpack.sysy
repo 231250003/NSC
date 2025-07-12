@@ -2,7 +2,6 @@ int max(int a,int b){
     if(a>b) return a;
     else return b;
 }
-int a[5][5];
 int main(){
     int w[4]={2,3,4,7};  // 改为4个元素，索引0-3
     int c[4]={1,3,5,9};  // 改为4个元素，索引0-3
