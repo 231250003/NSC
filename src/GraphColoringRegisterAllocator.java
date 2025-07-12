@@ -144,7 +144,8 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     for (array_variable y : array_variable_ref) {
                         if (naive_alias_may_analysis(y, cur) == true) {
                             System.out.println(y.variable_name);
-                            variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).add(y.variable_name);
+                            variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).add(cur.variable_name);
+                            break;
                         }
                     }
                 }
