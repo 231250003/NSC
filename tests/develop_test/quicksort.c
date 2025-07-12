@@ -41,6 +41,6 @@ int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
     quickSort(arr, 0, n - 1);
-    return arr[1];
+    return arr[0];
     //return 0;
 }
