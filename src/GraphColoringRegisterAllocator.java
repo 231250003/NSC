@@ -206,7 +206,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 for(array_variable y:param_array) {
                     for (array_variable x : array_variable_ref) {
                         if (naive_alias_may_analysis(x,y)==true){
-                            System.out.println(x.variable_name);
+                            //System.out.println(x.variable_name);
                             live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString()).add(x.variable_name);
                         }
                     }

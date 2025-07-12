@@ -60,4 +60,8 @@ swap_swapEntry:
   lw x12, 0(x12)
   mv x8, x12
   mv x8, x8
+  lw t1, 4(sp),
+  sw x8, 0(t1)
+  lw t2, 8(sp),
+  sw x12, 0(t2)
   ret
