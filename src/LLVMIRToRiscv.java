@@ -133,10 +133,10 @@ public class LLVMIRToRiscv {
                 }
             }
             pass_param(param_conflict_graph,asm);
-            asm.j(funcName+"Entry");
+            asm.j(funcName+"_"+funcName+"Entry");
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
-                asm.label(label);
+                asm.label(funcName+"_"+label);
                 List<array_variable> array_variable_ref = new ArrayList<>();//在函数调用中参数涉及函数时会用到
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
@@ -582,7 +582,7 @@ public class LLVMIRToRiscv {
                                     }
                                 }
                             }
-                            asm.j(loop_label);
+                            asm.j(funcName+"_"+loop_label);
                         } else if (numOperands == 3) {
                             //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                             LLVMValueRef cond = LLVM.LLVMGetOperand(inst, 0);
@@ -605,8 +605,8 @@ public class LLVMIRToRiscv {
                                     }
                                 }
                             }
-                            asm.bnez(condReg, trueLabel);
-                            asm.j(falseLabel);
+                            asm.bnez(condReg, funcName+"_"+trueLabel);
+                            asm.j(funcName+"_"+falseLabel);
                         }
                     } else {
                         System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
