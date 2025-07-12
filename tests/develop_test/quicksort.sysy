@@ -8,7 +8,9 @@ void swap(int arr[6], int i, int j) {
 
 // 快速排序主函数
 void quickSort(int arr[6], int low, int high) {
-     swap(arr, low, high);
+        int temp = arr[low];
+         arr[low] = arr[high];
+         arr[high] = temp;
 }
 
 // 打印数组
