@@ -1,6 +1,6 @@
-int e[15][15],dis[15],book[15];
 int main()
 {
+    int e[15][15],dis[15],book[15];
 	for(int i=0;i<14;i=i+1){
 	    book[i]=0;
 	}
