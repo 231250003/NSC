@@ -33,7 +33,7 @@ mainEntry:
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %elemPtr19 = getelementptr [2 x [6 x i32]], [2 x [6 x i32]]* %f, i32 0, i32 4, i32 1
+  %elemPtr19 = getelementptr [2 x [6 x i32]], [2 x [6 x i32]]* %f, i32 0, i32 1, i32 1
   %load_lval20 = load i32, i32* %elemPtr19, align 4
   ret i32 %load_lval20
 

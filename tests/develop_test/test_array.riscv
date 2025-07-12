@@ -57,7 +57,7 @@ main_mainEntry:
   sw x17, 44(sp)
   j main_while.cond
 main_cur:
-  lw x9, 100(sp)
+  lw x9, 28(sp)
   mv x8, x9
   mv x10, x8
   addi sp, sp, 2044
