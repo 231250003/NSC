@@ -645,6 +645,7 @@ public class LLVMIRToRiscv {
                         asm.op2("add","t2","t2","t1");
                         if(allocator.allocate(lval).contains("x")) asm.mv(allocator.allocate(LLVM.LLVMGetValueName(inst).getString()),"t2");
                         else{
+                            if(value_stack_addr.putIfAbsent(lval,String.format("%d(sp)",next_offset))==null) next_offset+=4;
                             asm.instr("sw","t2",value_stack_addr.get(lval));
                         }
                     }
