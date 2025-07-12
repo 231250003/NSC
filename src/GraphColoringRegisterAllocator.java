@@ -86,7 +86,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                             String varName = LLVM.LLVMGetValueName(value).getString();
                             //System.out.println("Phi value: " + varName);
                             line3=line3+"%"+varName+" ";
-                            System.out.println(line3);
                         }
                     }
                 }
@@ -278,6 +277,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             part_graph.put(entry.getKey(), new HashSet<>(entry.getValue()));
         }
         while (part_graph.size() > 0) {
+            System.out.println("crzzzzz");
             boolean need_spill = true;
             for (Map.Entry<String, Set<String>> entry : part_graph.entrySet()) {
                 String key = entry.getKey();
