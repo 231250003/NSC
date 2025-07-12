@@ -33,7 +33,7 @@ f:
   mv x9, x11
   mv x8, x12
   mv t0, x0
-  x11 t0
+  mv x11, t0
   j fEntry
 fEntry:
   mv x11, x11
