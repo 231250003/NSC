@@ -20,6 +20,7 @@ void quickSort(int arr[6], int low, int high) {
 // 测试代码
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
-    quickSort(arr, 1,5);
+    int n = 6;
+    quickSort(arr, 1, n - 1);
     return arr[0];
 }
