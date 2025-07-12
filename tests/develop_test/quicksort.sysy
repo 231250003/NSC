@@ -1,7 +1,7 @@
 void swap(int arr[6], int low, int high) {
-        int temp = arr[low];
+        //int temp = arr[low];
          arr[low] = arr[high];
-         arr[high] = temp;
+         //arr[high] = temp;
 }
 
 // 打印数组
