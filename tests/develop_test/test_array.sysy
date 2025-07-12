@@ -6,5 +6,5 @@ int main(){
         f[i+1][0] =f[i][0];
         i=i+1;
     }
-    return f[4][1];
+    return f[4][0];
 }
