@@ -34,7 +34,7 @@ main_mainEntry:
   li x11, 1
   mv x12, x11
   addi sp, sp, 28
-  jal x1, quickSort
+  jal x1, swap
   addi sp, sp, -28
   lw x1, 24(sp)
   lw x9, 4(sp)
@@ -43,13 +43,13 @@ main_mainEntry:
   addi sp, sp, 2044
   li a7, 93
   ecall
-quickSort:
+swap:
   sw x10, 0(sp)
   mv x9, x11
   mv t0, x12
   mv x11, t0
-  j quickSort_quickSortEntry
-quickSort_quickSortEntry:
+  j swap_swapEntry
+swap_swapEntry:
   mv x9, x9
   mv x12, x11
   mv x8, x9

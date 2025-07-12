@@ -293,25 +293,25 @@ public class LLVMIRToRiscv {
                                         break;
                                     }
                                 }
-//                                for (array_variable x : array_variable_ref) {
-//                                    if (!x.array_name.equals(current_param_ref.array_name)) continue;
-//                                    if (x.cur_offset.size() != x.array_size.size()) continue;
-//                                    boolean need_saved_to_stack = false;
-//                                    need_saved_to_stack = GraphColoringRegisterAllocator.naive_alias_may_analysis(current_param_ref, x);
-//                                    if (need_saved_to_stack) {
-//                                        if (allocator.allocate(x.variable_name).contains("x")) {
-//                                            String reg = allocator.allocate(x.variable_name);
-//                                            if (value_stack_addr.get(x.variable_name).contains("("))
-//                                                asm.instr("sw", reg, value_stack_addr.get(x.variable_name));
-//                                            else {
-//                                                String tmp_reg = freshReg();
-//                                                int start_arr_addr = Integer.parseInt(value_stack_addr.get(x.variable_name));
-//                                                asm.instr("lw", tmp_reg, String.format("%d(sp)", start_arr_addr));
-//                                                asm.instr("sw", reg, "O(" + tmp_reg + ")");
-//                                            }
-//                                        }
-//                                    }
-//                                }
+                                for (array_variable x : array_variable_ref) {
+                                    if (!x.array_name.equals(current_param_ref.array_name)) continue;
+                                    if (x.cur_offset.size() != x.array_size.size()) continue;
+                                    boolean need_saved_to_stack = false;
+                                    need_saved_to_stack = GraphColoringRegisterAllocator.naive_alias_may_analysis(current_param_ref, x);
+                                    if (need_saved_to_stack) {
+                                        if (allocator.allocate(x.variable_name).contains("x")) {
+                                            String reg = allocator.allocate(x.variable_name);
+                                            if (value_stack_addr.get(x.variable_name).contains("("))
+                                                asm.instr("sw", reg, value_stack_addr.get(x.variable_name));
+                                            else {
+                                                String tmp_reg = freshReg();
+                                                int start_arr_addr = Integer.parseInt(value_stack_addr.get(x.variable_name));
+                                                asm.instr("lw", tmp_reg, String.format("%d(sp)", start_arr_addr));
+                                                asm.instr("sw", reg, "O(" + tmp_reg + ")");
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             if (i <= 7) {
                                 LLVMValueRef constInt = LLVM.LLVMIsAConstantInt(arg);
