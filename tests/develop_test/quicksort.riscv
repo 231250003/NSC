@@ -5,46 +5,40 @@ main:
   addi sp, sp, -2044
   j main_mainEntry
 main_mainEntry:
-  lw x8, 0(sp)
+  lw x9, 0(sp)
   li t0, 10
-  mv x8, t0
-  lw x12, 4(sp)
+  mv x9, t0
+  lw x11, 4(sp)
   li t1, 7
-  mv x12, t1
-  lw x13, 8(sp)
+  mv x11, t1
+  lw x12, 8(sp)
   li t2, 8
-  mv x13, t2
-  lw x14, 12(sp)
+  mv x12, t2
+  lw x13, 12(sp)
   li t0, 9
-  mv x14, t0
-  lw x15, 16(sp)
+  mv x13, t0
+  lw x14, 16(sp)
   li t1, 1
-  mv x15, t1
-  lw x16, 20(sp)
+  mv x14, t1
+  lw x15, 20(sp)
   li t2, 5
-  mv x16, t2
-  li t0, 6
-  mv x11, t0
-  mv x11, x11
-  li t1, 1
-  sub t2, x11, t1
-  mv x11, t2
+  mv x15, t2
   sw x1, 24(sp)
-  sw x8, 0(sp)
-  sw x12, 4(sp)
-  sw x13, 8(sp)
-  sw x14, 12(sp)
-  sw x15, 16(sp)
-  sw x16, 20(sp)
+  sw x9, 0(sp)
+  sw x11, 4(sp)
+  sw x12, 8(sp)
+  sw x13, 12(sp)
+  sw x14, 16(sp)
+  sw x15, 20(sp)
   addi x10, sp, 0
   li x11, 1
-  mv x12, x11
+  li x12, 5
   addi sp, sp, 28
   jal x1, quickSort
   addi sp, sp, -28
   lw x1, 24(sp)
-  lw x9, 4(sp)
-  mv x8, x9
+  lw x8, 4(sp)
+  mv x8, x8
   mv x10, x8
   addi sp, sp, 2044
   li a7, 93
@@ -60,12 +54,12 @@ swap_swapEntry:
   mv x12, x11
   mv x8, x9
   li t2, 0
-  li t0, 1
-  mul t0, x8, t0
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
+  li t1, 1
+  mul t1, x8, t1
   add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
   sw t2, 4(sp)
   lw x8, 4(sp),
   lw x8, 0(x8)
@@ -73,23 +67,23 @@ swap_swapEntry:
   mv x11, x11
   mv x9, x9
   li t2, 0
-  li t0, 1
-  mul t0, x9, t0
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
+  li t1, 1
+  mul t1, x9, t1
   add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
   sw t2, 8(sp)
   lw x13, 8(sp),
   lw x13, 0(x13)
   mv x9, x12
   li t2, 0
-  li t0, 1
-  mul t0, x9, t0
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
+  li t1, 1
+  mul t1, x9, t1
   add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
   sw t2, 12(sp)
   lw x14, 12(sp),
   lw x14, 0(x14)
@@ -97,12 +91,12 @@ swap_swapEntry:
   mv x13, x9
   mv x9, x12
   li t2, 0
-  li t0, 1
-  mul t0, x9, t0
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
+  li t1, 1
+  mul t1, x9, t1
   add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
   sw t2, 16(sp)
   lw x9, 16(sp),
   lw x9, 0(x9)
