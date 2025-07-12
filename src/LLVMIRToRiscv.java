@@ -413,7 +413,7 @@ public class LLVMIRToRiscv {
                                     asm.instr("sw", valReg, value_stack_addr.get(LLVM.LLVMGetValueName(ptr).getString()));
                                 else {
                                     String reg = freshReg();
-                                    asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(ptr).getString()))));
+                                    asm.instr("lw", reg, String.format("%d(sp)", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(ptr).getString()))));
                                     asm.instr("sw", valReg, "0(" + reg + ")");
                                 }
                             } else asm.instr("mv", addr, valReg);
@@ -441,7 +441,7 @@ public class LLVMIRToRiscv {
                             if (value_stack_addr.get(LLVM.LLVMGetValueName(ptr).getString()).contains("("))
                                 asm.instr("lw", reg, value_stack_addr.get(LLVM.LLVMGetValueName(ptr).getString()));
                             else {
-                                asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(ptr).getString()))));
+                                asm.instr("lw", reg, String.format("%d(sp)", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(ptr).getString()))));
                                 asm.instr("lw", reg, "0(" + reg + ")");
                             }
                             if (lval_addr.contains("stack")) {
@@ -506,7 +506,7 @@ public class LLVMIRToRiscv {
                                         asm.instr("sw", allocator.allocate(x.variable_name), value_stack_addr.get(x.variable_name));
                                     } else {
                                         String reg = freshReg();
-                                        asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(x.variable_name))));
+                                        asm.instr("lw", reg, String.format("%d(sp)", Integer.parseInt(value_stack_addr.get(x.variable_name))));
                                         asm.instr("sw", allocator.allocate(x.variable_name), "0(" + reg + ")");
                                     }
                                 }
@@ -592,7 +592,7 @@ public class LLVMIRToRiscv {
                                             asm.instr("sw", allocator.allocate(x.variable_name), value_stack_addr.get(x.variable_name));
                                         } else {
                                             String reg = freshReg();
-                                            asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(x.variable_name))));
+                                            asm.instr("lw", reg, String.format("%d(sp)", Integer.parseInt(value_stack_addr.get(x.variable_name))));
                                             asm.instr("sw", allocator.allocate(x.variable_name), "0(" + reg + ")");
                                         }
                                     }
@@ -617,7 +617,7 @@ public class LLVMIRToRiscv {
                                             asm.instr("sw", allocator.allocate(x.variable_name), value_stack_addr.get(x.variable_name));
                                         } else {
                                             String reg = freshReg();
-                                            asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(x.variable_name))));
+                                            asm.instr("lw", reg, String.format("%d(sp)", Integer.parseInt(value_stack_addr.get(x.variable_name))));
                                             asm.instr("sw", allocator.allocate(x.variable_name), "0(" + reg + ")");
                                         }
                                     }
@@ -681,7 +681,7 @@ public class LLVMIRToRiscv {
                 if (value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()).contains("("))
                     asm.instr("lw", reg, value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()));
                 else {
-                    asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()))));
+                    asm.instr("lw", reg, String.format("%d(sp)", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()))));
                     asm.instr("lw", reg, "0(" + reg + ")");
                 }
                 return reg;
@@ -716,7 +716,7 @@ public class LLVMIRToRiscv {
                 if (value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()).contains("("))
                     asm.instr("lw", reg, value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()));
                 else {
-                    asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()))));
+                    asm.instr("lw", reg, String.format("%d(sp)", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(val).getString()))));
                     asm.instr("lw", reg, "0(" + reg + ")");
                 }
                 return reg;
