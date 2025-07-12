@@ -10,9 +10,9 @@ mainEntry:
   mv x8, x8
   sw x8, 0(sp)
   sw x1, 4(sp)
-  li x10, 20
-  mv x11, x8
-  addi x12, sp, 0
+  li x10, 10
+  li x11, 20
+  mv x12, x8
   addi sp, sp, 8
   jal x1, f
   addi sp, sp, -8
