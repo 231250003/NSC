@@ -38,8 +38,8 @@ void quickSort(int arr[6], int low, int high) {
 // 打印数组
 // 测试代码
 int main() {
-    int arr[6] = {10, 7, 8, 9, 1, 5};
-    int n = 6;
+    int arr[2] = {10,1};
+    int n = 2;
 
 
     quickSort(arr, 0, n - 1);
