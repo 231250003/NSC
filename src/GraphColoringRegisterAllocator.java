@@ -168,7 +168,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     changed = true;
                 }
             }
-            System.out.println("crzzzzz");
         } while (changed);
     }
 
@@ -230,6 +229,8 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     }
                 }
             }
+            System.out.println("crzzzzz");
+
         }
     }
 
