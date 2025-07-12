@@ -12,7 +12,7 @@ void quickSort(int arr[6], int low, int high) {
                    swap(arr, i, j); // 将当前元素放到该区域内
                }
            }
-           swap(arr, i + 1, high);
+           //swap(arr, i + 1, high);
 }
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
