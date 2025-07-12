@@ -11,13 +11,10 @@ int main(){
     int i=0;  // 从0开始
     while(i<n)  // i < n而不是i <= n
     {
-        int v=1;  // 每次外层循环都要重置v
-        while(v<=m)
-        {
-            f[i+1][v] =  f[i][v];
-            v=v+1;
-        }
+
+            f[i+1][1] =  f[i][1];
+         
         i=i+1;
     }
-    return f[n][m];
+    return f[n][1];
 }
