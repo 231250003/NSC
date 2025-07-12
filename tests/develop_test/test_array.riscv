@@ -6,7 +6,7 @@ main:
   j main_mainEntry
 main_mainEntry:
   lw x8, 0(sp)
-  li t0, 0
+  li t0, 1
   mv x8, t0
   li t1, 0
   sw t1, 4(sp)

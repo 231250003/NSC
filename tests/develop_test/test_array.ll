@@ -5,7 +5,7 @@ define i32 @main() {
 mainEntry:
   %f = alloca [5 x [6 x i32]], align 4
   %elemPtr = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 0, i32 0
-  store i32 0, i32* %elemPtr, align 4
+  store i32 1, i32* %elemPtr, align 4
   %elemPtr1 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 0, i32 1
   store i32 0, i32* %elemPtr1, align 4
   %elemPtr2 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 0, i32 2
