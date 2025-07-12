@@ -30,6 +30,12 @@ main_mainEntry:
   sub t2, x11, t1
   mv x11, t2
   sw x1, 24(sp)
+  sw x8, 0(sp)
+  sw x12, 4(sp)
+  sw x13, 8(sp)
+  sw x14, 12(sp)
+  sw x15, 16(sp)
+  sw x16, 20(sp)
   addi x10, sp, 0
   li x11, 1
   mv x12, x11
