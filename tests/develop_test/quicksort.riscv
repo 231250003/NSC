@@ -108,13 +108,13 @@ swap_swapEntry:
   lw x9, 0(x9)
   mv x9, x11
   mv x9, x9
-  lw t0, 4(sp),
+  lw t0, 4(sp)
   sw x8, 0(t0)
-  lw t1, 8(sp),
+  lw t1, 8(sp)
   sw x13, 0(t1)
-  lw t2, 12(sp),
+  lw t2, 12(sp)
   sw x14, 0(t2)
-  lw t0, 16(sp),
+  lw t0, 16(sp)
   sw x9, 0(t0)
   ret
 partition:
@@ -146,7 +146,7 @@ partition_partitionEntry:
   mv x12, x11
   mv x9, x9
   mv x9, x9
-  lw t0, 4(sp),
+  lw t0, 4(sp)
   sw x8, 0(t0)
   li t1, 0
   sw t1, 1600(sp)
