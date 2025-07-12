@@ -270,88 +270,44 @@ partition_if.then:
 quickSort:
   sw x10, 0(sp)
   mv x8, x11
-  mv t1, x12
-  mv x11, t1
+  mv x9, x12
   j quickSort_quickSortEntry
 quickSort_quickSortEntry:
-  mv x9, x8
-  mv x12, x11
+  mv x8, x8
   mv x11, x9
-  mv x8, x12
-  slt t2, x11, x8
-  mv x8, t2
-  mv t0, x8
-  mv x8, t0
-  li t1, 0
-  xor t2, x8, t1
-  snez t2, t2
-  mv x8, t2
+  mv x12, x8
+  mv x9, x11
+  slt t1, x12, x9
+  mv x9, t1
+  mv t2, x9
+  mv x9, t2
   li t0, 0
-  sw t0, 1600(sp)
-  bnez x8, quickSort_if.then
+  xor t1, x9, t0
+  snez t1, t1
+  mv x9, t1
+  li t2, 0
+  sw t2, 1600(sp)
+  bnez x9, quickSort_if.then
   j quickSort_merge
 quickSort_merge:
   ret
 quickSort_if.then:
-  lw t1, 0(sp)
-  addi t1, t1, 0
-  sw t1, 4(sp)
-  mv x11, x9
-  mv x8, x12
-  sw x8, 8(sp)
-  sw x12, 12(sp)
-  sw x9, 16(sp)
-  sw x1, 20(sp)
-  lw x10, 4(sp)
-  mv x12, x8
-  mv t2, x11
-  mv x11, t2
-  addi sp, sp, 24
-  jal x1, partition
-  addi sp, sp, -24
-  lw x1, 20(sp)
-  lw x8, 8(sp)
-  lw x12, 12(sp)
-  lw x9, 16(sp)
-  mv x8, x10
-  mv x8, x8
   lw t0, 0(sp)
   addi t0, t0, 0
-  sw t0, 8(sp)
-  mv x9, x9
-  mv x11, x8
-  li t1, 1
-  sub t2, x11, t1
-  mv x11, t2
-  sw x12, 12(sp)
-  sw x8, 16(sp)
-  sw x1, 20(sp)
-  lw x10, 8(sp)
-  mv x11, x9
-  mv t0, x11
-  mv x12, t0
-  addi sp, sp, 24
-  jal x1, quickSort
-  addi sp, sp, -24
-  lw x1, 20(sp)
-  lw x12, 12(sp)
-  lw x8, 16(sp)
-  lw t1, 0(sp)
-  addi t1, t1, 0
-  sw t1, 12(sp)
-  mv x8, x8
-  li t2, 1
-  add t0, x8, t2
-  mv x9, t0
-  mv x8, x12
-  sw x1, 16(sp)
-  lw x10, 12(sp)
+  sw t0, 4(sp)
+  mv x9, x8
+  mv x8, x11
+  sw x8, 8(sp)
+  sw x1, 12(sp)
+  lw x10, 4(sp)
   mv x11, x9
   mv x12, x8
-  addi sp, sp, 20
-  jal x1, quickSort
-  addi sp, sp, -20
-  lw x1, 16(sp)
+  addi sp, sp, 16
+  jal x1, partition
+  addi sp, sp, -16
+  lw x1, 12(sp)
+  lw x8, 8(sp)
+  mv x8, x10
   li t1, 2
   sw t1, 1600(sp)
   j quickSort_merge
