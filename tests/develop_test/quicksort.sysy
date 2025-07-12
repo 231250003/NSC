@@ -3,6 +3,7 @@ void swap(int arr[6], int i, int j) {
     arr[i] = arr[j];
     arr[j] = temp;
 }
+/*
 int partition(int arr[6], int low, int high) {
     int pivot = arr[high];  // 选择最后一个元素作为基准
     int i = low - 1;        // i是小于基准的区域的边界
@@ -13,15 +14,26 @@ int partition(int arr[6], int low, int high) {
             swap(arr, i, j); // 将当前元素放到该区域内
         }
     }
-    //swap(arr, i + 1, high);
+    swap(arr, i + 1, high);
     return i + 1;           // 返回基准的最终位置
 }
+*/
 void quickSort(int arr[6], int low, int high) {
-       partition(arr, low, high);
+       //partition(arr, low, high);
+         int pivot = arr[high];  // 选择最后一个元素作为基准
+           int i = low - 1;        // i是小于基准的区域的边界
+
+           for (int j = low; j < high; j =j+ 1) {
+               if (arr[j] <= pivot) {
+                   i = i+1;
+                   swap(arr, i, j); // 将当前元素放到该区域内
+               }
+           }
+           swap(arr, i + 1, high);
 }
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
     quickSort(arr, 1, n - 1);
-    return arr[1];
+    return arr[5];
 }
