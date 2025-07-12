@@ -8,12 +8,13 @@ void swap(int arr[6], int i, int j) {
 // 分区函数
 int partition(int arr[6], int low, int high) {
     swap(arr, low, high);
-    return low;         
+    return low;
 }
 
 // 快速排序主函数
 void quickSort(int arr[6], int low, int high) {
-     int pi = partition(arr, low, high);
+     //int pi = partition(arr, low, high);
+     swap(arr, low, high);
 }
 
 // 打印数组
