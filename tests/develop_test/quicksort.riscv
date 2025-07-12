@@ -37,7 +37,7 @@ main_mainEntry:
   sw x14, 16(sp)
   sw x15, 20(sp)
   addi x10, sp, 0
-  li x11, 0
+  li x11, 1
   mv x12, x8
   addi sp, sp, 28
   jal x1, quickSort
