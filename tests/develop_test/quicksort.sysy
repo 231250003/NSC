@@ -25,12 +25,7 @@ int partition(int arr[6], int low, int high) {
 // 快速排序主函数
 void quickSort(int arr[6], int low, int high) {
     if (low < high) {
-        // 找到分区点
         int pi = partition(arr, low, high);
-
-        // 递归排序分区
-        //quickSort(arr, low, pi - 1);
-        //quickSort(arr, pi + 1, high);
     }
 }
 
@@ -39,7 +34,7 @@ void quickSort(int arr[6], int low, int high) {
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
-    quickSort(arr, 1, n - 1);
+    quickSort(arr, 1, 5);
     return arr[1];
     //return 0;
 }
