@@ -280,13 +280,16 @@ quickSort_quickSortEntry:
   sw t1, 4(sp)
   mv x11, x8
   mv x8, x9
-  sw x1, 8(sp)
+  sw x8, 8(sp)
+  sw x1, 12(sp)
   lw x10, 4(sp)
   mv x12, x8
   mv t2, x11
   mv x11, t2
-  addi sp, sp, 12
+  addi sp, sp, 16
   jal x1, partition
-  addi sp, sp, -12
-  lw x1, 8(sp)
+  addi sp, sp, -16
+  lw x1, 12(sp)
+  lw x8, 8(sp)
+  mv x8, x10
   ret
