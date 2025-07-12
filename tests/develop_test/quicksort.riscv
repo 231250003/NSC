@@ -152,33 +152,10 @@ partition_partitionEntry:
   sw t1, 1600(sp)
   j partition_for.cond
 partition_cur:
-  lw t2, 0(sp)
-  addi t2, t2, 0
-  sw t2, 8(sp)
   mv x9, x12
-  li t0, 1
-  add t1, x9, t0
-  mv x11, t1
-  mv x9, x16
-  sw x12, 12(sp)
-  sw x8, 16(sp)
-  sw x15, 20(sp)
-  sw x1, 24(sp)
-  lw x10, 8(sp)
-  mv x12, x9
-  mv t2, x11
-  mv x11, t2
-  addi sp, sp, 28
-  jal x1, swap
-  addi sp, sp, -28
-  lw x1, 24(sp)
-  lw x12, 12(sp)
-  lw x8, 16(sp)
-  lw x15, 20(sp)
-  mv x9, x12
-  li t0, 1
-  add t1, x9, t0
-  mv x9, t1
+  li t2, 1
+  add t0, x9, t2
+  mv x9, t0
   mv x10, x9
   ret
 partition_for.stmt:
@@ -190,20 +167,22 @@ partition_for.stmt:
   slli t2, t2, 2
   lw t0, 0(sp)
   add t2, t2, t0
-  sw t2, 12(sp)
-  lw x15, 20(sp)
+  sw t2, 8(sp)
+  lw x15, 8(sp),
+  lw x15, 0(x15)
   mv x13, x15
   mv x11, x14
-  sgt t1, x13, x11
-  seqz t1, t1
+  sgt t0, x13, x11
+  seqz t0, t0
+  mv x11, t0
+  mv t1, x11
   mv x11, t1
-  mv t2, x11
-  mv x11, t2
-  li t0, 0
-  xor t1, x11, t0
-  snez t1, t1
-  mv x11, t1
-  sw x15, 20(sp)
+  li t2, 0
+  xor t0, x11, t2
+  snez t0, t0
+  mv x11, t0
+  lw t1, 8(sp)
+  sw x15, 0(t1)
   li t2, 2
   sw t2, 1600(sp)
   bnez x11, partition_if.then
@@ -233,8 +212,39 @@ partition_merge:
   sw t1, 1600(sp)
   j partition_for.cond
 partition_if.then:
-  li t2, 5
-  sw t2, 1600(sp)
+  mv x11, x12
+  li t2, 1
+  add t0, x11, t2
+  mv x11, t0
+  mv x12, x11
+  lw t1, 0(sp)
+  addi t1, t1, 0
+  sw t1, 12(sp)
+  mv x13, x12
+  mv x11, x9
+  sw x16, 16(sp)
+  sw x14, 20(sp)
+  sw x12, 24(sp)
+  sw x9, 28(sp)
+  sw x8, 32(sp)
+  sw x15, 36(sp)
+  sw x1, 40(sp)
+  lw x10, 12(sp)
+  mv x11, x13
+  mv t2, x11
+  mv x12, t2
+  addi sp, sp, 44
+  jal x1, swap
+  addi sp, sp, -44
+  lw x1, 40(sp)
+  lw x16, 16(sp)
+  lw x14, 20(sp)
+  lw x12, 24(sp)
+  lw x9, 28(sp)
+  lw x8, 32(sp)
+  lw x15, 36(sp)
+  li t0, 5
+  sw t0, 1600(sp)
   j partition_merge
 quickSort:
   sw x10, 0(sp)
@@ -244,16 +254,16 @@ quickSort:
 quickSort_quickSortEntry:
   mv x8, x8
   mv x9, x9
-  lw t0, 0(sp)
-  addi t0, t0, 0
-  sw t0, 4(sp)
+  lw t1, 0(sp)
+  addi t1, t1, 0
+  sw t1, 4(sp)
   mv x11, x8
   mv x8, x9
   sw x1, 8(sp)
   lw x10, 4(sp)
   mv x12, x8
-  mv t1, x11
-  mv x11, t1
+  mv t2, x11
+  mv x11, t2
   addi sp, sp, 12
   jal x1, partition
   addi sp, sp, -12
