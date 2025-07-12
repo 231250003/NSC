@@ -1,0 +1,71 @@
+
+  .text
+  .globl main
+main:
+  addi sp, sp, -2044
+  j mainEntry
+mainEntry:
+  li t0, 25
+  mv x9, t0
+  li t1, 40
+  mv x8, t1
+  mv x9, x9
+  mv x8, x8
+  sw x8, 0(sp)
+  sw x1, 4(sp)
+  mv x10, x9
+  mv x11, x8
+  addi sp, sp, 8
+  jal x1, gcd
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x8, 0(sp)
+  mv x8, x10
+  mv x8, x8
+  mv x8, x8
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+gcd:
+  mv x9, x10
+  mv x8, x11
+  j gcdEntry
+gcdEntry:
+  mv x12, x9
+  mv x8, x8
+  mv x9, x8
+  li t2, 0
+  xor t0, x9, t2
+  seqz t0, t0
+  mv x9, t0
+  mv t1, x9
+  mv x9, t1
+  li t2, 0
+  xor t0, x9, t2
+  snez t0, t0
+  mv x9, t0
+  bnez x9, if.then
+  j merge
+merge:
+  mv x11, x8
+  mv x9, x12
+  mv x8, x8
+  rem t1, x9, x8
+  mv x8, t1
+  sw x8, 0(sp)
+  sw x1, 4(sp)
+  mv x10, x11
+  mv x11, x8
+  addi sp, sp, 8
+  jal x1, gcd
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x8, 0(sp)
+  mv x8, x10
+  mv x10, x8
+  ret
+if.then:
+  mv x8, x12
+  mv x10, x8
+  ret
