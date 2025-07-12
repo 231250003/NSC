@@ -7,11 +7,12 @@ main:
 mainEntry:
   li t0, 30
   mv x8, t0
+  mv x8, x8
   sw x8, 0(sp)
   sw x1, 4(sp)
   li x10, 10
   li x11, 20
-  li x12, 30
+  mv x12, x8
   addi sp, sp, 8
   jal x1, f
   addi sp, sp, -8
