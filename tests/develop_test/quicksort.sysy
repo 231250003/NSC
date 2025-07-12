@@ -10,10 +10,10 @@ int partition(int arr[6], int low, int high) {
     int pivot = arr[high];  // 选择最后一个元素作为基准
     int i = low - 1;        // i是小于基准的区域的边界
 
-    for (int j = low; j < high; j += 1) {
+    for (int j = low; j < high; j =j+ 1) {
         // 如果当前元素小于或等于基准
         if (arr[j] <= pivot) {
-            i += 1;         // 扩大小于基准的区域
+            i = i+1;         // 扩大小于基准的区域
             swap(arr, i, j); // 将当前元素放到该区域内
         }
     }
