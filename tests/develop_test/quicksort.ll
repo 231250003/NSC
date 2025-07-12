@@ -46,14 +46,14 @@ partitionEntry:
   br label %for.cond
 
 cur:                                              ; preds = %for.cond
-  %elemPtr17 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %elemPtr14 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %load_lval15 = load i32, i32* %i, align 4
+  %add16 = add i32 %load_lval15, 1
+  %load_lval17 = load i32, i32* %param2_addr, align 4
+  call void @swap([6 x i32]* %elemPtr14, i32 %add16, i32 %load_lval17)
   %load_lval18 = load i32, i32* %i, align 4
   %add19 = add i32 %load_lval18, 1
-  %load_lval20 = load i32, i32* %param2_addr, align 4
-  call void @swap([6 x i32]* %elemPtr17, i32 %add19, i32 %load_lval20)
-  %load_lval21 = load i32, i32* %i, align 4
-  %add22 = add i32 %load_lval21, 1
-  ret i32 %add22
+  ret i32 %add19
 
 for.stmt:                                         ; preds = %for.cond
   %load_lval6 = load i32, i32* %j, align 4
@@ -74,16 +74,12 @@ for.cond:                                         ; preds = %merge, %partitionEn
   br i1 %to_bool, label %for.stmt, label %cur
 
 merge:                                            ; preds = %if.then, %for.stmt
-  %load_lval16 = load i32, i32* %j, align 4
-  %add = add i32 %load_lval16, 1
+  %load_lval13 = load i32, i32* %j, align 4
+  %add = add i32 %load_lval13, 1
   store i32 %add, i32* %j, align 4
   br label %for.cond
 
 if.then:                                          ; preds = %for.stmt
-  %elemPtr13 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
-  %load_lval14 = load i32, i32* %i, align 4
-  %load_lval15 = load i32, i32* %j, align 4
-  call void @swap([6 x i32]* %elemPtr13, i32 %load_lval14, i32 %load_lval15)
   br label %merge
 }
 

@@ -9,11 +9,11 @@ int partition(int arr[6], int low, int high) {
 
     for (int j = low; j < high; j =j+ 1) {
         if (arr[j] <= pivot) {
-            //i = i+1;
-            //swap(arr, i, j); // 将当前元素放到该区域内
+            i = i+1;
+            swap(arr, i, j); // 将当前元素放到该区域内
         }
     }
-    swap(arr, i + 1, high);
+    //swap(arr, i + 1, high);
     return i + 1;           // 返回基准的最终位置
 }
 void quickSort(int arr[6], int low, int high) {
