@@ -1,6 +1,6 @@
 // 交换数组中的两个元素（不使用指针）
 void swap(int arr[2], int i, int j) {
-    int temp = arr[i];
+    //int temp = arr[i];
     arr[i] = arr[j];
     //arr[j] = temp;
 }
