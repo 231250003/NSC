@@ -9,7 +9,7 @@ mainEntry:
   sw x1, 4(sp)
   addi x10, sp, 0
   addi sp, sp, 8
-  jal x1, i32 5
+  jal x1, fib
   addi sp, sp, -8
   lw x1, 4(sp)
   lw x8, 0(sp)
@@ -68,7 +68,7 @@ if.else6:
   sw x1, 8(sp)
   addi x10, sp, 4
   addi sp, sp, 12
-  jal x1,   %sub = sub i32 %load_lval8, 1
+  jal x1, fib
   addi sp, sp, -12
   lw x1, 8(sp)
   lw x9, 0(sp)
@@ -83,7 +83,7 @@ if.else6:
   sw x1, 8(sp)
   addi x10, sp, 4
   addi sp, sp, 12
-  jal x1,   %sub10 = sub i32 %load_lval9, 2
+  jal x1, fib
   addi sp, sp, -12
   lw x1, 8(sp)
   lw x9, 0(sp)
