@@ -6,6 +6,7 @@ void swap(int arr[2], int i, int j) {
 }
 
 // 分区函数
+/*
 int partition(int arr[2], int low, int high) {
     int pivot = arr[high];  // 选择最后一个元素作为基准
     int i = low - 1;        // i是小于基准的区域的边界
@@ -34,7 +35,7 @@ void quickSort(int arr[2], int low, int high) {
         quickSort(arr, pi + 1, high);
     }
 }
-
+*/
 // 打印数组
 // 测试代码
 int main() {

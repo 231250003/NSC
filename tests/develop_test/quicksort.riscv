@@ -11,20 +11,14 @@ main_mainEntry:
   lw x9, 4(sp)
   li t1, 1
   mv x9, t1
-  li t2, 2
-  mv x8, t2
-  mv x8, x8
-  li t0, 1
-  sub t1, x8, t0
-  mv x8, t1
   sw x1, 8(sp)
   sw x8, 0(sp)
   sw x9, 4(sp)
   addi x10, sp, 0
   li x11, 0
-  mv x12, x8
+  li x12, 1
   addi sp, sp, 12
-  jal x1, quickSort
+  jal x1, swap
   addi sp, sp, -12
   lw x1, 8(sp)
   lw x11, 4(sp)
@@ -44,12 +38,12 @@ swap_swapEntry:
   mv x11, x11
   mv x8, x9
   li t2, 0
-  li t0, 1
-  mul t0, x8, t0
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
+  li t1, 1
+  mul t1, x8, t1
   add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
   sw t2, 4(sp)
   lw x8, 4(sp),
   lw x8, 0(x8)
@@ -57,23 +51,23 @@ swap_swapEntry:
   mv x12, x8
   mv x8, x9
   li t2, 0
-  li t0, 1
-  mul t0, x8, t0
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
+  li t1, 1
+  mul t1, x8, t1
   add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
   sw t2, 8(sp)
   lw x13, 8(sp),
   lw x13, 0(x13)
   mv x8, x11
   li t2, 0
-  li t0, 1
-  mul t0, x8, t0
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
+  li t1, 1
+  mul t1, x8, t1
   add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
   sw t2, 12(sp)
   lw x14, 12(sp),
   lw x14, 0(x14)
@@ -81,12 +75,12 @@ swap_swapEntry:
   mv x13, x8
   mv x8, x11
   li t2, 0
-  li t0, 1
-  mul t0, x8, t0
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
+  li t1, 1
+  mul t1, x8, t1
   add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
   sw t2, 16(sp)
   lw x9, 16(sp),
   lw x9, 0(x9)
@@ -104,12 +98,12 @@ partition_partitionEntry:
   mv x15, x11
   mv x8, x15
   li t2, 0
-  li t1, 1
-  mul t1, x8, t1
-  add t2, t2, t1
-  slli t2, t2, 2
-  lw t0, 0(sp)
+  li t0, 1
+  mul t0, x8, t0
   add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
   sw t2, 4(sp)
   lw x8, 4(sp),
   lw x8, 0(x8)
@@ -155,12 +149,12 @@ partition_cur:
 partition_for.stmt:
   mv x11, x9
   li t2, 0
-  li t0, 1
-  mul t0, x11, t0
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
+  li t1, 1
+  mul t1, x11, t1
   add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
   sw t2, 12(sp)
   lw x16, 12(sp),
   lw x16, 0(x16)
