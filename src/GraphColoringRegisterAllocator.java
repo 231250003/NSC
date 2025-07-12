@@ -281,7 +281,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             String reg = can_use_reg.get(0);
             valueMap.put(key, reg);
         }
-        System.out.println("crzzzz");
     }
 
     public void color_graph() {
