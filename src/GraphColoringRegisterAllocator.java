@@ -84,8 +84,9 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         LLVMValueRef value = LLVM.LLVMGetOperand(inst, i);
                         if (LLVM.LLVMIsAConstant(value) == null) {
                             String varName = LLVM.LLVMGetValueName(value).getString();
-                            System.out.println("Phi value: " + varName);
+                            //System.out.println("Phi value: " + varName);
                             line3=line3+"%"+varName+" ";
+                            System.out.println(line3);
                         }
                     }
                 }
