@@ -1,6 +1,3 @@
-
-#include <stdio.h>
-
 // 交换数组中的两个元素（不使用指针）
 void swap(int arr[], int i, int j) {
     int temp = arr[i];
