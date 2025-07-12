@@ -109,7 +109,7 @@ main_while.stmt:
   j main_while.cond
 main_while.cond:
   mv x14, x13
-  li t1, 2
+  li t1, 1
   slt t2, x14, t1
   mv x14, t2
   mv t0, x14
