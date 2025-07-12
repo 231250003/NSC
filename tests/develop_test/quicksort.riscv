@@ -268,8 +268,25 @@ partition_if.then:
   sw t0, 1600(sp)
   j partition_merge
 quickSort:
+  sw x10, 0(sp)
   mv x8, x11
   mv x9, x12
   j quickSort_quickSortEntry
 quickSort_quickSortEntry:
+  mv x8, x8
+  mv x9, x9
+  lw t1, 0(sp)
+  addi t1, t1, 0
+  sw t1, 4(sp)
+  mv x11, x8
+  mv x8, x9
+  sw x1, 8(sp)
+  lw x10, 4(sp)
+  mv x12, x8
+  mv t2, x11
+  mv x11, t2
+  addi sp, sp, 12
+  jal x1, partition
+  addi sp, sp, -12
+  lw x1, 8(sp)
   ret
