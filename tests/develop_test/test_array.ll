@@ -7,27 +7,27 @@ mainEntry:
   %elemPtr = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 0, i32 0
   store i32 1, i32* %elemPtr, align 4
   %elemPtr1 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 0, i32 1
-  store i32 0, i32* %elemPtr1, align 4
+  store i32 1, i32* %elemPtr1, align 4
   %elemPtr2 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 0, i32 2
-  store i32 0, i32* %elemPtr2, align 4
+  store i32 1, i32* %elemPtr2, align 4
   %elemPtr3 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 0, i32 3
-  store i32 0, i32* %elemPtr3, align 4
+  store i32 1, i32* %elemPtr3, align 4
   %elemPtr4 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 0, i32 4
-  store i32 0, i32* %elemPtr4, align 4
+  store i32 1, i32* %elemPtr4, align 4
   %elemPtr5 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 0, i32 5
-  store i32 0, i32* %elemPtr5, align 4
+  store i32 1, i32* %elemPtr5, align 4
   %elemPtr6 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 1, i32 0
-  store i32 0, i32* %elemPtr6, align 4
+  store i32 1, i32* %elemPtr6, align 4
   %elemPtr7 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 1, i32 1
-  store i32 0, i32* %elemPtr7, align 4
+  store i32 1, i32* %elemPtr7, align 4
   %elemPtr8 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 1, i32 2
-  store i32 0, i32* %elemPtr8, align 4
+  store i32 1, i32* %elemPtr8, align 4
   %elemPtr9 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 1, i32 3
-  store i32 0, i32* %elemPtr9, align 4
+  store i32 1, i32* %elemPtr9, align 4
   %elemPtr10 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 1, i32 4
-  store i32 0, i32* %elemPtr10, align 4
+  store i32 1, i32* %elemPtr10, align 4
   %elemPtr11 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 1, i32 5
-  store i32 0, i32* %elemPtr11, align 4
+  store i32 1, i32* %elemPtr11, align 4
   %elemPtr12 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 2, i32 0
   store i32 0, i32* %elemPtr12, align 4
   %elemPtr13 = getelementptr [5 x [6 x i32]], [5 x [6 x i32]]* %f, i32 0, i32 2, i32 1
