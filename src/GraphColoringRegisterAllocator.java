@@ -143,6 +143,8 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     }
                     for (array_variable x : array_variable_ref) {
                         if (naive_alias_may_analysis(x, cur) == true) {
+                            System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+                            System.out.println(x.variable_name);
                             variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).add(x.variable_name);//注意这里加的是X.VARIABLENAME,意思是x指针指向的东西可能在这里访问，即如果GETELEMENTPTR后面跟load的话，那X指针指向的东西是会想访问后定值（或访问后不定值），因此是活跃的
                         }
                     }
@@ -376,23 +378,23 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
 //                System.out.println();
 //            }
 //        }
-        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
-            System.out.println();
-            System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
-            System.out.println("in");
-            for(String x:live_variable_block_in.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
-                    System.out.print(x);
-                    System.out.print(" ");
-            }
-            System.out.println();
-            System.out.println("out");
-            for(String x:live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
-                System.out.print(x);
-                System.out.print(" ");
-            }
-            System.out.println();
-
-        }
+//        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+//            System.out.println();
+//            System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//            System.out.println("in");
+//            for(String x:live_variable_block_in.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
+//                    System.out.print(x);
+//                    System.out.print(" ");
+//            }
+//            System.out.println();
+//            System.out.println("out");
+//            for(String x:live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
+//                System.out.print(x);
+//                System.out.print(" ");
+//            }
+//            System.out.println();
+//
+//        }
         for (Map.Entry<String, String> entry : valueMap.entrySet()) {
             System.out.print(entry.getKey());
             System.out.print(" ");
