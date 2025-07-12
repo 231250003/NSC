@@ -1,7 +1,7 @@
 ; ModuleID = 'my_module'
 source_filename = "my_module"
 
-define void @swap([6 x i32]* %arr, i32 %i, i32 %j) {
+define void @swap([2 x i32]* %arr, i32 %i, i32 %j) {
 swapEntry:
   %param1_addr = alloca i32, align 4
   store i32 %i, i32* %param1_addr, align 4
@@ -9,23 +9,23 @@ swapEntry:
   store i32 %j, i32* %param2_addr, align 4
   %temp = alloca i32, align 4
   %load_lval = load i32, i32* %param1_addr, align 4
-  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 %load_lval
+  %elemPtr = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 %load_lval
   %load_lval1 = load i32, i32* %elemPtr, align 4
   store i32 %load_lval1, i32* %temp, align 4
   %load_lval2 = load i32, i32* %param1_addr, align 4
-  %elemPtr3 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 %load_lval2
+  %elemPtr3 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 %load_lval2
   %load_lval4 = load i32, i32* %param2_addr, align 4
-  %elemPtr5 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 %load_lval4
+  %elemPtr5 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 %load_lval4
   %load_lval6 = load i32, i32* %elemPtr5, align 4
   store i32 %load_lval6, i32* %elemPtr3, align 4
   %load_lval7 = load i32, i32* %param2_addr, align 4
-  %elemPtr8 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 %load_lval7
+  %elemPtr8 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 %load_lval7
   %load_lval9 = load i32, i32* %temp, align 4
   store i32 %load_lval9, i32* %elemPtr8, align 4
   ret void
 }
 
-define i32 @partition([6 x i32]* %arr, i32 %low, i32 %high) {
+define i32 @partition([2 x i32]* %arr, i32 %low, i32 %high) {
 partitionEntry:
   %param1_addr = alloca i32, align 4
   store i32 %low, i32* %param1_addr, align 4
@@ -33,7 +33,7 @@ partitionEntry:
   store i32 %high, i32* %param2_addr, align 4
   %pivot = alloca i32, align 4
   %load_lval = load i32, i32* %param2_addr, align 4
-  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 %load_lval
+  %elemPtr = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 %load_lval
   %load_lval1 = load i32, i32* %elemPtr, align 4
   store i32 %load_lval1, i32* %pivot, align 4
   %i = alloca i32, align 4
@@ -46,18 +46,18 @@ partitionEntry:
   br label %for.cond
 
 cur:                                              ; preds = %for.cond
-  %elemPtr19 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %elemPtr19 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0
   %load_lval20 = load i32, i32* %i, align 4
   %add21 = add i32 %load_lval20, 1
   %load_lval22 = load i32, i32* %param2_addr, align 4
-  call void @swap([6 x i32]* %elemPtr19, i32 %add21, i32 %load_lval22)
+  call void @swap([2 x i32]* %elemPtr19, i32 %add21, i32 %load_lval22)
   %load_lval23 = load i32, i32* %i, align 4
   %add24 = add i32 %load_lval23, 1
   ret i32 %add24
 
 for.stmt:                                         ; preds = %for.cond
   %load_lval6 = load i32, i32* %j, align 4
-  %elemPtr7 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 %load_lval6
+  %elemPtr7 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0, i32 %load_lval6
   %load_lval8 = load i32, i32* %elemPtr7, align 4
   %load_lval9 = load i32, i32* %pivot, align 4
   %cmp10 = icmp sle i32 %load_lval8, %load_lval9
@@ -83,14 +83,14 @@ if.then:                                          ; preds = %for.stmt
   %load_lval13 = load i32, i32* %i, align 4
   %add = add i32 %load_lval13, 1
   store i32 %add, i32* %i, align 4
-  %elemPtr14 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %elemPtr14 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0
   %load_lval15 = load i32, i32* %i, align 4
   %load_lval16 = load i32, i32* %j, align 4
-  call void @swap([6 x i32]* %elemPtr14, i32 %load_lval15, i32 %load_lval16)
+  call void @swap([2 x i32]* %elemPtr14, i32 %load_lval15, i32 %load_lval16)
   br label %merge
 }
 
-define void @quickSort([6 x i32]* %arr, i32 %low, i32 %high) {
+define void @quickSort([2 x i32]* %arr, i32 %low, i32 %high) {
 quickSortEntry:
   %param1_addr = alloca i32, align 4
   store i32 %low, i32* %param1_addr, align 4
@@ -108,21 +108,21 @@ merge:                                            ; preds = %if.then, %quickSort
 
 if.then:                                          ; preds = %quickSortEntry
   %pi = alloca i32, align 4
-  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %elemPtr = getelementptr [2 x i32], [2 x i32]* %arr, i32 0
   %load_lval2 = load i32, i32* %param1_addr, align 4
   %load_lval3 = load i32, i32* %param2_addr, align 4
-  %partition = call i32 @partition([6 x i32]* %elemPtr, i32 %load_lval2, i32 %load_lval3)
+  %partition = call i32 @partition([2 x i32]* %elemPtr, i32 %load_lval2, i32 %load_lval3)
   store i32 %partition, i32* %pi, align 4
-  %elemPtr4 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %elemPtr4 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0
   %load_lval5 = load i32, i32* %param1_addr, align 4
   %load_lval6 = load i32, i32* %pi, align 4
   %sub = sub i32 %load_lval6, 1
-  call void @quickSort([6 x i32]* %elemPtr4, i32 %load_lval5, i32 %sub)
-  %elemPtr7 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  call void @quickSort([2 x i32]* %elemPtr4, i32 %load_lval5, i32 %sub)
+  %elemPtr7 = getelementptr [2 x i32], [2 x i32]* %arr, i32 0
   %load_lval8 = load i32, i32* %pi, align 4
   %add = add i32 %load_lval8, 1
   %load_lval9 = load i32, i32* %param2_addr, align 4
-  call void @quickSort([6 x i32]* %elemPtr7, i32 %add, i32 %load_lval9)
+  call void @quickSort([2 x i32]* %elemPtr7, i32 %add, i32 %load_lval9)
   br label %merge
 }
 
