@@ -266,25 +266,23 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         LLVMTypeRef type = LLVM.LLVMTypeOf(arg);
                         String name = LLVM.LLVMGetValueName(arg).getString();
                         int kind = LLVM.LLVMGetTypeKind(type);
-                        array_variable current_param_ref = null;
                         if (kind == LLVM.LLVMPointerTypeKind) {
+                            array_variable current_param_ref = null;
                             for (array_variable param : array_variable_ref) {
                                 if (param.variable_name.equals(name)) {
                                     current_param_ref = param;
                                     break;
                                 }
                             }
-                        }
-                        for (array_variable x : array_variable_ref) {
-                            System.out.println(x.variable_name);
-                            if(current_param_ref==null)System.out.println("nukadsa");
-                            if(current_param_ref.array_name==null||x.array_name==null) System.out.println("csxsaxas");
-                            if (!x.array_name.equals(current_param_ref.array_name)) continue;
-                            if (x.cur_offset.size() != x.array_size.size()) continue;
-                            boolean is_live_variable = false;
-                            is_live_variable = GraphColoringRegisterAllocator.naive_alias_may_analysis(current_param_ref, x);
-                            if (is_live_variable) {
-                                in_instr_live_set.add(x.variable_name);
+                            for (array_variable x : array_variable_ref) {
+                                System.out.println(x.variable_name);
+                                if (!x.array_name.equals(current_param_ref.array_name)) continue;
+                                if (x.cur_offset.size() != x.array_size.size()) continue;
+                                boolean is_live_variable = false;
+                                is_live_variable = GraphColoringRegisterAllocator.naive_alias_may_analysis(current_param_ref, x);
+                                if (is_live_variable) {
+                                    in_instr_live_set.add(x.variable_name);
+                                }
                             }
                         }
                     }
