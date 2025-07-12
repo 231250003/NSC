@@ -401,7 +401,7 @@ public class LLVMIRToRiscv {
                                 else {
                                     String reg = freshReg();
                                     asm.instr("lw", reg, String.format("%d(sp),", Integer.parseInt(value_stack_addr.get(LLVM.LLVMGetValueName(ptr).getString()))));
-                                    asm.instr("sw", reg, "0(" + reg + ")");
+                                    asm.instr("sw", valReg, "0(" + reg + ")");
                                 }
                             } else asm.instr("mv", addr, valReg);
                         } else {
