@@ -268,7 +268,6 @@ public class LLVMIRToRiscv {
                     //TODO calling function saving register passing parameter watch out the parameter could be array
                     else if (opcode == LLVMCall) {
                         LLVMValueRef calledFunction = LLVM.LLVMGetCalledValue(inst);
-                        ;
                         String callfuncName = LLVM.LLVMGetValueName(calledFunction).getString();
                         int argCount = LLVM.LLVMGetNumArgOperands(inst);
                         Set<String> live_var = new HashSet<>(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(inst));

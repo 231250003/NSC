@@ -259,6 +259,33 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 Set<String> in_instr_live_set = new HashSet<>(out_inst.get(instr));
                 in_instr_live_set.removeAll(def);
                 in_instr_live_set.addAll(used);
+                if(LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMCall){
+                    int argCount = LLVM.LLVMGetNumArgOperands(instr);
+                    for (int i = 0; i < argCount; i++) {
+                        LLVMValueRef arg = LLVM.LLVMGetOperand(instr, i);
+                        LLVMTypeRef type = LLVM.LLVMTypeOf(arg);
+                        String name = LLVM.LLVMGetValueName(arg).getString();
+                        int kind = LLVM.LLVMGetTypeKind(type);
+                        array_variable current_param_ref = null;
+                        if (kind == LLVM.LLVMPointerTypeKind) {
+                            for (array_variable param : array_variable_ref) {
+                                if (param.variable_name.equals(name)) {
+                                    current_param_ref = param;
+                                    break;
+                                }
+                            }
+                        }
+                        for (array_variable x : array_variable_ref) {
+                            if (!x.array_name.equals(current_param_ref.array_name)) continue;
+                            if (x.cur_offset.size() != x.array_size.size()) continue;
+                            boolean is_live_variable = false;
+                            is_live_variable = GraphColoringRegisterAllocator.naive_alias_may_analysis(current_param_ref, x);
+                            if (is_live_variable) {
+                                in_instr_live_set.add(x.variable_name);
+                            }
+                        }
+                    }
+                }
                 in_inst.put(instr, in_instr_live_set);
                 instr = LLVM.LLVMGetPreviousInstruction(instr);
                 if (instr != null) out_inst.put(instr, in_instr_live_set);
