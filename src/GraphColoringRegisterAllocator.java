@@ -77,7 +77,19 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     array_variable_ref.add(av);
                 }
                 String line3;
-                if (line.contains("=")) line3 = line.substring(line.indexOf("=") + 1);
+                if(LLVM.LLVMGetInstructionOpcode(inst)==LLVM.LLVMPHI){
+                    line3="";
+                    int numOperands = LLVM.LLVMGetNumOperands(inst);
+                    for (int i = 0; i < numOperands; i += 2) {
+                        LLVMValueRef value = LLVM.LLVMGetOperand(inst, i);
+                        if (LLVM.LLVMIsAConstant(value) == null) {
+                            String varName = LLVM.LLVMGetValueName(value).getString();
+                            System.out.println("Phi value: " + varName);
+                            line3=line3+"%"+varName+" ";
+                        }
+                    }
+                }
+                else if (line.contains("=")) line3 = line.substring(line.indexOf("=") + 1);
                 else if (line.contains("store") && line.contains("i32* %")) {
                     line3 = line.substring(0, line.indexOf(","));
                 } else line3 = line;
@@ -229,8 +241,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     }
                 }
             }
-            System.out.println("crzzzzz");
-
         }
     }
 
