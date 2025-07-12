@@ -67,10 +67,10 @@ public class LLVMIRToRiscv {
                 while(param_conflict_graph.get(param_conflict_graph.get(key2))!=null){
                     key2=param_conflict_graph.get(key2);
                 }
-                asm.instr("x"+param_conflict_graph.get(key2),"x"+key2);
+                asm.mv("x"+param_conflict_graph.get(key2),"x"+key2);
                 param_conflict_graph.remove(key2);
             }
-            asm.instr("x"+value,reg);
+            asm.mv("x"+value,reg);
         }
     }
     public void to_riscv() {
