@@ -16,4 +16,5 @@ public class array_variable {
         this.array_size=new ArrayList<>(array_size);
     }
     public array_variable(){}
+
 }
