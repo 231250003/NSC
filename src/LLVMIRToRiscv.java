@@ -246,7 +246,7 @@ public class LLVMIRToRiscv {
                         asm.instr("sw", "x1", String.format("%d(sp)", next_offset));
                         next_offset += 4;
                         for (int i = 0; i < argCount; i++) {
-                            LLVMValueRef arg = LLVM.LLVMGetOperand(inst, i + 1);
+                            LLVMValueRef arg = LLVM.LLVMGetOperand(inst, i );
                             LLVMTypeRef type = LLVM.LLVMTypeOf(arg);
                             String name = LLVM.LLVMGetValueName(arg).getString();
                             int kind = LLVM.LLVMGetTypeKind(type);
