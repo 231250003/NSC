@@ -79,6 +79,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 String line3;
                 if(LLVM.LLVMGetInstructionOpcode(inst)==LLVM.LLVMPHI){
                     line3="";
+                    System.out.println("crzzzz");
                     int numOperands = LLVM.LLVMGetNumOperands(inst);
                     for (int i = 0; i < numOperands; i += 2) {
                         LLVMValueRef value = LLVM.LLVMGetOperand(inst, i);
