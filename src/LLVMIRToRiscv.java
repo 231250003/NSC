@@ -527,6 +527,7 @@ public class LLVMIRToRiscv {
                                 asm.instr("ret");
                             }
                         }
+                        else asm.instr("ret");
                     } else if (opcode == LLVM.LLVMZExt) {
                         LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
                         String srcReg = evaluate(operand);
