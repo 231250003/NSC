@@ -1,12 +1,3 @@
-// 交换数组中的两个元素（不使用指针）
-void swap(int arr[6], int i, int j) {
-    int temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
-
-
-// 快速排序主函数
 void quickSort(int arr[6], int low, int high) {
         int temp = arr[low];
          arr[low] = arr[high];

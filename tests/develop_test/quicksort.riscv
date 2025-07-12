@@ -119,23 +119,69 @@ swap_swapEntry:
   ret
 quickSort:
   sw x10, 0(sp)
-  mv x8, x11
-  mv x9, x12
+  mv x9, x11
+  mv t1, x12
+  mv x11, t1
   j quickSort_quickSortEntry
 quickSort_quickSortEntry:
-  mv x8, x8
   mv x9, x9
-  lw t1, 0(sp)
-  addi t1, t1, 0
-  sw t1, 4(sp)
-  mv x11, x8
+  mv x12, x11
   mv x8, x9
-  sw x1, 8(sp)
-  lw x10, 4(sp)
+  li t2, 0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 4(sp)
+  lw x8, 4(sp),
+  lw x8, 0(x8)
+  mv x11, x8
   mv x11, x11
-  mv x12, x8
-  addi sp, sp, 12
-  jal x1, swap
-  addi sp, sp, -12
-  lw x1, 8(sp)
+  mv x9, x9
+  li t2, 0
+  li t1, 1
+  mul t1, x9, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 8(sp)
+  lw x13, 8(sp),
+  lw x13, 0(x13)
+  mv x9, x12
+  li t2, 0
+  li t1, 1
+  mul t1, x9, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 12(sp)
+  lw x14, 12(sp),
+  lw x14, 0(x14)
+  mv x9, x14
+  mv x13, x9
+  mv x9, x12
+  li t2, 0
+  li t1, 1
+  mul t1, x9, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 16(sp)
+  lw x12, 16(sp),
+  lw x12, 0(x12)
+  mv x9, x11
+  mv x12, x9
+  lw t1, 4(sp)
+  sw x8, 0(t1)
+  lw t2, 8(sp)
+  sw x13, 0(t2)
+  lw t0, 12(sp)
+  sw x14, 0(t0)
+  lw t1, 16(sp)
+  sw x12, 0(t1)
   ret
