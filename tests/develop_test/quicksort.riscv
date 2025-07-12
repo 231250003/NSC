@@ -207,16 +207,11 @@ b_merge:
   sw t2, 1600(sp)
   j b_for.cond
 b_if.then:
+  lw t0, 0(sp)
+  addi t0, t0, 0
+  sw t0, 12(sp)
   mv x11, x12
-  li t0, 1
-  add t1, x11, t0
-  mv x11, t1
-  mv x12, x11
-  lw t2, 0(sp)
-  addi t2, t2, 0
-  sw t2, 12(sp)
-  mv x13, x12
-  mv x11, x9
+  mv x13, x9
   sw x16, 16(sp)
   sw x14, 20(sp)
   sw x12, 24(sp)
@@ -225,9 +220,9 @@ b_if.then:
   sw x15, 36(sp)
   sw x1, 40(sp)
   lw x10, 12(sp)
-  mv x11, x13
-  mv t0, x11
-  mv x12, t0
+  mv x12, x13
+  mv t1, x11
+  mv x11, t1
   addi sp, sp, 44
   jal x1, swap
   addi sp, sp, -44
@@ -238,6 +233,6 @@ b_if.then:
   lw x9, 28(sp)
   lw x8, 32(sp)
   lw x15, 36(sp)
-  li t1, 5
-  sw t1, 1600(sp)
+  li t2, 5
+  sw t2, 1600(sp)
   j b_merge
