@@ -85,7 +85,6 @@ public class LLVMIRToRiscv {
             asm.label(funcName);
             if ("main".equals(funcName)) asm.instr("addi", "sp", "sp", "-" + 2044);
             allocator = new GraphColoringRegisterAllocator(func);
-            System.out.println("crzzzzz");
             next_offset = 0;
             int paramCount = LLVM.LLVMCountParams(func);
             for (int i = 8; i < paramCount; i++) {
