@@ -56,10 +56,8 @@ mainEntry:
   %n = alloca i32, align 4
   store i32 6, i32* %n, align 4
   %elemPtr6 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
-  %load_lval = load i32, i32* %n, align 4
-  %sub = sub i32 %load_lval, 1
-  call void @quickSort([6 x i32]* %elemPtr6, i32 1, i32 %sub)
+  call void @quickSort([6 x i32]* %elemPtr6, i32 1, i32 5)
   %elemPtr7 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 1
-  %load_lval8 = load i32, i32* %elemPtr7, align 4
-  ret i32 %load_lval8
+  %load_lval = load i32, i32* %elemPtr7, align 4
+  ret i32 %load_lval
 }
