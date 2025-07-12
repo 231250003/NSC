@@ -132,16 +132,11 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
 
     public static boolean naive_alias_may_analysis(array_variable dest, array_variable src) {
         if (!dest.array_name.equals(src.array_name)) return false;
-        for (int i = 0; i < Math.min(dest.cur_offset.size(), src.cur_offset.size()); i++) {
-            if ((!(dest.cur_offset.get(i) instanceof Integer)) || (!(src.cur_offset.get(i) instanceof Integer)))
-                return true;
-            else {
-                if (!dest.cur_offset.get(i).equals(src.cur_offset.get(i))) return false;
-            }
+        for (int i = 0; i < Math.min(dest.cur_offset.size(), src.cur_offset.size()); i++){
+            if (dest.cur_offset.get(i) instanceof Integer && src.cur_offset.get(i) instanceof Integer&&(!src.cur_offset.get(i).equals(dest.cur_offset.get(i)))) return false;
         }
         return true;
     }
-
     public void cal_in_out_block(LLVMValueRef func) {
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             live_variable_block_in.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());

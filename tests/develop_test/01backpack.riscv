@@ -407,7 +407,7 @@ main_if.then:
   sw x10, 376(sp)
   lw t0, 376(sp)
   lw t1, 336(sp),
-  sw t1, 0(t1)
+  sw t0, 0(t1)
   j main_merge
 main_if.else:
   sw x28, 380(sp)
@@ -451,7 +451,7 @@ main_if.else:
   sw t0, 408(sp)
   lw t1, 408(sp)
   lw t2, 392(sp),
-  sw t2, 0(t2)
+  sw t1, 0(t2)
   j main_merge
 max:
   mv x9, x10
