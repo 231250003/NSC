@@ -246,7 +246,7 @@ public class LLVMIRToRiscv {
                         asm.instr("sw", "x1", String.format("%d(sp)", next_offset));
                         next_offset += 4;
                         for (int i = 0; i < argCount; i++) {
-                            LLVMValueRef arg = LLVM.LLVMGetOperand(inst, i );
+                            LLVMValueRef arg = LLVM.LLVMGetOperand(inst, i);
                             LLVMTypeRef type = LLVM.LLVMTypeOf(arg);
                             String name = LLVM.LLVMGetValueName(arg).getString();
                             int kind = LLVM.LLVMGetTypeKind(type);
@@ -288,10 +288,8 @@ public class LLVMIRToRiscv {
                                         asm.instr("lw", "x1" + i, String.format("%d(sp)", start_arr_addr));
                                     }
                                 } else if (constInt != null && !constInt.isNull()) {
-                                    System.out.println(LLVM.LLVMConstIntGetSExtValue(constInt));
                                     asm.li("x1" + i, LLVM.LLVMConstIntGetSExtValue(constInt));
                                 } else {
-                                    System.out.println(name);
                                     if (allocator.allocate(name).contains("x"))
                                         asm.mv("x1" + i, allocator.allocate(name));
                                     else {
