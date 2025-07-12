@@ -163,11 +163,11 @@ mainEntry:
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %load_lval109 = load i32, i32* %n, align 4
-  %load_lval110 = load i32, i32* %m, align 4
-  %elemPtr111 = getelementptr [5 x [11 x i32]], [5 x [11 x i32]]* %f, i32 0, i32 %load_lval109, i32 %load_lval110
-  %load_lval112 = load i32, i32* %elemPtr111, align 4
-  ret i32 %load_lval112
+  %load_lval105 = load i32, i32* %n, align 4
+  %load_lval106 = load i32, i32* %m, align 4
+  %elemPtr107 = getelementptr [5 x [11 x i32]], [5 x [11 x i32]]* %f, i32 0, i32 %load_lval105, i32 %load_lval106
+  %load_lval108 = load i32, i32* %elemPtr107, align 4
+  ret i32 %load_lval108
 
 while.stmt:                                       ; preds = %while.cond
   %v = alloca i32, align 4
@@ -183,9 +183,9 @@ while.cond:                                       ; preds = %cur64, %mainEntry
   br i1 %to_bool, label %while.stmt, label %cur
 
 cur64:                                            ; preds = %while.cond66
-  %load_lval107 = load i32, i32* %i, align 4
-  %add108 = add i32 %load_lval107, 1
-  store i32 %add108, i32* %i, align 4
+  %load_lval103 = load i32, i32* %i, align 4
+  %add104 = add i32 %load_lval103, 1
+  store i32 %add104, i32* %i, align 4
   br label %while.cond
 
 while.stmt65:                                     ; preds = %while.cond66
@@ -207,9 +207,9 @@ while.cond66:                                     ; preds = %merge, %while.stmt
   br i1 %to_bool71, label %while.stmt65, label %cur64
 
 merge:                                            ; preds = %if.else, %if.then
-  %load_lval105 = load i32, i32* %v, align 4
-  %add106 = add i32 %load_lval105, 1
-  store i32 %add106, i32* %v, align 4
+  %load_lval101 = load i32, i32* %v, align 4
+  %add102 = add i32 %load_lval101, 1
+  store i32 %add102, i32* %v, align 4
   br label %while.cond66
 
 if.then:                                          ; preds = %while.stmt65
@@ -229,23 +229,18 @@ if.then:                                          ; preds = %while.stmt65
   %elemPtr90 = getelementptr [4 x i32], [4 x i32]* %c, i32 0, i32 %load_lval89
   %load_lval91 = load i32, i32* %elemPtr90, align 4
   %add92 = add i32 %load_lval88, %load_lval91
-  %load_lval93 = load i32, i32* %i, align 4
-  %load_lval94 = load i32, i32* %v, align 4
-  %elemPtr95 = getelementptr [5 x [11 x i32]], [5 x [11 x i32]]* %f, i32 0, i32 %load_lval93, i32 %load_lval94
-  %load_lval96 = load i32, i32* %elemPtr95, align 4
-  %max = call i32 @max(i32 %add92, i32 %load_lval96)
-  store i32 %max, i32* %elemPtr81, align 4
+  store i32 %add92, i32* %elemPtr81, align 4
   br label %merge
 
 if.else:                                          ; preds = %while.stmt65
+  %load_lval93 = load i32, i32* %i, align 4
+  %add94 = add i32 %load_lval93, 1
+  %load_lval95 = load i32, i32* %v, align 4
+  %elemPtr96 = getelementptr [5 x [11 x i32]], [5 x [11 x i32]]* %f, i32 0, i32 %add94, i32 %load_lval95
   %load_lval97 = load i32, i32* %i, align 4
-  %add98 = add i32 %load_lval97, 1
-  %load_lval99 = load i32, i32* %v, align 4
-  %elemPtr100 = getelementptr [5 x [11 x i32]], [5 x [11 x i32]]* %f, i32 0, i32 %add98, i32 %load_lval99
-  %load_lval101 = load i32, i32* %i, align 4
-  %load_lval102 = load i32, i32* %v, align 4
-  %elemPtr103 = getelementptr [5 x [11 x i32]], [5 x [11 x i32]]* %f, i32 0, i32 %load_lval101, i32 %load_lval102
-  %load_lval104 = load i32, i32* %elemPtr103, align 4
-  store i32 %load_lval104, i32* %elemPtr100, align 4
+  %load_lval98 = load i32, i32* %v, align 4
+  %elemPtr99 = getelementptr [5 x [11 x i32]], [5 x [11 x i32]]* %f, i32 0, i32 %load_lval97, i32 %load_lval98
+  %load_lval100 = load i32, i32* %elemPtr99, align 4
+  store i32 %load_lval100, i32* %elemPtr96, align 4
   br label %merge
 }
