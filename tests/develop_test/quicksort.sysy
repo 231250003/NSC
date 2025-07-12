@@ -14,7 +14,7 @@ void quickSort(int arr[6], int low, int high) {
            }
        }
        swap(arr, i + 1, high);
-       return i + 1;           // 返回基准的最终位置
+       //return i + 1;           // 返回基准的最终位置
 }
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
