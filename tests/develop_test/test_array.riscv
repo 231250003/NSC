@@ -1,0 +1,482 @@
+
+  .text
+  .globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  li t0, 2
+  sw t0, 0(sp)
+  li t1, 3
+  sw t1, 4(sp)
+  li t2, 4
+  sw t2, 8(sp)
+  li t0, 7
+  sw t0, 12(sp)
+  li t1, 1
+  sw t1, 16(sp)
+  li t2, 3
+  sw t2, 20(sp)
+  li t0, 5
+  sw t0, 24(sp)
+  li t1, 9
+  sw t1, 28(sp)
+  li t2, 0
+  sw t2, 32(sp)
+  li t0, 0
+  sw t0, 36(sp)
+  li t1, 0
+  sw t1, 40(sp)
+  li t2, 0
+  sw t2, 44(sp)
+  li t0, 0
+  sw t0, 48(sp)
+  li t1, 0
+  sw t1, 52(sp)
+  li t2, 0
+  sw t2, 56(sp)
+  li t0, 0
+  sw t0, 60(sp)
+  li t1, 0
+  sw t1, 64(sp)
+  li t2, 0
+  sw t2, 68(sp)
+  li t0, 0
+  sw t0, 72(sp)
+  li t1, 0
+  sw t1, 76(sp)
+  li t2, 0
+  sw t2, 80(sp)
+  li t0, 0
+  sw t0, 84(sp)
+  li t1, 0
+  sw t1, 88(sp)
+  li t2, 0
+  sw t2, 92(sp)
+  li t0, 0
+  sw t0, 96(sp)
+  li t1, 0
+  sw t1, 100(sp)
+  li t2, 0
+  sw t2, 104(sp)
+  li t0, 0
+  sw t0, 108(sp)
+  li t1, 0
+  sw t1, 112(sp)
+  li t2, 0
+  sw t2, 116(sp)
+  li t0, 0
+  sw t0, 120(sp)
+  li t1, 0
+  sw t1, 124(sp)
+  li t2, 0
+  sw t2, 128(sp)
+  li t0, 0
+  sw t0, 132(sp)
+  lw x15, 136(sp)
+  li t1, 0
+  mv x15, t1
+  lw x14, 140(sp)
+  li t2, 0
+  mv x14, t2
+  lw x17, 144(sp)
+  li t0, 0
+  mv x17, t0
+  lw x16, 148(sp)
+  li t1, 0
+  mv x16, t1
+  lw x12, 152(sp)
+  li t2, 0
+  mv x12, t2
+  lw x9, 156(sp)
+  li t0, 0
+  mv x9, t0
+  lw x22, 160(sp)
+  li t1, 0
+  mv x22, t1
+  lw x19, 164(sp)
+  li t2, 0
+  mv x19, t2
+  lw x18, 168(sp)
+  li t0, 0
+  mv x18, t0
+  lw x21, 172(sp)
+  li t1, 0
+  mv x21, t1
+  lw x20, 176(sp)
+  li t2, 0
+  mv x20, t2
+  li t0, 0
+  sw t0, 180(sp)
+  lw x24, 184(sp)
+  li t1, 0
+  mv x24, t1
+  li t2, 0
+  sw t2, 188(sp)
+  li t0, 0
+  sw t0, 192(sp)
+  lw x23, 196(sp)
+  li t1, 0
+  mv x23, t1
+  li t2, 0
+  sw t2, 200(sp)
+  li t0, 0
+  sw t0, 204(sp)
+  li t1, 0
+  sw t1, 208(sp)
+  li t2, 0
+  sw t2, 212(sp)
+  li t0, 0
+  sw t0, 216(sp)
+  li t1, 0
+  sw t1, 220(sp)
+  li t2, 0
+  sw t2, 224(sp)
+  li t0, 0
+  sw t0, 228(sp)
+  li t1, 0
+  sw t1, 232(sp)
+  li t2, 0
+  sw t2, 236(sp)
+  li t0, 0
+  sw t0, 240(sp)
+  li t1, 0
+  sw t1, 244(sp)
+  li t2, 0
+  sw t2, 248(sp)
+  li t0, 4
+  mv x26, t0
+  li t1, 10
+  mv x27, t1
+  li t2, 0
+  mv x28, t2
+  sw x15, 136(sp)
+  sw x14, 140(sp)
+  sw x17, 144(sp)
+  sw x16, 148(sp)
+  sw x12, 152(sp)
+  sw x9, 156(sp)
+  sw x22, 160(sp)
+  sw x19, 164(sp)
+  sw x18, 168(sp)
+  sw x21, 172(sp)
+  sw x20, 176(sp)
+  sw x24, 184(sp)
+  sw x23, 196(sp)
+  j main_while.cond
+main_cur:
+  mv x8, x26
+  mv x9, x27
+  li t2, 0
+  li t0, 11
+  mul t0, x8, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x9, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  li t0, 32
+  add t2, t2, t0
+  add t2, t2, sp
+  sw t2, 252(sp)
+  lw t0, 252(sp),
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+main_while.stmt:
+  li t1, 1
+  mv x25, t1
+  j main_while.cond66
+main_while.cond:
+  sw x28, 256(sp)
+  sw x26, 260(sp)
+  lw t2, 256(sp)
+  lw t0, 260(sp)
+  slt t1, t2, t0
+  sw t1, 264(sp)
+  lw t2, 264(sp)
+  mv t0, t2
+  sw t0, 268(sp)
+  lw t1, 268(sp)
+  li t2, 0
+  xor t0, t1, t2
+  snez t0, t0
+  sw t0, 272(sp)
+  lw t1, 272(sp)
+  bnez t1, main_while.stmt
+  j main_cur
+main_cur64:
+  sw x28, 276(sp)
+  lw t2, 276(sp)
+  li t0, 1
+  add t1, t2, t0
+  sw t1, 280(sp)
+  lw t2, 280(sp)
+  mv x28, t2
+  j main_while.cond
+main_while.stmt65:
+  mv x8, x25
+  mv x11, x28
+  li t2, 0
+  li t0, 1
+  mul t0, x11, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  li t1, 0
+  add t2, t2, t1
+  add t2, t2, sp
+  sw t2, 284(sp)
+  lw t2, 284(sp),
+  lw t2, 0(t2)
+  mv x11, t2
+  slt t0, x8, x11
+  seqz t0, t0
+  sw t0, 288(sp)
+  lw t1, 288(sp)
+  mv t2, t1
+  sw t2, 292(sp)
+  lw t0, 292(sp)
+  li t1, 0
+  xor t2, t0, t1
+  snez t2, t2
+  sw t2, 296(sp)
+  lw t0, 296(sp)
+  bnez t0, main_if.then
+  j main_if.else
+main_while.cond66:
+  sw x25, 300(sp)
+  sw x27, 304(sp)
+  lw t1, 300(sp)
+  lw t2, 304(sp)
+  sgt t0, t1, t2
+  seqz t0, t0
+  sw t0, 308(sp)
+  lw t1, 308(sp)
+  mv t2, t1
+  sw t2, 312(sp)
+  lw t0, 312(sp)
+  li t1, 0
+  xor t2, t0, t1
+  snez t2, t2
+  sw t2, 316(sp)
+  lw t0, 316(sp)
+  bnez t0, main_while.stmt65
+  j main_cur64
+main_merge:
+  sw x25, 320(sp)
+  lw t1, 320(sp)
+  li t2, 1
+  add t0, t1, t2
+  sw t0, 324(sp)
+  lw t1, 324(sp)
+  mv x25, t1
+  j main_while.cond66
+main_if.then:
+  sw x28, 328(sp)
+  lw t2, 328(sp)
+  li t0, 1
+  add t1, t2, t0
+  sw t1, 332(sp)
+  mv x8, x25
+  li t2, 0
+  lw t1, 332(sp)
+  li t0, 11
+  mul t0, t1, t0
+  add t2, t2, t0
+  li t0, 1
+  mul t0, x8, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  li t1, 32
+  add t2, t2, t1
+  add t2, t2, sp
+  sw t2, 336(sp)
+  mv x11, x28
+  mv x8, x25
+  mv x13, x28
+  li t2, 0
+  li t0, 1
+  mul t0, x13, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  li t1, 0
+  add t2, t2, t1
+  add t2, t2, sp
+  sw t2, 340(sp)
+  lw t2, 340(sp),
+  lw t2, 0(t2)
+  mv x13, t2
+  sub t0, x8, x13
+  sw t0, 344(sp)
+  li t2, 0
+  li t0, 11
+  mul t0, x11, t0
+  add t2, t2, t0
+  lw t0, 344(sp)
+  li t1, 1
+  mul t1, t0, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  li t1, 32
+  add t2, t2, t1
+  add t2, t2, sp
+  sw t2, 348(sp)
+  lw t2, 348(sp),
+  lw t2, 0(t2)
+  mv x11, t2
+  mv x8, x28
+  li t2, 0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  li t0, 16
+  add t2, t2, t0
+  add t2, t2, sp
+  sw t2, 352(sp)
+  lw t2, 352(sp),
+  lw t2, 0(t2)
+  sw t2, 356(sp)
+  lw t0, 356(sp)
+  add t1, x11, t0
+  mv x8, t1
+  sw x28, 360(sp)
+  sw x25, 364(sp)
+  li t2, 0
+  lw t1, 360(sp)
+  li t0, 11
+  mul t0, t1, t0
+  add t2, t2, t0
+  lw t1, 364(sp)
+  li t0, 1
+  mul t0, t1, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  li t0, 32
+  add t2, t2, t0
+  add t2, t2, sp
+  sw t2, 368(sp)
+  lw t1, 368(sp),
+  lw t1, 0(t1)
+  sw t1, 372(sp)
+  sw x24, 376(sp)
+  sw x23, 380(sp)
+  sw x28, 384(sp)
+  sw x22, 388(sp)
+  sw x21, 392(sp)
+  sw x27, 396(sp)
+  sw x20, 400(sp)
+  sw x19, 404(sp)
+  sw x26, 408(sp)
+  sw x18, 412(sp)
+  sw x17, 416(sp)
+  sw x16, 420(sp)
+  sw x15, 424(sp)
+  sw x14, 428(sp)
+  sw x25, 432(sp)
+  sw x12, 436(sp)
+  sw x9, 440(sp)
+  sw x1, 444(sp)
+  mv x10, x8
+  lw t2, 372(sp)
+  mv x11, t2
+  addi sp, sp, 448
+  jal x1, max
+  addi sp, sp, -448
+  lw x1, 444(sp)
+  lw x24, 376(sp)
+  lw x23, 380(sp)
+  lw x28, 384(sp)
+  lw x22, 388(sp)
+  lw x21, 392(sp)
+  lw x27, 396(sp)
+  lw x20, 400(sp)
+  lw x19, 404(sp)
+  lw x26, 408(sp)
+  lw x18, 412(sp)
+  lw x17, 416(sp)
+  lw x16, 420(sp)
+  lw x15, 424(sp)
+  lw x14, 428(sp)
+  lw x25, 432(sp)
+  lw x12, 436(sp)
+  lw x9, 440(sp)
+  sw x10, 376(sp)
+  lw t0, 376(sp)
+  lw t1, 336(sp),
+  sw t1, 0(t1)
+  j main_merge
+main_if.else:
+  sw x28, 380(sp)
+  lw t2, 380(sp)
+  li t0, 1
+  add t1, t2, t0
+  sw t1, 384(sp)
+  sw x25, 388(sp)
+  li t2, 0
+  lw t1, 384(sp)
+  li t0, 11
+  mul t0, t1, t0
+  add t2, t2, t0
+  lw t1, 388(sp)
+  li t0, 1
+  mul t0, t1, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  li t0, 32
+  add t2, t2, t0
+  add t2, t2, sp
+  sw t2, 392(sp)
+  sw x28, 396(sp)
+  sw x25, 400(sp)
+  li t2, 0
+  lw t0, 396(sp)
+  li t1, 11
+  mul t1, t0, t1
+  add t2, t2, t1
+  lw t0, 400(sp)
+  li t1, 1
+  mul t1, t0, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  li t1, 32
+  add t2, t2, t1
+  add t2, t2, sp
+  sw t2, 404(sp)
+  lw t0, 404(sp),
+  lw t0, 0(t0)
+  sw t0, 408(sp)
+  lw t1, 408(sp)
+  lw t2, 392(sp),
+  sw t2, 0(t2)
+  j main_merge
+max:
+  mv x9, x10
+  mv x8, x11
+  j max_maxEntry
+max_maxEntry:
+  mv x9, x9
+  mv x11, x8
+  mv x12, x9
+  mv x8, x11
+  sgt t0, x12, x8
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  bnez x8, max_if.then
+  j max_if.else
+max_if.then:
+  mv x8, x9
+  mv x10, x8
+  ret
+max_if.else:
+  mv x8, x11
+  mv x10, x8
+  ret

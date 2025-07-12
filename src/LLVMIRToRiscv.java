@@ -227,7 +227,7 @@ public class LLVMIRToRiscv {
                             }
                             asm.op2("slli", offset_reg, offset_reg, 2);
                             if (value_stack_addr.get(array_name).contains("(")) {
-                                System.out.println(array_name);
+                                //System.out.println(array_name);
                                 int start_arr_addr = Integer.parseInt(value_stack_addr.get(array_name).substring(0, value_stack_addr.get(array_name).indexOf("(")));
                                 String tmp_reg = freshReg(2);
                                 asm.li(tmp_reg, start_arr_addr);
