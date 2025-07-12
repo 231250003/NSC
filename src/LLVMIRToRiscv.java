@@ -139,6 +139,7 @@ public class LLVMIRToRiscv {
                 asm.label(funcName+"_"+label);
                 List<array_variable> array_variable_ref = new ArrayList<>();//在函数调用中参数涉及函数时会用到
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
+                    System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     if (opcode == LLVM.LLVMGetElementPtr) {//注意getelementptr的下标可能是变量
                         boolean has_variable_index = false;
