@@ -108,6 +108,7 @@ public class LLVMIRToRiscv {
                     throw new RuntimeException("Unsupported  param type");
                 }
             }
+            System.out.println("crzzzzz");
             Map<Integer,Integer> param_conflict_graph=new HashMap<>();
             for (int i = 0; i < Math.min(8,paramCount); i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
@@ -132,7 +133,6 @@ public class LLVMIRToRiscv {
                     throw new RuntimeException("Unsupported  param type");
                 }
             }
-            System.out.println("crzzzzz");
             pass_param(param_conflict_graph,asm);
             asm.j(funcName+"_"+funcName+"Entry");
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
