@@ -86,6 +86,14 @@ public class LLVMIRToRiscv {
             if ("main".equals(funcName)) asm.instr("addi", "sp", "sp", "-" + 2044);
             allocator = new GraphColoringRegisterAllocator(func);
             next_offset = 0;
+            Map<String,Integer> block_id_ref_for_phi=new HashMap<>();
+            int id=0;
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+                block_id_ref_for_phi.put(LLVM.LLVMGetBasicBlockName(bb).getString(),id);
+                id++;
+            }
+            value_stack_addr.put("id_for_phi",String.format("%d(sp)",next_offset));
+            next_offset+=4;
             int paramCount = LLVM.LLVMCountParams(func);
             for (int i = 8; i < paramCount; i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
@@ -138,6 +146,9 @@ public class LLVMIRToRiscv {
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(funcName+"_"+label);
                 List<array_variable> array_variable_ref = new ArrayList<>();//在函数调用中参数涉及函数时会用到
+                String reg_for_block_id=freshReg();
+                asm.li(reg_for_block_id,block_id_ref_for_phi.get(label));
+                asm.instr("sw",reg_for_block_id,value_stack_addr.get("id_for_phi"));
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     if (opcode == LLVM.LLVMGetElementPtr) {//注意getelementptr的下标可能是变量
@@ -608,7 +619,12 @@ public class LLVMIRToRiscv {
                             asm.bnez(condReg, funcName+"_"+trueLabel);
                             asm.j(funcName+"_"+falseLabel);
                         }
-                    } else {
+                    }
+                    else if(opcode==LLVM.LLVMPHI){
+                        String reg=freshReg();
+                        asm.instr("lw",reg,value_stack_addr.get("id_for_phi"));
+                    }
+                    else {
                         System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                         throw new RuntimeException("Unsupported instruction opcode: " + opcode);
                     }

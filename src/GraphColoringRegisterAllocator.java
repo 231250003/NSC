@@ -84,9 +84,22 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         LLVMValueRef value = LLVM.LLVMGetOperand(inst, i);
                         if (LLVM.LLVMIsAConstant(value) == null) {
                             String varName = LLVM.LLVMGetValueName(value).getString();
-                            //System.out.println("Phi value: " + varName);
                             line3=line3+"%"+varName+" ";
                         }
+                    }
+                    int incomingCount = LLVM.LLVMCountIncoming(inst);
+                    for (int i = 0; i < incomingCount; i++) {
+                        LLVMValueRef incomingValue = LLVM.LLVMGetIncomingValue(inst, i);
+                        LLVMBasicBlockRef incomingBlock = LLVM.LLVMGetIncomingBlock(inst, i);
+                        String valueStr;
+                        if (LLVM.LLVMIsAConstant(incomingValue) == null) {
+                            valueStr = "%" + LLVM.LLVMGetValueName(incomingValue).getString();
+                        } else {
+                            valueStr = LLVM.LLVMPrintValueToString(incomingValue).getString();
+                        }
+                        String blockName = LLVM.LLVMGetBasicBlockName(incomingBlock).getString();
+
+                        System.out.println("phi: value = " + valueStr + ", from block = " + blockName);
                     }
                 }
                 else if (line.contains("=")) line3 = line.substring(line.indexOf("=") + 1);
@@ -191,7 +204,19 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
             while (instr != null) {
                 String line = LLVM.LLVMPrintValueToString(instr).getString();
                 String line3;
-                if (line.contains("=")) line3 = line.substring(line.indexOf("=") + 1);
+                if(LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMPHI){
+                    line3="";
+                    int numOperands = LLVM.LLVMGetNumOperands(instr);
+                    for (int i = 0; i < numOperands; i += 1) {
+                        LLVMValueRef value = LLVM.LLVMGetOperand(instr, i);
+                        if (LLVM.LLVMIsAConstant(value) == null) {
+                            String varName = LLVM.LLVMGetValueName(value).getString();
+                            //System.out.println("Phi value: " + varName);
+                            line3=line3+"%"+varName+" ";
+                        }
+                    }
+                }
+                else if (line.contains("=")) line3 = line.substring(line.indexOf("=") + 1);
                 else if (line.contains("store") && line.contains("i32* %")) {
                     line3 = line.substring(0, line.indexOf(","));
                 } else if (line.contains("br") && line.contains("label")) {
