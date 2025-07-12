@@ -30,8 +30,8 @@ void quickSort(int arr[6], int low, int high) {
         int pi = partition(arr, low, high);
 
         // 递归排序分区
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+        //quickSort(arr, low, pi - 1);
+        //quickSort(arr, pi + 1, high);
     }
 }
 
