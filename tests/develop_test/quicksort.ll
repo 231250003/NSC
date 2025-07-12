@@ -44,11 +44,6 @@ quickSortEntry:
   br label %for.cond
 
 cur:                                              ; preds = %for.cond
-  %elemPtr18 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
-  %load_lval19 = load i32, i32* %i, align 4
-  %add20 = add i32 %load_lval19, 1
-  %load_lval21 = load i32, i32* %param2_addr, align 4
-  call void @swap([6 x i32]* %elemPtr18, i32 %add20, i32 %load_lval21)
   ret void
 
 for.stmt:                                         ; preds = %for.cond
