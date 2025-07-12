@@ -17,7 +17,7 @@ int partition(int arr[6], int low, int high) {
     return i + 1;           // 返回基准的最终位置
 }
 void quickSort(int arr[6], int low, int high) {
-   partition(arr, low, high);
+   int x=partition(arr, low, high);
 }
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
