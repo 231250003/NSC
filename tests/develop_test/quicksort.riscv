@@ -31,8 +31,8 @@ main_mainEntry:
   sw x14, 16(sp)
   sw x15, 20(sp)
   addi x10, sp, 0
-  li x11, 1
   li x12, 5
+  li x11, 1
   addi sp, sp, 28
   jal x1, swap
   addi sp, sp, -28
