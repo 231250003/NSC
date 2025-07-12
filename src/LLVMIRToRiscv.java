@@ -92,8 +92,6 @@ public class LLVMIRToRiscv {
                 block_id_ref_for_phi.put(LLVM.LLVMGetBasicBlockName(bb).getString(),id);
                 id++;
             }
-            value_stack_addr.put("id_for_phi",String.format("%d(sp)",next_offset));
-            next_offset+=4;
             int paramCount = LLVM.LLVMCountParams(func);
             for (int i = 8; i < paramCount; i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
@@ -146,9 +144,6 @@ public class LLVMIRToRiscv {
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
                 asm.label(funcName+"_"+label);
                 List<array_variable> array_variable_ref = new ArrayList<>();//在函数调用中参数涉及函数时会用到
-                String reg_for_block_id=freshReg();
-                asm.li(reg_for_block_id,block_id_ref_for_phi.get(label));
-                asm.instr("sw",reg_for_block_id,value_stack_addr.get("id_for_phi"));
                 for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
                     int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                     if (opcode == LLVM.LLVMGetElementPtr) {//注意getelementptr的下标可能是变量
@@ -593,6 +588,9 @@ public class LLVMIRToRiscv {
                                     }
                                 }
                             }
+                            String reg=freshReg();
+                            asm.li(reg,block_id_ref_for_phi.get(LLVM.LLVMGetBasicBlockName(bb).getString()));
+                            asm.instr("sw",reg,"1988(sp)");
                             asm.j(funcName+"_"+loop_label);
                         } else if (numOperands == 3) {
                             //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
@@ -616,13 +614,39 @@ public class LLVMIRToRiscv {
                                     }
                                 }
                             }
+                            String reg=freshReg();
+                            asm.li(reg,block_id_ref_for_phi.get(LLVM.LLVMGetBasicBlockName(bb).getString()));
+                            asm.instr("sw",reg,"1988(sp)");
                             asm.bnez(condReg, funcName+"_"+trueLabel);
                             asm.j(funcName+"_"+falseLabel);
                         }
                     }
                     else if(opcode==LLVM.LLVMPHI){
-                        String reg=freshReg();
-                        asm.instr("lw",reg,value_stack_addr.get("id_for_phi"));
+                        String lval=LLVM.LLVMGetValueName(inst).getString();
+                        if (allocator.allocate(lval).isEmpty()) continue;
+                        LLVMValueRef v0 = LLVM.LLVMGetIncomingValue(inst, 0);
+                        LLVMBasicBlockRef b0 = LLVM.LLVMGetIncomingBlock(inst, 0);
+                        LLVMValueRef v1 = LLVM.LLVMGetIncomingValue(inst, 1);
+                        LLVMBasicBlockRef b1 = LLVM.LLVMGetIncomingBlock(inst, 1);
+
+                        String name0 = LLVM.LLVMGetBasicBlockName(b0).getString();
+                        String name1 = LLVM.LLVMGetBasicBlockName(b1).getString();
+                        int id0 = block_id_ref_for_phi.get(name0);
+                        int id1 = block_id_ref_for_phi.get(name1);
+                        String v0_reg=evaluate(v0,1);
+                        asm.instr("lw","t1","1988(sp)");
+                        asm.op2("xori","t2","t1",id0);
+                        asm.seqz("t2","t2");
+                        asm.op2("mul","t2","t2",v0_reg);
+                        String v1_reg=evaluate(v1,1);
+                        asm.op2("xori","t1","t1",id1);
+                        asm.seqz("t1","t1");
+                        asm.op2("mul","t1","t1",v1_reg);
+                        asm.op2("add","t2","t2","t1");
+                        if(allocator.allocate(lval).contains("x")) asm.mv(allocator.allocate(LLVM.LLVMGetValueName(inst).getString()),"t2");
+                        else{
+                            asm.instr("sw","t2",value_stack_addr.get(lval));
+                        }
                     }
                     else {
                         System.out.println(LLVM.LLVMPrintValueToString(inst).getString());

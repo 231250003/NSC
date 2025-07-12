@@ -87,20 +87,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                             line3=line3+"%"+varName+" ";
                         }
                     }
-                    int incomingCount = LLVM.LLVMCountIncoming(inst);
-                    for (int i = 0; i < incomingCount; i++) {
-                        LLVMValueRef incomingValue = LLVM.LLVMGetIncomingValue(inst, i);
-                        LLVMBasicBlockRef incomingBlock = LLVM.LLVMGetIncomingBlock(inst, i);
-                        String valueStr;
-                        if (LLVM.LLVMIsAConstant(incomingValue) == null) {
-                            valueStr = "%" + LLVM.LLVMGetValueName(incomingValue).getString();
-                        } else {
-                            valueStr = LLVM.LLVMPrintValueToString(incomingValue).getString();
-                        }
-                        String blockName = LLVM.LLVMGetBasicBlockName(incomingBlock).getString();
-
-                        System.out.println("phi: value = " + valueStr + ", from block = " + blockName);
-                    }
                 }
                 else if (line.contains("=")) line3 = line.substring(line.indexOf("=") + 1);
                 else if (line.contains("store") && line.contains("i32* %")) {
