@@ -15,7 +15,7 @@ int main(){
         while(v<=m)
         {
             if(v>=w[i]) {
-                f[i+1][v] = max(f[i][v-w[i]]+c[i], f[i][v]);  // 使用i+1存储结果
+                f[i+1][v] = f[i][v-w[i]]+c[i];  // 使用i+1存储结果
             }
             else {
                 f[i+1][v] = f[i][v];
