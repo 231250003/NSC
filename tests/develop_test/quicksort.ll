@@ -25,8 +25,8 @@ swapEntry:
   ret void
 }
 
-define i32 @partition([6 x i32]* %arr, i32 %low, i32 %high) {
-partitionEntry:
+define void @quickSort([6 x i32]* %arr, i32 %low, i32 %high) {
+quickSortEntry:
   %param1_addr = alloca i32, align 4
   store i32 %low, i32* %param1_addr, align 4
   %param2_addr = alloca i32, align 4
@@ -51,9 +51,7 @@ cur:                                              ; preds = %for.cond
   %add21 = add i32 %load_lval20, 1
   %load_lval22 = load i32, i32* %param2_addr, align 4
   call void @swap([6 x i32]* %elemPtr19, i32 %add21, i32 %load_lval22)
-  %load_lval23 = load i32, i32* %i, align 4
-  %add24 = add i32 %load_lval23, 1
-  ret i32 %add24
+  ret void
 
 for.stmt:                                         ; preds = %for.cond
   %load_lval6 = load i32, i32* %j, align 4
@@ -65,7 +63,7 @@ for.stmt:                                         ; preds = %for.cond
   %to_bool12 = icmp ne i32 %zext_to_i3211, 0
   br i1 %to_bool12, label %if.then, label %merge
 
-for.cond:                                         ; preds = %merge, %partitionEntry
+for.cond:                                         ; preds = %merge, %quickSortEntry
   %load_lval4 = load i32, i32* %j, align 4
   %load_lval5 = load i32, i32* %param2_addr, align 4
   %cmp = icmp slt i32 %load_lval4, %load_lval5
@@ -87,32 +85,6 @@ if.then:                                          ; preds = %for.stmt
   %load_lval15 = load i32, i32* %i, align 4
   %load_lval16 = load i32, i32* %j, align 4
   call void @swap([6 x i32]* %elemPtr14, i32 %load_lval15, i32 %load_lval16)
-  br label %merge
-}
-
-define void @quickSort([6 x i32]* %arr, i32 %low, i32 %high) {
-quickSortEntry:
-  %param1_addr = alloca i32, align 4
-  store i32 %low, i32* %param1_addr, align 4
-  %param2_addr = alloca i32, align 4
-  store i32 %high, i32* %param2_addr, align 4
-  %load_lval = load i32, i32* %param1_addr, align 4
-  %load_lval1 = load i32, i32* %param2_addr, align 4
-  %cmp = icmp slt i32 %load_lval, %load_lval1
-  %zext_to_i32 = zext i1 %cmp to i32
-  %to_bool = icmp ne i32 %zext_to_i32, 0
-  br i1 %to_bool, label %if.then, label %merge
-
-merge:                                            ; preds = %if.then, %quickSortEntry
-  ret void
-
-if.then:                                          ; preds = %quickSortEntry
-  %pi = alloca i32, align 4
-  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
-  %load_lval2 = load i32, i32* %param1_addr, align 4
-  %load_lval3 = load i32, i32* %param2_addr, align 4
-  %partition = call i32 @partition([6 x i32]* %elemPtr, i32 %load_lval2, i32 %load_lval3)
-  store i32 %partition, i32* %pi, align 4
   br label %merge
 }
 

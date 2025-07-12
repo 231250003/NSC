@@ -117,13 +117,13 @@ swap_swapEntry:
   lw t0, 16(sp)
   sw x9, 0(t0)
   ret
-partition:
+quickSort:
   sw x10, 0(sp)
   mv x9, x11
   mv t1, x12
   mv x11, t1
-  j partition_partitionEntry
-partition_partitionEntry:
+  j quickSort_quickSortEntry
+quickSort_quickSortEntry:
   mv x9, x9
   mv x16, x11
   mv x8, x16
@@ -138,7 +138,7 @@ partition_partitionEntry:
   lw x8, 4(sp),
   lw x8, 0(x8)
   mv x11, x8
-  mv x15, x11
+  mv x14, x11
   mv x11, x9
   li t1, 1
   sub t2, x11, t1
@@ -150,8 +150,8 @@ partition_partitionEntry:
   sw x8, 0(t0)
   li t1, 0
   sw t1, 1600(sp)
-  j partition_for.cond
-partition_cur:
+  j quickSort_for.cond
+quickSort_cur:
   lw t2, 0(sp)
   addi t2, t2, 0
   sw t2, 8(sp)
@@ -160,28 +160,21 @@ partition_cur:
   add t1, x9, t0
   mv x11, t1
   mv x9, x16
-  sw x12, 12(sp)
-  sw x8, 16(sp)
-  sw x14, 20(sp)
-  sw x1, 24(sp)
+  sw x8, 12(sp)
+  sw x15, 16(sp)
+  sw x1, 20(sp)
   lw x10, 8(sp)
   mv x12, x9
   mv t2, x11
   mv x11, t2
-  addi sp, sp, 28
+  addi sp, sp, 24
   jal x1, swap
-  addi sp, sp, -28
-  lw x1, 24(sp)
-  lw x12, 12(sp)
-  lw x8, 16(sp)
-  lw x14, 20(sp)
-  mv x9, x12
-  li t0, 1
-  add t1, x9, t0
-  mv x9, t1
-  mv x10, x9
+  addi sp, sp, -24
+  lw x1, 20(sp)
+  lw x8, 12(sp)
+  lw x15, 16(sp)
   ret
-partition_for.stmt:
+quickSort_for.stmt:
   mv x11, x9
   li t2, 0
   li t1, 1
@@ -191,11 +184,27 @@ partition_for.stmt:
   lw t0, 0(sp)
   add t2, t2, t0
   sw t2, 12(sp)
-  lw x14, 20(sp)
-  mv x13, x14
-  mv x11, x15
-  sgt t1, x13, x11
-  seqz t1, t1
+  lw x15, 16(sp)
+  mv x13, x15
+  mv x11, x14
+  sgt t2, x13, x11
+  seqz t2, t2
+  mv x11, t2
+  mv t0, x11
+  mv x11, t0
+  li t1, 0
+  xor t2, x11, t1
+  snez t2, t2
+  mv x11, t2
+  sw x15, 16(sp)
+  li t0, 2
+  sw t0, 1600(sp)
+  bnez x11, quickSort_if.then
+  j quickSort_merge
+quickSort_for.cond:
+  mv x13, x9
+  mv x11, x16
+  slt t1, x13, x11
   mv x11, t1
   mv t2, x11
   mv x11, t2
@@ -203,111 +212,51 @@ partition_for.stmt:
   xor t1, x11, t0
   snez t1, t1
   mv x11, t1
-  sw x14, 20(sp)
-  li t2, 2
+  li t2, 3
   sw t2, 1600(sp)
-  bnez x11, partition_if.then
-  j partition_merge
-partition_for.cond:
-  mv x13, x9
-  mv x11, x16
-  slt t0, x13, x11
-  mv x11, t0
-  mv t1, x11
-  mv x11, t1
-  li t2, 0
-  xor t0, x11, t2
-  snez t0, t0
-  mv x11, t0
-  li t1, 3
-  sw t1, 1600(sp)
-  bnez x11, partition_for.stmt
-  j partition_cur
-partition_merge:
+  bnez x11, quickSort_for.stmt
+  j quickSort_cur
+quickSort_merge:
   mv x9, x9
-  li t2, 1
-  add t0, x9, t2
-  mv x9, t0
+  li t0, 1
+  add t1, x9, t0
+  mv x9, t1
   mv x9, x9
-  li t1, 4
-  sw t1, 1600(sp)
-  j partition_for.cond
-partition_if.then:
+  li t2, 4
+  sw t2, 1600(sp)
+  j quickSort_for.cond
+quickSort_if.then:
   mv x11, x12
-  li t2, 1
-  add t0, x11, t2
-  mv x11, t0
+  li t0, 1
+  add t1, x11, t0
+  mv x11, t1
   mv x12, x11
-  lw t1, 0(sp)
-  addi t1, t1, 0
-  sw t1, 16(sp)
+  lw t2, 0(sp)
+  addi t2, t2, 0
+  sw t2, 16(sp)
   mv x13, x12
   mv x11, x9
   sw x16, 20(sp)
-  sw x15, 24(sp)
+  sw x14, 24(sp)
   sw x12, 28(sp)
   sw x9, 32(sp)
   sw x8, 36(sp)
-  sw x14, 40(sp)
+  sw x15, 40(sp)
   sw x1, 44(sp)
   lw x10, 16(sp)
   mv x11, x13
-  mv t2, x11
-  mv x12, t2
+  mv t0, x11
+  mv x12, t0
   addi sp, sp, 48
   jal x1, swap
   addi sp, sp, -48
   lw x1, 44(sp)
   lw x16, 20(sp)
-  lw x15, 24(sp)
+  lw x14, 24(sp)
   lw x12, 28(sp)
   lw x9, 32(sp)
   lw x8, 36(sp)
-  lw x14, 40(sp)
-  li t0, 5
-  sw t0, 1600(sp)
-  j partition_merge
-quickSort:
-  sw x10, 0(sp)
-  mv x8, x11
-  mv x9, x12
-  j quickSort_quickSortEntry
-quickSort_quickSortEntry:
-  mv x8, x8
-  mv x11, x9
-  mv x12, x8
-  mv x9, x11
-  slt t1, x12, x9
-  mv x9, t1
-  mv t2, x9
-  mv x9, t2
-  li t0, 0
-  xor t1, x9, t0
-  snez t1, t1
-  mv x9, t1
-  li t2, 0
-  sw t2, 1600(sp)
-  bnez x9, quickSort_if.then
-  j quickSort_merge
-quickSort_merge:
-  ret
-quickSort_if.then:
-  lw t0, 0(sp)
-  addi t0, t0, 0
-  sw t0, 4(sp)
-  mv x9, x8
-  mv x8, x11
-  sw x8, 8(sp)
-  sw x1, 12(sp)
-  lw x10, 4(sp)
-  mv x11, x9
-  mv x12, x8
-  addi sp, sp, 16
-  jal x1, partition
-  addi sp, sp, -16
-  lw x1, 12(sp)
-  lw x8, 8(sp)
-  mv x8, x10
-  li t1, 2
+  lw x15, 40(sp)
+  li t1, 5
   sw t1, 1600(sp)
   j quickSort_merge
