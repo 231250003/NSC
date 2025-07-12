@@ -96,10 +96,6 @@ quickSortEntry:
   store i32 %low, i32* %param1_addr, align 4
   %param2_addr = alloca i32, align 4
   store i32 %high, i32* %param2_addr, align 4
-  %elemPtr = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
-  %load_lval = load i32, i32* %param1_addr, align 4
-  %load_lval1 = load i32, i32* %param2_addr, align 4
-  %partition = call i32 @partition([6 x i32]* %elemPtr, i32 %load_lval, i32 %load_lval1)
   ret void
 }
 
