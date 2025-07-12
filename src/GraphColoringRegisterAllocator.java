@@ -280,7 +280,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                                 boolean is_live_variable = false;
                                 is_live_variable = naive_alias_may_analysis(current_param_ref, x);
                                 if (is_live_variable) {
-                                    System.out.println("cds");
                                     in_instr_live_set.add(x.variable_name);
                                 }
                             }
