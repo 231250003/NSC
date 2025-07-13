@@ -1,0 +1,36 @@
+
+  .text
+  .globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  li t0, 0
+  mv x11, t0
+  li t1, 0
+  mv x9, t1
+  li t2, 0
+  mv x8, t2
+  mv x8, x11
+  li t0, 2
+  add t1, x8, t0
+  mv x8, t1
+  mv x9, x8
+  mv x8, x9
+  mv x9, x9
+  mul t2, x8, x9
+  mv x8, t2
+  mv x8, x8
+  mv x8, x8
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x9, x8
+  mv x8, x9
+  mv x9, x11
+  mul t2, x8, x9
+  mv x8, t2
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
