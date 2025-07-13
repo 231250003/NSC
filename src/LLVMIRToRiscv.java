@@ -74,6 +74,7 @@ public class LLVMIRToRiscv {
                     asm.mv("x"+entry.getValue(),"x"+entry.getKey());
                     param_conflict_graph.get(entry.getKey()).remove(entry.getValue());
                 }
+                System.out.println("end");
             }
             else{
                 Map<Integer,Integer> tmp_graph=new HashMap<>();
@@ -110,7 +111,6 @@ public class LLVMIRToRiscv {
             for(Integer x:can_remove){
                 param_conflict_graph.remove(x);
             }
-            System.out.println("end");
         }
     }
 
