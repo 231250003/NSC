@@ -276,6 +276,10 @@ public class LLVMIRToRiscv {
                                     asm.op2("add", offset_reg, offset_reg, reg1);
                                 }
                             }
+                            if(variable_name.equals("elemPtr7")&&funcName.equals("b")) {
+                                System.out.println("safdsadfs");
+                                System.out.println( value_stack_addr.get(variable_name));
+                            }
                             asm.op2("slli", offset_reg, offset_reg, 2);
                             if (value_stack_addr.get(array_name).contains("(")) {
                                 //System.out.println(array_name);
@@ -295,10 +299,6 @@ public class LLVMIRToRiscv {
                                 asm.instr("sw", offset_reg, String.format("%d(sp)", next_offset));
                                 value_stack_addr.putIfAbsent(variable_name, String.valueOf(next_offset));
                                 next_offset += 4;
-                            }
-                            if(variable_name.equals("elemPtr7")&&funcName.equals("b")) {
-                                System.out.println("safdsadfs");
-                                System.out.println( value_stack_addr.get(variable_name));
                             }
                         }
                         if (allocator.allocate(LLVM.LLVMGetValueName(inst).getString()).contains("x")) {
