@@ -356,7 +356,9 @@ public class LLVMIRToRiscv {
                                 next_offset += 4;
                             }
                         }
+                        System.out.println("start");
                         pass_param(calling_pass_param,asm);
+                        System.out.println("end");
                         for (Map.Entry<String, Integer> entry : const_param_reg.entrySet()) {
                             asm.li(entry.getKey(),entry.getValue());
                         }
