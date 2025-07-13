@@ -15,7 +15,8 @@ public class LLVMIRToRiscv {
     RegisterAllocator allocator;
     int next_offset = 0;
     Map<String, String> value_stack_addr = new HashMap<>();
-    int phi_val_storage=1600;
+    int phi_val_storage = 1600;
+
     public LLVMIRToRiscv(LLVMModuleRef moduleRef, String file_path) {
         this.module = moduleRef;
         this.file_path = file_path;
@@ -53,25 +54,61 @@ public class LLVMIRToRiscv {
         newOrder.addAll(functions);
         return newOrder;
     }
-    public void pass_param(Map<Integer, Integer> param_conflict_graph, AsmBuilder asm) {
-        if (param_conflict_graph.isEmpty()) return;
-        else {
-            String reg = freshReg();
-            List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(param_conflict_graph.entrySet());
-            Integer key = entries.get(0).getKey();
-            Integer value = entries.get(0).getValue();
-            asm.mv(reg, "x" + key);
-            param_conflict_graph.remove(key);
-            while (!param_conflict_graph.isEmpty()) {
-                List<Map.Entry<Integer, Integer>> entry2 = new ArrayList<>(param_conflict_graph.entrySet());
-                Integer key2 = entry2.get(0).getKey();
-                while (param_conflict_graph.get(param_conflict_graph.get(key2)) != null) {
-                    key2 = param_conflict_graph.get(key2);
+
+    public void pass_param(Map<Integer, Set<Integer>> param_conflict_graph, AsmBuilder asm) {
+        if(param_conflict_graph.isEmpty()) return;
+        for (Map.Entry<Integer, Set<Integer>> entry : param_conflict_graph.entrySet()) {
+            param_conflict_graph.get(entry.getKey()).remove(entry.getKey());
+
+        }
+        while(!param_conflict_graph.isEmpty()){
+            Map<Integer,Integer> zero_outdegree_edge=new HashMap<>();
+            for (Map.Entry<Integer, Set<Integer>> entry : param_conflict_graph.entrySet()) {
+                for(Integer x:entry.getValue()){
+                    if((!param_conflict_graph.containsKey(x))||param_conflict_graph.get(x).isEmpty()) zero_outdegree_edge.put(entry.getKey(),x);
                 }
-                asm.mv("x" + param_conflict_graph.get(key2), "x" + key2);
-                param_conflict_graph.remove(key2);
             }
-            asm.mv("x" + value, reg);
+            if(!zero_outdegree_edge.isEmpty()){
+                for (Map.Entry<Integer, Integer> entry : zero_outdegree_edge.entrySet()){
+                    asm.mv("x"+entry.getValue(),"x"+entry.getKey());
+                    param_conflict_graph.get(entry.getKey()).remove(entry.getValue());
+                }
+            }
+            else{
+                Map<Integer,Integer> tmp_graph=new HashMap<>();
+                Stack<Integer> reg_saving_sequence=new Stack<>();
+                for (Map.Entry<Integer, Set<Integer>> entry : param_conflict_graph.entrySet()) {
+                    if(entry.getValue().size()!=1) System.out.println("wrong in reg saving breakpoint 1");
+                    for(Integer y:entry.getValue()){
+                        tmp_graph.put(entry.getKey(),y);
+                    }
+                }
+                String reg = freshReg();
+                List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(tmp_graph.entrySet());
+                Integer start_key = entries.get(0).getKey();
+                reg_saving_sequence.push(start_key);
+                Integer value=start_key;
+                while(reg_saving_sequence.search(tmp_graph.get(value))==-1){
+                    reg_saving_sequence.push(tmp_graph.get(value));
+                    value=tmp_graph.get(value);
+                }
+                if(!Objects.equals(tmp_graph.get(value), start_key)) System.out.println("wrong in reg saving breakpoint 2");
+                asm.mv(reg, "x" + value);
+                while(reg_saving_sequence.size()>1){
+                    int x=reg_saving_sequence.pop();
+                    int y=reg_saving_sequence.pop();
+                    asm.mv("x"+x,"x"+y);
+                    reg_saving_sequence.push(y);
+                }
+                asm.mv("x" + start_key, reg);
+            }
+            Set<Integer> can_remove=new HashSet<>();
+            for (Map.Entry<Integer, Set<Integer>> entry : param_conflict_graph.entrySet()){
+                if(entry.getValue().isEmpty()) can_remove.add(entry.getKey());
+            }
+            for(Integer x:can_remove){
+                param_conflict_graph.remove(x);
+            }
         }
     }
 
@@ -116,7 +153,7 @@ public class LLVMIRToRiscv {
                     throw new RuntimeException("Unsupported  param type");
                 }
             }
-            Map<Integer, Integer> param_conflict_graph = new HashMap<>();
+            Map<Integer, Set<Integer>> param_conflict_graph = new HashMap<>();
             for (int i = 0; i < Math.min(8, paramCount); i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
                 String paramName = LLVM.LLVMGetValueName(param).getString();
@@ -125,8 +162,10 @@ public class LLVMIRToRiscv {
                 if (LLVM.LLVMGetTypeKind(paramType) == LLVMIntegerTypeKind) {
                     if (allocator.allocate(paramName).contains("x")) {
                         int dest_reg_num = Integer.parseInt(allocator.allocate(paramName).substring(allocator.allocate(paramName).indexOf("x") + 1));
-                        if (dest_reg_num >= 10 && dest_reg_num < 10 + Math.min(8, paramCount))
-                            param_conflict_graph.put(i + 10, dest_reg_num);
+                        if (dest_reg_num >= 10 && dest_reg_num < 10 + Math.min(8, paramCount)) {
+                            param_conflict_graph.putIfAbsent(i + 10, new HashSet<>());
+                            param_conflict_graph.get(i + 10).add(dest_reg_num);
+                        }
                         else asm.mv(allocator.allocate(paramName), "x1" + i);
                     } else if (!allocator.allocate(paramName).contains("x")) {
                         asm.instr("sw", "x1" + i, String.format("%d(sp)", next_offset));
@@ -280,9 +319,9 @@ public class LLVMIRToRiscv {
                         }
                         asm.instr("sw", "x1", String.format("%d(sp)", next_offset));
                         next_offset += 4;
-                        Map<String,Integer> const_param_reg=new HashMap<>();
-                        Map<Integer,Integer> calling_pass_param=new HashMap<>();
-                        Map<String,LLVMValueRef> variable_reg=new HashMap<>();
+                        Map<String, Integer> const_param_reg = new HashMap<>();
+                        Map<Integer, Set<Integer>> calling_pass_param = new HashMap<>();
+                        Map<String, LLVMValueRef> variable_reg = new HashMap<>();
                         for (int i = 0; i < argCount; i++) {
                             LLVMValueRef arg = LLVM.LLVMGetOperand(inst, i);
                             LLVMTypeRef type = LLVM.LLVMTypeOf(arg);
@@ -327,18 +366,18 @@ public class LLVMIRToRiscv {
                                     }
                                 } else if (constInt != null && !constInt.isNull()) {
                                     //asm.li("x1" + i, LLVM.LLVMConstIntGetSExtValue(constInt));
-                                    const_param_reg.put("x1"+i,((int)LLVM.LLVMConstIntGetSExtValue(constInt)));
+                                    const_param_reg.put("x1" + i, ((int) LLVM.LLVMConstIntGetSExtValue(constInt)));
                                 } else {
-                                    if (allocator.allocate(name).contains("x")){
-                                        int src_reg_num=Integer.parseInt(allocator.allocate(name).substring(allocator.allocate(name).indexOf("x")+1));
-                                        System.out.println(src_reg_num);
-                                        System.out.println(10+i);
-                                        calling_pass_param.put(src_reg_num,10+i);
-                                    }
-                                    else {
+                                    if (allocator.allocate(name).contains("x")) {
+                                        int src_reg_num = Integer.parseInt(allocator.allocate(name).substring(allocator.allocate(name).indexOf("x") + 1));
+//                                        System.out.println(src_reg_num);
+//                                        System.out.println(10 + i);
+                                        calling_pass_param.putIfAbsent(src_reg_num,new HashSet<>());
+                                        calling_pass_param.get(src_reg_num).add(10+i);
+                                    } else {
                                         //String reg = evaluate(arg);
                                         //asm.mv("x1" + i, reg);
-                                        variable_reg.put("x1"+i,arg);
+                                        variable_reg.put("x1" + i, arg);
                                     }
                                 }
                             } else {
@@ -358,9 +397,9 @@ public class LLVMIRToRiscv {
                                 next_offset += 4;
                             }
                         }
-                        pass_param(calling_pass_param,asm);
+                        pass_param(calling_pass_param, asm);
                         for (Map.Entry<String, Integer> entry : const_param_reg.entrySet()) {
-                            asm.li(entry.getKey(),entry.getValue());
+                            asm.li(entry.getKey(), entry.getValue());
                         }
                         for (Map.Entry<String, LLVMValueRef> entry : variable_reg.entrySet()) {
                             String reg = evaluate(entry.getValue());
@@ -542,8 +581,7 @@ public class LLVMIRToRiscv {
                                 asm.mv("x10", reg);
                                 asm.instr("ret");
                             }
-                        }
-                        else asm.instr("ret");
+                        } else asm.instr("ret");
                     } else if (opcode == LLVM.LLVMZExt) {
                         LLVMValueRef operand = LLVM.LLVMGetOperand(inst, 0);
                         String srcReg = evaluate(operand);
@@ -616,7 +654,7 @@ public class LLVMIRToRiscv {
                             }
                             String reg = freshReg();
                             asm.li(reg, block_id_ref_for_phi.get(LLVM.LLVMGetBasicBlockName(bb).getString()));
-                            asm.instr("sw", reg, String.format("%d(sp)",phi_val_storage));
+                            asm.instr("sw", reg, String.format("%d(sp)", phi_val_storage));
                             asm.j(funcName + "_" + loop_label);
                         } else if (numOperands == 3) {
                             //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
@@ -641,7 +679,7 @@ public class LLVMIRToRiscv {
                             }
                             String reg = freshReg();
                             asm.li(reg, block_id_ref_for_phi.get(LLVM.LLVMGetBasicBlockName(bb).getString()));
-                            asm.instr("sw", reg, String.format("%d(sp)",phi_val_storage));
+                            asm.instr("sw", reg, String.format("%d(sp)", phi_val_storage));
                             asm.bnez(condReg, funcName + "_" + trueLabel);
                             asm.j(funcName + "_" + falseLabel);
                         }
@@ -658,7 +696,7 @@ public class LLVMIRToRiscv {
                         int id0 = block_id_ref_for_phi.get(name0);
                         int id1 = block_id_ref_for_phi.get(name1);
                         String v0_reg = evaluate(v0, 1);
-                        asm.instr("lw", "t1",String.format("%d(sp)",phi_val_storage));
+                        asm.instr("lw", "t1", String.format("%d(sp)", phi_val_storage));
                         asm.op2("xori", "t2", "t1", id0);
                         asm.seqz("t2", "t2");
                         asm.op2("mul", "t2", "t2", v0_reg);
