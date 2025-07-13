@@ -20,8 +20,9 @@ main_mainEntry:
   sw t2, 20(sp)
   li t0, 1
   sw t0, 24(sp)
+  lw x29, 28(sp)
   li t1, 1
-  sw t1, 28(sp)
+  mv x29, t1
   li t2, 1
   sw t2, 32(sp)
   li t0, 1
@@ -39,9 +40,9 @@ main_mainEntry:
   lw x18, 56(sp)
   li t2, 0
   mv x18, t2
-  lw x17, 60(sp)
+  lw x16, 60(sp)
   li t0, 0
-  mv x17, t0
+  mv x16, t0
   lw x11, 64(sp)
   li t1, 0
   mv x11, t1
@@ -63,76 +64,51 @@ main_mainEntry:
   lw x20, 88(sp)
   li t1, 0
   mv x20, t1
-  lw x28, 92(sp)
-  li t2, 0
-  mv x28, t2
-  lw x27, 96(sp)
-  li t0, 0
-  mv x27, t0
-  lw x30, 100(sp)
-  li t1, 0
-  mv x30, t1
-  lw x29, 104(sp)
-  li t2, 0
-  mv x29, t2
-  lw x25, 108(sp)
-  li t0, 0
-  mv x25, t0
-  lw x24, 112(sp)
-  li t1, 0
-  mv x24, t1
-  lw x26, 116(sp)
+  lw x26, 92(sp)
   li t2, 0
   mv x26, t2
+  lw x25, 96(sp)
   li t0, 0
-  mv x22, t0
-  sw x8, 0(sp)
-  sw x15, 48(sp)
+  mv x25, t0
+  lw x28, 100(sp)
+  li t1, 0
+  mv x28, t1
+  lw x27, 104(sp)
+  li t2, 0
+  mv x27, t2
+  lw x23, 108(sp)
+  li t0, 0
+  mv x23, t0
+  lw x22, 112(sp)
+  li t1, 0
+  mv x22, t1
+  lw x24, 116(sp)
+  li t2, 0
+  mv x24, t2
+  li t0, 0
+  mv x8, t0
+  sw x29, 28(sp)
   sw x14, 52(sp)
-  sw x18, 56(sp)
-  sw x17, 60(sp)
-  sw x11, 64(sp)
-  sw x9, 68(sp)
-  sw x13, 72(sp)
   sw x12, 76(sp)
-  sw x19, 80(sp)
-  sw x21, 84(sp)
-  sw x20, 88(sp)
-  sw x28, 92(sp)
-  sw x27, 96(sp)
-  sw x30, 100(sp)
-  sw x29, 104(sp)
-  sw x25, 108(sp)
-  sw x24, 112(sp)
-  sw x26, 116(sp)
+  sw x28, 100(sp)
+  li t1, 0
+  sw t1, 1600(sp)
   j main_while.cond
 main_cur:
-  lw x16, 100(sp)
-  mv x8, x16
+  lw x17, 100(sp)
+  mv x8, x17
   mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
 main_while.stmt:
-  mv x23, x22
-  li t1, 1
-  add t2, x23, t1
-  mv x23, t2
-  li t2, 0
-  li t1, 6
-  mul t1, x23, t1
-  add t2, t2, t1
-  li t0, 1
-  add t2, t2, t0
-  slli t2, t2, 2
-  li t1, 0
-  add t2, t2, t1
-  add t2, t2, sp
-  sw t2, 120(sp)
-  mv x23, x22
+  mv x9, x8
+  li t2, 1
+  add t0, x9, t2
+  mv x9, t0
   li t2, 0
   li t0, 6
-  mul t0, x23, t0
+  mul t0, x9, t0
   add t2, t2, t0
   li t1, 1
   add t2, t2, t1
@@ -140,32 +116,47 @@ main_while.stmt:
   li t0, 0
   add t2, t2, t0
   add t2, t2, sp
-  sw t2, 124(sp)
-  lw t0, 124(sp),
-  lw t0, 0(t0)
-  mv x23, t0
-  lw t1, 120(sp),
-  sw x23, 0(t1)
-  sw x22, 128(sp)
-  lw t2, 128(sp)
+  sw t2, 120(sp)
+  lw x30, 120(sp),
+  lw x30, 0(x30)
+  mv x9, x8
+  li t2, 0
+  li t1, 6
+  mul t1, x9, t1
+  add t2, t2, t1
   li t0, 1
-  add t1, t2, t0
-  sw t1, 132(sp)
-  lw t2, 132(sp)
-  mv x22, t2
+  add t2, t2, t0
+  slli t2, t2, 2
+  li t1, 0
+  add t2, t2, t1
+  add t2, t2, sp
+  sw t2, 124(sp)
+  lw t1, 124(sp)
+  lw t1, 0(t1)
+  mv x9, t1
+  mv x30, x9
+  mv x8, x8
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x8, x8
+  lw t1, 120(sp)
+  sw x30, 0(t1)
+  li t2, 2
+  sw t2, 1600(sp)
   j main_while.cond
 main_while.cond:
-  mv x23, x22
+  mv x9, x8
   li t0, 4
-  slt t1, x23, t0
-  sw t1, 136(sp)
-  lw t2, 136(sp)
-  mv t0, t2
-  mv x23, t0
-  li t1, 0
-  xor t2, x23, t1
-  snez t2, t2
-  sw t2, 140(sp)
-  lw t0, 140(sp)
-  bnez t0, main_while.stmt
+  slt t1, x9, t0
+  mv x9, t1
+  mv t2, x9
+  mv x9, t2
+  li t0, 0
+  xor t1, x9, t0
+  snez t1, t1
+  mv x9, t1
+  li t2, 3
+  sw t2, 1600(sp)
+  bnez x9, main_while.stmt
   j main_cur
