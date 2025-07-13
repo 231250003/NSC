@@ -15,12 +15,12 @@ int partition(int arr[6], int low, int high) {
     }
 
     // 将基准放到正确位置
-   // swap(arr, i + 1, high);
+    swap(arr, i + 1, high);
     return i + 1;           // 返回基准的最终位置
 }
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
-    partition(arr, 1, n - 1);
+    partition(arr, 0, n - 1);
     return arr[5];
 }
