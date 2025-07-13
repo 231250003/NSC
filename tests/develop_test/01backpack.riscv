@@ -396,7 +396,7 @@ main_if.then:
   sw x1, 444(sp)
   mv x10, x8
   lw t0, 372(sp)
-  mv x1x11, t0
+  mv x11, t0
   addi sp, sp, 448
   jal x1, max
   addi sp, sp, -448
