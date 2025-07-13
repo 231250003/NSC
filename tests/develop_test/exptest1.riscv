@@ -1,0 +1,12 @@
+
+  .text
+  .globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  li t0, 7
+  mv x10, t0
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
