@@ -330,16 +330,8 @@ public class LLVMIRToRiscv {
                                     const_param_reg.put("x1"+i,((int)LLVM.LLVMConstIntGetSExtValue(constInt)));
                                 } else {
                                     if (allocator.allocate(name).contains("x")){
-                                        if(allocator.allocate(name).equals("x13")) System.out.println("crzx");
                                         int src_reg_num=Integer.parseInt(allocator.allocate(name).substring(allocator.allocate(name).indexOf("x")+1));
-                                        if(src_reg_num>=10&&src_reg_num<10 + Math.min(8, paramCount)){
-                                            if(LLVM.LLVMGetBasicBlockName(bb).getString().equals("if.then")&&LLVM.LLVMGetValueName(func).getString().equals("b")){
-                                                System.out.println(src_reg_num);
-                                                System.out.println(10+i);
-                                            }
-                                            calling_pass_param.put(src_reg_num,10+i);
-                                        }
-                                        else  asm.mv("x1" + i, allocator.allocate(name));
+                                        calling_pass_param.put(src_reg_num,10+i);
                                     }
                                     else {
                                         //String reg = evaluate(arg);
