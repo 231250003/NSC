@@ -434,12 +434,12 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
 //            System.out.println();
 //
 //        }
-        for (Map.Entry<String, String> entry : valueMap.entrySet()) {
-            System.out.print(entry.getKey());
-            System.out.print(" ");
-            System.out.println(entry.getValue());
-        }
-        System.out.println("--------------------------------");
+//        for (Map.Entry<String, String> entry : valueMap.entrySet()) {
+//            System.out.print(entry.getKey());
+//            System.out.print(" ");
+//            System.out.println(entry.getValue());
+//        }
+//        System.out.println("--------------------------------");
     }
 
     public String allocate(String varName) {
