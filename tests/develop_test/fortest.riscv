@@ -1,0 +1,52 @@
+
+  .text
+  .globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  li t0, 0
+  mv x11, t0
+  li t1, 10
+  mv x9, t1
+  li t2, 1
+  mv x12, t2
+  li t0, 0
+  sw t0, 1600(sp)
+  j main_for.cond
+main_cur:
+  mv x8, x11
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+main_for.stmt:
+  mv x11, x11
+  mv x8, x12
+  add t1, x11, x8
+  mv x8, t1
+  mv x11, x8
+  mv x8, x12
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x12, x8
+  li t1, 2
+  sw t1, 1600(sp)
+  j main_for.cond
+main_for.cond:
+  mv x13, x12
+  mv x8, x9
+  sgt t2, x13, x8
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 3
+  sw t0, 1600(sp)
+  bnez x8, main_for.stmt
+  j main_cur
