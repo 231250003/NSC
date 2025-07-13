@@ -455,6 +455,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         array_variable_ref = new ArrayList<>();
         variable_and_array_name_to_array_variable_ref=new HashMap<>();
         cal_def_use(func);
+        cal_elementptr_val_can_be_stored_in_reg(func);
         cal_in_out_block(func);
         create_graph(func);
         color_graph();

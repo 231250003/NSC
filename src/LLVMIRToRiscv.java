@@ -568,7 +568,6 @@ public class LLVMIRToRiscv {
                                         asm.instr("sw", allocator.allocate(x.variable_name), value_stack_addr.get(x.variable_name));
                                     } else {
                                         String reg = freshReg();
-                                        System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                                         asm.instr("lw", reg, String.format("%d(sp)", Integer.parseInt(value_stack_addr.get(x.variable_name))));
                                         asm.instr("sw", allocator.allocate(x.variable_name), "0(" + reg + ")");
                                     }
