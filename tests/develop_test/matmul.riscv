@@ -36,7 +36,7 @@ main_mainEntry:
   sw x12, 12(sp)
   addi x10, sp, 0
   addi sp, sp, 20
-  jal x1, matrix_multiply
+  jal x1, b
   addi sp, sp, -20
   lw x1, 16(sp)
   lw x13, 12(sp)
@@ -45,10 +45,10 @@ main_mainEntry:
   addi sp, sp, 2044
   li a7, 93
   ecall
-matrix_multiply:
+b:
   sw x10, 0(sp)
-  j matrix_multiply_matrix_multiplyEntry
-matrix_multiply_matrix_multiplyEntry:
+  j b_bEntry
+b_bEntry:
   lw t1, 0(sp)
   addi t1, t1, 12
   sw t1, 4(sp)
