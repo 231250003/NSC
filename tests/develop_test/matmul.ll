@@ -16,8 +16,6 @@ cur:                                              ; preds = %for.cond
   ret void
 
 for.stmt:                                         ; preds = %for.cond
-  %j = alloca i32, align 4
-  store i32 1, i32* %j, align 4
   %load_lval2 = load i32, i32* %i, align 4
   %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval2, i32 1
   store i32 0, i32* %elemPtr, align 4
