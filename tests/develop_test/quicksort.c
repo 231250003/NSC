@@ -20,15 +20,12 @@ void quickSort(int arr[6], int low, int high) {
     if (low < high) {
         int pi = partition(arr, low, high);
         quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+        //quickSort(arr, pi + 1, high);
     }
 }
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
-
-
     quickSort(arr, 0, n - 1);
-
     return arr[5];
 }
