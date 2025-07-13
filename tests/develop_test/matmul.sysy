@@ -3,7 +3,7 @@ int COLS_A=3;
 int ROWS_B=3;
 int COLS_B=2;
 
-void matrix_multiply(int a[2][3], int b[3][2], int result[2][2]) {
+void matrix_multiply( int result[2][2]) {
       result[1][1] = 0;
       result[1][1]=result[1][1]+ 1;
 }
@@ -24,7 +24,7 @@ int main() {
     int result[2][2];
 
     // 计算矩阵乘法
-    matrix_multiply(matrix_a, matrix_b, result);
+    matrix_multiply( result);
 
     return result[1][1];
 }
