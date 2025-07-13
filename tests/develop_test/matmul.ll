@@ -19,21 +19,18 @@ for.stmt:                                         ; preds = %for.cond
   %j = alloca i32, align 4
   store i32 1, i32* %j, align 4
   %load_lval2 = load i32, i32* %i, align 4
-  %load_lval3 = load i32, i32* %j, align 4
-  %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval2, i32 %load_lval3
+  %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval2, i32 1
   store i32 0, i32* %elemPtr, align 4
-  %load_lval4 = load i32, i32* %i, align 4
-  %load_lval5 = load i32, i32* %j, align 4
-  %elemPtr6 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval4, i32 %load_lval5
-  %load_lval7 = load i32, i32* %i, align 4
-  %load_lval8 = load i32, i32* %j, align 4
-  %elemPtr9 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval7, i32 %load_lval8
-  %load_lval10 = load i32, i32* %elemPtr9, align 4
-  %add = add i32 %load_lval10, 1
-  store i32 %add, i32* %elemPtr6, align 4
-  %load_lval11 = load i32, i32* %i, align 4
-  %add12 = add i32 %load_lval11, 1
-  store i32 %add12, i32* %i, align 4
+  %load_lval3 = load i32, i32* %i, align 4
+  %elemPtr4 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval3, i32 1
+  %load_lval5 = load i32, i32* %i, align 4
+  %elemPtr6 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval5, i32 1
+  %load_lval7 = load i32, i32* %elemPtr6, align 4
+  %add = add i32 %load_lval7, 1
+  store i32 %add, i32* %elemPtr4, align 4
+  %load_lval8 = load i32, i32* %i, align 4
+  %add9 = add i32 %load_lval8, 1
+  store i32 %add9, i32* %i, align 4
   br label %for.cond
 
 for.cond:                                         ; preds = %for.stmt, %matrix_multiplyEntry

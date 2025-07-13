@@ -5,7 +5,6 @@ int COLS_B=2;
 
 void matrix_multiply(int a[2][3], int b[3][2], int result[2][2]) {
     for (int i = 0; i < ROWS_A; i=i+1) {
-            int j=1;
             result[i][1] = 0;
             result[i][1]=result[i][1]+ 1;
     }
