@@ -195,6 +195,11 @@ public class LLVMIRToRiscv {
                         boolean has_variable_index = false;
                         if (allocator.allocate(LLVM.LLVMGetValueName(inst).getString()) == null) continue;
                         String variable_name = LLVM.LLVMGetValueName(inst).getString();
+                        if(variable_name.equals("elemPtr7")&&funcName.equals("b")) {
+                            System.out.println("safdsadfs");
+                            System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                            if(value_stack_addr.get(variable_name)!=null) System.out.println( value_stack_addr.get(variable_name));
+                        }
                         LLVMValueRef base_ptr = LLVM.LLVMGetOperand(inst, 0);
                         String array_name = LLVM.LLVMGetValueName(base_ptr).getString();
                         LLVMTypeRef base_type = LLVM.LLVMTypeOf(base_ptr);
@@ -275,10 +280,6 @@ public class LLVMIRToRiscv {
                                     asm.op2("mul", reg1, cur_offset_reg, reg1);
                                     asm.op2("add", offset_reg, offset_reg, reg1);
                                 }
-                            }
-                            if(variable_name.equals("elemPtr7")&&funcName.equals("b")) {
-                                System.out.println("safdsadfs");
-                                System.out.println( value_stack_addr.get(variable_name));
                             }
                             asm.op2("slli", offset_reg, offset_reg, 2);
                             if (value_stack_addr.get(array_name).contains("(")) {
