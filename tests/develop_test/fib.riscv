@@ -3,8 +3,8 @@
   .globl main
 main:
   addi sp, sp, -2044
-  j mainEntry
-mainEntry:
+  j main_mainEntry
+main_mainEntry:
   sw x8, 0(sp)
   sw x1, 4(sp)
   li x10, 5
@@ -20,8 +20,8 @@ mainEntry:
   ecall
 fib:
   mv x8, x10
-  j fibEntry
-fibEntry:
+  j fib_fibEntry
+fib_fibEntry:
   mv x9, x8
   mv x8, x9
   li t0, 0
@@ -34,35 +34,39 @@ fibEntry:
   xor t1, x8, t0
   snez t1, t1
   mv x8, t1
-  bnez x8, if.then
-  j if.else
-if.then:
-  li t2, 1
-  mv x10, t2
-  ret
-if.else:
-  mv x8, x9
+  li t2, 0
+  sw t2, 1600(sp)
+  bnez x8, fib_if.then
+  j fib_if.else
+fib_if.then:
   li t0, 1
-  xor t1, x8, t0
-  seqz t1, t1
-  mv x8, t1
-  mv t2, x8
+  mv x10, t0
+  ret
+fib_if.else:
+  mv x8, x9
+  li t1, 1
+  xor t2, x8, t1
+  seqz t2, t2
   mv x8, t2
-  li t0, 0
-  xor t1, x8, t0
-  snez t1, t1
-  mv x8, t1
-  bnez x8, if.then5
-  j if.else6
-if.then5:
-  li t2, 2
-  mv x10, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 2
+  sw t0, 1600(sp)
+  bnez x8, fib_if.then5
+  j fib_if.else6
+fib_if.then5:
+  li t1, 2
+  mv x10, t1
   ret
-if.else6:
+fib_if.else6:
   mv x8, x9
-  li t0, 1
-  sub t1, x8, t0
-  mv x8, t1
+  li t2, 1
+  sub t0, x8, t2
+  mv x8, t0
   sw x9, 0(sp)
   sw x8, 4(sp)
   sw x1, 8(sp)
@@ -75,9 +79,9 @@ if.else6:
   lw x8, 4(sp)
   mv x8, x10
   mv x9, x9
-  li t2, 2
-  sub t0, x9, t2
-  mv x9, t0
+  li t1, 2
+  sub t2, x9, t1
+  mv x9, t2
   sw x9, 0(sp)
   sw x8, 4(sp)
   sw x1, 8(sp)
@@ -89,7 +93,7 @@ if.else6:
   lw x9, 0(sp)
   lw x8, 4(sp)
   mv x9, x10
-  add t1, x8, x9
-  mv x8, t1
+  add t0, x8, x9
+  mv x8, t0
   mv x10, x8
   ret
