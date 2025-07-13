@@ -296,6 +296,10 @@ public class LLVMIRToRiscv {
                                 value_stack_addr.putIfAbsent(variable_name, String.valueOf(next_offset));
                                 next_offset += 4;
                             }
+                            if(variable_name.equals("elemPtr7")&&funcName.equals("b")) {
+                                System.out.println("safdsadfs");
+                                System.out.println( value_stack_addr.get(variable_name));
+                            }
                         }
                         if (allocator.allocate(LLVM.LLVMGetValueName(inst).getString()).contains("x")) {
                             if (value_stack_addr.get(variable_name).contains("("))
