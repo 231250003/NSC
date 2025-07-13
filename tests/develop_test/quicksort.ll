@@ -46,9 +46,14 @@ bEntry:
   br label %for.cond
 
 cur:                                              ; preds = %for.cond
-  %load_lval19 = load i32, i32* %i, align 4
-  %add20 = add i32 %load_lval19, 1
-  ret i32 %add20
+  %elemPtr19 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
+  %load_lval20 = load i32, i32* %i, align 4
+  %add21 = add i32 %load_lval20, 1
+  %load_lval22 = load i32, i32* %param2_addr, align 4
+  call void @swap([6 x i32]* %elemPtr19, i32 %add21, i32 %load_lval22)
+  %load_lval23 = load i32, i32* %i, align 4
+  %add24 = add i32 %load_lval23, 1
+  ret i32 %add24
 
 for.stmt:                                         ; preds = %for.cond
   %load_lval6 = load i32, i32* %j, align 4
@@ -106,7 +111,7 @@ mainEntry:
   %load_lval = load i32, i32* %n, align 4
   %sub = sub i32 %load_lval, 1
   %b = call i32 @b([6 x i32]* %elemPtr6, i32 0, i32 %sub)
-  %elemPtr7 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 5
+  %elemPtr7 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 4
   %load_lval8 = load i32, i32* %elemPtr7, align 4
   ret i32 %load_lval8
 }
