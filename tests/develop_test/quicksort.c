@@ -18,14 +18,9 @@ int partition(int arr[6], int low, int high) {
    // swap(arr, i + 1, high);
     return i + 1;           // 返回基准的最终位置
 }
-/*
-void quickSort(int arr[6], int low, int high) {
-     int pi = partition(arr, low, high);
-}
-*/
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
-    partition(arr, 0, n - 1);
-    return arr[4];
+    partition(arr, 1, n - 1);
+    return arr[0];
 }
