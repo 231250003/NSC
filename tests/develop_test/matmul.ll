@@ -29,9 +29,9 @@ for.cond:                                         ; preds = %cur2, %matrix_multi
   br i1 %to_bool, label %for.stmt, label %cur
 
 cur2:                                             ; preds = %for.cond4
-  %load_lval29 = load i32, i32* %i, align 4
-  %add30 = add i32 %load_lval29, 1
-  store i32 %add30, i32* %i, align 4
+  %load_lval27 = load i32, i32* %i, align 4
+  %add28 = add i32 %load_lval27, 1
+  store i32 %add28, i32* %i, align 4
   br label %for.cond
 
 for.stmt3:                                        ; preds = %for.cond4
@@ -49,19 +49,17 @@ for.stmt3:                                        ; preds = %for.cond4
   %elemPtr17 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval15, i32 %load_lval16
   %load_lval18 = load i32, i32* %elemPtr17, align 4
   %load_lval19 = load i32, i32* %i, align 4
-  %load_lval20 = load i32, i32* %k, align 4
-  %elemPtr21 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %a, i32 0, i32 %load_lval19, i32 %load_lval20
-  %load_lval22 = load i32, i32* %elemPtr21, align 4
-  %load_lval23 = load i32, i32* %k, align 4
-  %load_lval24 = load i32, i32* %j, align 4
-  %elemPtr25 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %b, i32 0, i32 %load_lval23, i32 %load_lval24
-  %load_lval26 = load i32, i32* %elemPtr25, align 4
-  %mul = mul i32 %load_lval22, %load_lval26
+  %elemPtr20 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %a, i32 0, i32 %load_lval19, i32 1
+  %load_lval21 = load i32, i32* %elemPtr20, align 4
+  %load_lval22 = load i32, i32* %j, align 4
+  %elemPtr23 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %b, i32 0, i32 1, i32 %load_lval22
+  %load_lval24 = load i32, i32* %elemPtr23, align 4
+  %mul = mul i32 %load_lval21, %load_lval24
   %add = add i32 %load_lval18, %mul
   store i32 %add, i32* %elemPtr14, align 4
-  %load_lval27 = load i32, i32* %j, align 4
-  %add28 = add i32 %load_lval27, 1
-  store i32 %add28, i32* %j, align 4
+  %load_lval25 = load i32, i32* %j, align 4
+  %add26 = add i32 %load_lval25, 1
+  store i32 %add26, i32* %j, align 4
   br label %for.cond4
 
 for.cond4:                                        ; preds = %for.stmt3, %for.stmt
