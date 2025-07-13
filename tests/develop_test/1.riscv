@@ -82,7 +82,7 @@ main_for.stmt:
   add t1, x9, t0
   mv x9, t1
   mv x12, x9
-  lw t2, 16(sp),
+  lw t2, 16(sp)
   sw x16, 0(t2)
   li t0, 2
   sw t0, 1600(sp)
