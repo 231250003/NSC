@@ -74,7 +74,6 @@ public class LLVMIRToRiscv {
                     asm.mv("x"+entry.getValue(),"x"+entry.getKey());
                     param_conflict_graph.get(entry.getKey()).remove(entry.getValue());
                 }
-                System.out.println("end");
             }
             else{
                 Map<Integer,Integer> tmp_graph=new HashMap<>();
@@ -99,10 +98,12 @@ public class LLVMIRToRiscv {
                 while(reg_saving_sequence.size()>1){
                     int x=reg_saving_sequence.pop();
                     int y=reg_saving_sequence.pop();
+                    param_conflict_graph.get(y).remove(x);
                     asm.mv("x"+x,"x"+y);
                     reg_saving_sequence.push(y);
                 }
                 asm.mv("x" + start_key, reg);
+                param_conflict_graph.get(value).remove(start_key);
             }
             Set<Integer> can_remove=new HashSet<>();
             for (Map.Entry<Integer, Set<Integer>> entry : param_conflict_graph.entrySet()){
