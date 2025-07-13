@@ -99,14 +99,36 @@ matrix_multiply:
   sw x12, 0(sp)
   j matrix_multiply_matrix_multiplyEntry
 matrix_multiply_matrix_multiplyEntry:
-  li t1, 0
+  li t1, 1
   mv x11, t1
+  mv x8, x11
   li t2, 0
-  sw t2, 1600(sp)
-  j matrix_multiply_for.cond
-matrix_multiply_cur:
-  ret
-matrix_multiply_for.stmt:
+  li t1, 2
+  mul t1, x8, t1
+  add t2, t2, t1
+  li t0, 1
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 4(sp)
+  lw x9, 4(sp),
+  lw x9, 0(x9)
+  li t2, 0
+  mv x9, t2
+  mv x8, x11
+  li t2, 0
+  li t1, 2
+  mul t1, x8, t1
+  add t2, t2, t1
+  li t0, 1
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 8(sp)
+  lw x8, 8(sp),
+  lw x8, 0(x8)
   mv x8, x11
   li t2, 0
   li t0, 2
@@ -117,70 +139,18 @@ matrix_multiply_for.stmt:
   slli t2, t2, 2
   lw t0, 0(sp)
   add t2, t2, t0
-  sw t2, 4(sp)
-  lw x8, 4(sp),
-  lw x8, 0(x8)
-  li t0, 0
-  mv x8, t0
-  mv x9, x11
-  li t2, 0
-  li t0, 2
-  mul t0, x9, t0
-  add t2, t2, t0
-  li t1, 1
-  add t2, t2, t1
-  slli t2, t2, 2
-  lw t0, 0(sp)
-  add t2, t2, t0
-  sw t2, 8(sp)
-  lw x12, 8(sp),
-  lw x12, 0(x12)
-  mv x9, x11
-  li t2, 0
-  li t1, 2
-  mul t1, x9, t1
-  add t2, t2, t1
-  li t0, 1
-  add t2, t2, t0
-  slli t2, t2, 2
-  lw t1, 0(sp)
-  add t2, t2, t1
   sw t2, 12(sp)
-  lw x14, 12(sp),
-  lw x14, 0(x14)
-  mv x9, x14
-  li t1, 1
-  add t2, x9, t1
-  mv x9, t2
-  mv x12, x9
-  mv x9, x11
+  lw x11, 12(sp),
+  lw x11, 0(x11)
+  mv x8, x11
   li t0, 1
-  add t1, x9, t0
-  mv x9, t1
-  mv x11, x9
+  add t1, x8, t0
+  mv x8, t1
+  mv x8, x8
   lw t2, 4(sp)
-  sw x8, 0(t2)
+  sw x9, 0(t2)
   lw t0, 8(sp)
-  sw x12, 0(t0)
+  sw x8, 0(t0)
   lw t1, 12(sp)
-  sw x14, 0(t1)
-  li t2, 2
-  sw t2, 1600(sp)
-  j matrix_multiply_for.cond
-matrix_multiply_for.cond:
-  mv x13, x11
-  la t0, ROWS_A
-  lw t0, 0(t0)
-  mv x9, t0
-  slt t1, x13, x9
-  mv x9, t1
-  mv t2, x9
-  mv x9, t2
-  li t0, 0
-  xor t1, x9, t0
-  snez t1, t1
-  mv x9, t1
-  li t2, 3
-  sw t2, 1600(sp)
-  bnez x9, matrix_multiply_for.stmt
-  j matrix_multiply_cur
+  sw x11, 0(t1)
+  ret
