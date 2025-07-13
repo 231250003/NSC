@@ -1,0 +1,398 @@
+  .data
+x:
+  .word 56
+  .data
+y:
+  .word 98
+
+  .text
+  .globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  la t0, x
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x12, x8
+  la t1, y
+  lw t1, 0(t1)
+  mv x8, t1
+  mv x11, x8
+  mv x8, x12
+  li t2, 0
+  xor t0, x8, t2
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x9, t1
+  mv x8, x11
+  add t2, x9, x8
+  mv x8, t2
+  li t0, 10
+  slt t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 0
+  sw t2, 1600(sp)
+  bnez x8, main_if.then
+  j main_merge
+main_merge:
+  li t0, 1
+  sw t0, 1600(sp)
+  j main_while.cond
+main_if.then:
+  mv x8, x12
+  li t1, 10
+  sgt t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 2
+  sw t0, 1600(sp)
+  bnez x8, main_if.then9
+  j main_merge5
+main_merge5:
+  li t1, 3
+  sw t1, 1600(sp)
+  j main_merge
+main_if.then9:
+  li t2, 2
+  mv x10, t2
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+main_cur:
+  li t0, 0
+  mv x9, t0
+  li t1, 5
+  sw t1, 1600(sp)
+  j main_while.cond30
+main_while.stmt:
+  mv x8, x12
+  li t2, 2
+  sub t0, x8, t2
+  mv x8, t0
+  mv x12, x8
+  mv x8, x12
+  li t1, 45
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 6
+  sw t0, 1600(sp)
+  bnez x8, main_if.then16
+  j main_if.else
+main_while.cond:
+  li t1, -1
+  li t2, 7
+  sw t2, 1600(sp)
+  bnez t1, main_while.stmt
+  j main_cur
+main_merge12:
+  li t0, 8
+  sw t0, 1600(sp)
+  j main_while.cond
+main_if.then16:
+  li t1, 9
+  sw t1, 1600(sp)
+  j main_cur
+main_if.else:
+  mv x8, x12
+  li t2, 48
+  xor t0, x8, t2
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 10
+  sw t1, 1600(sp)
+  bnez x8, main_if.then22
+  j main_merge18
+main_merge18:
+  li t2, 11
+  sw t2, 1600(sp)
+  j main_merge12
+main_if.then22:
+  mv x8, x11
+  li t0, 3
+  sub t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  mv x8, x12
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x12, x8
+  li t1, 12
+  sw t1, 1600(sp)
+  j main_merge18
+main_cur28:
+  mv x8, x11
+  li t2, 3
+  sub t0, x8, t2
+  mv x8, t0
+  mv x11, x8
+  mv x8, x12
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x12, x8
+  mv x9, x12
+  mv x8, x11
+  add t0, x9, x8
+  mv x8, t0
+  li t1, 50
+  sgt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 13
+  sw t0, 1600(sp)
+  bnez x8, main_if.then104
+  j main_merge98
+main_while.stmt29:
+  mv x8, x9
+  li t1, 30
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 14
+  sw t0, 1600(sp)
+  bnez x8, main_if.then39
+  j main_merge35
+main_while.cond30:
+  mv x8, x11
+  li t1, 35
+  sgt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 15
+  sw t0, 1600(sp)
+  bnez x8, main_while.stmt29
+  j main_cur28
+main_merge35:
+  li t1, 30
+  mv x13, t1
+  li t2, 16
+  sw t2, 1600(sp)
+  j main_while.cond44
+main_if.then39:
+  li t0, 17
+  sw t0, 1600(sp)
+  j main_cur28
+main_cur42:
+  mv x8, x11
+  li t1, 70
+  sgt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 18
+  sw t0, 1600(sp)
+  bnez x8, main_if.then59
+  j main_if.else60
+main_while.stmt43:
+  mv x8, x13
+  li t1, 20
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 19
+  sw t0, 1600(sp)
+  bnez x8, main_if.then49
+  j main_if.else50
+main_while.cond44:
+  li t1, -1
+  li t2, 20
+  sw t2, 1600(sp)
+  bnez t1, main_while.stmt43
+  j main_cur42
+main_merge45:
+  li t0, 21
+  sw t0, 1600(sp)
+  j main_cur42
+main_if.then49:
+  mv x8, x13
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+main_if.else50:
+  mv x8, x13
+  li t1, 7
+  sub t2, x8, t1
+  mv x8, t2
+  mv x13, x8
+  li t0, 23
+  sw t0, 1600(sp)
+  j main_merge45
+main_merge55:
+  mv x13, x11
+  mv x8, x12
+  add t1, x13, x8
+  mv x8, t1
+  li t2, 40
+  sgt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 24
+  sw t1, 1600(sp)
+  bnez x8, main_if.then78
+  j main_if.else79
+main_if.then59:
+  mv x8, x11
+  li t2, 5
+  sub t0, x8, t2
+  mv x8, t0
+  mv x11, x8
+  li t1, 25
+  sw t1, 1600(sp)
+  j main_merge55
+main_if.else60:
+  mv x8, x11
+  li t2, 50
+  sgt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 26
+  sw t1, 1600(sp)
+  bnez x8, main_if.then68
+  j main_merge64
+main_merge64:
+  li t2, 27
+  sw t2, 1600(sp)
+  j main_merge55
+main_if.then68:
+  mv x8, x11
+  li t0, 7
+  sub t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  li t2, 28
+  sw t2, 1600(sp)
+  j main_merge64
+main_merge72:
+  mv x8, x9
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x9, x8
+  li t2, 29
+  sw t2, 1600(sp)
+  j main_while.cond30
+main_if.then78:
+  mv x8, x11
+  li t0, 10
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  li t2, 30
+  sw t2, 1600(sp)
+  j main_merge72
+main_if.else79:
+  mv x8, x11
+  li t0, 30
+  sgt t1, x8, t0
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 31
+  sw t2, 1600(sp)
+  bnez x8, main_if.then87
+  j main_if.else88
+main_merge83:
+  li t0, 32
+  sw t0, 1600(sp)
+  j main_merge72
+main_if.then87:
+  mv x8, x11
+  li t1, 1
+  sub t2, x8, t1
+  mv x8, t2
+  mv x11, x8
+  li t0, 33
+  sw t0, 1600(sp)
+  j main_merge83
+main_if.else88:
+  li t1, 10
+  mv x10, t1
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+main_merge98:
+  mv x8, x12
+  mv x8, x8
+  mv x8, x8
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+main_if.then104:
+  mv x8, x12
+  li t2, 10
+  sub t0, x8, t2
+  mv x8, t0
+  mv x12, x8
+  li t1, 36
+  sw t1, 1600(sp)
+  j main_merge98
