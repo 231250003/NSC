@@ -27,5 +27,5 @@ int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
     partition(arr, 0, n - 1);
-    return arr[5];
+    return arr[0];
 }
