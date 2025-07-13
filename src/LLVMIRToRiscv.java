@@ -62,6 +62,7 @@ public class LLVMIRToRiscv {
 
         }
         while(!param_conflict_graph.isEmpty()){
+            System.out.println("start");
             Map<Integer,Integer> zero_outdegree_edge=new HashMap<>();
             for (Map.Entry<Integer, Set<Integer>> entry : param_conflict_graph.entrySet()) {
                 for(Integer x:entry.getValue()){
@@ -109,6 +110,7 @@ public class LLVMIRToRiscv {
             for(Integer x:can_remove){
                 param_conflict_graph.remove(x);
             }
+            System.out.println("end");
         }
     }
 
