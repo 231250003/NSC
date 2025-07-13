@@ -4,8 +4,8 @@ int ROWS_B=3;
 int COLS_B=2;
 
 void matrix_multiply(int a[2][3], int b[3][2], int result[2][2]) {
-            result[1][1] = 0;
-            result[1][1]=result[1][1]+ 1;
+      result[1][1] = 0;
+      result[1][1]=result[1][1]+ 1;
 }
 
 int main() {

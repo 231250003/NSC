@@ -8,8 +8,6 @@ source_filename = "my_module"
 
 define void @matrix_multiply([2 x [3 x i32]]* %a, [3 x [2 x i32]]* %b, [2 x [2 x i32]]* %result) {
 matrix_multiplyEntry:
-  %i = alloca i32, align 4
-  store i32 1, i32* %i, align 4
   %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
   store i32 0, i32* %elemPtr, align 4
   %elemPtr1 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
