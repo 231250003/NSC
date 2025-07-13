@@ -188,7 +188,8 @@ b_for.stmt:
   lw t0, 0(sp)
   add t2, t2, t0
   sw t2, 12(sp)
-  lw x14, 20(sp)
+  lw x14, 12(sp),
+  lw x14, 0(x14)
   mv x13, x14
   mv x11, x15
   sgt t2, x13, x11
@@ -200,44 +201,45 @@ b_for.stmt:
   xor t2, x11, t1
   snez t2, t2
   mv x11, t2
-  sw x14, 20(sp)
-  li t0, 2
-  sw t0, 1600(sp)
+  lw t0, 12(sp)
+  sw x14, 0(t0)
+  li t1, 2
+  sw t1, 1600(sp)
   bnez x11, b_if.then
   j b_merge
 b_for.cond:
   mv x13, x9
   mv x11, x16
-  slt t1, x13, x11
-  mv x11, t1
-  mv t2, x11
+  slt t2, x13, x11
   mv x11, t2
-  li t0, 0
-  xor t1, x11, t0
-  snez t1, t1
-  mv x11, t1
-  li t2, 3
-  sw t2, 1600(sp)
+  mv t0, x11
+  mv x11, t0
+  li t1, 0
+  xor t2, x11, t1
+  snez t2, t2
+  mv x11, t2
+  li t0, 3
+  sw t0, 1600(sp)
   bnez x11, b_for.stmt
   j b_cur
 b_merge:
   mv x9, x9
-  li t0, 1
-  add t1, x9, t0
-  mv x9, t1
+  li t1, 1
+  add t2, x9, t1
+  mv x9, t2
   mv x9, x9
-  li t2, 4
-  sw t2, 1600(sp)
+  li t0, 4
+  sw t0, 1600(sp)
   j b_for.cond
 b_if.then:
   mv x11, x12
-  li t0, 1
-  add t1, x11, t0
-  mv x11, t1
+  li t1, 1
+  add t2, x11, t1
+  mv x11, t2
   mv x12, x11
-  lw t2, 0(sp)
-  addi t2, t2, 0
-  sw t2, 16(sp)
+  lw t0, 0(sp)
+  addi t0, t0, 0
+  sw t0, 16(sp)
   mv x13, x12
   mv x11, x9
   sw x16, 20(sp)
@@ -260,6 +262,6 @@ b_if.then:
   lw x9, 32(sp)
   lw x8, 36(sp)
   lw x14, 40(sp)
-  li t0, 5
-  sw t0, 1600(sp)
+  li t1, 5
+  sw t1, 1600(sp)
   j b_merge

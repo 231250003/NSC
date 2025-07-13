@@ -317,7 +317,8 @@ public class LLVMIRToRiscv {
                         String callfuncName = LLVM.LLVMGetValueName(calledFunction).getString();
                         int argCount = LLVM.LLVMGetNumArgOperands(inst);
                         Set<String> live_var = new HashSet<>(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(inst));
-                        Map<String,String>context_stored_in_calling_func=new HashMap<>();
+                        Map<String,String>context_stored_in_calling_func=new HashMap<>();//有一些GETELEMENTPTR的问题，即如果用value stack addr会破坏还未被赋值的getelemmentptr
+                        //因为GETELEMENTPTR本身既可以是寄存器也可以是地址，因此在每个块访问结束后保证GETELEMENTPTR的数据是正确的，即栈（数组）已经正确写入每一个值，在块访问时栈可以与寄存器保持不一致，即寄存器中的数据更新
                         for (String x : live_var) {
                             if (allocator.allocate(x) != null && allocator.allocate(x).contains("x")) {
                                 asm.instr("sw", allocator.allocate(x), String.format("%d(sp)", next_offset));
