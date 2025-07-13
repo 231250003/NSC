@@ -9,12 +9,10 @@ source_filename = "my_module"
 define void @matrix_multiply([2 x [2 x i32]]* %result) {
 matrix_multiplyEntry:
   %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
-  store i32 0, i32* %elemPtr, align 4
   %elemPtr1 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
-  %elemPtr2 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
-  %load_lval = load i32, i32* %elemPtr2, align 4
+  %load_lval = load i32, i32* %elemPtr1, align 4
   %add = add i32 %load_lval, 1
-  store i32 %add, i32* %elemPtr1, align 4
+  store i32 %add, i32* %elemPtr, align 4
   ret void
 }
 
