@@ -27,8 +27,8 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
            LLVMValueRef instr=LLVM.LLVMGetLastInstruction(bb);
            while(instr!=null){
-                if(LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMStore&&LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(instr, 1)).getString().contains("elemPtr")){
-                    String cur_instr_pointer=LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(instr, 1)).getString();
+                if(LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMGetElementPtr){
+                    String cur_instr_pointer=LLVM.LLVMGetValueName(instr).getString();
                     LLVMValueRef instr2=LLVM.LLVMGetNextInstruction(instr);
                     boolean can_use_reg=true;
                     for(;instr2!=null;instr2=LLVM.LLVMGetNextInstruction(instr2)){
