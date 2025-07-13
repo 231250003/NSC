@@ -4,7 +4,6 @@ int ROWS_B=3;
 int COLS_B=2;
 
 void matrix_multiply( int result[2][2]) {
-      result[1][1] = 0;
       result[1][1]=result[1][1]+ 1;
 }
 

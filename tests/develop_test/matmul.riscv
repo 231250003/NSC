@@ -18,65 +18,29 @@ main:
   j main_mainEntry
 main_mainEntry:
   lw x8, 0(sp)
-  li t0, 1
+  li t0, 0
   mv x8, t0
-  lw x20, 4(sp)
-  li t1, 2
-  mv x20, t1
-  lw x21, 8(sp)
-  li t2, 3
-  mv x21, t2
-  lw x22, 12(sp)
-  li t0, 4
-  mv x22, t0
-  lw x23, 16(sp)
-  li t1, 5
-  mv x23, t1
-  lw x24, 20(sp)
-  li t2, 6
-  mv x24, t2
-  lw x25, 24(sp)
-  li t0, 7
-  mv x25, t0
-  lw x15, 28(sp)
-  li t1, 8
-  mv x15, t1
-  lw x16, 32(sp)
-  li t2, 9
-  mv x16, t2
-  lw x18, 36(sp)
-  li t0, 10
-  mv x18, t0
-  lw x19, 40(sp)
-  li t1, 11
-  mv x19, t1
-  lw x17, 44(sp)
-  li t2, 12
-  mv x17, t2
-  lw x12, 48(sp)
+  lw x9, 4(sp)
+  li t1, 0
+  mv x9, t1
+  lw x11, 8(sp)
+  li t2, 0
+  mv x11, t2
+  lw x12, 12(sp)
   li t0, 0
   mv x12, t0
-  lw x11, 52(sp)
-  li t1, 0
-  mv x11, t1
-  lw x14, 56(sp)
-  li t2, 0
-  mv x14, t2
-  lw x13, 60(sp)
-  li t0, 0
-  mv x13, t0
-  sw x1, 64(sp)
-  sw x12, 48(sp)
-  sw x11, 52(sp)
-  sw x14, 56(sp)
-  sw x13, 60(sp)
-  addi x10, sp, 48
-  addi sp, sp, 68
+  sw x1, 16(sp)
+  sw x8, 0(sp)
+  sw x9, 4(sp)
+  sw x11, 8(sp)
+  sw x12, 12(sp)
+  addi x10, sp, 0
+  addi sp, sp, 20
   jal x1, matrix_multiply
-  addi sp, sp, -68
-  lw x1, 64(sp)
-  lw x9, 60(sp)
-  mv x8, x9
+  addi sp, sp, -20
+  lw x1, 16(sp)
+  lw x13, 12(sp)
+  mv x8, x13
   mv x10, x8
   addi sp, sp, 2044
   li a7, 93
