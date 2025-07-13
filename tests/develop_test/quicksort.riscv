@@ -40,7 +40,7 @@ main_mainEntry:
   mv x12, x11
   li x11, 0
   addi sp, sp, 28
-  jal x1, quickSort
+  jal x1, partition
   addi sp, sp, -28
   lw x1, 24(sp)
   lw x9, 20(sp)
@@ -263,27 +263,3 @@ partition_if.then:
   li t0, 5
   sw t0, 1600(sp)
   j partition_merge
-quickSort:
-  sw x10, 0(sp)
-  mv x8, x11
-  mv x9, x12
-  j quickSort_quickSortEntry
-quickSort_quickSortEntry:
-  mv x8, x8
-  mv x9, x9
-  lw t1, 0(sp)
-  addi t1, t1, 0
-  sw t1, 4(sp)
-  mv x11, x8
-  mv x8, x9
-  sw x8, 8(sp)
-  sw x1, 12(sp)
-  lw x10, 4(sp)
-  mv x12, x8
-  addi sp, sp, 16
-  jal x1, partition
-  addi sp, sp, -16
-  lw x1, 12(sp)
-  lw x8, 8(sp)
-  mv x8, x10
-  ret
