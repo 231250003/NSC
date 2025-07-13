@@ -3,7 +3,7 @@ void swap(int arr[6], int i, int j) {
     arr[i] = arr[j];
     arr[j] = temp;
 }
-int partition(int arr[6], int low, int high) {
+int b(int arr[6], int low, int high) {
     int pivot = arr[high];  // 选择最后一个元素作为基准
     int i = low - 1;        // i是小于基准的区域的边界
 
@@ -21,6 +21,6 @@ int partition(int arr[6], int low, int high) {
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
-    partition(arr, 0, n - 1);
+    b(arr, 0, n - 1);
     return arr[5];
 }
