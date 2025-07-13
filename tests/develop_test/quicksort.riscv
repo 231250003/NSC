@@ -294,56 +294,34 @@ quickSort_if.then:
   mv x11, x9
   mv x8, x12
   sw x8, 8(sp)
-  sw x12, 12(sp)
-  sw x9, 16(sp)
-  sw x1, 20(sp)
+  sw x9, 12(sp)
+  sw x1, 16(sp)
   lw x10, 4(sp)
   mv x12, x8
-  addi sp, sp, 24
+  addi sp, sp, 20
   jal x1, partition
-  addi sp, sp, -24
-  lw x1, 20(sp)
+  addi sp, sp, -20
+  lw x1, 16(sp)
   lw x8, 8(sp)
-  lw x12, 12(sp)
-  lw x9, 16(sp)
+  lw x9, 12(sp)
   mv x8, x10
   mv x8, x8
   lw t1, 0(sp)
   addi t1, t1, 0
   sw t1, 8(sp)
   mv x9, x9
-  mv x11, x8
-  li t2, 1
-  sub t0, x11, t2
-  mv x11, t0
-  sw x12, 12(sp)
-  sw x8, 16(sp)
-  sw x1, 20(sp)
-  lw x10, 8(sp)
-  mv x12, x11
-  mv x11, x9
-  addi sp, sp, 24
-  jal x1, quickSort
-  addi sp, sp, -24
-  lw x1, 20(sp)
-  lw x12, 12(sp)
-  lw x8, 16(sp)
-  lw t1, 0(sp)
-  addi t1, t1, 0
-  sw t1, 12(sp)
   mv x8, x8
   li t2, 1
-  add t0, x8, t2
-  mv x9, t0
-  mv x8, x12
-  sw x1, 16(sp)
-  lw x10, 12(sp)
+  sub t0, x8, t2
+  mv x8, t0
+  sw x1, 12(sp)
+  lw x10, 8(sp)
   mv x12, x8
   mv x11, x9
-  addi sp, sp, 20
+  addi sp, sp, 16
   jal x1, quickSort
-  addi sp, sp, -20
-  lw x1, 16(sp)
+  addi sp, sp, -16
+  lw x1, 12(sp)
   li t1, 2
   sw t1, 1600(sp)
   j quickSort_merge
