@@ -546,7 +546,7 @@ main_mainEntry:
   sw x20, 1000(sp)
   sw x21, 1004(sp)
   li t1, 0
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_for.cond
 main_cur:
   li t2, 6
@@ -554,7 +554,7 @@ main_cur:
   li t0, 1
   mv x24, t0
   li t1, 1
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_for.cond260
 main_for.stmt:
   sw x24, 1020(sp)
@@ -569,7 +569,7 @@ main_for.stmt:
   add t2, t2, sp
   sw t2, 1024(sp)
   li t2, 0
-  lw t0, 1024(sp),
+  lw t0, 1024(sp)
   sw t2, 0(t0)
   sw x24, 1028(sp)
   lw t1, 1028(sp)
@@ -579,7 +579,7 @@ main_for.stmt:
   lw t1, 1032(sp)
   mv x24, t1
   li t2, 2
-  sw t2, 1988(sp)
+  sw t2, 1600(sp)
   j main_for.cond
 main_for.cond:
   sw x24, 1036(sp)
@@ -597,7 +597,7 @@ main_for.cond:
   sw t1, 1048(sp)
   lw t2, 1048(sp)
   li t0, 3
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   bnez t2, main_for.stmt
   j main_cur
 main_cur258:
@@ -622,13 +622,13 @@ main_cur258:
   li t1, 1
   mv x25, t1
   li t2, 4
-  sw t2, 1988(sp)
+  sw t2, 1600(sp)
   j main_for.cond301
 main_for.stmt259:
   li t0, 1
   mv x25, t0
   li t1, 5
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_for.cond269
 main_for.cond260:
   sw x24, 1052(sp)
@@ -648,7 +648,7 @@ main_for.cond260:
   sw t0, 1068(sp)
   lw t1, 1068(sp)
   li t2, 6
-  sw t2, 1988(sp)
+  sw t2, 1600(sp)
   bnez t1, main_for.stmt259
   j main_cur258
 main_cur267:
@@ -660,7 +660,7 @@ main_cur267:
   lw t0, 1076(sp)
   mv x24, t0
   li t1, 7
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_for.cond260
 main_for.stmt268:
   sw x24, 1080(sp)
@@ -680,7 +680,7 @@ main_for.stmt268:
   sw t0, 1096(sp)
   lw t1, 1096(sp)
   li t2, 8
-  sw t2, 1988(sp)
+  sw t2, 1600(sp)
   bnez t1, main_if.then
   j main_if.else
 main_for.cond269:
@@ -701,7 +701,7 @@ main_for.cond269:
   sw t1, 1116(sp)
   lw t2, 1116(sp)
   li t0, 9
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   bnez t2, main_for.stmt268
   j main_cur267
 main_merge:
@@ -713,7 +713,7 @@ main_merge:
   lw t1, 1124(sp)
   mv x25, t1
   li t2, 10
-  sw t2, 1988(sp)
+  sw t2, 1600(sp)
   j main_for.cond269
 main_if.then:
   sw x24, 1128(sp)
@@ -733,10 +733,10 @@ main_if.then:
   add t2, t2, sp
   sw t2, 1136(sp)
   li t2, 0
-  lw t0, 1136(sp),
+  lw t0, 1136(sp)
   sw t2, 0(t0)
   li t1, 11
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_merge
 main_if.else:
   sw x24, 1140(sp)
@@ -756,10 +756,10 @@ main_if.else:
   add t2, t2, sp
   sw t2, 1148(sp)
   li t1, 9999
-  lw t2, 1148(sp),
+  lw t2, 1148(sp)
   sw t1, 0(t2)
   li t0, 12
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   j main_merge
 main_cur299:
   li t1, 64
@@ -769,7 +769,7 @@ main_cur299:
   li t0, 1
   mv x26, t0
   li t1, 13
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_for.cond317
 main_for.stmt300:
   sw x25, 1152(sp)
@@ -796,11 +796,11 @@ main_for.stmt300:
   add t2, t2, t1
   add t2, t2, sp
   sw t2, 1164(sp)
-  lw t0, 1164(sp),
+  lw t0, 1164(sp)
   lw t0, 0(t0)
   sw t0, 1168(sp)
   lw t1, 1168(sp)
-  lw t2, 1156(sp),
+  lw t2, 1156(sp)
   sw t1, 0(t2)
   sw x25, 1172(sp)
   lw t0, 1172(sp)
@@ -810,7 +810,7 @@ main_for.stmt300:
   lw t0, 1176(sp)
   mv x25, t0
   li t1, 14
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_for.cond301
 main_for.cond301:
   sw x25, 1180(sp)
@@ -829,7 +829,7 @@ main_for.cond301:
   sw t2, 1192(sp)
   lw t0, 1192(sp)
   li t1, 15
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   bnez t0, main_for.stmt300
   j main_cur299
 main_cur315:
@@ -845,7 +845,7 @@ main_for.stmt316:
   li t1, 1
   mv x25, t1
   li t2, 17
-  sw t2, 1988(sp)
+  sw t2, 1600(sp)
   j main_for.cond326
 main_for.cond317:
   sw x26, 1196(sp)
@@ -865,7 +865,7 @@ main_for.cond317:
   sw t1, 1212(sp)
   lw t2, 1212(sp)
   li t0, 18
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   bnez t2, main_for.stmt316
   j main_cur315
 main_cur324:
@@ -881,12 +881,12 @@ main_cur324:
   add t2, t2, sp
   sw t2, 1220(sp)
   li t1, 1
-  lw t2, 1220(sp),
+  lw t2, 1220(sp)
   sw t1, 0(t2)
   li t0, 1
   mv x24, t0
   li t1, 19
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_for.cond358
 main_for.stmt325:
   sw x25, 1224(sp)
@@ -900,7 +900,7 @@ main_for.stmt325:
   add t2, t2, t0
   add t2, t2, sp
   sw t2, 1228(sp)
-  lw t2, 1228(sp),
+  lw t2, 1228(sp)
   lw t2, 0(t2)
   sw t2, 1232(sp)
   lw t0, 1232(sp)
@@ -918,7 +918,7 @@ main_for.stmt325:
   sw t1, 1244(sp)
   lw t2, 1244(sp)
   li t0, 20
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   bnez t2, main_and.rhs
   j main_and.merge
 main_for.cond326:
@@ -939,7 +939,7 @@ main_for.cond326:
   sw t2, 1264(sp)
   lw t0, 1264(sp)
   li t1, 21
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   bnez t0, main_for.stmt325
   j main_cur324
 main_merge333:
@@ -951,7 +951,7 @@ main_merge333:
   lw t2, 1272(sp)
   mv x25, t2
   li t0, 22
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   j main_for.cond326
 main_and.rhs:
   sw x25, 1276(sp)
@@ -965,7 +965,7 @@ main_and.rhs:
   add t2, t2, t1
   add t2, t2, sp
   sw t2, 1280(sp)
-  lw t1, 1280(sp),
+  lw t1, 1280(sp)
   lw t1, 0(t1)
   sw t1, 1284(sp)
   sw x24, 1288(sp)
@@ -982,11 +982,11 @@ main_and.rhs:
   snez t0, t0
   sw t0, 1300(sp)
   li t1, 23
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_and.merge
 main_and.merge:
   li t0, 0
-  lw t1, 1988(sp)
+  lw t1, 1600(sp)
   xori t2, t1, 20
   seqz t2, t2
   mul t2, t2, t0
@@ -1006,7 +1006,7 @@ main_and.merge:
   sw t2, 1312(sp)
   lw t0, 1312(sp)
   li t1, 24
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   bnez t0, main_if.then346
   j main_merge333
 main_if.then346:
@@ -1021,7 +1021,7 @@ main_if.then346:
   add t2, t2, t1
   add t2, t2, sp
   sw t2, 1320(sp)
-  lw t2, 1320(sp),
+  lw t2, 1320(sp)
   lw t2, 0(t2)
   sw t2, 1324(sp)
   lw t0, 1324(sp)
@@ -1030,7 +1030,7 @@ main_if.then346:
   lw t1, 1328(sp)
   mv x27, t1
   li t2, 25
-  sw t2, 1988(sp)
+  sw t2, 1600(sp)
   j main_merge333
 main_cur356:
   sw x26, 1332(sp)
@@ -1041,7 +1041,7 @@ main_cur356:
   lw t0, 1336(sp)
   mv x26, t0
   li t1, 26
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   j main_for.cond317
 main_for.stmt357:
   sw x24, 1340(sp)
@@ -1055,7 +1055,7 @@ main_for.stmt357:
   add t2, t2, t1
   add t2, t2, sp
   sw t2, 1344(sp)
-  lw t2, 1344(sp),
+  lw t2, 1344(sp)
   lw t2, 0(t2)
   sw t2, 1348(sp)
   lw t0, 1348(sp)
@@ -1073,7 +1073,7 @@ main_for.stmt357:
   sw t1, 1360(sp)
   lw t2, 1360(sp)
   li t0, 27
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   bnez t2, main_and.rhs371
   j main_and.merge372
 main_for.cond358:
@@ -1094,7 +1094,7 @@ main_for.cond358:
   sw t2, 1380(sp)
   lw t0, 1380(sp)
   li t1, 28
-  sw t1, 1988(sp)
+  sw t1, 1600(sp)
   bnez t0, main_for.stmt357
   j main_cur356
 main_merge364:
@@ -1106,7 +1106,7 @@ main_merge364:
   lw t2, 1388(sp)
   mv x24, t2
   li t0, 29
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   j main_for.cond358
 main_and.rhs371:
   sw x24, 1392(sp)
@@ -1120,7 +1120,7 @@ main_and.rhs371:
   add t2, t2, t0
   add t2, t2, sp
   sw t2, 1396(sp)
-  lw t1, 1396(sp),
+  lw t1, 1396(sp)
   lw t1, 0(t1)
   sw t1, 1400(sp)
   sw x27, 1404(sp)
@@ -1134,7 +1134,7 @@ main_and.rhs371:
   add t2, t2, t0
   add t2, t2, sp
   sw t2, 1408(sp)
-  lw t2, 1408(sp),
+  lw t2, 1408(sp)
   lw t2, 0(t2)
   sw t2, 1412(sp)
   sw x27, 1416(sp)
@@ -1172,14 +1172,14 @@ main_and.rhs371:
   xor t0, t1, t2
   snez t0, t0
   sw t0, 1444(sp)
-  lw t1, 1424(sp),
+  lw t1, 1424(sp)
   sw x11, 0(t1)
   li t2, 30
-  sw t2, 1988(sp)
+  sw t2, 1600(sp)
   j main_and.merge372
 main_and.merge372:
   li t0, 0
-  lw t1, 1988(sp)
+  lw t1, 1600(sp)
   xori t2, t1, 27
   seqz t2, t2
   mul t2, t2, t0
@@ -1199,7 +1199,7 @@ main_and.merge372:
   sw t0, 1456(sp)
   lw t1, 1456(sp)
   li t2, 31
-  sw t2, 1988(sp)
+  sw t2, 1600(sp)
   bnez t1, main_if.then389
   j main_merge364
 main_if.then389:
@@ -1225,7 +1225,7 @@ main_if.then389:
   add t2, t2, t0
   add t2, t2, sp
   sw t2, 1472(sp)
-  lw t0, 1472(sp),
+  lw t0, 1472(sp)
   lw t0, 0(t0)
   sw t0, 1476(sp)
   sw x27, 1480(sp)
@@ -1244,7 +1244,7 @@ main_if.then389:
   add t2, t2, t0
   add t2, t2, sp
   sw t2, 1488(sp)
-  lw t0, 1488(sp),
+  lw t0, 1488(sp)
   lw t0, 0(t0)
   sw t0, 1492(sp)
   lw t1, 1476(sp)
@@ -1252,8 +1252,8 @@ main_if.then389:
   add t0, t1, t2
   sw t0, 1496(sp)
   lw t1, 1496(sp)
-  lw t2, 1464(sp),
+  lw t2, 1464(sp)
   sw t1, 0(t2)
   li t0, 32
-  sw t0, 1988(sp)
+  sw t0, 1600(sp)
   j main_merge364
