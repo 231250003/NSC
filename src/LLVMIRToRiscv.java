@@ -412,7 +412,7 @@ public class LLVMIRToRiscv {
                         }
                         for (Map.Entry<String, LLVMValueRef> entry : variable_reg.entrySet()) {
                             String reg = evaluate(entry.getValue());
-                            asm.mv("x1" + entry.getKey(), reg);
+                            asm.mv(entry.getKey(), reg);
                         }
                         if (argCount > 8) {
                             asm.op2("addi", "sp", "sp", next_offset - (argCount - 8) * 4);
