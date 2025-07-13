@@ -9,7 +9,7 @@ void matrix_multiply(int a[2][3], int b[3][2], int result[2][2]) {
             result[i][j] = 0;
             int k=1;
             //for (int k = 0; k < COLS_A; k=k+1) {
-                result[i][j] =result[i][j]+ a[i][k] * b[k][j];
+                result[i][j] =result[i][j]+ a[i][1] * b[1][j];
             //}
         }
     }
