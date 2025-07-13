@@ -331,6 +331,8 @@ public class LLVMIRToRiscv {
                                 } else {
                                     if (allocator.allocate(name).contains("x")){
                                         int src_reg_num=Integer.parseInt(allocator.allocate(name).substring(allocator.allocate(name).indexOf("x")+1));
+                                        System.out.println(src_reg_num);
+                                        System.out.println(10+i);
                                         calling_pass_param.put(src_reg_num,10+i);
                                     }
                                     else {
@@ -356,9 +358,7 @@ public class LLVMIRToRiscv {
                                 next_offset += 4;
                             }
                         }
-                        System.out.println("start");
-                        pass_param(calling_pass_param,asm);
-                        System.out.println("end");
+                        pass_param(calling_pass_param,asm););
                         for (Map.Entry<String, Integer> entry : const_param_reg.entrySet()) {
                             asm.li(entry.getKey(),entry.getValue());
                         }
