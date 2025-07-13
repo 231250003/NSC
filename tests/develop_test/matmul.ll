@@ -6,7 +6,7 @@ source_filename = "my_module"
 @ROWS_B = global i32 3
 @COLS_B = global i32 2
 
-define void @matrix_multiply([2 x [3 x i32]]* %a, [3 x [2 x i32]]* %b, [2 x [2 x i32]]* %result) {
+define void @matrix_multiply([2 x [2 x i32]]* %result) {
 matrix_multiplyEntry:
   %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
   store i32 0, i32* %elemPtr, align 4
@@ -55,11 +55,9 @@ mainEntry:
   store i32 0, i32* %elemPtr14, align 4
   %elemPtr15 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
   store i32 0, i32* %elemPtr15, align 4
-  %elemPtr16 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %matrix_a, i32 0
-  %elemPtr17 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %matrix_b, i32 0
-  %elemPtr18 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0
-  call void @matrix_multiply([2 x [3 x i32]]* %elemPtr16, [3 x [2 x i32]]* %elemPtr17, [2 x [2 x i32]]* %elemPtr18)
-  %elemPtr19 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
-  %load_lval = load i32, i32* %elemPtr19, align 4
+  %elemPtr16 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0
+  call void @matrix_multiply([2 x [2 x i32]]* %elemPtr16)
+  %elemPtr17 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
+  %load_lval = load i32, i32* %elemPtr17, align 4
   ret i32 %load_lval
 }

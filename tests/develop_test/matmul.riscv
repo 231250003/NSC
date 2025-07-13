@@ -66,25 +66,11 @@ main_mainEntry:
   li t0, 0
   mv x13, t0
   sw x1, 64(sp)
-  sw x8, 0(sp)
-  sw x20, 4(sp)
-  sw x21, 8(sp)
-  sw x22, 12(sp)
-  sw x23, 16(sp)
-  sw x24, 20(sp)
-  addi x10, sp, 0
-  sw x25, 24(sp)
-  sw x15, 28(sp)
-  sw x16, 32(sp)
-  sw x18, 36(sp)
-  sw x19, 40(sp)
-  sw x17, 44(sp)
-  addi x11, sp, 24
   sw x12, 48(sp)
   sw x11, 52(sp)
   sw x14, 56(sp)
   sw x13, 60(sp)
-  addi x12, sp, 48
+  addi x10, sp, 48
   addi sp, sp, 68
   jal x1, matrix_multiply
   addi sp, sp, -68
@@ -96,7 +82,7 @@ main_mainEntry:
   li a7, 93
   ecall
 matrix_multiply:
-  sw x12, 0(sp)
+  sw x10, 0(sp)
   j matrix_multiply_matrix_multiplyEntry
 matrix_multiply_matrix_multiplyEntry:
   lw t1, 0(sp)
