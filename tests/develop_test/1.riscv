@@ -8,99 +8,83 @@ main:
   addi sp, sp, -2044
   j main_mainEntry
 main_mainEntry:
-  lw x8, 0(sp)
   li t0, 1
-  mv x8, t0
-  lw x13, 4(sp)
+  sw t0, 0(sp)
   li t1, 2
-  mv x13, t1
-  lw x14, 8(sp)
+  sw t1, 4(sp)
   li t2, 3
-  mv x14, t2
-  lw x15, 12(sp)
+  sw t2, 8(sp)
   li t0, 0
-  mv x15, t0
+  sw t0, 12(sp)
   li t1, 0
-  mv x11, t1
+  mv x9, t1
   li t2, 0
-  mv x12, t2
-  sw x8, 0(sp)
-  sw x13, 4(sp)
-  sw x14, 8(sp)
-  sw x15, 12(sp)
+  mv x11, t2
   li t0, 0
   sw t0, 1600(sp)
   j main_for.cond
 main_cur:
-  mv x8, x11
+  mv x8, x9
   mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
 main_for.stmt:
-  sw x15, 16(sp)
-  sw x14, 20(sp)
-  sw x13, 24(sp)
-  sw x12, 28(sp)
-  sw x11, 32(sp)
-  sw x8, 36(sp)
-  sw x1, 40(sp)
-  addi sp, sp, 44
+  sw x11, 16(sp)
+  sw x9, 20(sp)
+  sw x1, 24(sp)
+  addi sp, sp, 28
   jal x1, print
-  addi sp, sp, -44
-  lw x1, 40(sp)
-  lw x15, 16(sp)
-  lw x14, 20(sp)
-  lw x13, 24(sp)
-  lw x12, 28(sp)
-  lw x11, 32(sp)
-  lw x8, 36(sp)
-  mv x11, x11
-  mv x9, x12
+  addi sp, sp, -28
+  lw x1, 24(sp)
+  lw x11, 16(sp)
+  lw x9, 20(sp)
+  mv x9, x9
+  mv x8, x11
   li t2, 0
   li t1, 1
-  mul t1, x9, t1
+  mul t1, x8, t1
   add t2, t2, t1
   slli t2, t2, 2
   li t0, 0
   add t2, t2, t0
   add t2, t2, sp
   sw t2, 16(sp)
-  lw x16, 16(sp),
-  lw x16, 0(x16)
-  mv x9, x16
-  add t0, x11, x9
-  mv x11, t0
+  lw x12, 16(sp),
+  lw x12, 0(x12)
+  mv x8, x12
+  add t0, x9, x8
+  mv x9, t0
   la t1, z
   lw t1, 0(t1)
-  mv x9, t1
-  add t2, x11, x9
-  mv x9, t2
-  mv x11, x9
-  mv x9, x12
+  mv x8, t1
+  add t2, x9, x8
+  mv x8, t2
+  mv x9, x8
+  mv x8, x11
   li t0, 1
-  add t1, x9, t0
-  mv x9, t1
-  mv x12, x9
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x8
   lw t2, 16(sp)
-  sw x16, 0(t2)
+  sw x12, 0(t2)
   li t0, 2
   sw t0, 1600(sp)
   j main_for.cond
 main_for.cond:
-  mv x9, x12
+  mv x8, x11
   li t1, 3
-  slt t2, x9, t1
-  mv x9, t2
-  mv t0, x9
-  mv x9, t0
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
   li t1, 0
-  xor t2, x9, t1
+  xor t2, x8, t1
   snez t2, t2
-  mv x9, t2
+  mv x8, t2
   li t0, 3
   sw t0, 1600(sp)
-  bnez x9, main_for.stmt
+  bnez x8, main_for.stmt
   j main_cur
 print:
   j print_printEntry
