@@ -25,8 +25,8 @@ swapEntry:
   ret void
 }
 
-define i32 @partition([6 x i32]* %arr, i32 %low, i32 %high) {
-partitionEntry:
+define i32 @b([6 x i32]* %arr, i32 %low, i32 %high) {
+bEntry:
   %param1_addr = alloca i32, align 4
   store i32 %low, i32* %param1_addr, align 4
   %param2_addr = alloca i32, align 4
@@ -65,7 +65,7 @@ for.stmt:                                         ; preds = %for.cond
   %to_bool12 = icmp ne i32 %zext_to_i3211, 0
   br i1 %to_bool12, label %if.then, label %merge
 
-for.cond:                                         ; preds = %merge, %partitionEntry
+for.cond:                                         ; preds = %merge, %bEntry
   %load_lval4 = load i32, i32* %j, align 4
   %load_lval5 = load i32, i32* %param2_addr, align 4
   %cmp = icmp slt i32 %load_lval4, %load_lval5
@@ -110,7 +110,7 @@ mainEntry:
   %elemPtr6 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0
   %load_lval = load i32, i32* %n, align 4
   %sub = sub i32 %load_lval, 1
-  %partition = call i32 @partition([6 x i32]* %elemPtr6, i32 0, i32 %sub)
+  %b = call i32 @b([6 x i32]* %elemPtr6, i32 0, i32 %sub)
   %elemPtr7 = getelementptr [6 x i32], [6 x i32]* %arr, i32 0, i32 5
   %load_lval8 = load i32, i32* %elemPtr7, align 4
   ret i32 %load_lval8

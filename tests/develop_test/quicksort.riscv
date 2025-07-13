@@ -40,7 +40,7 @@ main_mainEntry:
   mv x12, x11
   li x11, 0
   addi sp, sp, 28
-  jal x1, partition
+  jal x1, b
   addi sp, sp, -28
   lw x1, 24(sp)
   lw x9, 20(sp)
@@ -117,12 +117,12 @@ swap_swapEntry:
   lw t0, 16(sp)
   sw x9, 0(t0)
   ret
-partition:
+b:
   sw x10, 0(sp)
   mv x9, x11
   mv x11, x12
-  j partition_partitionEntry
-partition_partitionEntry:
+  j b_bEntry
+b_bEntry:
   mv x9, x9
   mv x16, x11
   mv x8, x16
@@ -149,8 +149,8 @@ partition_partitionEntry:
   sw x8, 0(t2)
   li t0, 0
   sw t0, 1600(sp)
-  j partition_for.cond
-partition_cur:
+  j b_for.cond
+b_cur:
   lw t1, 0(sp)
   addi t1, t1, 0
   sw t1, 8(sp)
@@ -178,7 +178,7 @@ partition_cur:
   mv x9, t2
   mv x10, x9
   ret
-partition_for.stmt:
+b_for.stmt:
   mv x11, x9
   li t2, 0
   li t1, 1
@@ -203,9 +203,9 @@ partition_for.stmt:
   sw x14, 20(sp)
   li t0, 2
   sw t0, 1600(sp)
-  bnez x11, partition_if.then
-  j partition_merge
-partition_for.cond:
+  bnez x11, b_if.then
+  j b_merge
+b_for.cond:
   mv x13, x9
   mv x11, x16
   slt t1, x13, x11
@@ -218,9 +218,9 @@ partition_for.cond:
   mv x11, t1
   li t2, 3
   sw t2, 1600(sp)
-  bnez x11, partition_for.stmt
-  j partition_cur
-partition_merge:
+  bnez x11, b_for.stmt
+  j b_cur
+b_merge:
   mv x9, x9
   li t0, 1
   add t1, x9, t0
@@ -228,8 +228,8 @@ partition_merge:
   mv x9, x9
   li t2, 4
   sw t2, 1600(sp)
-  j partition_for.cond
-partition_if.then:
+  j b_for.cond
+b_if.then:
   mv x11, x12
   li t0, 1
   add t1, x11, t0
@@ -262,4 +262,4 @@ partition_if.then:
   lw x14, 40(sp)
   li t0, 5
   sw t0, 1600(sp)
-  j partition_merge
+  j b_merge
