@@ -317,10 +317,11 @@ public class LLVMIRToRiscv {
                         String callfuncName = LLVM.LLVMGetValueName(calledFunction).getString();
                         int argCount = LLVM.LLVMGetNumArgOperands(inst);
                         Set<String> live_var = new HashSet<>(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(inst));
+                        Map<String,String>context_stored_in_calling_func=new HashMap<>();
                         for (String x : live_var) {
                             if (allocator.allocate(x) != null && allocator.allocate(x).contains("x")) {
                                 asm.instr("sw", allocator.allocate(x), String.format("%d(sp)", next_offset));
-                                value_stack_addr.put(x, String.format("%d(sp)", next_offset));
+                                context_stored_in_calling_func.put(x, String.format("%d(sp)", next_offset));
                                 next_offset += 4;
                             }
                         }
@@ -427,7 +428,7 @@ public class LLVMIRToRiscv {
                         for (String x : live_var) {
                             if (allocator.allocate(x) != null && allocator.allocate(x).contains("x")) {
                                 next_offset -= 4;
-                                asm.instr("lw", allocator.allocate(x), value_stack_addr.get(x));
+                                asm.instr("lw", allocator.allocate(x), context_stored_in_calling_func.get(x));
                             }
                         }
                         //TODO GETTING THE RETURN VALUE AND need_saved_to_stack
