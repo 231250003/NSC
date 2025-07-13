@@ -3,16 +3,16 @@
   .globl main
 main:
   addi sp, sp, -2044
-  j mainEntry
-mainEntry:
+  j main_mainEntry
+main_mainEntry:
   li t0, 30
   mv x8, t0
   mv x8, x8
   sw x8, 0(sp)
   sw x1, 4(sp)
+  mv x12, x8
   li x10, 10
   li x11, 20
-  mv x12, x8
   addi sp, sp, 8
   jal x1, f
   addi sp, sp, -8
@@ -33,19 +33,18 @@ mainEntry:
 f:
   mv x9, x11
   mv x8, x12
-  mv t0, x10
-  mv x11, t0
-  j fEntry
-fEntry:
+  mv x11, x10
+  j f_fEntry
+f_fEntry:
   mv x11, x11
   mv x9, x9
   mv x12, x8
   mv x11, x11
   mv x8, x9
-  add t1, x11, x8
-  mv x9, t1
+  add t0, x11, x8
+  mv x9, t0
   mv x8, x12
-  add t2, x9, x8
-  mv x8, t2
+  add t1, x9, x8
+  mv x8, t1
   mv x10, x8
   ret
