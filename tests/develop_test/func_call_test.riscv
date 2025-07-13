@@ -51,9 +51,9 @@ main_mainEntry:
   ecall
 swap:
   sw x10, 0(sp)
-  mv t0, x11
-  mv x11, x12
-  mv x12, t0
+  mv t0, x12
+  mv x12, x11
+  mv x11, t0
   j swap_swapEntry
 swap_swapEntry:
   mv x9, x12
@@ -120,45 +120,44 @@ swap_swapEntry:
 partition:
   sw x10, 0(sp)
   mv x9, x11
-  mv t1, x12
-  mv x11, t1
+  mv x11, x12
   j partition_partitionEntry
 partition_partitionEntry:
   mv x9, x9
   mv x16, x11
   mv x8, x16
   li t2, 0
-  li t1, 1
-  mul t1, x8, t1
-  add t2, t2, t1
-  slli t2, t2, 2
-  lw t0, 0(sp)
+  li t0, 1
+  mul t0, x8, t0
   add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
   sw t2, 4(sp)
   lw x8, 4(sp),
   lw x8, 0(x8)
   mv x11, x8
   mv x15, x11
   mv x11, x9
-  li t1, 1
-  sub t2, x11, t1
-  mv x11, t2
+  li t0, 1
+  sub t1, x11, t0
+  mv x11, t1
   mv x12, x11
   mv x9, x9
   mv x9, x9
-  lw t0, 4(sp)
-  sw x8, 0(t0)
-  li t1, 0
-  sw t1, 1600(sp)
+  lw t2, 4(sp)
+  sw x8, 0(t2)
+  li t0, 0
+  sw t0, 1600(sp)
   j partition_for.cond
 partition_cur:
-  lw t2, 0(sp)
-  addi t2, t2, 0
-  sw t2, 8(sp)
+  lw t1, 0(sp)
+  addi t1, t1, 0
+  sw t1, 8(sp)
   mv x9, x12
-  li t0, 1
-  add t1, x9, t0
-  mv x11, t1
+  li t2, 1
+  add t0, x9, t2
+  mv x11, t0
   mv x9, x16
   sw x12, 12(sp)
   sw x8, 16(sp)
@@ -166,8 +165,6 @@ partition_cur:
   sw x1, 24(sp)
   lw x10, 8(sp)
   mv x12, x9
-  mv t2, x11
-  mv x11, t2
   addi sp, sp, 28
   jal x1, swap
   addi sp, sp, -28
@@ -176,9 +173,9 @@ partition_cur:
   lw x8, 16(sp)
   lw x14, 20(sp)
   mv x9, x12
-  li t0, 1
-  add t1, x9, t0
-  mv x9, t1
+  li t1, 1
+  add t2, x9, t1
+  mv x9, t2
   mv x10, x9
   ret
 partition_for.stmt:
@@ -194,8 +191,24 @@ partition_for.stmt:
   lw x14, 20(sp)
   mv x13, x14
   mv x11, x15
-  sgt t1, x13, x11
-  seqz t1, t1
+  sgt t2, x13, x11
+  seqz t2, t2
+  mv x11, t2
+  mv t0, x11
+  mv x11, t0
+  li t1, 0
+  xor t2, x11, t1
+  snez t2, t2
+  mv x11, t2
+  sw x14, 20(sp)
+  li t0, 2
+  sw t0, 1600(sp)
+  bnez x11, partition_if.then
+  j partition_merge
+partition_for.cond:
+  mv x13, x9
+  mv x11, x16
+  slt t1, x13, x11
   mv x11, t1
   mv t2, x11
   mv x11, t2
@@ -203,44 +216,28 @@ partition_for.stmt:
   xor t1, x11, t0
   snez t1, t1
   mv x11, t1
-  sw x14, 20(sp)
-  li t2, 2
+  li t2, 3
   sw t2, 1600(sp)
-  bnez x11, partition_if.then
-  j partition_merge
-partition_for.cond:
-  mv x13, x9
-  mv x11, x16
-  slt t0, x13, x11
-  mv x11, t0
-  mv t1, x11
-  mv x11, t1
-  li t2, 0
-  xor t0, x11, t2
-  snez t0, t0
-  mv x11, t0
-  li t1, 3
-  sw t1, 1600(sp)
   bnez x11, partition_for.stmt
   j partition_cur
 partition_merge:
   mv x9, x9
-  li t2, 1
-  add t0, x9, t2
-  mv x9, t0
+  li t0, 1
+  add t1, x9, t0
+  mv x9, t1
   mv x9, x9
-  li t1, 4
-  sw t1, 1600(sp)
+  li t2, 4
+  sw t2, 1600(sp)
   j partition_for.cond
 partition_if.then:
   mv x11, x12
-  li t2, 1
-  add t0, x11, t2
-  mv x11, t0
+  li t0, 1
+  add t1, x11, t0
+  mv x11, t1
   mv x12, x11
-  lw t1, 0(sp)
-  addi t1, t1, 0
-  sw t1, 16(sp)
+  lw t2, 0(sp)
+  addi t2, t2, 0
+  sw t2, 16(sp)
   mv x13, x12
   mv x11, x9
   sw x16, 20(sp)
@@ -251,9 +248,8 @@ partition_if.then:
   sw x14, 40(sp)
   sw x1, 44(sp)
   lw x10, 16(sp)
+  mv x12, x11
   mv x11, x13
-  mv t2, x11
-  mv x12, t2
   addi sp, sp, 48
   jal x1, swap
   addi sp, sp, -48
@@ -270,32 +266,31 @@ partition_if.then:
 quickSort:
   sw x10, 0(sp)
   mv x8, x11
-  mv t1, x12
-  mv x11, t1
+  mv x11, x12
   j quickSort_quickSortEntry
 quickSort_quickSortEntry:
   mv x9, x8
   mv x12, x11
   mv x11, x9
   mv x8, x12
-  slt t2, x11, x8
-  mv x8, t2
-  mv t0, x8
-  mv x8, t0
-  li t1, 0
-  xor t2, x8, t1
-  snez t2, t2
+  slt t1, x11, x8
+  mv x8, t1
+  mv t2, x8
   mv x8, t2
   li t0, 0
-  sw t0, 1600(sp)
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 0
+  sw t2, 1600(sp)
   bnez x8, quickSort_if.then
   j quickSort_merge
 quickSort_merge:
   ret
 quickSort_if.then:
-  lw t1, 0(sp)
-  addi t1, t1, 0
-  sw t1, 4(sp)
+  lw t0, 0(sp)
+  addi t0, t0, 0
+  sw t0, 4(sp)
   mv x11, x9
   mv x8, x12
   sw x8, 8(sp)
@@ -304,8 +299,6 @@ quickSort_if.then:
   sw x1, 20(sp)
   lw x10, 4(sp)
   mv x12, x8
-  mv t2, x11
-  mv x11, t2
   addi sp, sp, 24
   jal x1, partition
   addi sp, sp, -24
@@ -315,21 +308,20 @@ quickSort_if.then:
   lw x9, 16(sp)
   mv x8, x10
   mv x8, x8
-  lw t0, 0(sp)
-  addi t0, t0, 0
-  sw t0, 8(sp)
+  lw t1, 0(sp)
+  addi t1, t1, 0
+  sw t1, 8(sp)
   mv x9, x9
   mv x11, x8
-  li t1, 1
-  sub t2, x11, t1
-  mv x11, t2
+  li t2, 1
+  sub t0, x11, t2
+  mv x11, t0
   sw x12, 12(sp)
   sw x8, 16(sp)
   sw x1, 20(sp)
   lw x10, 8(sp)
+  mv x12, x11
   mv x11, x9
-  mv t0, x11
-  mv x12, t0
   addi sp, sp, 24
   jal x1, quickSort
   addi sp, sp, -24
@@ -346,8 +338,8 @@ quickSort_if.then:
   mv x8, x12
   sw x1, 16(sp)
   lw x10, 12(sp)
-  mv x11, x9
   mv x12, x8
+  mv x11, x9
   addi sp, sp, 20
   jal x1, quickSort
   addi sp, sp, -20

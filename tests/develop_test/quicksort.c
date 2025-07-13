@@ -16,6 +16,6 @@ void b(int arr[6], int low, int high) {
 int main() {
     int arr[6] = {10, 7, 8, 9, 1, 5};
     int n = 6;
-    b(arr, 2, n - 1);
-    return arr[2];
+    b(arr, 1, n - 1);
+    return arr[0];
 }
