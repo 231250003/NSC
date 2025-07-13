@@ -10,16 +10,13 @@ define void @matrix_multiply([2 x [3 x i32]]* %a, [3 x [2 x i32]]* %b, [2 x [2 x
 matrix_multiplyEntry:
   %i = alloca i32, align 4
   store i32 1, i32* %i, align 4
-  %load_lval = load i32, i32* %i, align 4
-  %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval, i32 1
+  %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
   store i32 0, i32* %elemPtr, align 4
-  %load_lval1 = load i32, i32* %i, align 4
-  %elemPtr2 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval1, i32 1
-  %load_lval3 = load i32, i32* %i, align 4
-  %elemPtr4 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval3, i32 1
-  %load_lval5 = load i32, i32* %elemPtr4, align 4
-  %add = add i32 %load_lval5, 1
-  store i32 %add, i32* %elemPtr2, align 4
+  %elemPtr1 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
+  %elemPtr2 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
+  %load_lval = load i32, i32* %elemPtr2, align 4
+  %add = add i32 %load_lval, 1
+  store i32 %add, i32* %elemPtr1, align 4
   ret void
 }
 
