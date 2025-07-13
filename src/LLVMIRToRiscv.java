@@ -312,15 +312,16 @@ public class LLVMIRToRiscv {
                         String callfuncName = LLVM.LLVMGetValueName(calledFunction).getString();
                         int argCount = LLVM.LLVMGetNumArgOperands(inst);
                         Set<String> live_var = new HashSet<>(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(inst));
-                        Map<String,String>context_stored_in_calling_func=new HashMap<>();//有一些GETELEMENTPTR的问题，即如果用value stack addr会破坏还未被赋值的getelemmentptr
-                        //因为GETELEMENTPTR本身既可以是寄存器也可以是地址，因此在每个块访问结束后保证GETELEMENTPTR的数据是正确的，即栈（数组）已经正确写入每一个值，在块访问时栈可以与寄存器保持不一致，即寄存器中的数据更新
+                        Map<String,String>context_stored_in_calling_func=new HashMap<>();//有一些GETELEMENTPTR的问题，即如果用value_stack_addr的MAP会破坏还未被赋值的getelemmentptr,因此新建一个context_stored_in_calling_func
+                        //因为GETELEMENTPTR本身既可以是寄存器也可以是地址，因此在每个块访问结束后必须要强制保证GETELEMENTPTR的数据是正确的,即栈（数组）已经正确写入每一个值,通过在LLVMRET和LLVMBR后面存储寄存器的值到栈实现
+                        // 在访问块内部时栈可以与寄存器保持不一致，即寄存器中的数据更新
                         for (String x : live_var) {
                             if (allocator.allocate(x) != null && allocator.allocate(x).contains("x")) {
                                 asm.instr("sw", allocator.allocate(x), String.format("%d(sp)", next_offset));
                                 context_stored_in_calling_func.put(x, String.format("%d(sp)", next_offset));
                                 next_offset += 4;
                             }
-                        }
+                        }//采取所有寄存器都由调用者保存的策略
                         asm.instr("sw", "x1", String.format("%d(sp)", next_offset));
                         next_offset += 4;
                         Map<String, Integer> const_param_reg = new HashMap<>();
@@ -344,6 +345,8 @@ public class LLVMIRToRiscv {
                                     if (x.cur_offset.size() != x.array_size.size()) continue;
                                     boolean need_saved_to_stack = false;
                                     need_saved_to_stack = GraphColoringRegisterAllocator.naive_alias_may_analysis(current_param_ref, x);
+                                    //把调用函数可能用到的在寄存器中的数组变量全部写回到数组中去
+                                    //注意块内部语句是按顺序访问的
                                     if (need_saved_to_stack) {
                                         if (allocator.allocate(x.variable_name).contains("x")) {
                                             String reg = allocator.allocate(x.variable_name);

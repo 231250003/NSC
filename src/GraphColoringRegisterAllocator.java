@@ -21,6 +21,58 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
     private Stack<String> color_order = new Stack<>();
     Map<String, Integer> var_used_num = new HashMap<>();
     List<array_variable> array_variable_ref = new ArrayList<>();//在跨块分析活跃变量时例如定义a[1]后后面访问a[i],a[1]可能是活跃的
+    Map<String,array_variable> variable_and_array_name_to_array_variable_ref=new HashMap<>();
+    //must be done  after  array_variable_ref has been calculated
+    public void cal_elementptr_val_can_be_stored_in_reg(LLVMValueRef func){
+        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+           LLVMValueRef instr=LLVM.LLVMGetLastInstruction(bb);
+           while(instr!=null){
+                if(LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMStore&&LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(instr, 1)).getString().contains("elemPtr")){
+                    String cur_instr_pointer=LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(instr, 1)).getString();
+                    LLVMValueRef instr2=LLVM.LLVMGetNextInstruction(instr);
+                    boolean can_use_reg=true;
+                    for(;instr2!=null;instr2=LLVM.LLVMGetNextInstruction(instr2)){
+                        if(LLVM.LLVMGetInstructionOpcode(instr2)==LLVM.LLVMStore&&LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(instr2, 1)).getString().contains("elemPtr")){
+                            if(naive_alias_may_analysis(variable_and_array_name_to_array_variable_ref.get(cur_instr_pointer), variable_and_array_name_to_array_variable_ref.get(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(instr2, 1)).getString()))) {
+                                valueMap.put(cur_instr_pointer,"stack");
+                                break;
+                            }
+                        }
+                        else if(LLVM.LLVMGetInstructionOpcode(instr2)==LLVM.LLVMCall){
+                            int argCount = LLVM.LLVMGetNumArgOperands(instr2);
+                            for (int i = 0; i < argCount; i++){
+                                LLVMValueRef arg = LLVM.LLVMGetOperand(instr2, i);
+                                LLVMTypeRef type = LLVM.LLVMTypeOf(arg);
+                                int kind = LLVM.LLVMGetTypeKind(type);
+                                if (kind == LLVM.LLVMPointerTypeKind){
+                                    String name = LLVM.LLVMGetValueName(arg).getString();
+                                    if(naive_alias_may_analysis(variable_and_array_name_to_array_variable_ref.get(cur_instr_pointer), variable_and_array_name_to_array_variable_ref.get(name))) {
+                                        valueMap.put(cur_instr_pointer,"stack");
+                                        can_use_reg=false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if(!can_use_reg) break;
+                    }
+                }
+               instr=LLVM.LLVMGetPreviousInstruction(instr);
+           }
+        }
+    }
+    /*
+        define void @b([2 x [2 x i32]]* %result) {
+    bEntry:
+      %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
+      %elemPtr1 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
+      %load_lval = load i32, i32* %elemPtr1, align 4
+      %add = add i32 %load_lval, 1
+      store i32 %add, i32* %elemPtr, align 4
+      ret void
+    }
+        因此如果一个elementptr的naive_pointer_may_analysis可能与后面的elemtptr一样，那他不能用寄存器保存（这样做是绝对安全的）。
+     */
 
     public void cal_def_use(LLVMValueRef func) {
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
@@ -66,6 +118,8 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                     valueMap.put(LLVM.LLVMGetValueName(base_ptr).getString(), "stack");
                     array_variable av = new array_variable(variable_name, LLVM.LLVMGetValueName(base_ptr).getString(), array_dim, cur_offset, array_size);
                     array_variable_ref.add(av);
+                    variable_and_array_name_to_array_variable_ref.put(variable_name,av);
+                    variable_and_array_name_to_array_variable_ref.put(LLVM.LLVMGetValueName(base_ptr).getString(),new array_variable(LLVM.LLVMGetValueName(base_ptr).getString(),LLVM.LLVMGetValueName(base_ptr).getString(),array_dim,new ArrayList<>(),array_size));
                 }
                 String line3;
                 if(LLVM.LLVMGetInstructionOpcode(inst)==LLVM.LLVMPHI){
@@ -399,6 +453,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
         var_used_num = new HashMap<>();
         color_order = new Stack<>();
         array_variable_ref = new ArrayList<>();
+        variable_and_array_name_to_array_variable_ref=new HashMap<>();
         cal_def_use(func);
         cal_in_out_block(func);
         create_graph(func);
