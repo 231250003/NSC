@@ -1,3 +1,4 @@
+data
 	.data
 	.globl ROWS_A
 ROWS_A:
@@ -24,6 +25,7 @@ resultsaasdas:
 	.word 0
 	.word 0
 
+text
 	.text
 	.globl main
 main:
