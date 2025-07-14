@@ -13,8 +13,10 @@ public class AsmBuilder {
         current = dataSegment;
     }
 
-    public void directive(String dir) {
-        current.append("  .").append(dir).append("\n");
+    public void directive(String name, String... args) {
+        current.append("\t." + name);
+        for (String arg : args) current.append(" " + arg);
+        current.append("\n");
     }
 
     public void label(String label) {

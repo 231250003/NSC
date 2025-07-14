@@ -183,6 +183,27 @@ public class LLVMIRToRiscv {
                 }
             }
             pass_param(param_conflict_graph, asm);
+            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+                for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)){
+                    int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                    LLVMTypeRef ty = LLVM.LLVMGetAllocatedType(inst);
+                    if (opcode == LLVM.LLVMAlloca) {
+                        if (LLVM.LLVMGetTypeKind(ty) == LLVM.LLVMArrayTypeKind) {
+                            int total = 1;
+                            while (LLVM.LLVMGetTypeKind(ty) == LLVM.LLVMArrayTypeKind) {
+                                int len = LLVM.LLVMGetArrayLength(ty);
+                                total *= len;
+                                ty = LLVM.LLVMGetElementType(ty);
+                            }
+                            if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null)
+                                next_offset += total * 4;
+                        } else if (allocator.allocate(LLVM.LLVMGetValueName(inst).getString()).equals("stack")) {
+                            if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null)
+                                next_offset += 4;
+                        }
+                    }
+                }
+            }
             asm.j(funcName + "_" + funcName + "Entry");
             for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
                 String label = LLVM.LLVMGetBasicBlockName(bb).getString();
@@ -277,6 +298,7 @@ public class LLVMIRToRiscv {
                                 }
                             }
                             asm.op2("slli", offset_reg, offset_reg, 2);
+                            //if(value_stack_addr.get(array_name))
                             if (value_stack_addr.get(array_name).contains("(")) {
                                 //System.out.println(array_name);
                                 int start_arr_addr = Integer.parseInt(value_stack_addr.get(array_name).substring(0, value_stack_addr.get(array_name).indexOf("(")));
@@ -446,20 +468,7 @@ public class LLVMIRToRiscv {
                             }
                         }
                     } else if (opcode == LLVM.LLVMAlloca) {
-                        LLVMTypeRef ty = LLVM.LLVMGetAllocatedType(inst);
-                        if (LLVM.LLVMGetTypeKind(ty) == LLVM.LLVMArrayTypeKind) {
-                            int total = 1;
-                            while (LLVM.LLVMGetTypeKind(ty) == LLVM.LLVMArrayTypeKind) {
-                                int len = LLVM.LLVMGetArrayLength(ty);
-                                total *= len;
-                                ty = LLVM.LLVMGetElementType(ty);
-                            }
-                            if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null)
-                                next_offset += total * 4;
-                        } else if (allocator.allocate(LLVM.LLVMGetValueName(inst).getString()).equals("stack")) {
-                            if (value_stack_addr.putIfAbsent(LLVM.LLVMGetValueName(inst).getString(), String.format("%d(sp)", next_offset)) == null)
-                                next_offset += 4;
-                        }
+                        continue;
                     } else if (opcode == LLVM.LLVMStore) {
                         LLVMValueRef val = LLVM.LLVMGetOperand(inst, 0);
                         LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
@@ -800,19 +809,74 @@ public class LLVMIRToRiscv {
     }
 
 
+//    private void emitGlobalVariables() {
+//        // TODO array value ininitlization
+//        asm.switchToData();
+//        for (LLVMValueRef global = LLVM.LLVMGetFirstGlobal(module);
+//             global != null && !global.isNull();
+//             global = LLVM.LLVMGetNextGlobal(global)) {
+//            String name = LLVM.LLVMGetValueName(global).getString();
+//            LLVMValueRef init = LLVM.LLVMGetInitializer(global);
+//            long val = init.isNull() ? 0 : LLVM.LLVMConstIntGetSExtValue(init);
+//            asm.directive("data");
+//            asm.word(name, val);
+//        }
+//        asm.switchToText();
+//    }
     private void emitGlobalVariables() {
-        // TODO array value ininitlization
         asm.switchToData();
         for (LLVMValueRef global = LLVM.LLVMGetFirstGlobal(module);
              global != null && !global.isNull();
              global = LLVM.LLVMGetNextGlobal(global)) {
+
             String name = LLVM.LLVMGetValueName(global).getString();
             LLVMValueRef init = LLVM.LLVMGetInitializer(global);
-            long val = init.isNull() ? 0 : LLVM.LLVMConstIntGetSExtValue(init);
-            asm.directive("data");
-            asm.word(name, val);
+
+            if (init == null || init.isNull()) continue;
+
+            LLVMTypeRef type = LLVM.LLVMTypeOf(init);
+
+            asm.directive("globl", name);
+            asm.label(name);
+
+            emitConstant(init, type); // 递归输出数组/结构内容
         }
         asm.switchToText();
+    }
+    private void emitConstant(LLVMValueRef value, LLVMTypeRef type) {
+        int kind = LLVM.LLVMGetTypeKind(type);
+
+        switch (kind) {
+            case LLVM.LLVMIntegerTypeKind:
+                long val = LLVM.LLVMConstIntGetSExtValue(value);
+                asm.directive("word", Long.toString(val));
+                break;
+            case LLVM.LLVMArrayTypeKind:
+                int len = (int) LLVM.LLVMGetArrayLength(type);
+                LLVMTypeRef elemType = LLVM.LLVMGetElementType(type);
+
+                for (int i = 0; i < len; i++) {
+                    LLVMValueRef elem = LLVM.LLVMGetOperand(value, i);
+                    emitConstant(elem, elemType); // 递归处理嵌套数组
+                }
+                break;
+            case LLVM.LLVMStructTypeKind:
+                int elemCount = LLVM.LLVMCountStructElementTypes(type);
+                for (int i = 0; i < elemCount; i++) {
+                    LLVMValueRef elem = LLVM.LLVMGetOperand(value, i);
+                    LLVMTypeRef elemTy = LLVM.LLVMStructGetTypeAtIndex(type, i);
+                    emitConstant(elem, elemTy);
+                }
+                break;
+            case LLVM.LLVMConstantAggregateZeroValueKind:
+                // get size in bytes and output zeros
+                int bytes =4;
+                for (int i = 0; i < bytes; i += 4)
+                    asm.directive("word", "0");
+                break;
+            default:
+                throw new UnsupportedOperationException("Unsupported global init type: " + kind);
+        }
     }
 
     private String freshReg() {
