@@ -877,7 +877,7 @@ public class LLVMIRToRiscv {
 //            default:
 //                throw new UnsupportedOperationException("Unsupported global init type: " + kind);
 //        }
-    }
+//    }
 
     private String freshReg() {
         return "t" + (regCount++ % 3);
