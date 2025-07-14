@@ -5,7 +5,7 @@ source_filename = "my_module"
 @COLS_A = global i32 3
 @ROWS_B = global i32 3
 @COLS_B = global i32 2
-@result2 = global [2 x [2 x i32]] [[2 x i32] [i32 1, i32 1], [2 x i32] [i32 1, i32 1]]
+@resultsaasdas = global [5 x [2 x i32]] [[2 x i32] [i32 1, i32 1], [2 x i32] zeroinitializer, [2 x i32] zeroinitializer, [2 x i32] zeroinitializer, [2 x i32] zeroinitializer]
 
 define void @matrix_multiply([2 x [3 x i32]]* %a, [3 x [2 x i32]]* %b, [2 x [2 x i32]]* %result) {
 matrix_multiplyEntry:
