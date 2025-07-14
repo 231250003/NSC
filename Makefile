@@ -14,7 +14,7 @@ JAVA = java
 
 PFILE = $(shell find . -name "SysYParser.g4")
 LFILE = $(shell find . -name "SysYLexer.g4")
-JAVAFILE = $(shell find . -name "*.java")
+JAVAFILE = $(shell find ./src/main/java -name "*.java")
 
 compile: antlr
 	$(call git_commit,"make")
