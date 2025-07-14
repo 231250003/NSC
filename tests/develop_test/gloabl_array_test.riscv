@@ -1,3 +1,4 @@
+	.data
 	.globl ROWS_A
 ROWS_A:
 	.word 2
