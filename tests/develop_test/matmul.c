@@ -29,6 +29,7 @@ int main() {
 
     int result[2][2];
 
+
     // 计算矩阵乘法
     matrix_multiply(matrix_a, matrix_b, result);
 

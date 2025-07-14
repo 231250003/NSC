@@ -1,9 +1,9 @@
-  .data
+	.data
 z:
   .word 3
 
-  .text
-  .globl main
+	.text
+	.globl main
 main:
   addi sp, sp, -2044
   j main_mainEntry
@@ -17,33 +17,35 @@ main_mainEntry:
   li t0, 0
   sw t0, 12(sp)
   li t1, 0
-  mv x9, t1
+  mv x14, t1
   li t2, 0
-  mv x11, t2
+  mv x9, t2
   li t0, 0
   sw t0, 1600(sp)
   j main_for.cond
 main_cur:
-  mv x8, x9
+  mv x8, x14
   mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
 main_for.stmt:
-  sw x11, 16(sp)
+  sw x13, 16(sp)
   sw x9, 20(sp)
-  sw x1, 24(sp)
-  addi sp, sp, 28
+  sw x14, 24(sp)
+  sw x1, 28(sp)
+  addi sp, sp, 32
   jal x1, print
-  addi sp, sp, -28
-  lw x1, 24(sp)
-  lw x11, 16(sp)
+  addi sp, sp, -32
+  lw x1, 28(sp)
+  lw x13, 16(sp)
   lw x9, 20(sp)
-  mv x9, x9
-  mv x8, x11
+  lw x14, 24(sp)
+  mv x8, x14
+  mv x11, x9
   li t2, 0
   li t1, 1
-  mul t1, x8, t1
+  mul t1, x11, t1
   add t2, t2, t1
   slli t2, t2, 2
   li t0, 0
@@ -52,27 +54,45 @@ main_for.stmt:
   sw t2, 16(sp)
   lw x12, 16(sp),
   lw x12, 0(x12)
-  mv x8, x12
-  add t0, x9, x8
-  mv x9, t0
+  mv x11, x12
+  add t0, x8, x11
+  mv x11, t0
   la t1, z
   lw t1, 0(t1)
   mv x8, t1
-  add t2, x9, x8
+  add t2, x11, x8
+  mv x14, t2
+  lw x11, 0(sp)
+  mv x8, x11
+  add t0, x14, x8
+  mv x8, t0
+  mv x14, x8
+  mv x8, x9
+  li t1, 1
+  add t2, x8, t1
   mv x8, t2
   mv x9, x8
-  mv x8, x11
-  li t0, 1
-  add t1, x8, t0
+  mv x8, x9
+  li t0, 3
+  xor t1, x8, t0
+  seqz t1, t1
   mv x8, t1
-  mv x11, x8
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
   lw t2, 16(sp)
   sw x12, 0(t2)
+  sw x11, 0(sp)
   li t0, 2
   sw t0, 1600(sp)
-  j main_for.cond
+  bnez x8, main_if.then
+  j main_merge
 main_for.cond:
-  mv x8, x11
+  lw x13, 0(sp)
+  mv x8, x13
   li t1, 3
   slt t2, x8, t1
   mv x8, t2
@@ -82,26 +102,41 @@ main_for.cond:
   xor t2, x8, t1
   snez t2, t2
   mv x8, t2
+  sw x13, 0(sp)
   li t0, 3
   sw t0, 1600(sp)
   bnez x8, main_for.stmt
   j main_cur
+main_merge:
+  lw t1, 0(sp)
+  mv x8, t1
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  sw x8, 0(sp)
+  li t1, 4
+  sw t1, 1600(sp)
+  j main_for.cond
+main_if.then:
+  li t2, 5
+  sw t2, 1600(sp)
+  j main_cur
 print:
   j print_printEntry
 print_printEntry:
+  la t0, z
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 3
+  add t2, x8, t1
+  mv x8, t2
+  la t0, z
+  sw x8, 0(t0)
   la t1, z
   lw t1, 0(t1)
   mv x8, t1
   li t2, 3
   add t0, x8, t2
   mv x8, t0
-  la t1, z
-  sw x8, 0(t1)
-  la t2, z
-  lw t2, 0(t2)
-  mv x8, t2
-  li t0, 3
-  add t1, x8, t0
-  mv x8, t1
   mv x10, x8
   ret
