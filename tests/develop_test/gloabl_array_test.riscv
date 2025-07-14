@@ -1,27 +1,27 @@
 .data
-globl ROWS_A
+.globl ROWS_A
 ROWS_A:
   .word 2
 
-globl COLS_A
+.globl COLS_A
 COLS_A:
   .word 3
 
-globl ROWS_B
+.globl ROWS_B
 ROWS_B:
   .word 3
 
-globl COLS_B
+.globl COLS_B
 COLS_B:
   .word 3
 
-globl resultsaasdas
+.globl resultsaasdas
 resultsaasdas:
   .word 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 
 .text
-globl main
+.globl main
 main:
   addi sp, sp, -2044
   j main_mainEntry
