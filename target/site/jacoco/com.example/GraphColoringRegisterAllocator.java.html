@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GraphColoringRegisterAllocator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">llvm-antlr-project</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">GraphColoringRegisterAllocator.java</span></div><h1>GraphColoringRegisterAllocator.java</h1><pre class="source lang-java linenums">package  com.example;
+import org.bytedeco.javacpp.PointerPointer;
+import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
+import org.bytedeco.llvm.LLVM.LLVMModuleRef;
+import org.bytedeco.llvm.LLVM.LLVMTypeRef;
+import org.bytedeco.llvm.LLVM.LLVMValueRef;
+import org.bytedeco.llvm.global.LLVM;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class GraphColoringRegisterAllocator implements RegisterAllocator {
+<span class="fc" id="L13">    private Map&lt;String, Set&lt;String&gt;&gt; variable_def_in_block = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L14">    private Map&lt;String, Set&lt;String&gt;&gt; variable_use_in_block = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L15">    private static Map&lt;String, LLVMBasicBlockRef&gt; name2blockref = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L16">    private Map&lt;String, Set&lt;String&gt;&gt; live_variable_block_in = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L17">    private Map&lt;String, Set&lt;String&gt;&gt; live_variable_block_out = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L18">    private Map&lt;String, Set&lt;String&gt;&gt; graph = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L19">    private Map&lt;LLVMValueRef, Set&lt;String&gt;&gt; in_inst = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L20">    private static Map&lt;LLVMValueRef, Set&lt;String&gt;&gt; out_inst = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L21">    private Map&lt;String, String&gt; valueMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L22">    private Stack&lt;String&gt; color_order = new Stack&lt;&gt;();</span>
+<span class="fc" id="L23">    Map&lt;String, Integer&gt; var_used_num = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L24">    List&lt;array_variable&gt; array_variable_ref = new ArrayList&lt;&gt;();//在跨块分析活跃变量时例如定义a[1]后后面访问a[i],a[1]可能是活跃的</span>
+<span class="fc" id="L25">    Map&lt;String,array_variable&gt; variable_and_array_name_to_array_variable_ref=new HashMap&lt;&gt;();</span>
+    //must be done  after  array_variable_ref has been calculated
+    public void cal_elementptr_val_can_be_stored_in_reg(LLVMValueRef func){
+<span class="pc bpc" id="L28" title="1 of 4 branches missed.">        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null &amp;&amp; !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){</span>
+<span class="fc" id="L29">           LLVMValueRef instr=LLVM.LLVMGetLastInstruction(bb);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">           while(instr!=null){</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">                if(LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMGetElementPtr){</span>
+<span class="fc" id="L32">                    String cur_instr_pointer=LLVM.LLVMGetValueName(instr).getString();</span>
+<span class="fc" id="L33">                    LLVMValueRef instr2=LLVM.LLVMGetNextInstruction(instr);</span>
+<span class="fc" id="L34">                    boolean can_use_reg=true;</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">                    for(;instr2!=null;instr2=LLVM.LLVMGetNextInstruction(instr2)){</span>
+<span class="fc bfc" id="L36" title="All 4 branches covered.">                        if(LLVM.LLVMGetInstructionOpcode(instr2)==LLVM.LLVMStore&amp;&amp;LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(instr2, 1)).getString().contains(&quot;elemPtr&quot;)){</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">                            if(naive_alias_may_analysis(variable_and_array_name_to_array_variable_ref.get(cur_instr_pointer), variable_and_array_name_to_array_variable_ref.get(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(instr2, 1)).getString()))) {</span>
+<span class="fc" id="L38">                                valueMap.put(cur_instr_pointer,&quot;stack&quot;);</span>
+<span class="fc" id="L39">                                break;</span>
+                            }
+                        }
+<span class="fc bfc" id="L42" title="All 2 branches covered.">                        else if(LLVM.LLVMGetInstructionOpcode(instr2)==LLVM.LLVMCall){</span>
+<span class="fc" id="L43">                            int argCount = LLVM.LLVMGetNumArgOperands(instr2);</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">                            for (int i = 0; i &lt; argCount; i++){</span>
+<span class="fc" id="L45">                                LLVMValueRef arg = LLVM.LLVMGetOperand(instr2, i);</span>
+<span class="fc" id="L46">                                LLVMTypeRef type = LLVM.LLVMTypeOf(arg);</span>
+<span class="fc" id="L47">                                int kind = LLVM.LLVMGetTypeKind(type);</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">                                if (kind == LLVM.LLVMPointerTypeKind){</span>
+<span class="fc" id="L49">                                    String name = LLVM.LLVMGetValueName(arg).getString();</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">                                    if(naive_alias_may_analysis(variable_and_array_name_to_array_variable_ref.get(cur_instr_pointer), variable_and_array_name_to_array_variable_ref.get(name))) {</span>
+<span class="fc" id="L51">                                        valueMap.put(cur_instr_pointer,&quot;stack&quot;);</span>
+<span class="fc" id="L52">                                        can_use_reg=false;</span>
+<span class="fc" id="L53">                                        break;</span>
+                                    }
+                                }
+                            }
+                        }
+<span class="fc bfc" id="L58" title="All 2 branches covered.">                        if(!can_use_reg) break;</span>
+                    }
+                }
+<span class="fc" id="L61">               instr=LLVM.LLVMGetPreviousInstruction(instr);</span>
+           }
+        }
+<span class="fc" id="L64">    }</span>
+    /*
+        define void @b([2 x [2 x i32]]* %result) {
+    bEntry:
+      %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
+      %elemPtr1 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
+      %load_lval = load i32, i32* %elemPtr1, align 4
+      %add = add i32 %load_lval, 1
+      store i32 %add, i32* %elemPtr, align 4
+      ret void
+    }
+        因此如果一个elementptr的naive_pointer_may_analysis可能与后面的elemtptr一样，那他不能用寄存器保存（这样做是绝对安全的）。
+     */
+
+    public void cal_def_use(LLVMValueRef func) {
+<span class="pc bpc" id="L79" title="1 of 4 branches missed.">        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null &amp;&amp; !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {</span>
+<span class="fc" id="L80">            variable_def_in_block.putIfAbsent(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet&lt;&gt;());</span>
+<span class="fc" id="L81">            variable_use_in_block.putIfAbsent(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet&lt;&gt;());</span>
+<span class="fc" id="L82">            name2blockref.put(LLVM.LLVMGetBasicBlockName(bb).getString(), bb);</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {</span>
+<span class="fc" id="L84">                String line = LLVM.LLVMPrintValueToString(inst).getString();</span>
+<span class="fc bfc" id="L85" title="All 4 branches covered.">                if (line.contains(&quot;br&quot;) || line.contains(&quot;alloca&quot;)) continue;</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">                for (String var : LLVMIRToRiscv.extractVariables(line)) {</span>
+<span class="fc" id="L87">                    valueMap.putIfAbsent(var, &quot;&quot;);</span>
+<span class="fc" id="L88">                    var_used_num.putIfAbsent(var, 0);</span>
+<span class="fc" id="L89">                    var_used_num.put(var, var_used_num.get(var) + 1);</span>
+<span class="fc" id="L90">                }</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                if (LLVM.LLVMGetInstructionOpcode(inst) == LLVM.LLVMGetElementPtr) {</span>
+<span class="fc" id="L92">                    String variable_name = LLVM.LLVMGetValueName(inst).getString();</span>
+<span class="fc" id="L93">                    LLVMValueRef base_ptr = LLVM.LLVMGetOperand(inst, 0);</span>
+<span class="fc" id="L94">                    LLVMTypeRef base_type = LLVM.LLVMTypeOf(base_ptr);</span>
+<span class="fc" id="L95">                    LLVMTypeRef array_type = LLVM.LLVMGetElementType(base_type);</span>
+<span class="fc" id="L96">                    int array_dim = 0;</span>
+<span class="fc" id="L97">                    LLVMTypeRef current = array_type;</span>
+<span class="fc" id="L98">                    List&lt;Integer&gt; array_size = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L99">                    int operand_count = LLVM.LLVMGetNumOperands(inst);</span>
+<span class="fc" id="L100">                    List&lt;Object&gt; cur_offset = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">                    for (int i = 2; i &lt; operand_count; i++) {</span>
+<span class="fc" id="L102">                        LLVMValueRef index = LLVM.LLVMGetOperand(inst, i);</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">                        if (LLVM.LLVMIsAConstant(index) != null) {</span>
+<span class="fc" id="L104">                            long val = LLVM.LLVMConstIntGetZExtValue(index);</span>
+<span class="fc" id="L105">                            cur_offset.add((int) val);</span>
+<span class="fc" id="L106">                        } else {</span>
+<span class="fc" id="L107">                            cur_offset.add(index);</span>
+                        }
+                    }
+<span class="fc bfc" id="L110" title="All 2 branches covered.">                    while (LLVM.LLVMGetTypeKind(current) == LLVM.LLVMArrayTypeKind) {</span>
+<span class="fc" id="L111">                        long len = LLVM.LLVMGetArrayLength(current);</span>
+<span class="fc" id="L112">                        array_size.add((int) len);</span>
+<span class="fc" id="L113">                        array_dim++;</span>
+<span class="fc" id="L114">                        current = LLVM.LLVMGetElementType(current);</span>
+<span class="fc" id="L115">                    }</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">                    if (operand_count - 2 &lt; array_dim) {</span>
+<span class="fc" id="L117">                        valueMap.put(variable_name, &quot;stack&quot;);</span>
+                    }
+<span class="fc" id="L119">                    valueMap.put(LLVM.LLVMGetValueName(base_ptr).getString(), &quot;stack&quot;);</span>
+<span class="fc" id="L120">                    array_variable av = new array_variable(variable_name, LLVM.LLVMGetValueName(base_ptr).getString(), array_dim, cur_offset, array_size);</span>
+<span class="fc" id="L121">                    array_variable_ref.add(av);</span>
+<span class="fc" id="L122">                    variable_and_array_name_to_array_variable_ref.put(variable_name,av);</span>
+<span class="fc" id="L123">                    variable_and_array_name_to_array_variable_ref.put(LLVM.LLVMGetValueName(base_ptr).getString(),new array_variable(LLVM.LLVMGetValueName(base_ptr).getString(),LLVM.LLVMGetValueName(base_ptr).getString(),array_dim,new ArrayList&lt;&gt;(),array_size));</span>
+                }
+                String line3;
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                if(LLVM.LLVMGetInstructionOpcode(inst)==LLVM.LLVMPHI){</span>
+<span class="fc" id="L127">                    line3=&quot;&quot;;</span>
+<span class="fc" id="L128">                    int numOperands = LLVM.LLVMGetNumOperands(inst);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">                    for (int i = 0; i &lt; numOperands; i += 1) {</span>
+<span class="fc" id="L130">                        LLVMValueRef value = LLVM.LLVMGetOperand(inst, i);</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">                        if (LLVM.LLVMIsAConstant(value) == null) {</span>
+<span class="fc" id="L132">                            String varName = LLVM.LLVMGetValueName(value).getString();</span>
+<span class="fc" id="L133">                            line3=line3+&quot;%&quot;+varName+&quot; &quot;;</span>
+                        }
+                    }
+<span class="fc" id="L136">                }</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">                else if (line.contains(&quot;=&quot;)) line3 = line.substring(line.indexOf(&quot;=&quot;) + 1);</span>
+<span class="fc bfc" id="L138" title="All 4 branches covered.">                else if (line.contains(&quot;store&quot;) &amp;&amp; line.contains(&quot;i32* %&quot;)) {</span>
+<span class="fc" id="L139">                    line3 = line.substring(0, line.indexOf(&quot;,&quot;));</span>
+<span class="fc" id="L140">                } else line3 = line;</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">                for (String var : LLVMIRToRiscv.extractVariables(line3)) {</span>
+<span class="fc" id="L142">                    Set&lt;String&gt; variables = variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">                    if (!variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) {</span>
+<span class="fc" id="L144">                        variables.add(var);</span>
+                    }
+<span class="fc" id="L146">                }</span>
+<span class="fc bfc" id="L147" title="All 6 branches covered.">                if (line.contains(&quot;=&quot;) || (line.contains(&quot;store&quot;) &amp;&amp; line.contains(&quot;i32* %&quot;))) {</span>
+                    String line2;
+<span class="fc bfc" id="L149" title="All 2 branches covered.">                    if (line.contains(&quot;=&quot;)) line2 = line.substring(0, line.indexOf(&quot;=&quot;));</span>
+<span class="fc" id="L150">                    else line2 = line.substring(line.indexOf(&quot;,&quot;) + 1);</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">                    for (String var : LLVMIRToRiscv.extractVariables(line2)) {</span>
+<span class="fc" id="L152">                        Set&lt;String&gt; variables = variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString());</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">                        if (!variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).contains(var)) {</span>
+<span class="fc" id="L154">                            variables.add(var);</span>
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+<span class="pc bpc" id="L161" title="1 of 4 branches missed.">        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null &amp;&amp; !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">                if (LLVM.LLVMGetInstructionOpcode(inst) == LLVM.LLVMGetElementPtr) {</span>
+<span class="fc" id="L164">                    String variable_name = LLVM.LLVMGetValueName(inst).getString();</span>
+<span class="fc" id="L165">                    array_variable cur = new array_variable();</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">                    for (array_variable x : array_variable_ref) {</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">                        if (x.variable_name.equals(variable_name)) {</span>
+<span class="fc" id="L168">                            cur = x;</span>
+<span class="fc" id="L169">                            break;</span>
+                        }
+<span class="fc" id="L171">                    }</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">                    for (array_variable x : array_variable_ref) {</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">                        if (naive_alias_may_analysis(x, cur) == true) {</span>
+//                            System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//                            System.out.println(x.variable_name);
+<span class="fc" id="L176">                            variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()).add(x.variable_name);//注意这里加的是X.VARIABLENAME,意思是x指针指向的东西可能在这里访问，即如果GETELEMENTPTR后面跟load的话，那X指针指向的东西是会想访问后定值（或访问后不定值），因此是活跃的</span>
+                        }
+<span class="fc" id="L178">                    }</span>
+                }
+            }
+        }
+<span class="fc" id="L182">        var_used_num = var_used_num.entrySet()</span>
+<span class="fc" id="L183">                .stream()</span>
+<span class="fc" id="L184">                .sorted(Map.Entry.comparingByValue()) // 按 Value 排序</span>
+<span class="fc" id="L185">                .collect(Collectors.toMap(</span>
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+<span class="nc" id="L188">                        (oldVal, newVal) -&gt; oldVal, // 合并冲突时保留旧值</span>
+                        LinkedHashMap::new // 使用 LinkedHashMap 保持顺序
+                ));
+<span class="fc" id="L191">    }</span>
+
+    public static boolean naive_alias_may_analysis(array_variable dest, array_variable src) {
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        if (!dest.array_name.equals(src.array_name)) return false;</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        for (int i = 0; i &lt; Math.min(dest.cur_offset.size(), src.cur_offset.size()); i++){</span>
+<span class="fc bfc" id="L196" title="All 6 branches covered.">            if (dest.cur_offset.get(i) instanceof Integer &amp;&amp; src.cur_offset.get(i) instanceof Integer&amp;&amp;(!src.cur_offset.get(i).equals(dest.cur_offset.get(i)))){</span>
+<span class="fc" id="L197">                return false;</span>
+            }
+        }
+<span class="fc" id="L200">        return true;</span>
+    }
+    public void cal_in_out_block(LLVMValueRef func) {
+<span class="pc bpc" id="L203" title="1 of 4 branches missed.">        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null &amp;&amp; !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {</span>
+<span class="fc" id="L204">            live_variable_block_in.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet&lt;&gt;());</span>
+<span class="fc" id="L205">            live_variable_block_out.put(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet&lt;&gt;());</span>
+        }
+        boolean changed;
+        do {
+<span class="fc" id="L209">            changed = false;</span>
+<span class="pc bpc" id="L210" title="1 of 4 branches missed.">            for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null &amp;&amp; !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {</span>
+<span class="fc" id="L211">                Set&lt;String&gt; out = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L212">                int numSuccessors = LLVM.LLVMGetNumSuccessors(LLVM.LLVMGetLastInstruction(bb));</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">                for (int i = 0; i &lt; numSuccessors; i++) {</span>
+<span class="fc" id="L214">                    LLVMBasicBlockRef succ = LLVM.LLVMGetSuccessor(LLVM.LLVMGetLastInstruction(bb), i);</span>
+<span class="fc" id="L215">                    String succName = LLVM.LLVMGetBasicBlockName(succ).getString();</span>
+<span class="fc" id="L216">                    out.addAll(live_variable_block_in.get(succName));</span>
+                }
+<span class="fc bfc" id="L218" title="All 2 branches covered.">                if (!out.equals(live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString()))) {</span>
+<span class="fc" id="L219">                    live_variable_block_out.put(LLVM.LLVMGetBasicBlockName(bb).getString(), out);</span>
+<span class="fc" id="L220">                    changed = true;</span>
+                }
+<span class="fc" id="L222">                Set&lt;String&gt; in = new HashSet&lt;&gt;(variable_use_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()));</span>
+<span class="fc" id="L223">                Set&lt;String&gt; outMinusDef = new HashSet&lt;&gt;(out);</span>
+<span class="fc" id="L224">                outMinusDef.removeAll(variable_def_in_block.get(LLVM.LLVMGetBasicBlockName(bb).getString()));</span>
+<span class="fc" id="L225">                in.addAll(outMinusDef);</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">                if (!in.equals(live_variable_block_in.get(LLVM.LLVMGetBasicBlockName(bb).getString()))) {</span>
+<span class="fc" id="L227">                    live_variable_block_in.put(LLVM.LLVMGetBasicBlockName(bb).getString(), in);</span>
+<span class="fc" id="L228">                    changed = true;</span>
+                }
+            }
+<span class="fc bfc" id="L231" title="All 2 branches covered.">        } while (changed);</span>
+<span class="fc" id="L232">        List&lt;array_variable&gt; param_array=new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L233">        int paramCount = LLVM.LLVMCountParams(func);</span>
+<span class="fc" id="L234">        PointerPointer&lt;LLVMValueRef&gt; params = new PointerPointer&lt;&gt;(paramCount);</span>
+<span class="fc" id="L235">        LLVM.LLVMGetParams(func, params);</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        for (int i = 0; i &lt; paramCount; i++) {</span>
+<span class="fc" id="L237">            LLVMValueRef param = LLVM.LLVMGetParam(func, i);</span>
+<span class="fc" id="L238">            String paramName = LLVM.LLVMGetValueName(param).getString();</span>
+<span class="fc" id="L239">            LLVMTypeRef paramType = LLVM.LLVMTypeOf(param);</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">            if (LLVM.LLVMGetTypeKind(paramType) == LLVM.LLVMPointerTypeKind) {</span>
+<span class="fc" id="L241">                LLVMTypeRef elementType = LLVM.LLVMGetElementType(paramType); // 去掉指针壳</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">                if (LLVM.LLVMGetTypeKind(elementType) == LLVM.LLVMArrayTypeKind) {</span>
+<span class="fc" id="L243">                    int dimension = 0;</span>
+<span class="fc" id="L244">                    List&lt;Integer&gt; arraySize = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L245">                    LLVMTypeRef current = elementType;</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">                    while (LLVM.LLVMGetTypeKind(current) == LLVM.LLVMArrayTypeKind) {</span>
+<span class="fc" id="L247">                        long len = LLVM.LLVMGetArrayLength(current);</span>
+<span class="fc" id="L248">                        arraySize.add((int) len);</span>
+<span class="fc" id="L249">                        dimension++;</span>
+<span class="fc" id="L250">                        current = LLVM.LLVMGetElementType(current);</span>
+<span class="fc" id="L251">                    }</span>
+<span class="fc" id="L252">                    List&lt;Object&gt; offset = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L253">                    array_variable av = new array_variable(paramName, paramName, dimension, offset, arraySize);</span>
+<span class="fc" id="L254">                    param_array.add(av);</span>
+                }
+            }
+        }
+<span class="pc bpc" id="L258" title="1 of 4 branches missed.">        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null &amp;&amp; !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {</span>
+<span class="fc" id="L259">            LLVMValueRef terminator = LLVM.LLVMGetBasicBlockTerminator(bb);</span>
+<span class="pc bpc" id="L260" title="1 of 4 branches missed.">            if (terminator != null &amp;&amp; LLVM.LLVMGetNumSuccessors(terminator) == 0) {</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">                for(array_variable y:param_array) {</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">                    for (array_variable x : array_variable_ref) {</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">                        if (naive_alias_may_analysis(x,y)==true){</span>
+                            //System.out.println(x.variable_name);
+<span class="fc" id="L265">                            live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString()).add(x.variable_name);</span>
+                        }
+<span class="fc" id="L267">                    }</span>
+<span class="fc" id="L268">                }</span>
+            }
+        }
+<span class="fc" id="L271">    }</span>
+
+    public void create_graph(LLVMValueRef func) {
+<span class="pc bpc" id="L274" title="1 of 4 branches missed.">        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null &amp;&amp; !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {</span>
+            //System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+<span class="fc" id="L276">            LLVMValueRef instr = LLVM.LLVMGetLastInstruction(bb);</span>
+<span class="fc" id="L277">            out_inst.put(instr, live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString()));</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">            while (instr != null) {</span>
+<span class="fc" id="L279">                String line = LLVM.LLVMPrintValueToString(instr).getString();</span>
+                String line3;
+<span class="fc bfc" id="L281" title="All 2 branches covered.">                if(LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMPHI){</span>
+<span class="fc" id="L282">                    line3=&quot;&quot;;</span>
+<span class="fc" id="L283">                    int numOperands = LLVM.LLVMGetNumOperands(instr);</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">                    for (int i = 0; i &lt; numOperands; i += 1) {</span>
+<span class="fc" id="L285">                        LLVMValueRef value = LLVM.LLVMGetOperand(instr, i);</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">                        if (LLVM.LLVMIsAConstant(value) == null) {</span>
+<span class="fc" id="L287">                            String varName = LLVM.LLVMGetValueName(value).getString();</span>
+                            //System.out.println(&quot;Phi value: &quot; + varName);
+<span class="fc" id="L289">                            line3=line3+&quot;%&quot;+varName+&quot; &quot;;</span>
+                        }
+                    }
+<span class="fc" id="L292">                }</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">                else if (line.contains(&quot;=&quot;)) line3 = line.substring(line.indexOf(&quot;=&quot;) + 1);</span>
+<span class="fc bfc" id="L294" title="All 4 branches covered.">                else if (line.contains(&quot;store&quot;) &amp;&amp; line.contains(&quot;i32* %&quot;)) {</span>
+<span class="fc" id="L295">                    line3 = line.substring(0, line.indexOf(&quot;,&quot;));</span>
+<span class="pc bpc" id="L296" title="1 of 4 branches missed.">                } else if (line.contains(&quot;br&quot;) &amp;&amp; line.contains(&quot;label&quot;)) {</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">                    if (line.contains(&quot;,&quot;)) line3 = line.substring(0, line.indexOf(&quot;,&quot;));</span>
+<span class="fc" id="L298">                    else line3 = &quot;&quot;;</span>
+<span class="fc" id="L299">                } else line3 = line;</span>
+<span class="fc" id="L300">                Set&lt;String&gt; used = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">                for (String var : LLVMIRToRiscv.extractVariables(line3)) {</span>
+<span class="fc" id="L302">                    used.add(var);</span>
+<span class="fc" id="L303">                }</span>
+<span class="fc" id="L304">                Set&lt;String&gt; def = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L305" title="All 6 branches covered.">                if (line.contains(&quot;=&quot;) || (line.contains(&quot;store&quot;) &amp;&amp; line.contains(&quot;i32* %&quot;))) {</span>
+                    String line2;
+<span class="fc bfc" id="L307" title="All 2 branches covered.">                    if (line.contains(&quot;=&quot;)) line2 = line.substring(0, line.indexOf(&quot;=&quot;));</span>
+<span class="fc" id="L308">                    else line2 = line.substring(line.indexOf(&quot;,&quot;) + 1);</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">                    for (String var : LLVMIRToRiscv.extractVariables(line2)) {</span>
+<span class="fc" id="L310">                        def.add(var);</span>
+<span class="fc" id="L311">                        break;</span>
+                    }
+                }
+<span class="fc" id="L314">                Set&lt;String&gt; in_instr_live_set = new HashSet&lt;&gt;(out_inst.get(instr));</span>
+<span class="fc" id="L315">                in_instr_live_set.removeAll(def);</span>
+<span class="fc" id="L316">                in_instr_live_set.addAll(used);</span>
+<span class="fc bfc" id="L317" title="All 2 branches covered.">                if(LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMCall){</span>
+<span class="fc" id="L318">                    int argCount = LLVM.LLVMGetNumArgOperands(instr);</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">                    for (int i = 0; i &lt; argCount; i++) {</span>
+<span class="fc" id="L320">                        LLVMValueRef arg = LLVM.LLVMGetOperand(instr, i);</span>
+<span class="fc" id="L321">                        LLVMTypeRef type = LLVM.LLVMTypeOf(arg);</span>
+<span class="fc" id="L322">                        String name = LLVM.LLVMGetValueName(arg).getString();</span>
+<span class="fc" id="L323">                        int kind = LLVM.LLVMGetTypeKind(type);</span>
+<span class="fc bfc" id="L324" title="All 2 branches covered.">                        if (kind == LLVM.LLVMPointerTypeKind) {</span>
+<span class="fc" id="L325">                            array_variable current_param_ref = null;</span>
+<span class="pc bpc" id="L326" title="1 of 2 branches missed.">                            for (array_variable param : array_variable_ref) {</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">                                if (param.variable_name.equals(name)) {</span>
+<span class="fc" id="L328">                                    current_param_ref = param;</span>
+<span class="fc" id="L329">                                    break;</span>
+                                }
+<span class="fc" id="L331">                            }</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">                            for (array_variable x : array_variable_ref) {</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">                                if (!x.array_name.equals(current_param_ref.array_name)) continue;</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">                                if (x.cur_offset.size() != x.array_size.size()) continue;</span>
+<span class="fc" id="L335">                                boolean is_live_variable = false;</span>
+<span class="fc" id="L336">                                is_live_variable = naive_alias_may_analysis(current_param_ref, x);</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">                                if (is_live_variable) {</span>
+<span class="fc" id="L338">                                    in_instr_live_set.add(x.variable_name);</span>
+                                }
+<span class="fc" id="L340">                            }</span>
+                        }
+                    }
+                }
+<span class="fc" id="L344">                in_inst.put(instr, in_instr_live_set);</span>
+<span class="fc" id="L345">                instr = LLVM.LLVMGetPreviousInstruction(instr);</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">                if (instr != null) out_inst.put(instr, in_instr_live_set);</span>
+<span class="fc" id="L347">            }</span>
+<span class="fc bfc" id="L348" title="All 2 branches covered.">            for (Map.Entry&lt;LLVMValueRef, Set&lt;String&gt;&gt; entry : out_inst.entrySet()) {</span>
+<span class="fc" id="L349">                Set&lt;String&gt; value = entry.getValue();</span>
+<span class="fc bfc" id="L350" title="All 2 branches covered.">                for (String x : value) {</span>
+<span class="fc bfc" id="L351" title="All 2 branches covered.">                    for (String y : value) {</span>
+<span class="fc bfc" id="L352" title="All 2 branches covered.">                        if (graph.get(x) == null) graph.put(x, new HashSet&lt;&gt;());</span>
+<span class="fc bfc" id="L353" title="All 2 branches covered.">                        if (graph.get(y) == null) graph.put(y, new HashSet&lt;&gt;());</span>
+<span class="fc bfc" id="L354" title="All 2 branches covered.">                        if (!x.equals(y)) {</span>
+<span class="fc" id="L355">                            graph.get(x).add(y);</span>
+<span class="fc" id="L356">                            graph.get(y).add(x);</span>
+                        }
+<span class="fc" id="L358">                    }</span>
+<span class="fc" id="L359">                }</span>
+<span class="fc" id="L360">            }</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">            for (String x : live_variable_block_in.get(LLVM.LLVMGetBasicBlockName(bb).getString())) {</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">                for (String y : live_variable_block_in.get(LLVM.LLVMGetBasicBlockName(bb).getString())) {</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">                    if (graph.get(x) == null) graph.put(x, new HashSet&lt;&gt;());</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">                    if (graph.get(y) == null) graph.put(y, new HashSet&lt;&gt;());</span>
+<span class="fc bfc" id="L365" title="All 2 branches covered.">                    if (!x.equals(y)) {</span>
+<span class="fc" id="L366">                        graph.get(x).add(y);</span>
+<span class="fc" id="L367">                        graph.get(y).add(x);</span>
+                    }
+<span class="fc" id="L369">                }</span>
+<span class="fc" id="L370">            }</span>
+        }
+<span class="fc" id="L372">    }</span>
+
+    void color_no_spill_reg() {
+//        for(Map.Entry&lt;String, Set&lt;String&gt;&gt; entry : graph.entrySet()){
+//            String key=entry.getKey();
+//            Set&lt;String&gt; value=entry.getValue();
+//            System.out.print(key);
+//            System.out.print(&quot; &quot;);
+//            for(String x:value){
+//                System.out.print(x);
+//                System.out.print(&quot; &quot;);
+//            }
+//            System.out.println();
+//        }
+<span class="fc bfc" id="L386" title="All 2 branches covered.">        while (!color_order.isEmpty()) {</span>
+<span class="fc" id="L387">            String key = color_order.pop();</span>
+<span class="fc" id="L388">            Set&lt;String&gt; value = graph.get(key);</span>
+<span class="fc" id="L389">            List&lt;String&gt; can_use_reg = new ArrayList&lt;&gt;(available_register);</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">            for (String x : value) {</span>
+<span class="pc bpc" id="L391" title="1 of 2 branches missed.">                if (valueMap.get(x) == null) continue;</span>
+<span class="pc bpc" id="L392" title="1 of 2 branches missed.">                if (!valueMap.get(x).equals(&quot;stack&quot;)) {</span>
+<span class="fc" id="L393">                    can_use_reg.remove(valueMap.get(x));</span>
+                }
+<span class="fc" id="L395">            }</span>
+<span class="fc" id="L396">            String reg = can_use_reg.get(0);</span>
+<span class="fc" id="L397">            valueMap.put(key, reg);</span>
+<span class="fc" id="L398">        }</span>
+<span class="fc" id="L399">    }</span>
+
+    public void color_graph() {
+<span class="fc" id="L402">        Map&lt;String, Set&lt;String&gt;&gt; part_graph = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">        for (Map.Entry&lt;String, Set&lt;String&gt;&gt; entry : graph.entrySet()) {</span>
+<span class="fc" id="L404">            part_graph.put(entry.getKey(), new HashSet&lt;&gt;(entry.getValue()));</span>
+<span class="fc" id="L405">        }</span>
+<span class="fc bfc" id="L406" title="All 2 branches covered.">        while (part_graph.size() &gt; 0) {</span>
+<span class="fc" id="L407">            boolean need_spill = true;</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">            for (Map.Entry&lt;String, Set&lt;String&gt;&gt; entry : part_graph.entrySet()) {</span>
+<span class="fc" id="L409">                String key = entry.getKey();</span>
+<span class="fc" id="L410">                Set&lt;String&gt; value = entry.getValue();</span>
+<span class="fc bfc" id="L411" title="All 4 branches covered.">                if ((!&quot;stack&quot;.equals(valueMap.get(key))) &amp;&amp; value.size() &lt; available_register.size()) {</span>
+<span class="fc" id="L412">                    need_spill = false;</span>
+<span class="fc bfc" id="L413" title="All 2 branches covered.">                    for (String x : value) {</span>
+<span class="fc" id="L414">                        part_graph.get(x).remove(key);</span>
+<span class="fc" id="L415">                    }</span>
+<span class="fc" id="L416">                    part_graph.remove(key);</span>
+<span class="fc" id="L417">                    color_order.push(key);</span>
+<span class="fc" id="L418">                    break;</span>
+                }
+<span class="fc" id="L420">            }</span>
+<span class="fc bfc" id="L421" title="All 2 branches covered.">            if (need_spill) {</span>
+<span class="pc bpc" id="L422" title="1 of 2 branches missed.">                for (Map.Entry&lt;String, Integer&gt; entry : var_used_num.entrySet()) {</span>
+<span class="fc bfc" id="L423" title="All 2 branches covered.">                    if (part_graph.get(entry.getKey()) != null) {</span>
+<span class="fc" id="L424">                        valueMap.put(entry.getKey(), &quot;stack&quot;);</span>
+<span class="fc" id="L425">                        Set&lt;String&gt; value = graph.get(entry.getKey());</span>
+<span class="fc bfc" id="L426" title="All 2 branches covered.">                        for (String x : value) {</span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">                            if (part_graph.get(x) != null) part_graph.get(x).remove(entry.getKey());</span>
+<span class="pc bpc" id="L428" title="1 of 2 branches missed.">                            if (graph.get(x) != null) graph.get(x).remove(entry.getKey());</span>
+<span class="fc" id="L429">                        }</span>
+<span class="fc" id="L430">                        graph.remove(entry.getKey());</span>
+<span class="fc" id="L431">                        part_graph.remove(entry.getKey());</span>
+<span class="fc" id="L432">                        break;</span>
+                    }
+<span class="fc" id="L434">                }</span>
+            }
+<span class="fc" id="L436">        }</span>
+<span class="fc" id="L437">        color_no_spill_reg();</span>
+<span class="fc" id="L438">    }</span>
+
+    public static Set&lt;String&gt; get_after_cur_inst_live_variable(LLVMValueRef x) {
+<span class="fc" id="L441">        return out_inst.get(x);</span>
+    }
+
+<span class="fc" id="L444">    public GraphColoringRegisterAllocator(LLVMValueRef func) {</span>
+<span class="fc" id="L445">        variable_def_in_block = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L446">        variable_use_in_block = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L447">        name2blockref = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L448">        live_variable_block_in = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L449">        live_variable_block_out = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L450">        graph = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L451">        in_inst = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L452">        out_inst = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L453">        valueMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L454">        var_used_num = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L455">        color_order = new Stack&lt;&gt;();</span>
+<span class="fc" id="L456">        array_variable_ref = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L457">        variable_and_array_name_to_array_variable_ref=new HashMap&lt;&gt;();</span>
+<span class="fc" id="L458">        cal_def_use(func);</span>
+<span class="fc" id="L459">        cal_elementptr_val_can_be_stored_in_reg(func);</span>
+<span class="fc" id="L460">        cal_in_out_block(func);</span>
+<span class="fc" id="L461">        create_graph(func);</span>
+<span class="fc" id="L462">        color_graph();</span>
+//        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null &amp;&amp; !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+//            System.out.println();
+//            System.out.println();
+//            System.out.println();
+//            System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)){
+//                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+//                for(String x:out_inst.get(inst)){
+//                    System.out.print(x);
+//                    System.out.print(&quot; &quot;);
+//                }
+//                System.out.println();
+//            }
+//        }
+//        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null &amp;&amp; !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)){
+//            System.out.println();
+//            System.out.println(LLVM.LLVMGetBasicBlockName(bb).getString());
+//            System.out.println(&quot;in&quot;);
+//            for(String x:live_variable_block_in.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
+//                    System.out.print(x);
+//                    System.out.print(&quot; &quot;);
+//            }
+//            System.out.println();
+//            System.out.println(&quot;out&quot;);
+//            for(String x:live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString())){
+//                System.out.print(x);
+//                System.out.print(&quot; &quot;);
+//            }
+//            System.out.println();
+//
+//        }
+//        for (Map.Entry&lt;String, String&gt; entry : valueMap.entrySet()) {
+//            System.out.print(entry.getKey());
+//            System.out.print(&quot; &quot;);
+//            System.out.println(entry.getValue());
+//        }
+//        System.out.println(&quot;--------------------------------&quot;);
+<span class="fc" id="L500">    }</span>
+
+    public String allocate(String varName) {
+<span class="fc bfc" id="L503" title="All 2 branches covered.">        if (valueMap.containsKey(varName)) return valueMap.get(varName);</span>
+<span class="fc" id="L504">        else return null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

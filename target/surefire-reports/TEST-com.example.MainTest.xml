@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.example.MainTest" time="32.44" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
+    <property name="java.specification.version" value="11"/>
+    <property name="sun.cpu.isalist" value=""/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/crz/compilers/Lab/target/test-classes:/home/crz/compilers/Lab/target/classes:/home/crz/.m2/repository/com/github/chaos-warzh/llvm4j/0.1.2-SNAPSHOT/llvm4j-0.1.2-SNAPSHOT.jar:/home/crz/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.9.0/kotlin-stdlib-jdk8-1.9.0.jar:/home/crz/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.9.0/kotlin-stdlib-1.9.0.jar:/home/crz/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.9.0/kotlin-stdlib-common-1.9.0.jar:/home/crz/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/home/crz/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.9.0/kotlin-stdlib-jdk7-1.9.0.jar:/home/crz/.m2/repository/org/antlr/antlr4-runtime/4.9.1/antlr4-runtime-4.9.1.jar:/home/crz/.m2/repository/org/bytedeco/llvm-platform/13.0.1-1.5.7/llvm-platform-13.0.1-1.5.7.jar:/home/crz/.m2/repository/org/bytedeco/javacpp-platform/1.5.7/javacpp-platform-1.5.7.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-android-arm.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-android-arm64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-android-x86.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-android-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-ios-arm64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-ios-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-armhf.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-arm64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-ppc64le.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-x86.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-macosx-arm64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-macosx-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-windows-x86.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-windows-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-x86.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-armhf.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-arm64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-ppc64le.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-macosx-arm64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-macosx-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-windows-x86.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-windows-x86_64.jar:/home/crz/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.0/junit-jupiter-5.10.0.jar:/home/crz/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.0/junit-jupiter-api-5.10.0.jar:/home/crz/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/crz/.m2/repository/org/junit/platform/junit-platform-commons/1.10.0/junit-platform-commons-1.10.0.jar:/home/crz/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/crz/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.0/junit-jupiter-params-5.10.0.jar:/home/crz/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.0/junit-jupiter-engine-5.10.0.jar:/home/crz/.m2/repository/org/junit/platform/junit-platform-engine/1.10.0/junit-platform-engine-1.10.0.jar:"/>
+    <property name="java.vm.vendor" value="Ubuntu"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://ubuntu.com/"/>
+    <property name="user.timezone" value=""/>
+    <property name="java.vm.specification.version" value="11"/>
+    <property name="os.name" value="Linux"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
+    <property name="sun.java.command" value="/home/crz/compilers/Lab/target/surefire/surefirebooter-20250714134405546_3.jar /home/crz/compilers/Lab/target/surefire 2025-07-14T13-44-05_470-jvmRun1 surefire-20250714134405546_1tmp surefire_0-20250714134405546_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/crz/compilers/Lab/target/test-classes:/home/crz/compilers/Lab/target/classes:/home/crz/.m2/repository/com/github/chaos-warzh/llvm4j/0.1.2-SNAPSHOT/llvm4j-0.1.2-SNAPSHOT.jar:/home/crz/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.9.0/kotlin-stdlib-jdk8-1.9.0.jar:/home/crz/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.9.0/kotlin-stdlib-1.9.0.jar:/home/crz/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.9.0/kotlin-stdlib-common-1.9.0.jar:/home/crz/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/home/crz/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.9.0/kotlin-stdlib-jdk7-1.9.0.jar:/home/crz/.m2/repository/org/antlr/antlr4-runtime/4.9.1/antlr4-runtime-4.9.1.jar:/home/crz/.m2/repository/org/bytedeco/llvm-platform/13.0.1-1.5.7/llvm-platform-13.0.1-1.5.7.jar:/home/crz/.m2/repository/org/bytedeco/javacpp-platform/1.5.7/javacpp-platform-1.5.7.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-android-arm.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-android-arm64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-android-x86.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-android-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-ios-arm64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-ios-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-armhf.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-arm64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-ppc64le.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-x86.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-linux-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-macosx-arm64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-macosx-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-windows-x86.jar:/home/crz/.m2/repository/org/bytedeco/javacpp/1.5.7/javacpp-1.5.7-windows-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-x86.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-armhf.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-arm64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-linux-ppc64le.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-macosx-arm64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-macosx-x86_64.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-windows-x86.jar:/home/crz/.m2/repository/org/bytedeco/llvm/13.0.1-1.5.7/llvm-13.0.1-1.5.7-windows-x86_64.jar:/home/crz/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.0/junit-jupiter-5.10.0.jar:/home/crz/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.0/junit-jupiter-api-5.10.0.jar:/home/crz/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/crz/.m2/repository/org/junit/platform/junit-platform-commons/1.10.0/junit-platform-commons-1.10.0.jar:/home/crz/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/crz/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.0/junit-jupiter-params-5.10.0.jar:/home/crz/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.0/junit-jupiter-engine-5.10.0.jar:/home/crz/.m2/repository/org/junit/platform/junit-platform-engine/1.10.0/junit-platform-engine-1.10.0.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/crz"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-04-15"/>
+    <property name="java.home" value="/usr/lib/jvm/java-11-openjdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/crz/compilers/Lab"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="surefire.real.class.path" value="/home/crz/compilers/Lab/target/surefire/surefirebooter-20250714134405546_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="11.0.27+6-post-Ubuntu-0ubuntu122.04"/>
+    <property name="user.name" value="crz"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.6.87.2-microsoft-standard-WSL2"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/crz/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-lts"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="11.0.27"/>
+    <property name="user.dir" value="/home/crz/compilers/Lab"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Ubuntu"/>
+    <property name="java.vm.version" value="11.0.27+6-post-Ubuntu-0ubuntu122.04"/>
+    <property name="java.specification.maintenance.version" value="3"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="55.0"/>
+  </properties>
+  <testcase name="testMain" classname="com.example.MainTest" time="32.416">
+    <system-out><![CDATA[Running test case: tests/develop_test/controltest3.sysy
+int x = 56;
+int y = 98;
+int z = 3;
+int a = 4;
+int b = 5;
+int c = 6;
+int d = 7;
+int e = 8;
+int f = 9;
+int g = 10;
+int h = 11;
+int i = 12;
+int j = 13;
+int k = 14;
+int l = 15;
+int m = 16;
+int n = 17;
+int o = 18;
+int p = 19;
+int q = 20;
+
+int main() {
+    int a = x;
+    int b = y;
+    while (b != 0) {
+        if (a > b) {
+            a = a - b;
+        }
+        else {
+            b = b - a;
+        }
+    }
+    if (a != !x + 3)
+        a = a + 1;
+    int x1 = 1;
+    int x2 = 2;
+    int x3 = 3;
+    int x4 = 4;
+    int x5 = 5;
+    int x6 = 6;
+    int x7 = 7;
+    int x8 = 8;
+    int x9 = 9;
+    int x10 = 10;
+    int x11 = 11;
+    int x12 = 12;
+    int x13 = 13;
+    int x14 = 14;
+    int x15 = 15;
+    int x16 = 16;
+    int x17 = 17;
+    int x18 = 18;
+    int x19 = 19;
+    int x20 = 20;
+    x = x + 1;
+    y = y + 2;
+    z = z + 3;
+    a = a + 4;
+    b = b + 5;
+    c = c + 6;
+    d = d + 7;
+    e = e + 8;
+    f = f + 9;
+    g = g + 10;
+    h = h + 11;
+    i = i + 12;
+    j = j + 13;
+    k = k + 14;
+    l = l + 15;
+    m = m + 16;
+    n = n + 17;
+    o = o + 18;
+    p = p + 19;
+    q = q + 20;
+    x1 = x1 * 2;
+    x2 = x2 * 2;
+    x3 = x3 * 2;
+    x4 = x4 * 2;
+    x5 = x5 * 2;
+    x6 = x6 * 2;
+    x7 = x7 * 2;
+    x8 = x8 * 2;
+    x9 = x9 * 2;
+    x10 = x10 * 2;
+    x11 = x11 * 2;
+    x12 = x12 * 2;
+    x13 = x13 * 2;
+    x14 = x14 * 2;
+    x15 = x15 * 2;
+    x16 = x16 * 2;
+    x17 = x17 * 2;
+    x18 = x18 * 2;
+    x19 = x19 * 2;
+    x20 = x20 * 2;
+    return a + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20;
+}
+Running test case: tests/develop_test/mat.sysy
+int main() {
+    int i, j, k;
+    int arr[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    for (int i = 0; i < 3; i = i + 1) {
+        for (int j = 0; j < 3; j = j + 1) {
+            if (i == j) {
+                continue;
+            }
+            for (int k = 0; k < 3; k = k + 1) {
+                arr[i][j] = arr[i][j] + arr[j][k];
+                if (arr[i][j] > 20) {
+                    break;
+                }
+            }
+        }
+    }
+    return arr[2][2];
+}
+Running test case: tests/develop_test/01backpack.sysy
+int max(int a, int b) {
+    if (a > b)
+        return a;
+    else
+        return b;
+}
+
+int main() {
+    int w[4] = {2, 3, 4, 7};
+    int c[4] = {1, 3, 5, 9};
+    int f[5][11] = {0};
+    int n = 4, m = 10;
+    int i = 0;
+    while (i < n) {
+        int v = 1;
+        while (v <= m) {
+            if (v >= w[i]) {
+                f[i + 1][v] = max(f[i][v - w[i]] + c[i], f[i][v]);
+            }
+            else {
+                f[i + 1][v] = f[i][v];
+            }
+            v = v + 1;
+        }
+        i = i + 1;
+    }
+    return f[n][m];
+}
+Running test case: tests/develop_test/matmul.sysy
+int ROWS_A = 2;
+int COLS_A = 3;
+int ROWS_B = 3;
+int COLS_B = 2;
+
+void matrix_multiply(int a[2][3], int b[3][2], int result[2][2]) {
+    for (int i = 0; i < ROWS_A; i = i + 1) {
+        for (int j = 0; j < COLS_B; j = j + 1) {
+            result[i][j] = 0;
+            for (int k = 0; k < COLS_A; k = k + 1) {
+                result[i][j] = result[i][j] + a[i][k] * b[k][j];
+            }
+        }
+    }
+}
+
+int main() {
+    int matrix_a[2][3] = {{1, 2, 3}, {4, 5, 6}};
+    int matrix_b[3][2] = {{7, 8}, {9, 10}, {11, 12}};
+    int result[2][2];
+    matrix_multiply(matrix_a, matrix_b, result);
+    return result[1][1];
+}
+Running test case: tests/develop_test/quicksort.sysy
+void swap(int arr[6], int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+int b(int arr[6], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j = j + 1) {
+        if (arr[j] <= pivot) {
+            i = i + 1;
+            swap(arr, i, j);
+        }
+    }
+    swap(arr, i + 1, high);
+    return i + 1;
+}
+
+int main() {
+    int arr[6] = {10, 7, 8, 9, 1, 5};
+    int n = 6;
+    b(arr, 0, n - 1);
+    return arr[5];
+}
+Running test case: tests/develop_test/runtimeerrortest.sysy
+int x = 5;
+
+int main() {
+    x = x + 1;
+    return x;
+}
+Running test case: tests/develop_test/rectest.sysy
+int f(int x) {
+    if (x == 0)
+        return 0;
+    if (x == 1)
+        return 1;
+    else
+        return f(x - 1) + f(x - 2);
+}
+
+int main() {
+    int x = 1;
+    int y = 2;
+    int z;
+    z = x + y;
+    return f(5);
+}
+Running test case: tests/develop_test/gcd.sysy
+int gcd(int a, int b) {
+    if (b == 0) {
+        return a;
+    }
+    return gcd(b, a % b);
+}
+
+int main() {
+    int num1 = 25, num2 = 40;
+    int result = gcd(num1, num2);
+    return result;
+}
+Running test case: tests/develop_test/functest.sysy
+int f(int x, int y, int z) {
+    return x + y + z;
+}
+
+int main() {
+    int x = 30;
+    x = f(10, 20, x);
+    x = x + 5;
+    return x;
+}
+Running test case: tests/develop_test/regallocatetest.sysy
+
+int main() {
+    int x1 = 1;
+    int x2 = 2;
+    int x3 = 3;
+    int x4 = 4;
+    int x5 = 5;
+    int x6 = 6;
+    int x7 = 7;
+    int x8 = 8;
+    int x9 = 9;
+    int x10 = 10;
+    int x11 = 11;
+    int x12 = 12;
+    int x13 = 13;
+    int x14 = 14;
+    return x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14;
+}
+Running test case: tests/develop_test/fortest.sysy
+int main() {
+    int sum = 0;
+    int n = 10;
+    for (int i = 1; i <= n; i = i + 1)
+        sum = sum + i;
+
+    return sum;
+}
+Running test case: tests/develop_test/graph_color_check.sysy
+int main() {
+    int a = 0;
+    int b = 0;
+    int c = 0;
+    b = a + 2;
+    c = b * b;
+    b = c + 1;
+    return b * a;
+}
+Running test case: tests/develop_test/regalloctestcomp.sysy
+int x = 1;
+int y = 2;
+int z = 3;
+int a = 4;
+int b = 5;
+int c = 6;
+int d = 7;
+int e = 8;
+int f = 9;
+int g = 10;
+int h = 11;
+int i = 12;
+int j = 13;
+int k = 14;
+int l = 15;
+int m = 16;
+int n = 17;
+int o = 18;
+int p = 19;
+int q = 20;
+
+int main() {
+    int x1 = 1;
+    int x2 = 2;
+    int x3 = 3;
+    int x4 = 4;
+    int x5 = 5;
+    int x6 = 6;
+    int x7 = 7;
+    int x8 = 8;
+    int x9 = 9;
+    int x10 = 10;
+    int x11 = 11;
+    int x12 = 12;
+    int x13 = 13;
+    int x14 = 14;
+    int x15 = 15;
+    int x16 = 16;
+    int x17 = 17;
+    int x18 = 18;
+    int x19 = 19;
+    int x20 = 20;
+    x = x + 1;
+    y = y + 2;
+    z = z + 3;
+    a = a + 4;
+    b = b + 5;
+    c = c + 6;
+    d = d + 7;
+    e = e + 8;
+    f = f + 9;
+    g = g + 10;
+    h = h + 11;
+    i = i + 12;
+    j = j + 13;
+    k = k + 14;
+    l = l + 15;
+    m = m + 16;
+    n = n + 17;
+    o = o + 18;
+    p = p + 19;
+    q = q + 20;
+    x1 = x1 * 2;
+    x2 = x2 * 2;
+    x3 = x3 * 2;
+    x4 = x4 * 2;
+    x5 = x5 * 2;
+    x6 = x6 * 2;
+    x7 = x7 * 2;
+    x8 = x8 * 2;
+    x9 = x9 * 2;
+    x10 = x10 * 2;
+    x11 = x11 * 2;
+    x12 = x12 * 2;
+    x13 = x13 * 2;
+    x14 = x14 * 2;
+    x15 = x15 * 2;
+    x16 = x16 * 2;
+    x17 = x17 * 2;
+    x18 = x18 * 2;
+    x19 = x19 * 2;
+    x20 = x20 * 2;
+    return x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20 + x + y + z + a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q;
+}
+Running test case: tests/develop_test/mergearray.sysy
+int combine(int arr1[2], int arr1_length, int arr2[3], int arr2_length) {
+    int sort_arr[5];
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    while (i < arr1_length && j < arr2_length) {
+        if (arr1[i] < arr2[j]) {
+            sort_arr[k] = arr1[i];
+            i = i + 1;
+        }
+        else {
+            sort_arr[k] = arr2[j];
+            j = j + 1;
+        }
+        k = k + 1;
+    }
+    if (i == arr1_length) {
+        while (j < arr2_length) {
+            sort_arr[k] = arr2[j];
+            k = k + 1;
+            j = j + 1;
+        }
+    }
+    else {
+        while (i < arr1_length) {
+            sort_arr[k] = arr2[i];
+            k = k + 1;
+            i = i + 1;
+        }
+    }
+    return sort_arr[arr1_length + arr2_length - 1];
+}
+
+int main() {
+    int a[2] = {1, 5};
+    int b[3][3] = {1, 4, 14, 1, 4, 14, 1, 4, 14};
+    return combine(a, 2, b[1], 3);
+}
+Running test case: tests/develop_test/func_call_test.sysy
+void swap(int arr[6], int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+int partition(int arr[6], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j = j + 1) {
+        if (arr[j] <= pivot) {
+            i = i + 1;
+            swap(arr, i, j);
+        }
+    }
+    swap(arr, i + 1, high);
+    return i + 1;
+}
+
+void quickSort(int arr[6], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int arr[6] = {10, 7, 8, 9, 1, 5};
+    int n = 6;
+    quickSort(arr, 0, n - 1);
+    return arr[5];
+}
+Running test case: tests/develop_test/exptest1.sysy
+int main() {
+    return 1 + 2 * 3 + 5 + 5 + -10;
+}
+Running test case: tests/develop_test/vartest.sysy
+const int a = 1, dddd = 111;
+int b, cccc;
+
+int main() {
+    b = a + 1 + !!cccc;
+    return b;
+}
+Running test case: tests/develop_test/1.sysy
+int z = 3;
+
+int print() {
+    z = z + 3;
+    return z + 3;
+}
+
+int main() {
+    int a[4] = {1, 2, 3};
+    int x = 1;
+    int sum = 0;
+    for (int i = 0; a[0] < 3; a[0] = a[0] + 1) {
+        print();
+        sum = sum + a[i] + z + a[0];
+        i = i + 1;
+        if (i == 3)
+            break;
+    }
+    return sum;
+}
+Running test case: tests/develop_test/controltest.sysy
+int x = 56;
+int y = 98;
+
+int main() {
+    int a = x;
+    int b = y;
+    if (!a + b >= 10) {
+        if (a <= 10)
+            return 2;
+    }
+    while (1) {
+        a = a - 2;
+        if (a == 45)
+            break;
+        else if (a == 48) {
+            b = b - 3;
+            a = a + 1;
+        }
+    }
+    int cnt = 0;
+    while (b > 35) {
+        if (cnt == 30)
+            break;
+        {
+            int b = 30;
+            {
+                while (1) {
+                    if (b < 20)
+                        return b;
+                    else
+                        b = b - 7;
+                    break;
+                }
+            }
+        }
+        if (b > 70) {
+            b = b - 5;
+        }
+        else if (b > 50)
+            b = b - 7;
+        if (b + a > 40)
+            b = b + 10;
+        else if (b > 30)
+            b = b - 1;
+        else
+            return 10;
+        cnt = cnt + 1;
+    }
+    b = b - 3;
+    a = a + 1;
+    if (a + b > 50)
+        a = a - 10;
+    int result = a;
+    return result;
+}
+Running test case: tests/develop_test/fib.sysy
+int fib(int n) {
+    if (n == 0)
+        return 1;
+    else if (n == 1)
+        return 2;
+    else
+        return fib(n - 1) + fib(n - 2);
+}
+
+int main() {
+    return fib(5);
+}
+Running test case: tests/develop_test/dij.sysy
+int main() {
+    int e[15][15], dis[15], book[15];
+    for (int i = 0; i < 14; i = i + 1) {
+        book[i] = 0;
+    }
+    int n = 6, m = 9, a, b, c;
+    for (int i = 1; i <= n; i = i + 1) {
+        for (int j = 1; j <= n; j = j + 1) {
+            if (i == j)
+                e[i][j] = 0;
+            else
+                e[i][j] = 9999;
+        }
+    }
+    e[1][2] = 1;
+    e[1][3] = 12;
+    e[2][3] = 9;
+    e[2][4] = 3;
+    e[3][5] = 5;
+    e[4][3] = 4;
+    e[4][5] = 13;
+    e[4][6] = 15;
+    e[5][6] = 4;
+    for (int i = 1; i <= n; i = i + 1) {
+        dis[i] = e[1][i];
+    }
+    int t, min = 99999;
+    for (int i = 1; i <= n; i = i + 1) {
+        min = 99999;
+        for (int j = 1; j <= n; j = j + 1) {
+            if (book[j] == 0 && dis[j] < min) {
+                min = dis[j];
+                t = j;
+            }
+        }
+        book[t] = 1;
+        for (int k = 1; k <= n; k = k + 1) {
+            if (book[k] == 0 && dis[k] > dis[t] + e[t][k]) {
+                dis[k] = dis[t] + e[t][k];
+            }
+        }
+    }
+    return dis[3];
+}
+Running test case: tests/develop_test/controltest2.sysy
+int x = 56;
+int y = 98;
+
+int main() {
+    int a = x;
+    int b = y;
+    if (a % 2 == 1)
+        a = a + 1;
+    while (b != 0) {
+        if (a > b) {
+            a = a - b;
+        }
+        else {
+            b = b - a;
+        }
+    }
+    int result = a;
+    return result;
+}
+Running test case: tests/develop_test/test_array.sysy
+int main() {
+    int f[5][6] = {{1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1}};
+    int i = 0;
+    while (i < 4) {
+        f[i + 1][1] = f[i][1];
+        i = i + 1;
+    }
+    return f[4][1];
+}
+]]></system-out>
+  </testcase>
+</testsuite>

@@ -1,66 +1,66 @@
-  .data
+	.data
 x:
   .word 56
-  .data
+	.data
 y:
   .word 98
-  .data
+	.data
 z:
   .word 3
-  .data
+	.data
 a:
   .word 4
-  .data
+	.data
 b:
   .word 5
-  .data
+	.data
 c:
   .word 6
-  .data
+	.data
 d:
   .word 7
-  .data
+	.data
 e:
   .word 8
-  .data
+	.data
 f:
   .word 9
-  .data
+	.data
 g:
   .word 10
-  .data
+	.data
 h:
   .word 11
-  .data
+	.data
 i:
   .word 12
-  .data
+	.data
 j:
   .word 13
-  .data
+	.data
 k:
   .word 14
-  .data
+	.data
 l:
   .word 15
-  .data
+	.data
 m:
   .word 16
-  .data
+	.data
 n:
   .word 17
-  .data
+	.data
 o:
   .word 18
-  .data
+	.data
 p:
   .word 19
-  .data
+	.data
 q:
   .word 20
 
-  .text
-  .globl main
+	.text
+	.globl main
 main:
   addi sp, sp, -2044
   j main_mainEntry

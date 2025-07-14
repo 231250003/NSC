@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SymbolTable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">llvm-antlr-project</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">SymbolTable.java</span></div><h1>SymbolTable.java</h1><pre class="source lang-java linenums">
+package  com.example;
+import org.bytedeco.javacpp.PointerPointer;
+import org.bytedeco.llvm.LLVM.LLVMBasicBlockRef;
+import org.bytedeco.llvm.LLVM.LLVMValueRef;
+
+import javax.swing.plaf.PanelUI;
+import java.util.*;
+
+<span class="fc" id="L10">public class SymbolTable {</span>
+    private Stack&lt;List&lt;Symbol&gt;&gt; scopeStack;
+    private Stack&lt;loop_stored_element&gt; loop_scope;
+<span class="fc" id="L13">    public SymbolTable() {</span>
+<span class="fc" id="L14">        scopeStack = new Stack&lt;&gt;();</span>
+<span class="fc" id="L15">        loop_scope=new Stack&lt;&gt;();</span>
+<span class="fc" id="L16">        enterScope(); // 初始化全局作用域</span>
+<span class="fc" id="L17">    }</span>
+
+    // 进入新作用域
+    public void enterScope() {
+<span class="fc" id="L21">        scopeStack.push(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L22">        loop_scope.push(null);</span>
+<span class="fc" id="L23">    }</span>
+    public void enterScope(LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock) {
+<span class="fc" id="L25">        scopeStack.push(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L26">        loop_scope.push(new loop_stored_element(condblock,mergeblock,null));</span>
+<span class="fc" id="L27">    }</span>
+    public void enterScope(LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock,SysYParser.StmtContext ctx) {
+<span class="fc" id="L29">        scopeStack.push(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L30">        loop_scope.push(new loop_stored_element(condblock,mergeblock,ctx));</span>
+<span class="fc" id="L31">    }</span>
+    // 退出当前作用域
+    public void exitScope() {
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (!scopeStack.isEmpty()) {</span>
+<span class="fc" id="L35">            scopeStack.pop();</span>
+        }
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if(!loop_scope.isEmpty()){</span>
+<span class="fc" id="L38">            loop_scope.pop();</span>
+        }
+<span class="fc" id="L40">    }</span>
+
+    // 在当前作用域添加符号
+    public void put(Symbol symbol) {
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (!scopeStack.isEmpty()) {</span>
+<span class="fc" id="L45">            scopeStack.peek().add(symbol);</span>
+        }
+<span class="fc" id="L47">    }</span>
+    // 查找符号类型（从当前作用域向外层作用域查找）
+    public boolean cur_scope_has_same_symbol(String name) {
+<span class="fc" id="L50">            List&lt;Symbol&gt; curScope=scopeStack.get( scopeStack.size() - 1);</span>
+            //System.err.println(curScope.size());
+<span class="fc bfc" id="L52" title="All 2 branches covered.">            for(int j=0;j&lt;curScope.size();j++)</span>
+            {
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">                if(curScope.get(j).name.equals(name)) return true;</span>
+            }
+<span class="fc" id="L56">        return false; // 未找到</span>
+    }
+    public boolean isGlobal(String name) {
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (scopeStack.isEmpty()) return false;</span>
+<span class="fc" id="L60">        List&lt;Symbol&gt; Globalscope= scopeStack.get(0);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for(int j=0;j&lt;Globalscope.size();j++)</span>
+        {
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">            if(Globalscope.get(j).name.equals(name)) return true;</span>
+        }
+<span class="fc" id="L65">        return false;</span>
+    }
+    public Symbol get_name_matched_symbol(String name) {
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        if (scopeStack.isEmpty()) return null;</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        for(int i=scopeStack.size()-1;i&gt;=0;i--){</span>
+<span class="fc" id="L70">            List&lt;Symbol&gt; Globalscope= scopeStack.get(i);</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">            for(int j=0;j&lt;Globalscope.size();j++)</span>
+            {
+<span class="fc bfc" id="L73" title="All 2 branches covered.">                if(Objects.equals(Globalscope.get(j).name, name) ) return Globalscope.get(j);</span>
+            }
+        }
+<span class="nc" id="L76">        return null;</span>
+    }
+    public Symbol get_name_matched_function(String name) {
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (scopeStack.isEmpty()) return null;</span>
+<span class="fc" id="L80">        List&lt;Symbol&gt; Globalscope= scopeStack.get(0);</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">            for(int j=0;j&lt;Globalscope.size();j++)</span>
+            {
+<span class="fc bfc" id="L83" title="All 2 branches covered.">                if(Objects.equals(Globalscope.get(j).name, name) ) return Globalscope.get(j);</span>
+            }
+<span class="nc" id="L85">        return null;</span>
+    }
+    public void addGlobal(Symbol symbol) {
+<span class="fc" id="L88">        List&lt;Symbol&gt; Globalscope= scopeStack.get(0);</span>
+<span class="fc" id="L89">        Globalscope.add(symbol);</span>
+<span class="fc" id="L90">    }</span>
+    public boolean is_cur_scopeGlobal(){
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        return scopeStack.size()==1;</span>
+    }
+    public Type get_cur_scope_return_type(){
+<span class="fc" id="L95">        List&lt;Symbol&gt; Globalscope= scopeStack.get(0);</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        assert(Globalscope.get(Globalscope.size()-1).type instanceof FunctionType);</span>
+<span class="pc bpc" id="L97" title="2 of 4 branches missed.">        assert (((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof VoidType || ((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof IntType);</span>
+<span class="fc" id="L98">        return ((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType();</span>
+    }
+    public LLVMValueRef get_cur_scope_func(){
+<span class="fc" id="L101">        List&lt;Symbol&gt; Globalscope= scopeStack.get(0);</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        assert(Globalscope.get(Globalscope.size()-1).type instanceof FunctionType);</span>
+<span class="pc bpc" id="L103" title="1 of 4 branches missed.">        assert (((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof VoidType || ((FunctionType)Globalscope.get(Globalscope.size()-1).type).getReturnType() instanceof IntType);</span>
+<span class="fc" id="L104">        return (Globalscope.get(Globalscope.size()-1).reference);</span>
+    }
+    public  loop_stored_element get_current_while(){
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        for(int i=loop_scope.size()-1;i&gt;=0;i--){</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            if(loop_scope.get(i)!=null) return loop_scope.get(i);</span>
+        }
+<span class="nc" id="L110">        assert(false);</span>
+<span class="nc" id="L111">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

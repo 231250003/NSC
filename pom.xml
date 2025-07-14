@@ -31,6 +31,12 @@
             <artifactId>antlr4-runtime</artifactId>
             <version>4.9.1</version>
         </dependency>
+        <!-- Bytedeco LLVM -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>llvm-platform</artifactId>
+            <version>13.0.1-1.5.7</version>
+        </dependency>
 
         <!-- JUnit 5 -->
         <dependency>
@@ -41,13 +47,21 @@
         </dependency>
     </dependencies>
 
-    <!-- jitpack 仓库 -->
     <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>bytedeco</id>
+            <url>https://repo.bytedeco.com/maven2/</url>
+        </repository>
     </repositories>
+
 
     <build>
         <plugins>
@@ -91,6 +105,22 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>com.example.Main</mainClass> <!-- 替换为你的主类全限定名 -->
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

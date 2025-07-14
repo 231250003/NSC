@@ -1,0 +1,978 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IRGenerationVisitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">llvm-antlr-project</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">IRGenerationVisitor.java</span></div><h1>IRGenerationVisitor.java</h1><pre class="source lang-java linenums">package  com.example;
+import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.bytedeco.javacpp.PointerPointer;
+import org.antlr.v4.runtime.tree.RuleNode;
+import org.bytedeco.llvm.LLVM.*;
+import static org.bytedeco.llvm.global.LLVM.*;
+import java.util.*;
+
+
+public class IRGenerationVisitor extends   SysYParserBaseVisitor&lt;LLVMValueRef&gt; {
+    private final LLVMModuleRef module;
+    private final LLVMBuilderRef builder;
+<span class="fc" id="L15">    private static final LLVMTypeRef i32Type = LLVMInt32Type();</span>
+<span class="fc" id="L16">    private static final   LLVMValueRef zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);</span>
+<span class="fc" id="L17">    public static int while_stmt_count=0;</span>
+<span class="fc" id="L18">    public static int block_count=0;</span>
+<span class="fc" id="L19">    Boolean pointer_need_load=false;</span>
+<span class="fc" id="L20">    private SymbolTable symbolTable=new SymbolTable();</span>
+<span class="fc" id="L21">    public IRGenerationVisitor(LLVMModuleRef module, LLVMBuilderRef builder) {</span>
+<span class="fc" id="L22">        this.module = module;</span>
+<span class="fc" id="L23">        this.builder = builder;</span>
+<span class="fc" id="L24">    }</span>
+    @Override
+    public LLVMValueRef visitDecl(SysYParser.DeclContext ctx) {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">         if(ctx.varDecl()!=null) visit(ctx.varDecl());</span>
+<span class="fc" id="L28">         else visit((ctx.constDecl()));</span>
+<span class="fc" id="L29">         return null;</span>
+    }
+    public Void visit_block(SysYParser.BlockContext ctx,LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock) {
+<span class="fc" id="L32">        block_count++;</span>
+<span class="fc" id="L33">        ParseTree parent = ctx.getParent();</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if ((parent instanceof SysYParser.StmtContext)) {</span>
+<span class="fc" id="L35">            SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;</span>
+<span class="fc" id="L36">            ParseTree grandparent = stmtCtx.getParent();</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">            if (grandparent instanceof SysYParser.StmtContext)</span>
+            {
+<span class="fc" id="L39">                SysYParser.StmtContext whileStmt = (SysYParser.StmtContext) grandparent;</span>
+<span class="pc bpc" id="L40" title="3 of 4 branches missed.">                if (whileStmt.WHILE() != null||whileStmt.FOR()!=null) {</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">                    if (whileStmt.stmt(0) == stmtCtx) {</span>
+<span class="fc" id="L42">                        symbolTable.enterScope(condblock,mergeblock);</span>
+                    } else {
+<span class="nc" id="L44">                        symbolTable.enterScope();</span>
+                    }
+                }
+                else {
+<span class="nc" id="L48">                    symbolTable.enterScope();</span>
+                }
+<span class="fc" id="L50">            }</span>
+            else {
+<span class="nc" id="L52">                symbolTable.enterScope();</span>
+            }
+<span class="fc" id="L54">        }</span>
+<span class="nc" id="L55">        else symbolTable.enterScope();//忘了当时怎么想的了</span>
+        //symbolTable.enterScope(condblock,mergeblock);
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for(int i=0;i&lt;ctx.blockItem().size();i++){</span>
+<span class="fc" id="L58">            visit(ctx.blockItem(i));</span>
+        }
+<span class="fc" id="L60">        symbolTable.exitScope();</span>
+<span class="fc" id="L61">        return null;</span>
+    }
+    public Void visit_block(SysYParser.BlockContext ctx) {
+<span class="fc" id="L64">        block_count++;</span>
+<span class="fc" id="L65">        symbolTable.enterScope();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        for(int i=0;i&lt;ctx.blockItem().size();i++){</span>
+<span class="fc" id="L67">            visit(ctx.blockItem(i));</span>
+        }
+<span class="fc" id="L69">        symbolTable.exitScope();</span>
+<span class="fc" id="L70">        return null;</span>
+    }
+    public Void visit_block(SysYParser.BlockContext block, LLVMBasicBlockRef condBlock, LLVMBasicBlockRef mergeBlock, SysYParser.StmtContext ctx) {
+<span class="fc" id="L73">        symbolTable.enterScope(condBlock,mergeBlock,ctx);</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        for(int i=0;i&lt;block.blockItem().size();i++){</span>
+<span class="fc" id="L75">            visit(block.blockItem(i));</span>
+        }
+<span class="fc" id="L77">        symbolTable.exitScope();</span>
+<span class="fc" id="L78">        return null;</span>
+    }
+    public Void visit_block(SysYParser.BlockContext ctx, List&lt;Symbol&gt; symbols) {
+<span class="fc" id="L81">        block_count++;</span>
+<span class="fc" id="L82">        symbolTable.enterScope();</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if(symbols!=null){</span>
+<span class="fc" id="L84">            LLVMValueRef function=symbolTable.get_cur_scope_func();</span>
+<span class="fc" id="L85">            int paramCount = LLVMCountParams(function);</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">            for (int i = 0; i &lt; paramCount; i++) {</span>
+<span class="fc" id="L87">                LLVMValueRef param = LLVMGetParam(function, i);</span>
+<span class="fc" id="L88">                LLVMTypeRef paramType = LLVMTypeOf(param);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">                if(LLVMGetTypeKind(LLVMTypeOf(param))!=LLVMPointerTypeKind) {</span>
+<span class="fc" id="L90">                    LLVMValueRef paramAddr = LLVMBuildAlloca(builder, paramType, &quot;param&quot; + i + &quot;_addr&quot;);</span>
+<span class="fc" id="L91">                    LLVMBuildStore(builder, param, paramAddr);</span>
+<span class="fc" id="L92">                    Symbol symbol = symbols.get(i);</span>
+<span class="fc" id="L93">                    symbol.reference = paramAddr;</span>
+<span class="fc" id="L94">                }</span>
+<span class="fc" id="L95">                else symbols.get(i).reference=param;</span>
+            }
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            for(Symbol symbol:symbols){</span>
+<span class="fc" id="L98">                symbolTable.put(symbol);</span>
+<span class="fc" id="L99">            }</span>
+        }
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        for(int i=0;i&lt;ctx.blockItem().size();i++){</span>
+<span class="fc" id="L102">            visit(ctx.blockItem(i));</span>
+        }
+<span class="fc" id="L104">        symbolTable.exitScope();</span>
+<span class="fc" id="L105">        return null;</span>
+    }
+
+    @Override
+    public LLVMValueRef visitBlockItem(SysYParser.BlockItemContext ctx) {
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (ctx.decl() != null)  visit(ctx.decl());</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (ctx.stmt() != null)  visit(ctx.stmt());</span>
+<span class="fc" id="L112">        return null;</span>
+    }
+
+    @Override
+    public LLVMValueRef visitBType(SysYParser.BTypeContext ctx) {
+<span class="nc" id="L117">        return super.visitBType(ctx);</span>
+    }
+
+    @Override
+    public LLVMValueRef visitCompUnit(SysYParser.CompUnitContext ctx) {
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        for (ParseTree child : ctx.children) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            if (child instanceof SysYParser.DeclContext) {</span>
+<span class="fc" id="L125">                visitDecl((SysYParser.DeclContext) child);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            } else if (child instanceof SysYParser.FuncDefContext) {</span>
+<span class="fc" id="L127">                visitFuncDef((SysYParser.FuncDefContext) child);</span>
+            }
+<span class="fc" id="L129">        }</span>
+<span class="fc" id="L130">        return null;</span>
+    }
+
+
+    @Override
+    public LLVMValueRef visitConstDecl(SysYParser.ConstDeclContext ctx) {
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        for (int i = 0; i &lt; ctx.constDef().size(); i++) {</span>
+<span class="fc" id="L137">            SysYParser.ConstDefContext constdef = ctx.constDef().get(i);</span>
+<span class="fc" id="L138">            Symbol x = getConstDef(constdef);</span>
+<span class="fc" id="L139">            symbolTable.put(x);</span>
+        }
+<span class="fc" id="L141">        return null;</span>
+    }
+    private LLVMTypeRef getLLVMArrayType(ArrayType type) {
+<span class="fc" id="L144">        LLVMTypeRef base = LLVMInt32Type();</span>
+<span class="fc" id="L145">        List&lt;Integer&gt; dims = type.dimensions;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        for (int i = dims.size() - 1; i &gt;= 0; --i) {</span>
+<span class="fc" id="L147">            base = LLVMArrayType(base, dims.get(i));</span>
+        }
+<span class="fc" id="L149">        return base;</span>
+    }
+    public void get_indicies(List&lt;Integer&gt; x,int ind,List&lt;Integer&gt; ans){
+<span class="fc" id="L152">        int pos=ind%x.get(x.size()-1);</span>
+<span class="fc" id="L153">        int next_ind=(ind-pos)/x.get(x.size()-1);</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">        if(x.size()==1) ans.add(pos);</span>
+        else {
+<span class="fc" id="L156">            get_indicies(x.subList(0,x.size()-1),next_ind,ans);</span>
+<span class="fc" id="L157">            ans.add(pos);</span>
+        }
+<span class="fc" id="L159">    }</span>
+    void get_const_init_val(List&lt;LLVMValueRef&gt; ans, SysYParser.ConstInitValContext constInitValContext){
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        if(constInitValContext.constExp()!=null){</span>
+<span class="nc" id="L162">            LLVMValueRef val = visitConstExp(constInitValContext.constExp());</span>
+<span class="nc bnc" id="L163" title="All 4 branches missed.">            if (val != null &amp;&amp; LLVMIsAConstantInt(val) != null) {</span>
+<span class="nc" id="L164">                long constVal = LLVMConstIntGetSExtValue(val); // 提取整数值（有符号）</span>
+<span class="nc" id="L165">                ans.add(LLVMConstInt(LLVMInt32Type(), constVal, 1));</span>
+<span class="nc" id="L166">            }</span>
+<span class="nc" id="L167">            else ans.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+<span class="nc" id="L168">        }</span>
+        else{
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            for(int i=0;i&lt;constInitValContext.constInitVal().size();i++){</span>
+<span class="nc" id="L171">                get_const_init_val(ans,constInitValContext.constInitVal(i));</span>
+            }
+        }
+<span class="nc" id="L174">    }</span>
+    private LLVMValueRef buildConstArrayInitializer(List&lt;LLVMValueRef&gt; flatVals, List&lt;Integer&gt; dims, int depth) {
+<span class="nc" id="L176">        int dim = dims.get(depth);</span>
+<span class="nc" id="L177">        int stride = 1;</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">        for (int i = depth + 1; i &lt; dims.size(); i++) {</span>
+<span class="nc" id="L179">            stride *= dims.get(i);</span>
+        }
+
+<span class="nc" id="L182">        LLVMValueRef[] nested = new LLVMValueRef[dim];</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        for (int i = 0; i &lt; dim; i++) {</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            if (depth == dims.size() - 1) {</span>
+<span class="nc" id="L185">                nested[i] = flatVals.get(i);</span>
+            } else {
+<span class="nc" id="L187">                int start = i * stride;</span>
+<span class="nc" id="L188">                List&lt;LLVMValueRef&gt; sublist = flatVals.subList(start, start + stride);</span>
+<span class="nc" id="L189">                nested[i] = buildConstArrayInitializer(sublist, dims, depth + 1);</span>
+            }
+        }
+
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        LLVMTypeRef elemTy = (depth == dims.size() - 1)</span>
+<span class="nc" id="L194">                ? LLVMInt32Type()</span>
+<span class="nc" id="L195">                : getLLVMArrayType(new ArrayType(new IntType(), dims.subList(depth + 1, dims.size())));</span>
+<span class="nc" id="L196">        return LLVMConstArray(elemTy, new PointerPointer&lt;&gt;(nested), nested.length);</span>
+    }
+    public Symbol getConstDef(SysYParser.ConstDefContext ctx) {
+<span class="fc" id="L199">        Symbol symbol=new Symbol();</span>
+<span class="fc" id="L200">        symbol.name=ctx.IDENT().getText();</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        if(ctx.L_BRACKT().isEmpty()){</span>
+<span class="fc" id="L202">            symbol.type=new IntType();</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">            if(symbolTable.is_cur_scopeGlobal()){</span>
+<span class="fc" id="L204">                LLVMValueRef initval=getconstinitvalue(ctx.constInitVal());</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">                if(LLVMIsAConstantInt(initval) != null) {</span>
+<span class="fc" id="L206">                    LLVMValueRef pointer = LLVMAddGlobal(module, i32Type, symbol.name);</span>
+<span class="fc" id="L207">                    LLVMSetInitializer(pointer, LLVMIsAConstantInt(initval));</span>
+<span class="fc" id="L208">                    symbol.reference=pointer;</span>
+<span class="fc" id="L209">                }</span>
+<span class="nc" id="L210">                else assert(false);</span>
+<span class="fc" id="L211">            }</span>
+            else{
+<span class="nc" id="L213">                LLVMValueRef pointer = LLVMBuildAlloca(builder, LLVMInt32Type(), symbol.name);</span>
+<span class="nc" id="L214">                LLVMValueRef initval=getconstinitvalue(ctx.constInitVal());</span>
+<span class="nc" id="L215">                LLVMBuildStore(builder, initval, pointer);</span>
+<span class="nc" id="L216">                symbol.reference=pointer;</span>
+<span class="nc" id="L217">            }</span>
+        }
+        else{
+<span class="nc" id="L220">            List&lt;Integer&gt; dims = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">            for (SysYParser.NumberContext expCtx : ctx.number()) {</span>
+<span class="nc" id="L222">                int dimSize = Integer.decode(expCtx.INTEGER_CONST().getText());</span>
+<span class="nc" id="L223">                dims.add(dimSize);</span>
+<span class="nc" id="L224">            }</span>
+<span class="nc" id="L225">            symbol.type = new ArrayType(new IntType(), dims);</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">            if (!symbolTable.is_cur_scopeGlobal()) {</span>
+<span class="nc" id="L227">                LLVMValueRef pointer = LLVMBuildAlloca(builder, getLLVMArrayType((ArrayType)symbol.type), symbol.name);</span>
+<span class="nc" id="L228">                int totalSize=((ArrayType)symbol.type).getTotalSize();</span>
+<span class="nc" id="L229">                List&lt;LLVMValueRef&gt; init_val_list=new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L230">                get_const_init_val(init_val_list,ctx.constInitVal());</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">                while(init_val_list.size()&lt;totalSize){</span>
+<span class="nc" id="L232">                    init_val_list.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+                }
+<span class="nc bnc" id="L234" title="All 2 branches missed.">                for(int i=0;i&lt;totalSize;i++){</span>
+<span class="nc" id="L235">                    List&lt;LLVMValueRef&gt; gepIndices = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L236">                    gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+<span class="nc" id="L237">                    List&lt;Integer&gt;indices=new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L238">                    get_indicies(((ArrayType)symbol.type).dimensions,i,indices);</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">                    for (int index : indices) {</span>
+<span class="nc" id="L240">                        gepIndices.add(LLVMConstInt(LLVMInt32Type(), index, 0));</span>
+<span class="nc" id="L241">                    }</span>
+<span class="nc" id="L242">                    LLVMValueRef elementPtr = LLVMBuildGEP(builder, pointer,</span>
+<span class="nc" id="L243">                            new PointerPointer&lt;&gt;(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), &quot;elemPtr&quot;);</span>
+<span class="nc" id="L244">                    LLVMBuildStore(builder, init_val_list.get(i), elementPtr);</span>
+                }
+<span class="nc" id="L246">                symbol.reference = pointer;</span>
+<span class="nc" id="L247">            } else {</span>
+<span class="nc" id="L248">                ArrayType arrayType = (ArrayType) symbol.type;</span>
+<span class="nc" id="L249">                LLVMTypeRef arrTy = getLLVMArrayType(arrayType);</span>
+<span class="nc" id="L250">                List&lt;LLVMValueRef&gt; initValList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L251">                get_const_init_val(initValList, ctx.constInitVal());</span>
+<span class="nc" id="L252">                int totalSize = arrayType.getTotalSize();</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                while (initValList.size() &lt; totalSize) {</span>
+<span class="nc" id="L254">                    initValList.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+                }
+<span class="nc" id="L256">                LLVMValueRef init = buildConstArrayInitializer(initValList, arrayType.dimensions, 0);</span>
+<span class="nc" id="L257">                LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);</span>
+<span class="nc" id="L258">                LLVMSetInitializer(globalPtr, init);</span>
+<span class="nc" id="L259">                LLVMSetGlobalConstant(globalPtr, 1);</span>
+<span class="nc" id="L260">                symbol.reference = globalPtr;</span>
+            }
+        }
+<span class="fc" id="L263">        return symbol;</span>
+    }
+
+    @Override
+    public LLVMValueRef visitConstExp(SysYParser.ConstExpContext ctx) {
+<span class="fc" id="L268">        return visit(ctx.exp());</span>
+    }
+
+    public LLVMValueRef getconstinitvalue(SysYParser.ConstInitValContext ctx) {
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">        if(ctx.L_BRACE()==null){</span>
+<span class="fc" id="L273">            return visit(ctx.constExp());</span>
+        }
+<span class="nc" id="L275">        return null;</span>
+    }
+    private LLVMValueRef castToI32(LLVMValueRef val) {
+<span class="fc" id="L278">        LLVMTypeRef type = LLVMTypeOf(val);</span>
+<span class="fc bfc" id="L279" title="All 4 branches covered.">        if (LLVMGetTypeKind(type) == LLVMIntegerTypeKind &amp;&amp; LLVMGetIntTypeWidth(type) == 1) {</span>
+<span class="fc" id="L280">            return LLVMBuildZExt(builder, val, LLVMInt32Type(), &quot;zext_to_i32&quot;);</span>
+        }
+<span class="fc" id="L282">        return val;</span>
+    }
+    @Override
+    public LLVMValueRef visitExp(SysYParser.ExpContext ctx) {
+        //System.out.println(&quot;visiting EXP&quot;);
+<span class="fc bfc" id="L287" title="All 2 branches covered.">        if (ctx.number() != null) return visit(ctx.number());</span>
+<span class="pc bpc" id="L288" title="1 of 4 branches missed.">        else if (ctx.IDENT() != null &amp;&amp; ctx.L_PAREN() != null) {</span>
+<span class="fc" id="L289">            String funcName = ctx.IDENT().getText();</span>
+<span class="fc" id="L290">            LLVMValueRef function = LLVMGetNamedFunction(module, funcName);</span>
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">            if (function == null) {</span>
+<span class="nc" id="L292">                throw new RuntimeException(&quot;Undefined function: &quot; + funcName);</span>
+            }
+<span class="fc" id="L294">            PointerPointer&lt;LLVMValueRef&gt; args = new PointerPointer&lt;&gt;(0);;</span>
+<span class="fc" id="L295">            int argCount = 0;</span>
+<span class="fc bfc" id="L296" title="All 2 branches covered.">            if (ctx.funcRParams() != null) {</span>
+<span class="fc" id="L297">                args=getFuncRParams(ctx.funcRParams());</span>
+<span class="fc" id="L298">                argCount = ctx.funcRParams().param().size();</span>
+            }
+<span class="fc bfc" id="L300" title="All 2 branches covered.">            if( (((FunctionType)(symbolTable.get_name_matched_function(funcName).type)).getReturnType() ).toString().equals(&quot;void&quot;)){</span>
+<span class="fc" id="L301">                LLVMBuildCall(builder, function, args, argCount, &quot;&quot;);</span>
+<span class="fc" id="L302">                return null;</span>
+            }
+<span class="fc" id="L304">            return castToI32(LLVMBuildCall(builder, function, args, argCount, funcName));</span>
+        }
+<span class="pc bpc" id="L306" title="1 of 4 branches missed.">        else if (ctx.exp().size() == 1 &amp;&amp; ctx.unaryOp() != null) {</span>
+<span class="fc" id="L307">            pointer_need_load=false;</span>
+<span class="fc" id="L308">            LLVMValueRef val = visit(ctx.exp(0));</span>
+<span class="pc bpc" id="L309" title="3 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(val)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L310">                val = LLVMBuildLoad(builder, val, &quot;load_val&quot;);</span>
+            }
+<span class="pc bpc" id="L312" title="2 of 4 branches missed.">            switch (ctx.unaryOp().getText()) {</span>
+<span class="fc" id="L313">                case &quot;-&quot; :return castToI32(LLVMBuildNeg(builder, val, &quot;neg&quot;));</span>
+<span class="fc" id="L314">                case &quot;!&quot; :return castToI32(LLVMBuildICmp(builder, LLVMIntEQ, val, LLVMConstInt(LLVMInt32Type(), 0, 0), &quot;not&quot;));</span>
+<span class="nc" id="L315">                case &quot;+&quot; :return castToI32(val);</span>
+<span class="nc" id="L316">                default :return null;</span>
+            }
+        }
+<span class="fc bfc" id="L319" title="All 2 branches covered.">        else if (ctx.exp().size() == 2) {</span>
+<span class="fc" id="L320">            pointer_need_load=false;</span>
+<span class="fc" id="L321">            LLVMValueRef left = visit(ctx.exp(0));</span>
+<span class="pc bpc" id="L322" title="3 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L323">                left = LLVMBuildLoad(builder, left, &quot;load_left&quot;);</span>
+            }
+<span class="fc" id="L325">            pointer_need_load=false;</span>
+<span class="fc" id="L326">            LLVMValueRef right = visit(ctx.exp(1));</span>
+<span class="pc bpc" id="L327" title="3 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L328">                right = LLVMBuildLoad(builder, right, &quot;load_right&quot;);</span>
+            }
+<span class="pc bpc" id="L330" title="2 of 6 branches missed.">            switch (ctx.getChild(1).getText()) {</span>
+<span class="fc" id="L331">                 case &quot;+&quot; : return castToI32(LLVMBuildAdd(builder, left, right, &quot;add&quot;));</span>
+<span class="fc" id="L332">                 case &quot;-&quot; :return castToI32(LLVMBuildSub(builder, left, right, &quot;sub&quot;));</span>
+<span class="fc" id="L333">                 case &quot;*&quot; :return  castToI32(LLVMBuildMul(builder, left, right, &quot;mul&quot;));</span>
+<span class="nc" id="L334">                 case &quot;/&quot; :return castToI32(LLVMBuildSDiv(builder, left, right, &quot;div&quot;));</span>
+<span class="fc" id="L335">                 case &quot;%&quot; :return castToI32(LLVMBuildSRem(builder, left, right, &quot;mod&quot;));</span>
+<span class="nc" id="L336">                 default :return null;</span>
+            }
+        }
+<span class="pc bpc" id="L339" title="3 of 4 branches missed.">        else if(ctx.L_PAREN()!=null&amp;&amp;ctx.exp()!=null){</span>
+<span class="nc" id="L340">            return castToI32(visit(ctx.exp(0)));</span>
+        }
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">        else if(ctx.lVal()!=null){</span>
+<span class="fc" id="L343">            pointer_need_load=false;</span>
+<span class="fc" id="L344">            LLVMValueRef value = visit(ctx.lVal());</span>
+<span class="pc bpc" id="L345" title="1 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(value)) ==LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="fc" id="L346">                return castToI32(LLVMBuildLoad(builder, value, &quot;load_lval&quot;));</span>
+            } else {
+<span class="fc" id="L348">                return castToI32(value);</span>
+            }
+        }
+<span class="nc" id="L351">        return null;</span>
+    }
+
+    @Override
+    public LLVMValueRef visitFuncDef(SysYParser.FuncDefContext ctx) {
+<span class="fc" id="L356">        String funcName = ctx.IDENT().getText();</span>
+        LLVMTypeRef returnType;
+        Type retType;
+<span class="fc bfc" id="L359" title="All 2 branches covered.">        if(ctx.funcType().getText().equals(&quot;int&quot;)){</span>
+<span class="fc" id="L360">            returnType = LLVMInt32Type();</span>
+<span class="fc" id="L361">            retType=new IntType();</span>
+        }
+        else {
+<span class="fc" id="L364">            returnType = LLVMVoidType();</span>
+<span class="fc" id="L365">            retType=new VoidType();</span>
+        }
+<span class="fc" id="L367">        List&lt;LLVMTypeRef&gt; paramTypeList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L368">        List&lt;Symbol&gt; params=new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L369" title="All 2 branches covered.">        if(ctx.funcFParams()!=null){</span>
+<span class="fc" id="L370">            params=new ArrayList&lt;&gt;(getFuncFParams(ctx.funcFParams()));</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">            for (Symbol x: params) {</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">                if(x.type.equals(new IntType())) paramTypeList.add(LLVMInt32Type());</span>
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">                else if (x.type instanceof ArrayType) {</span>
+<span class="fc" id="L374">                    LLVMTypeRef arrTy = getLLVMArrayType((ArrayType) x.type);</span>
+<span class="fc" id="L375">                    paramTypeList.add(LLVMPointerType(arrTy, 0));</span>
+                    //paramTypeList.add(arrTy);
+<span class="fc" id="L377">                }</span>
+<span class="nc" id="L378">                else throw new RuntimeException(&quot;Unsupported parameter type: &quot; + x.type);</span>
+<span class="fc" id="L379">            }</span>
+        }
+<span class="fc" id="L381">        PointerPointer&lt;LLVMTypeRef&gt; paramTypes = new PointerPointer&lt;&gt;(paramTypeList.size());</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        for (int i = 0; i &lt; paramTypeList.size(); i++) {</span>
+<span class="fc" id="L383">            paramTypes.put(i, paramTypeList.get(i));</span>
+        }
+<span class="fc" id="L385">        LLVMTypeRef funcType = LLVMFunctionType(returnType, paramTypes, paramTypeList.size(), 0);</span>
+<span class="fc" id="L386">        LLVMValueRef function = LLVMAddFunction(module, funcName, funcType);</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">        for (int i = 0; i &lt; params.size(); i++) {</span>
+<span class="fc" id="L388">            LLVMValueRef param = LLVMGetParam(function, i);</span>
+<span class="fc" id="L389">            LLVMSetValueName(param, params.get(i).name);</span>
+        }
+<span class="fc" id="L391">        LLVMBasicBlockRef entry = LLVMAppendBasicBlock(function, funcName + &quot;Entry&quot;);</span>
+<span class="fc" id="L392">        LLVMPositionBuilderAtEnd(builder, entry);</span>
+
+<span class="fc" id="L394">        FunctionType functionType = new FunctionType(retType, params);</span>
+<span class="fc" id="L395">        symbolTable.addGlobal(new Symbol(funcName,functionType,function));</span>
+<span class="fc" id="L396">        visit_block(ctx.block(),params);</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">        if(retType.toString().equals(&quot;void&quot;))  LLVMBuildRetVoid(builder);</span>
+<span class="fc bfc" id="L398" title="All 2 branches covered.">        if (LLVMGetBasicBlockTerminator(LLVMGetInsertBlock(builder)) == null) {</span>
+<span class="fc" id="L399">            LLVMBuildUnreachable(builder);</span>
+        }
+<span class="fc" id="L401">        return null;</span>
+    }
+
+    public Symbol getFuncFParam(SysYParser.FuncFParamContext ctx) {
+        Type type;
+<span class="fc" id="L406">        String name=ctx.IDENT().getText();</span>
+<span class="fc" id="L407">        List&lt;Integer&gt; dims = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">        for (SysYParser.NumberContext expCtx : ctx.number()) {</span>
+<span class="fc" id="L409">            int dimSize = Integer.decode(expCtx.INTEGER_CONST().getText());</span>
+<span class="fc" id="L410">            dims.add(dimSize);</span>
+<span class="fc" id="L411">        }</span>
+<span class="pc bpc" id="L412" title="1 of 4 branches missed.">        if (ctx.L_BRACKT()!=null&amp;&amp;ctx.L_BRACKT().size() &gt; 0) {</span>
+<span class="fc" id="L413">            type=new ArrayType(new IntType(), ctx.L_BRACKT().size());</span>
+<span class="fc" id="L414">            ((ArrayType)type).dimensions=new ArrayList&lt;&gt;(dims);</span>
+        }
+<span class="fc" id="L416">        else type=new IntType();</span>
+<span class="fc" id="L417">        return new Symbol(name,type);</span>
+    }
+    public List&lt;Symbol&gt; getFuncFParams(SysYParser.FuncFParamsContext ctx) {
+<span class="fc" id="L420">        List&lt;SysYParser.FuncFParamContext&gt; funcFParams = ctx.funcFParam();</span>
+<span class="fc" id="L421">        List&lt;Symbol&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L422" title="All 2 branches covered.">        for (int i = 0; i &lt; funcFParams.size(); i++) {</span>
+<span class="fc" id="L423">            SysYParser.FuncFParamContext funcFParam = funcFParams.get(i);</span>
+<span class="fc" id="L424">            Symbol x=getFuncFParam(funcFParam);</span>
+<span class="fc" id="L425">            result.add(x);</span>
+        }
+<span class="fc" id="L427">        return result;</span>
+    }
+
+    public PointerPointer&lt;LLVMValueRef&gt; getFuncRParams(SysYParser.FuncRParamsContext ctx) {
+<span class="fc" id="L431">        int paramCount = ctx.param().size();</span>
+<span class="fc" id="L432">        PointerPointer&lt;LLVMValueRef&gt; args = new PointerPointer&lt;&gt;(paramCount);</span>
+<span class="fc bfc" id="L433" title="All 2 branches covered.">        for (int i = 0; i &lt; paramCount; i++) {</span>
+<span class="fc" id="L434">            pointer_need_load=false;</span>
+<span class="fc" id="L435">            LLVMValueRef argValue = visit(ctx.param(i));</span>
+<span class="pc bpc" id="L436" title="1 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(argValue)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L437">                argValue = LLVMBuildLoad(builder, argValue, &quot;arg&quot;);</span>
+            }
+<span class="fc" id="L439">            args.put(i, argValue);</span>
+        }
+<span class="fc" id="L441">        return args;</span>
+    }
+
+    public LLVMValueRef getinitvalue(SysYParser.InitValContext ctx) {
+<span class="pc bpc" id="L445" title="1 of 2 branches missed.">        if(ctx.L_BRACE()==null){</span>
+<span class="fc" id="L446">            return visit(ctx.exp());</span>
+        }
+<span class="nc" id="L448">        return null;</span>
+    }
+
+    @Override
+    public LLVMValueRef visitLVal(SysYParser.LValContext ctx) {
+        //System.out.println(&quot;visiting LVAL&quot;);
+<span class="fc" id="L454">        String name=ctx.IDENT().getText();</span>
+<span class="fc" id="L455">        Symbol s = symbolTable.get_name_matched_symbol(name);</span>
+<span class="fc bfc" id="L456" title="All 2 branches covered.">        if(s.type instanceof IntType) {</span>
+<span class="fc" id="L457">            pointer_need_load=true;</span>
+<span class="fc" id="L458">            return s.reference;</span>
+        }
+        else{
+<span class="fc" id="L461">            List&lt;LLVMValueRef&gt; gepIndices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L462">            gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+<span class="fc bfc" id="L463" title="All 2 branches covered.">            for (SysYParser.ExpContext expCtx : ctx.exp()) {</span>
+<span class="fc" id="L464">                LLVMValueRef idx = visit(expCtx);</span>
+<span class="fc" id="L465">                gepIndices.add(idx);</span>
+<span class="fc" id="L466">            }</span>
+<span class="fc" id="L467">            pointer_need_load=false;</span>
+<span class="fc bfc" id="L468" title="All 6 branches covered.">            if ((ctx.exp().size() == ((ArrayType)s.type).dimensions.size()||ctx.exp().size() == ((ArrayType)s.type).dim)&amp;&amp;ctx.exp().size()!=0) {</span>
+<span class="fc" id="L469">                pointer_need_load = true;</span>
+            }
+//            System.out.println(&quot;s.reference type: &quot; + LLVMPrintTypeToString(LLVMTypeOf(s.reference)).getString());
+//            for (LLVMValueRef index : gepIndices) {
+//                System.out.println(&quot;index type: &quot; + LLVMPrintTypeToString(LLVMTypeOf(index)).getString());
+//            }
+<span class="fc" id="L475">            LLVMValueRef elementPtr = LLVMBuildGEP(</span>
+                    builder,
+                    s.reference,
+<span class="fc" id="L478">                    new PointerPointer&lt;&gt;(gepIndices.toArray(new LLVMValueRef[0])),</span>
+<span class="fc" id="L479">                    gepIndices.size(),</span>
+                    &quot;elemPtr&quot;
+            );
+<span class="fc" id="L482">            return elementPtr;</span>
+        }
+    }
+
+    @Override
+    public LLVMValueRef visitNumber(SysYParser.NumberContext ctx) {
+<span class="fc" id="L488">        int value = Integer.decode(ctx.INTEGER_CONST().getText());</span>
+<span class="fc" id="L489">        return LLVMConstInt(LLVMInt32Type(), value, 0);</span>
+    }
+
+    @Override
+    public LLVMValueRef visitParam(SysYParser.ParamContext ctx) {
+<span class="fc" id="L494">        return visit(ctx.exp());</span>
+    }
+
+    @Override
+    public LLVMValueRef visitProgram(SysYParser.ProgramContext ctx) {
+<span class="fc" id="L499">        return visit(ctx.compUnit());</span>
+    }
+    @Override
+    public LLVMValueRef visitCond(SysYParser.CondContext ctx) {
+      //  System.out.println(&quot;visiting cond&quot;);
+<span class="fc bfc" id="L504" title="All 2 branches covered.">        if(ctx.exp()!=null){</span>
+<span class="fc" id="L505">            LLVMValueRef value = visit(ctx.exp());</span>
+<span class="fc" id="L506">            return castToI32(value);</span>
+        }
+<span class="fc bfc" id="L508" title="All 8 branches covered.">        else if (ctx.LT() != null || ctx.GT() != null || ctx.LE() != null || ctx.GE() != null) {</span>
+            // 处理 &lt;, &gt;, &lt;=, &gt;=
+<span class="fc" id="L510">            pointer_need_load=false;</span>
+<span class="fc" id="L511">            LLVMValueRef left = visit(ctx.cond(0));</span>
+<span class="pc bpc" id="L512" title="3 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L513">                left = LLVMBuildLoad(builder, left, &quot;load_left&quot;);</span>
+            }
+<span class="fc" id="L515">            pointer_need_load=false;</span>
+<span class="fc" id="L516">            LLVMValueRef right = visit(ctx.cond(1));</span>
+<span class="pc bpc" id="L517" title="3 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L518">                right = LLVMBuildLoad(builder, right, &quot;load_right&quot;);</span>
+            }
+            int predicate;
+<span class="fc bfc" id="L521" title="All 2 branches covered.">            if (ctx.LT() != null) {</span>
+<span class="fc" id="L522">                predicate = LLVMIntSLT;</span>
+<span class="fc bfc" id="L523" title="All 2 branches covered.">            } else if (ctx.GT() != null) {</span>
+<span class="fc" id="L524">                predicate = LLVMIntSGT;</span>
+<span class="fc bfc" id="L525" title="All 2 branches covered.">            } else if (ctx.LE() != null) {</span>
+<span class="fc" id="L526">                predicate = LLVMIntSLE;</span>
+            } else {
+<span class="fc" id="L528">                predicate = LLVMIntSGE;</span>
+            }
+<span class="fc" id="L530">            return castToI32(LLVMBuildICmp(builder, predicate, left, right, &quot;cmp&quot;));</span>
+        }
+<span class="fc bfc" id="L532" title="All 4 branches covered.">        else if (ctx.EQ() != null || ctx.NEQ() != null) {</span>
+<span class="fc" id="L533">            pointer_need_load=false;</span>
+<span class="fc" id="L534">            LLVMValueRef left = visit(ctx.cond(0));</span>
+<span class="fc bfc" id="L535" title="All 2 branches covered.">            int predicate = (ctx.EQ() != null) ? LLVMIntEQ : LLVMIntNE;</span>
+<span class="pc bpc" id="L536" title="3 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(left)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L537">                left = LLVMBuildLoad(builder, left, &quot;load_left&quot;);</span>
+            }
+<span class="fc" id="L539">            pointer_need_load=false;</span>
+<span class="fc" id="L540">            LLVMValueRef right = visit(ctx.cond(1));</span>
+<span class="pc bpc" id="L541" title="3 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(right)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L542">                right = LLVMBuildLoad(builder, right, &quot;load_right&quot;);</span>
+            }
+<span class="fc" id="L544">            return  castToI32(LLVMBuildICmp(builder, predicate, left, right, &quot;cmp&quot;));</span>
+        }
+<span class="pc bpc" id="L546" title="1 of 2 branches missed.">        else if (ctx.AND() != null) {</span>
+<span class="fc" id="L547">            pointer_need_load=false;</span>
+<span class="fc" id="L548">            LLVMValueRef lhs = visit(ctx.cond(0));</span>
+<span class="pc bpc" id="L549" title="3 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L550">                lhs = LLVMBuildLoad(builder, lhs, &quot;load_lhs&quot;);</span>
+            }
+<span class="pc bpc" id="L552" title="1 of 2 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMIntegerTypeKind &amp;&amp;</span>
+<span class="pc bpc" id="L553" title="1 of 2 branches missed.">                    LLVMGetIntTypeWidth(LLVMTypeOf(lhs)) == 32) {</span>
+<span class="fc" id="L554">                lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs,</span>
+<span class="fc" id="L555">                        LLVMConstInt(LLVMInt32Type(), 0, 0), &quot;lhs_bool&quot;);</span>
+            }
+           // lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt1Type(), 0, 0), &quot;lhs_bool&quot;);
+
+            // block 准备
+<span class="fc" id="L560">            LLVMBasicBlockRef current = LLVMGetInsertBlock(builder);</span>
+<span class="fc" id="L561">            LLVMValueRef function = LLVMGetBasicBlockParent(current);</span>
+<span class="fc" id="L562">            LLVMBasicBlockRef rhsBlock = LLVMAppendBasicBlock(function, &quot;and.rhs&quot;);</span>
+<span class="fc" id="L563">            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, &quot;and.merge&quot;);</span>
+
+            // 如果 lhs 为 true，跳转 rhs；否则跳 merge（结果为 false）
+<span class="fc" id="L566">            LLVMBuildCondBr(builder, lhs, rhsBlock, mergeBlock);</span>
+
+            // ===== rhs block =====
+<span class="fc" id="L569">            LLVMPositionBuilderAtEnd(builder, rhsBlock);</span>
+<span class="fc" id="L570">            pointer_need_load=false;</span>
+<span class="fc" id="L571">            LLVMValueRef rhs = visit(ctx.cond(1));</span>
+<span class="pc bpc" id="L572" title="3 of 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L573">                rhs = LLVMBuildLoad(builder, rhs, &quot;load_rhs&quot;);</span>
+            }
+<span class="pc bpc" id="L575" title="1 of 2 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMIntegerTypeKind &amp;&amp;</span>
+<span class="pc bpc" id="L576" title="1 of 2 branches missed.">                    LLVMGetIntTypeWidth(LLVMTypeOf(rhs)) == 32) {</span>
+<span class="fc" id="L577">                rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs,</span>
+<span class="fc" id="L578">                        LLVMConstInt(LLVMInt32Type(), 0, 0), &quot;rhs_bool&quot;);</span>
+            }
+            //rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt1Type(), 0, 0), &quot;rhs_bool&quot;);
+<span class="fc" id="L581">            LLVMBuildBr(builder, mergeBlock);</span>
+<span class="fc" id="L582">            LLVMBasicBlockRef rhsBlockFinal = LLVMGetInsertBlock(builder);</span>
+
+<span class="fc" id="L584">            LLVMPositionBuilderAtEnd(builder, mergeBlock);</span>
+<span class="fc" id="L585">            LLVMValueRef phi = LLVMBuildPhi(builder, LLVMInt1Type(), &quot;and_result&quot;);</span>
+
+<span class="fc" id="L587">            LLVMValueRef[] incomingValues = new LLVMValueRef[] {</span>
+<span class="fc" id="L588">                    LLVMConstInt(LLVMInt1Type(), 0, 0),</span>
+                    rhs
+            };
+
+<span class="fc" id="L592">            LLVMBasicBlockRef[] incomingBlocks = new LLVMBasicBlockRef[] {</span>
+                    current,
+                    rhsBlockFinal
+            };
+
+<span class="fc" id="L597">            LLVMAddIncoming(phi,</span>
+                    new PointerPointer&lt;&gt;(incomingValues),
+                    new PointerPointer&lt;&gt;(incomingBlocks),
+                    incomingValues.length);
+<span class="fc" id="L601">            return castToI32(phi);</span>
+        }
+<span class="nc bnc" id="L603" title="All 2 branches missed.">        else if (ctx.OR() != null) {</span>
+<span class="nc" id="L604">            pointer_need_load=false;</span>
+<span class="nc" id="L605">            LLVMValueRef lhs = visit(ctx.cond(0));</span>
+<span class="nc bnc" id="L606" title="All 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L607">                lhs = LLVMBuildLoad(builder, lhs, &quot;load_lhs&quot;);</span>
+            }
+<span class="nc bnc" id="L609" title="All 2 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(lhs)) == LLVMIntegerTypeKind &amp;&amp;</span>
+<span class="nc bnc" id="L610" title="All 2 branches missed.">                    LLVMGetIntTypeWidth(LLVMTypeOf(lhs)) == 32) {</span>
+<span class="nc" id="L611">                lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs,</span>
+<span class="nc" id="L612">                        LLVMConstInt(LLVMInt32Type(), 0, 0), &quot;lhs_bool&quot;);</span>
+            }
+            //lhs = LLVMBuildICmp(builder, LLVMIntNE, lhs, LLVMConstInt(LLVMInt1Type(), 0, 0), &quot;lhs_bool&quot;);
+
+<span class="nc" id="L616">            LLVMBasicBlockRef current = LLVMGetInsertBlock(builder);</span>
+<span class="nc" id="L617">            LLVMValueRef function = LLVMGetBasicBlockParent(current);</span>
+
+<span class="nc" id="L619">            LLVMBasicBlockRef rhsBlock = LLVMAppendBasicBlock(function, &quot;or.rhs&quot;);</span>
+<span class="nc" id="L620">            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, &quot;or.merge&quot;);</span>
+
+<span class="nc" id="L622">            LLVMBuildCondBr(builder, lhs, mergeBlock, rhsBlock);</span>
+
+            // === 右侧块 ===
+<span class="nc" id="L625">            LLVMPositionBuilderAtEnd(builder, rhsBlock);</span>
+<span class="nc" id="L626">            pointer_need_load=false;</span>
+<span class="nc" id="L627">            LLVMValueRef rhs = visit(ctx.cond(1));</span>
+<span class="nc bnc" id="L628" title="All 4 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L629">                rhs = LLVMBuildLoad(builder, rhs, &quot;load_rhs&quot;);</span>
+            }
+<span class="nc bnc" id="L631" title="All 2 branches missed.">            if (LLVMGetTypeKind(LLVMTypeOf(rhs)) == LLVMIntegerTypeKind &amp;&amp;</span>
+<span class="nc bnc" id="L632" title="All 2 branches missed.">                    LLVMGetIntTypeWidth(LLVMTypeOf(rhs)) == 32) {</span>
+<span class="nc" id="L633">                rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs,</span>
+<span class="nc" id="L634">                        LLVMConstInt(LLVMInt32Type(), 0, 0), &quot;rhs_bool&quot;);</span>
+            }
+            //rhs = LLVMBuildICmp(builder, LLVMIntNE, rhs, LLVMConstInt(LLVMInt1Type(), 0, 0), &quot;rhs_bool&quot;);
+<span class="nc" id="L637">            LLVMBuildBr(builder, mergeBlock);</span>
+<span class="nc" id="L638">            LLVMBasicBlockRef rhsBlockFinal = LLVMGetInsertBlock(builder); // 获取真实终点（用于 phi）</span>
+
+<span class="nc" id="L640">            LLVMPositionBuilderAtEnd(builder, mergeBlock);</span>
+<span class="nc" id="L641">            LLVMValueRef phi = LLVMBuildPhi(builder, LLVMInt1Type(), &quot;or_result&quot;);</span>
+
+<span class="nc" id="L643">            LLVMValueRef[] incomingValues = new LLVMValueRef[] {</span>
+<span class="nc" id="L644">                    LLVMConstInt(LLVMInt1Type(), 1, 0),</span>
+                    rhs
+            };
+<span class="nc" id="L647">            LLVMBasicBlockRef[] incomingBlocks = new LLVMBasicBlockRef[] {</span>
+                    current,
+                    rhsBlockFinal
+            };
+
+<span class="nc" id="L652">            LLVMAddIncoming(phi,</span>
+                    new PointerPointer&lt;&gt;(incomingValues),
+                    new PointerPointer&lt;&gt;(incomingBlocks),
+                    incomingValues.length);
+
+<span class="nc" id="L657">            return castToI32(phi);</span>
+        }
+<span class="nc" id="L659">        else return null;</span>
+    }
+    @Override
+    public LLVMValueRef visitStmt(SysYParser.StmtContext ctx) {
+<span class="fc bfc" id="L663" title="All 2 branches covered.">        if (ctx.RETURN() != null) {</span>
+            LLVMValueRef returnValue;
+<span class="pc bpc" id="L665" title="3 of 4 branches missed.">            if(ctx.exp().size()&gt;0 || symbolTable.get_cur_scope_return_type() instanceof IntType){</span>
+<span class="pc bpc" id="L666" title="2 of 4 branches missed.">                if(ctx.exp()!=null&amp;&amp;ctx.exp().size()&gt;0) {</span>
+<span class="fc" id="L667">                    pointer_need_load=false;</span>
+<span class="fc" id="L668">                    returnValue = visit(ctx.exp().get(0));</span>
+<span class="pc bpc" id="L669" title="3 of 4 branches missed.">                    if (LLVMGetTypeKind(LLVMTypeOf(returnValue)) == LLVMPointerTypeKind&amp;&amp;pointer_need_load) {</span>
+<span class="nc" id="L670">                        returnValue = LLVMBuildLoad(builder, returnValue, &quot;load_return&quot;);</span>
+                    }
+                }
+<span class="nc" id="L673">                else returnValue=zero;</span>
+<span class="fc" id="L674">                LLVMBuildRet(builder, returnValue);</span>
+            }
+<span class="nc" id="L676">            else   LLVMBuildRetVoid(builder);</span>
+        }
+<span class="fc bfc" id="L678" title="All 2 branches covered.">        else if(ctx.IF()!=null){</span>
+<span class="fc" id="L679">            LLVMValueRef function = symbolTable.get_cur_scope_func();</span>
+<span class="fc" id="L680">            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, &quot;merge&quot;);</span>
+<span class="fc" id="L681">            LLVMPositionBuilderAtEnd(builder, LLVMGetInsertBlock(builder));</span>
+<span class="fc" id="L682">            LLVMValueRef firstCond = visitCond(ctx.cond());</span>
+<span class="fc" id="L683">            LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, &quot;if.then&quot;);</span>
+<span class="fc" id="L684">            LLVMBasicBlockRef elseBlock = null;</span>
+<span class="fc bfc" id="L685" title="All 2 branches covered.">            if (ctx.ELSE() != null) {</span>
+<span class="fc" id="L686">                elseBlock = LLVMAppendBasicBlock(function, &quot;if.else&quot;);</span>
+            }
+<span class="fc" id="L688">            LLVMTypeRef condType = LLVMTypeOf(firstCond);</span>
+<span class="pc bpc" id="L689" title="2 of 4 branches missed.">            if (LLVMGetTypeKind(condType) != LLVMIntegerTypeKind || LLVMGetIntTypeWidth(condType) != 1) {</span>
+<span class="fc" id="L690">                firstCond = LLVMBuildICmp(builder, LLVMIntNE, firstCond, LLVMConstInt(condType, 0, 0), &quot;to_bool&quot;);</span>
+            }
+<span class="fc bfc" id="L692" title="All 2 branches covered.">            LLVMBuildCondBr(builder, firstCond, thenBlock, elseBlock == null ? mergeBlock : elseBlock);</span>
+<span class="fc" id="L693">            LLVMPositionBuilderAtEnd(builder, thenBlock);</span>
+<span class="fc" id="L694">            visit(ctx.stmt(0));</span>
+<span class="fc" id="L695">            LLVMBuildBr(builder, mergeBlock);</span>
+<span class="fc bfc" id="L696" title="All 2 branches covered.">            if (elseBlock != null) {</span>
+<span class="fc" id="L697">                LLVMPositionBuilderAtEnd(builder, elseBlock);</span>
+<span class="fc" id="L698">                visit(ctx.stmt(1));</span>
+<span class="fc" id="L699">                LLVMBuildBr(builder, mergeBlock);</span>
+            }
+<span class="fc" id="L701">            LLVMPositionBuilderAtEnd(builder, mergeBlock);</span>
+<span class="fc" id="L702">        }</span>
+<span class="fc bfc" id="L703" title="All 2 branches covered.">        else if(ctx.WHILE()!=null){</span>
+<span class="fc" id="L704">            LLVMValueRef function = symbolTable.get_cur_scope_func();</span>
+<span class="fc" id="L705">            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, &quot;cur&quot;);</span>
+<span class="fc" id="L706">            LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, &quot;while.stmt&quot;);</span>
+<span class="fc" id="L707">            LLVMBasicBlockRef condBlock = LLVMAppendBasicBlock(function, &quot;while.cond&quot;);</span>
+<span class="fc" id="L708">            LLVMBuildBr(builder,condBlock);</span>
+<span class="fc" id="L709">            LLVMPositionBuilderAtEnd(builder, condBlock);</span>
+<span class="fc" id="L710">            LLVMValueRef firstCond = visitCond(ctx.cond());</span>
+<span class="fc" id="L711">            LLVMTypeRef condType = LLVMTypeOf(firstCond);</span>
+<span class="pc bpc" id="L712" title="2 of 4 branches missed.">            if (LLVMGetTypeKind(condType) != LLVMIntegerTypeKind || LLVMGetIntTypeWidth(condType) != 1) {</span>
+<span class="fc" id="L713">                firstCond = LLVMBuildICmp(builder, LLVMIntNE, firstCond, LLVMConstInt(condType, 0, 0), &quot;to_bool&quot;);</span>
+            }
+<span class="fc" id="L715">            LLVMBuildCondBr(builder, firstCond, thenBlock,mergeBlock);</span>
+<span class="fc" id="L716">            LLVMPositionBuilderAtEnd(builder, thenBlock);</span>
+<span class="pc bpc" id="L717" title="1 of 2 branches missed.">            if(ctx.stmt(0).block()!=null){</span>
+                //System.err.println(&quot;1234&quot;);
+<span class="fc" id="L719">                visit_block(ctx.stmt(0).block(),condBlock,mergeBlock);</span>
+            }
+            else  {
+<span class="nc" id="L722">                symbolTable.enterScope(condBlock,mergeBlock);</span>
+<span class="nc" id="L723">                visit(ctx.stmt(0));</span>
+<span class="nc" id="L724">                symbolTable.exitScope();</span>
+            }
+<span class="fc" id="L726">            LLVMBuildBr(builder, condBlock);</span>
+<span class="fc" id="L727">            LLVMPositionBuilderAtEnd(builder, mergeBlock);</span>
+<span class="fc" id="L728">        }</span>
+<span class="fc bfc" id="L729" title="All 2 branches covered.">        else if(ctx.FOR()!=null){</span>
+<span class="fc" id="L730">            LLVMValueRef function = symbolTable.get_cur_scope_func();</span>
+<span class="fc" id="L731">            LLVMBasicBlockRef mergeBlock = LLVMAppendBasicBlock(function, &quot;cur&quot;);</span>
+<span class="fc" id="L732">            LLVMBasicBlockRef thenBlock = LLVMAppendBasicBlock(function, &quot;for.stmt&quot;);</span>
+<span class="fc" id="L733">            LLVMBasicBlockRef condBlock = LLVMAppendBasicBlock(function, &quot;for.cond&quot;);</span>
+<span class="pc bpc" id="L734" title="1 of 2 branches missed.">            if(ctx.varDecl()!=null) {</span>
+<span class="fc" id="L735">                symbolTable.enterScope();</span>
+<span class="fc" id="L736">                visitVarDecl(ctx.varDecl());</span>
+            }
+            else{
+<span class="nc bnc" id="L739" title="All 2 branches missed.">                if(ctx.exp().size()&gt;1) visitExp(ctx.exp().get(0));</span>
+            }
+<span class="fc" id="L741">            LLVMBuildBr(builder,condBlock);</span>
+<span class="fc" id="L742">            LLVMPositionBuilderAtEnd(builder, condBlock);</span>
+<span class="pc bpc" id="L743" title="1 of 2 branches missed.">            if(ctx.cond()!=null) {</span>
+<span class="fc" id="L744">                LLVMValueRef firstCond = visitCond(ctx.cond());</span>
+<span class="fc" id="L745">                LLVMTypeRef condType = LLVMTypeOf(firstCond);</span>
+<span class="pc bpc" id="L746" title="2 of 4 branches missed.">                if (LLVMGetTypeKind(condType) != LLVMIntegerTypeKind || LLVMGetIntTypeWidth(condType) != 1) {</span>
+<span class="fc" id="L747">                    firstCond = LLVMBuildICmp(builder, LLVMIntNE, firstCond, LLVMConstInt(condType, 0, 0), &quot;to_bool&quot;);</span>
+                }
+<span class="fc" id="L749">                LLVMBuildCondBr(builder, firstCond, thenBlock,mergeBlock);</span>
+<span class="fc" id="L750">            }</span>
+<span class="nc" id="L751">            else  LLVMBuildBr(builder,thenBlock);</span>
+<span class="fc" id="L752">            LLVMPositionBuilderAtEnd(builder, thenBlock);</span>
+<span class="fc bfc" id="L753" title="All 2 branches covered.">            if(ctx.stmt(0).block()!=null){</span>
+<span class="fc" id="L754">                visit_block(ctx.stmt(0).block(),condBlock,mergeBlock,ctx);</span>
+            }
+            else  {
+<span class="fc" id="L757">                symbolTable.enterScope(condBlock,mergeBlock);</span>
+<span class="fc" id="L758">                visit(ctx.stmt(0));</span>
+<span class="fc" id="L759">                symbolTable.exitScope();</span>
+            }
+<span class="pc bpc" id="L761" title="1 of 2 branches missed.">            if(ctx.lVal()!=null){</span>
+<span class="fc" id="L762">                LLVMValueRef x=visitLVal(ctx.lVal());</span>
+                LLVMValueRef y;
+<span class="pc bpc" id="L764" title="1 of 2 branches missed.">                if(ctx.exp().size()&gt;1) y=visitExp(ctx.exp().get(1));</span>
+<span class="fc" id="L765">                else y=visitExp(ctx.exp().get(0));</span>
+<span class="fc" id="L766">                LLVMBuildStore(builder, y, x);</span>
+            }
+<span class="fc" id="L768">            LLVMBuildBr(builder, condBlock);</span>
+<span class="fc" id="L769">            LLVMPositionBuilderAtEnd(builder, mergeBlock);</span>
+<span class="pc bpc" id="L770" title="1 of 2 branches missed.">            if(ctx.varDecl()!=null)symbolTable.exitScope();</span>
+<span class="fc" id="L771">        }</span>
+<span class="fc bfc" id="L772" title="All 2 branches covered.">        else if(ctx.BREAK()!=null){</span>
+<span class="fc" id="L773">            loop_stored_element x=symbolTable.get_current_while();</span>
+<span class="fc" id="L774">            LLVMBuildBr(builder, x.merge_block);</span>
+<span class="fc" id="L775">        }</span>
+<span class="fc bfc" id="L776" title="All 2 branches covered.">        else if(ctx.CONTINUE()!=null){</span>
+<span class="fc" id="L777">            loop_stored_element x=symbolTable.get_current_while();</span>
+<span class="pc bpc" id="L778" title="1 of 2 branches missed.">            if(x.ctx==null)LLVMBuildBr(builder, x.cond_block);</span>
+            else {
+<span class="pc bpc" id="L780" title="1 of 2 branches missed.">                if(x.ctx.lVal()!=null){</span>
+<span class="fc" id="L781">                    LLVMValueRef leftx=visitLVal(x.ctx.lVal());</span>
+                    LLVMValueRef y;
+<span class="pc bpc" id="L783" title="1 of 2 branches missed.">                    if(x.ctx.exp().size()&gt;1) y=visitExp(x.ctx.exp().get(1));</span>
+<span class="fc" id="L784">                    else y=visitExp(x.ctx.exp().get(0));</span>
+<span class="fc" id="L785">                    LLVMBuildStore(builder, y, leftx);</span>
+                }
+<span class="fc" id="L787">                LLVMBuildBr(builder, x.cond_block);</span>
+            }
+<span class="fc" id="L789">        }</span>
+<span class="fc bfc" id="L790" title="All 2 branches covered.">        else if(ctx.block()!=null){</span>
+<span class="fc" id="L791">            visit_block(ctx.block());</span>
+        }
+<span class="pc bpc" id="L793" title="1 of 4 branches missed.">        else if(ctx.lVal()!=null&amp;&amp;ctx.ASSIGN()!=null){</span>
+<span class="fc" id="L794">            LLVMValueRef x=visitLVal(ctx.lVal());</span>
+<span class="fc" id="L795">            LLVMValueRef y=visitExp(ctx.exp().get(0));</span>
+<span class="fc" id="L796">            LLVMBuildStore(builder, y, x);</span>
+<span class="fc" id="L797">        }</span>
+<span class="pc bpc" id="L798" title="1 of 2 branches missed.">        else if(ctx.exp().size()&gt;0){</span>
+<span class="fc" id="L799">            visitExp(ctx.exp().get(0));</span>
+        }
+<span class="fc" id="L801">        return null;</span>
+    }
+
+
+    @Override
+    public LLVMValueRef visitVarDecl(SysYParser.VarDeclContext ctx) {
+<span class="fc bfc" id="L807" title="All 2 branches covered.">        for (int i = 0; i &lt; ctx.varDef().size(); i++) {</span>
+<span class="fc" id="L808">            SysYParser.VarDefContext vardef = ctx.varDef().get(i);</span>
+<span class="fc" id="L809">            Symbol x = getVardef(vardef);</span>
+<span class="fc" id="L810">            symbolTable.put(x);</span>
+        }
+<span class="fc" id="L812">        return null;</span>
+    }
+    void get_init_val(List&lt;LLVMValueRef&gt; ans, SysYParser.InitValContext InitValContext){
+<span class="fc bfc" id="L815" title="All 2 branches covered.">        if(InitValContext.exp()!=null){</span>
+<span class="fc" id="L816">            LLVMValueRef val = visitExp(InitValContext.exp());</span>
+<span class="pc bpc" id="L817" title="2 of 4 branches missed.">            if (val != null &amp;&amp; LLVMIsAConstantInt(val) != null) {</span>
+<span class="fc" id="L818">                long constVal = LLVMConstIntGetSExtValue(val); // 提取整数值（有符号）</span>
+<span class="fc" id="L819">                ans.add(LLVMConstInt(LLVMInt32Type(), constVal, 1));</span>
+<span class="fc" id="L820">            }</span>
+<span class="nc" id="L821">            else ans.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+<span class="fc" id="L822">        }</span>
+        else{
+<span class="fc bfc" id="L824" title="All 2 branches covered.">            for(int i=0;i&lt;InitValContext.initVal().size();i++){</span>
+<span class="fc" id="L825">                get_init_val(ans,InitValContext.initVal(i));</span>
+            }
+        }
+<span class="fc" id="L828">    }</span>
+    public Symbol getVardef(SysYParser.VarDefContext ctx) {
+<span class="fc" id="L830">        Symbol symbol=new Symbol();</span>
+<span class="fc" id="L831">        symbol.name=ctx.IDENT().getText();</span>
+<span class="fc bfc" id="L832" title="All 2 branches covered.">        if(ctx.initVal()==null) {</span>
+<span class="fc bfc" id="L833" title="All 2 branches covered.">            if(ctx.L_BRACKT().isEmpty()) {</span>
+<span class="fc" id="L834">                symbol.type = new IntType();</span>
+                LLVMValueRef pointer;
+<span class="fc bfc" id="L836" title="All 2 branches covered.">                if (symbolTable.is_cur_scopeGlobal()) {</span>
+<span class="fc" id="L837">                    pointer = LLVMAddGlobal(module, i32Type, symbol.name);</span>
+<span class="fc" id="L838">                    LLVMSetInitializer(pointer, zero);</span>
+                } else {
+<span class="fc" id="L840">                    pointer = LLVMBuildAlloca(builder, i32Type, symbol.name);</span>
+                   // LLVMValueRef undefVal = LLVMGetUndef(i32Type);
+<span class="fc" id="L842">                    LLVMBuildStore(builder, LLVMConstInt(i32Type, 64, /* signExtend */ 0), pointer);</span>
+                }
+<span class="fc" id="L844">                symbol.reference = pointer;</span>
+<span class="fc" id="L845">            }</span>
+            else{
+<span class="fc" id="L847">                List&lt;Integer&gt; dims = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L848" title="All 2 branches covered.">                for (SysYParser.NumberContext expCtx : ctx.number()) {</span>
+<span class="fc" id="L849">                    int dimSize = Integer.decode(expCtx.INTEGER_CONST().getText());</span>
+<span class="fc" id="L850">                    dims.add(dimSize);</span>
+<span class="fc" id="L851">                }</span>
+<span class="fc" id="L852">                symbol.type = new ArrayType(new IntType(), dims);</span>
+<span class="pc bpc" id="L853" title="1 of 2 branches missed.">                if(symbolTable.is_cur_scopeGlobal()) {</span>
+<span class="nc" id="L854">                    ArrayType arrayType = (ArrayType) symbol.type;</span>
+<span class="nc" id="L855">                    LLVMTypeRef arrTy = getLLVMArrayType(arrayType);</span>
+<span class="nc" id="L856">                    List&lt;LLVMValueRef&gt; initValList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L857">                    int totalSize = arrayType.getTotalSize();</span>
+<span class="nc bnc" id="L858" title="All 2 branches missed.">                    while (initValList.size() &lt; totalSize) {</span>
+<span class="nc" id="L859">                        initValList.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+                    }
+<span class="nc" id="L861">                    LLVMValueRef init = buildConstArrayInitializer(initValList, arrayType.dimensions, 0);</span>
+<span class="nc" id="L862">                    LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);</span>
+<span class="nc" id="L863">                    LLVMSetInitializer(globalPtr, init);</span>
+<span class="nc" id="L864">                    symbol.reference = globalPtr;</span>
+<span class="nc" id="L865">                }</span>
+                else{
+<span class="fc" id="L867">                    LLVMValueRef pointer = LLVMBuildAlloca(builder, getLLVMArrayType((ArrayType)symbol.type), symbol.name);</span>
+<span class="fc" id="L868">                    int totalSize=((ArrayType)symbol.type).getTotalSize();</span>
+<span class="fc" id="L869">                    List&lt;LLVMValueRef&gt; init_val_list=new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L870" title="All 2 branches covered.">                    while(init_val_list.size()&lt;totalSize){</span>
+<span class="fc" id="L871">                        init_val_list.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+                    }
+<span class="fc bfc" id="L873" title="All 2 branches covered.">                    for(int i=0;i&lt;totalSize;i++){</span>
+<span class="fc" id="L874">                        List&lt;LLVMValueRef&gt; gepIndices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L875">                        gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+<span class="fc" id="L876">                        List&lt;Integer&gt;indices=new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L877">                        get_indicies(((ArrayType)symbol.type).dimensions,i,indices);</span>
+<span class="fc bfc" id="L878" title="All 2 branches covered.">                        for (int index : indices) {</span>
+<span class="fc" id="L879">                            gepIndices.add(LLVMConstInt(LLVMInt32Type(), index, 0));</span>
+<span class="fc" id="L880">                        }</span>
+<span class="fc" id="L881">                        LLVMValueRef elementPtr = LLVMBuildGEP(builder, pointer,</span>
+<span class="fc" id="L882">                                new PointerPointer&lt;&gt;(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), &quot;elemPtr&quot;);</span>
+<span class="fc" id="L883">                        LLVMBuildStore(builder, init_val_list.get(i), elementPtr);</span>
+                    }
+<span class="fc" id="L885">                    symbol.reference = pointer;</span>
+                }
+<span class="fc" id="L887">            }</span>
+        }
+        else{
+<span class="fc bfc" id="L890" title="All 2 branches covered.">            if(ctx.L_BRACKT().isEmpty()){</span>
+<span class="fc" id="L891">                symbol.type=new IntType();</span>
+<span class="fc bfc" id="L892" title="All 2 branches covered.">                if(symbolTable.is_cur_scopeGlobal()){</span>
+<span class="fc" id="L893">                    LLVMValueRef initval=getinitvalue(ctx.initVal());</span>
+<span class="pc bpc" id="L894" title="1 of 2 branches missed.">                    if(LLVMIsAConstantInt(initval) != null) {</span>
+<span class="fc" id="L895">                        LLVMValueRef pointer = LLVMAddGlobal(module, i32Type, symbol.name);</span>
+<span class="fc" id="L896">                        LLVMSetInitializer(pointer, LLVMIsAConstantInt(initval));</span>
+<span class="fc" id="L897">                        symbol.reference=pointer;</span>
+<span class="fc" id="L898">                    }</span>
+<span class="nc" id="L899">                    else assert(false);</span>
+<span class="fc" id="L900">                }</span>
+                else{
+<span class="fc" id="L902">                    LLVMValueRef pointer = LLVMBuildAlloca(builder, LLVMInt32Type(), symbol.name);</span>
+<span class="fc" id="L903">                    LLVMValueRef initval=getinitvalue(ctx.initVal());</span>
+<span class="fc" id="L904">                    LLVMBuildStore(builder, initval, pointer);</span>
+<span class="fc" id="L905">                    symbol.reference=pointer;</span>
+<span class="fc" id="L906">                }</span>
+            }
+            else{
+<span class="fc" id="L909">                List&lt;Integer&gt; dims = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L910" title="All 2 branches covered.">                for (SysYParser.NumberContext expCtx : ctx.number()) {</span>
+<span class="fc" id="L911">                    int dimSize = Integer.decode(expCtx.INTEGER_CONST().getText());</span>
+<span class="fc" id="L912">                    dims.add(dimSize);</span>
+<span class="fc" id="L913">                }</span>
+<span class="fc" id="L914">                symbol.type = new ArrayType(new IntType(), dims);</span>
+<span class="pc bpc" id="L915" title="1 of 2 branches missed.">                if(symbolTable.is_cur_scopeGlobal()) {</span>
+<span class="nc" id="L916">                    ArrayType arrayType = (ArrayType) symbol.type;</span>
+<span class="nc" id="L917">                    LLVMTypeRef arrTy = getLLVMArrayType(arrayType);</span>
+<span class="nc" id="L918">                    List&lt;LLVMValueRef&gt; initValList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L919">                    int totalSize = arrayType.getTotalSize();</span>
+<span class="nc" id="L920">                    get_init_val(initValList,ctx.initVal());</span>
+<span class="nc bnc" id="L921" title="All 2 branches missed.">                    while (initValList.size() &lt; totalSize) {</span>
+<span class="nc" id="L922">                        initValList.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+                    }
+<span class="nc" id="L924">                    LLVMValueRef init = buildConstArrayInitializer(initValList, arrayType.dimensions, 0);</span>
+<span class="nc" id="L925">                    LLVMValueRef globalPtr = LLVMAddGlobal(module, arrTy, symbol.name);</span>
+<span class="nc" id="L926">                    LLVMSetInitializer(globalPtr, init);</span>
+<span class="nc" id="L927">                    symbol.reference = globalPtr;</span>
+<span class="nc" id="L928">                }</span>
+                else{
+<span class="fc" id="L930">                    LLVMValueRef pointer = LLVMBuildAlloca(builder, getLLVMArrayType((ArrayType)symbol.type), symbol.name);</span>
+<span class="fc" id="L931">                    int totalSize=((ArrayType)symbol.type).getTotalSize();</span>
+<span class="fc" id="L932">                    List&lt;LLVMValueRef&gt; init_val_list=new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L933">                    get_init_val(init_val_list,ctx.initVal());</span>
+<span class="fc bfc" id="L934" title="All 2 branches covered.">                    while(init_val_list.size()&lt;totalSize){</span>
+<span class="fc" id="L935">                        init_val_list.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+                    }
+<span class="fc bfc" id="L937" title="All 2 branches covered.">                    for(int i=0;i&lt;totalSize;i++){</span>
+<span class="fc" id="L938">                        List&lt;LLVMValueRef&gt; gepIndices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L939">                        gepIndices.add(LLVMConstInt(LLVMInt32Type(), 0, 0));</span>
+<span class="fc" id="L940">                        List&lt;Integer&gt;indices=new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L941">                        get_indicies(((ArrayType)symbol.type).dimensions,i,indices);</span>
+<span class="fc bfc" id="L942" title="All 2 branches covered.">                        for (int index : indices) {</span>
+<span class="fc" id="L943">                            gepIndices.add(LLVMConstInt(LLVMInt32Type(), index, 0));</span>
+<span class="fc" id="L944">                        }</span>
+<span class="fc" id="L945">                        LLVMValueRef elementPtr = LLVMBuildGEP(builder, pointer,</span>
+<span class="fc" id="L946">                                new PointerPointer&lt;&gt;(gepIndices.toArray(new LLVMValueRef[0])), gepIndices.size(), &quot;elemPtr&quot;);</span>
+<span class="fc" id="L947">                        LLVMBuildStore(builder, init_val_list.get(i), elementPtr);</span>
+                    }
+<span class="fc" id="L949">                    symbol.reference = pointer;</span>
+                }
+            }
+        }
+<span class="fc" id="L953">        return symbol;</span>
+    }
+
+    @Override
+    public LLVMValueRef visit(ParseTree tree) {
+<span class="pc bpc" id="L958" title="1 of 2 branches missed.">        if (tree == null) return null;</span>
+<span class="fc" id="L959">        return tree.accept(this);</span>
+    }
+
+    @Override
+    public LLVMValueRef visitChildren(RuleNode node) {
+<span class="nc" id="L964">        return super.visitChildren(node);</span>
+    }
+
+    @Override
+    public LLVMValueRef visitErrorNode(ErrorNode node) {
+<span class="nc" id="L969">        return super.visitErrorNode(node);</span>
+    }
+
+    @Override
+    public LLVMValueRef visitTerminal(TerminalNode node) {
+<span class="nc" id="L974">        return super.visitTerminal(node);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

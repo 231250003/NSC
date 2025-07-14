@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConstPropValueHolder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">llvm-antlr-project</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">ConstPropValueHolder.java</span></div><h1>ConstPropValueHolder.java</h1><pre class="source lang-java linenums">package  com.example;
+public class ConstPropValueHolder {
+<span class="nc" id="L3">    public enum Kind {</span>
+<span class="nc" id="L4">        INT, NAC, UNDEF</span>
+    }
+
+    private Kind kind;
+    private Integer intValue; // 仅在 kind == INT 时非 null
+
+<span class="nc" id="L10">    public static final ConstPropValueHolder NAC = new ConstPropValueHolder(Kind.NAC, null);</span>
+<span class="nc" id="L11">    public static final ConstPropValueHolder UNDEF = new ConstPropValueHolder(Kind.UNDEF, null);</span>
+
+<span class="nc" id="L13">    private ConstPropValueHolder(Kind kind, Integer intValue) {</span>
+<span class="nc" id="L14">        this.kind = kind;</span>
+<span class="nc" id="L15">        this.intValue = intValue;</span>
+<span class="nc" id="L16">    }</span>
+<span class="nc" id="L17">    public ConstPropValueHolder(ConstPropValueHolder other) {</span>
+<span class="nc" id="L18">        this.kind = other.kind;</span>
+<span class="nc" id="L19">        this.intValue = other.intValue;</span>
+<span class="nc" id="L20">    }</span>
+    public static ConstPropValueHolder ofInt(int value) {
+<span class="nc" id="L22">        return new ConstPropValueHolder(Kind.INT, value);</span>
+    }
+
+    public Kind getKind() {
+<span class="nc" id="L26">        return kind;</span>
+    }
+
+    public Integer getIntValue() {
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (kind != Kind.INT) {</span>
+<span class="nc" id="L31">            throw new IllegalStateException(&quot;Not an INT value&quot;);</span>
+        }
+<span class="nc" id="L33">        return intValue;</span>
+    }
+    @Override
+    public String toString() {
+<span class="nc bnc" id="L37" title="All 4 branches missed.">        switch (kind) {</span>
+            case INT:
+<span class="nc" id="L39">                return &quot;INT(&quot; + intValue + &quot;)&quot;;</span>
+            case NAC:
+<span class="nc" id="L41">                return &quot;NAC&quot;;</span>
+            case UNDEF:
+<span class="nc" id="L43">                return &quot;UNDEF&quot;;</span>
+            default:
+<span class="nc" id="L45">                throw new IllegalStateException(&quot;Unknown kind: &quot; + kind);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
