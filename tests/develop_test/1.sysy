@@ -7,9 +7,11 @@ int main(){
     int a[4]={1,2,3};
     int x=1;
     int sum=0;
-    for(int i=0;i<3;i=i+1){
+    for(int i=0;a[0]<3;a[0]=a[0]+1){
         print();
-        sum=sum+a[i]+z;
+        sum=sum+a[i]+z+a[0];
+        i=i+1;
+        if(i==3) break;
     }
     return sum;
 }

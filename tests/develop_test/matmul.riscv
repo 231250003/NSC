@@ -1,15 +1,15 @@
-	.globl ROWS_A
+	.data
 ROWS_A:
-	.word 2
-	.globl COLS_A
+  .word 2
+	.data
 COLS_A:
-	.word 3
-	.globl ROWS_B
+  .word 3
+	.data
 ROWS_B:
-	.word 3
-	.globl COLS_B
+  .word 3
+	.data
 COLS_B:
-	.word 2
+  .word 2
 
 	.text
 	.globl main
