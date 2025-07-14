@@ -15,9 +15,9 @@ ROWS_B:
 COLS_B:
   .word 3
 
-.globl resultsaasdas
-resultsaasdas:
-  .word 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+.globl result
+result:
+  .word 0, 0, 0, 0
 
 
 .text
@@ -50,24 +50,16 @@ main_mainEntry:
   sw t1, 40(sp)
   li t2, 12
   sw t2, 44(sp)
-  li t0, 0
-  sw t0, 48(sp)
-  li t1, 0
-  sw t1, 52(sp)
-  li t2, 0
-  sw t2, 56(sp)
-  li t0, 0
-  sw t0, 60(sp)
-  sw x1, 64(sp)
+  sw x1, 48(sp)
   addi x10, sp, 0
   addi x11, sp, 24
-  addi x12, sp, 48
-  addi sp, sp, 68
+  addi sp, sp, 52
   jal x1, matrix_multiply
-  addi sp, sp, -68
-  lw x1, 64(sp)
-  lw x8, 60(sp)
-  mv x8, x8
+  addi sp, sp, -52
+  lw x1, 48(sp)
+  la t0, 
+  lw t0, 0(t0)
+  mv x8, t0
   mv x10, x8
   addi sp, sp, 2044
   li a7, 93
@@ -75,7 +67,6 @@ main_mainEntry:
 matrix_multiply:
   sw x10, 0(sp)
   sw x11, 4(sp)
-  sw x12, 8(sp)
   j matrix_multiply_matrix_multiplyEntry
 matrix_multiply_matrix_multiplyEntry:
   li t1, 0
@@ -120,6 +111,8 @@ matrix_multiply_cur2:
 matrix_multiply_for.stmt3:
   mv x8, x14
   mv x9, x13
+  la t2, elemPtr
+  sw t2, 8(sp)
   li t2, 0
   li t1, 2
   mul t1, x8, t1
@@ -131,39 +124,39 @@ matrix_multiply_for.stmt3:
   lw t1, 8(sp)
   add t2, t2, t1
   sw t2, 12(sp)
+  li t0, 0
+  lw t1, 12(sp)
+  sw t0, 0(t1)
   li t2, 0
-  lw t0, 12(sp)
-  sw t2, 0(t0)
-  li t1, 0
-  mv x11, t1
-  li t2, 5
-  sw t2, 1600(sp)
+  mv x11, t2
+  li t0, 5
+  sw t0, 1600(sp)
   j matrix_multiply_for.cond14
 matrix_multiply_for.cond4:
   mv x8, x13
-  la t0, COLS_B
-  lw t0, 0(t0)
-  mv x9, t0
-  slt t1, x8, x9
-  mv x8, t1
-  mv t2, x8
+  la t1, COLS_B
+  lw t1, 0(t1)
+  mv x9, t1
+  slt t2, x8, x9
   mv x8, t2
-  li t0, 0
-  xor t1, x8, t0
-  snez t1, t1
-  mv x8, t1
-  li t2, 6
-  sw t2, 1600(sp)
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 6
+  sw t0, 1600(sp)
   bnez x8, matrix_multiply_for.stmt3
   j matrix_multiply_cur2
 matrix_multiply_cur12:
   mv x8, x13
-  li t0, 1
-  add t1, x8, t0
-  mv x8, t1
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
   mv x13, x8
-  li t2, 7
-  sw t2, 1600(sp)
+  li t0, 7
+  sw t0, 1600(sp)
   j matrix_multiply_for.cond4
 matrix_multiply_for.stmt13:
   mv x9, x14
@@ -192,9 +185,9 @@ matrix_multiply_for.stmt13:
   lw t0, 8(sp)
   add t2, t2, t0
   sw t2, 20(sp)
-  lw t0, 20(sp)
-  lw t0, 0(t0)
-  mv x9, t0
+  lw t1, 20(sp)
+  lw t1, 0(t1)
+  mv x9, t1
   mv x8, x14
   mv x12, x11
   li t2, 0
@@ -227,38 +220,38 @@ matrix_multiply_for.stmt13:
   lw x15, 28(sp),
   lw x15, 0(x15)
   mv x16, x15
-  mul t1, x8, x16
-  mv x8, t1
-  add t2, x9, x8
+  mul t2, x8, x16
   mv x8, t2
-  lw t0, 16(sp)
-  sw x8, 0(t0)
+  add t0, x9, x8
+  mv x8, t0
+  lw t1, 16(sp)
+  sw x8, 0(t1)
   mv x8, x11
-  li t1, 1
-  add t2, x8, t1
-  mv x8, t2
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
   mv x11, x8
-  lw t0, 24(sp)
-  sw x12, 0(t0)
-  lw t1, 28(sp)
-  sw x15, 0(t1)
-  li t2, 8
-  sw t2, 1600(sp)
+  lw t1, 24(sp)
+  sw x12, 0(t1)
+  lw t2, 28(sp)
+  sw x15, 0(t2)
+  li t0, 8
+  sw t0, 1600(sp)
   j matrix_multiply_for.cond14
 matrix_multiply_for.cond14:
   mv x9, x11
-  la t0, COLS_A
-  lw t0, 0(t0)
-  mv x8, t0
-  slt t1, x9, x8
+  la t1, COLS_A
+  lw t1, 0(t1)
   mv x8, t1
-  mv t2, x8
+  slt t2, x9, x8
   mv x8, t2
-  li t0, 0
-  xor t1, x8, t0
-  snez t1, t1
-  mv x8, t1
-  li t2, 9
-  sw t2, 1600(sp)
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 9
+  sw t0, 1600(sp)
   bnez x8, matrix_multiply_for.stmt13
   j matrix_multiply_cur12
