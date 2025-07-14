@@ -1,8 +1,8 @@
 int ROWS_A=2;
 int COLS_A=3;
 int ROWS_B=3;
-int COLS_B=COLS_A;
-//int resultsaasdas[5][2][3]={{1,ROWS_B}};
+int COLS_B=3;
+int resultsaasdas[5][2][3]={{1,ROWS_B}};
 void matrix_multiply(int a[2][3], int b[3][2],int result[2][2]) {
     for (int i = 0; i < ROWS_A; i=i+1) {
         for (int j = 0; j < COLS_B; j=j+1) {
