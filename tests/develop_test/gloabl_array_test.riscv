@@ -1,5 +1,4 @@
-data
-	.data
+.data
 	.globl ROWS_A
 ROWS_A:
 	.word 2
@@ -25,8 +24,7 @@ resultsaasdas:
 	.word 0
 	.word 0
 
-text
-	.text
+.text
 	.globl main
 main:
   addi sp, sp, -2044
