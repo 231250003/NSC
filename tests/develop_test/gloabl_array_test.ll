@@ -5,9 +5,9 @@ source_filename = "my_module"
 @COLS_A = global i32 3
 @ROWS_B = global i32 3
 @COLS_B = global i32 3
-@resultsaasdas = global [5 x [2 x [3 x i32]]] [[2 x [3 x i32]] [[3 x i32] [i32 1, i32 2, i32 0], [3 x i32] zeroinitializer], [2 x [3 x i32]] zeroinitializer, [2 x [3 x i32]] zeroinitializer, [2 x [3 x i32]] zeroinitializer, [2 x [3 x i32]] zeroinitializer]
+@result = global [2 x [2 x i32]] zeroinitializer
 
-define void @matrix_multiply([2 x [3 x i32]]* %a, [3 x [2 x i32]]* %b, [2 x [2 x i32]]* %result) {
+define void @matrix_multiply([2 x [3 x i32]]* %a, [3 x [2 x i32]]* %b) {
 matrix_multiplyEntry:
   %i = alloca i32, align 4
   store i32 0, i32* %i, align 4
@@ -38,7 +38,7 @@ cur2:                                             ; preds = %for.cond4
 for.stmt3:                                        ; preds = %for.cond4
   %load_lval10 = load i32, i32* %i, align 4
   %load_lval11 = load i32, i32* %j, align 4
-  %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval10, i32 %load_lval11
+  %elemPtr = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* @result, i32 0, i32 %load_lval10, i32 %load_lval11
   store i32 0, i32* %elemPtr, align 4
   %k = alloca i32, align 4
   store i32 0, i32* %k, align 4
@@ -61,10 +61,10 @@ cur12:                                            ; preds = %for.cond14
 for.stmt13:                                       ; preds = %for.cond14
   %load_lval20 = load i32, i32* %i, align 4
   %load_lval21 = load i32, i32* %j, align 4
-  %elemPtr22 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval20, i32 %load_lval21
+  %elemPtr22 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* @result, i32 0, i32 %load_lval20, i32 %load_lval21
   %load_lval23 = load i32, i32* %i, align 4
   %load_lval24 = load i32, i32* %j, align 4
-  %elemPtr25 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 %load_lval23, i32 %load_lval24
+  %elemPtr25 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* @result, i32 0, i32 %load_lval23, i32 %load_lval24
   %load_lval26 = load i32, i32* %elemPtr25, align 4
   %load_lval27 = load i32, i32* %i, align 4
   %load_lval28 = load i32, i32* %k, align 4
@@ -119,20 +119,9 @@ mainEntry:
   store i32 11, i32* %elemPtr10, align 4
   %elemPtr11 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %matrix_b, i32 0, i32 2, i32 1
   store i32 12, i32* %elemPtr11, align 4
-  %result = alloca [2 x [2 x i32]], align 4
-  %elemPtr12 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 0, i32 0
-  store i32 0, i32* %elemPtr12, align 4
-  %elemPtr13 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 0, i32 1
-  store i32 0, i32* %elemPtr13, align 4
-  %elemPtr14 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 0
-  store i32 0, i32* %elemPtr14, align 4
-  %elemPtr15 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
-  store i32 0, i32* %elemPtr15, align 4
-  %elemPtr16 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %matrix_a, i32 0
-  %elemPtr17 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %matrix_b, i32 0
-  %elemPtr18 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0
-  call void @matrix_multiply([2 x [3 x i32]]* %elemPtr16, [3 x [2 x i32]]* %elemPtr17, [2 x [2 x i32]]* %elemPtr18)
-  %elemPtr19 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %result, i32 0, i32 1, i32 1
-  %load_lval = load i32, i32* %elemPtr19, align 4
+  %elemPtr12 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %matrix_a, i32 0
+  %elemPtr13 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %matrix_b, i32 0
+  call void @matrix_multiply([2 x [3 x i32]]* %elemPtr12, [3 x [2 x i32]]* %elemPtr13)
+  %load_lval = load i32, i32* getelementptr inbounds ([2 x [2 x i32]], [2 x [2 x i32]]* @result, i32 0, i32 1, i32 1), align 4
   ret i32 %load_lval
 }
