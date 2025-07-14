@@ -111,7 +111,7 @@ matrix_multiply_cur2:
 matrix_multiply_for.stmt3:
   mv x8, x14
   mv x9, x13
-  la t2, elemPtr
+  la t2, result
   sw t2, 8(sp)
   li t2, 0
   li t1, 2
