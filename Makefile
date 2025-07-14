@@ -22,7 +22,7 @@ compile: antlr
 	$(JAVAC) -classpath $(CLASSPATH) $(JAVAFILE) -d classes
 
 run: compile
-	java -classpath ./classes:$(CLASSPATH) Main $(SRCFILE) $(OUTFILE)
+	java -classpath ./classes:$(CLASSPATH) com.example.Main $(SRCFILE) $(OUTFILE)
 
 antlr: $(LFILE) $(PFILE)
 	$(ANTLR) $(PFILE) $(LFILE)
@@ -30,7 +30,7 @@ antlr: $(LFILE) $(PFILE)
 test: compile
 	$(call git_commit, "test")
 	if [ -e nohup.out ]; then rm nohup.out; fi
-	nohup java -classpath ./classes:$(CLASSPATH) Main ./tests/test1.sysy ./tests/test1.ll &
+	nohup java -classpath ./classes:$(CLASSPATH) com.example.Main ./tests/test1.sysy ./tests/test1.ll &
 
 clean:
 	rm -f src/*.tokens
