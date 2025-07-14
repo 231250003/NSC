@@ -1,7 +1,7 @@
 ; ModuleID = 'my_module'
 source_filename = "my_module"
 
-@ROWS_A = global i32 2
+@ROWS_A = global i32 0
 @COLS_A = global i32 3
 @ROWS_B = global i32 3
 @COLS_B = global i32 3

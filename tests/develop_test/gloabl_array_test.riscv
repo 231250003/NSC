@@ -1,22 +1,22 @@
 .data
-	.globl ROWS_A
+globl ROWS_A
 ROWS_A:
 
-	.globl COLS_A
+globl COLS_A
 COLS_A:
 
-	.globl ROWS_B
+globl ROWS_B
 ROWS_B:
 
-	.globl COLS_B
+globl COLS_B
 COLS_B:
 
-	.globl resultsaasdas
+globl resultsaasdas
 resultsaasdas:
 
 
 .text
-	.globl main
+globl main
 main:
   addi sp, sp, -2044
   j main_mainEntry

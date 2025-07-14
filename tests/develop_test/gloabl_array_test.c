@@ -1,4 +1,4 @@
-int ROWS_A;
+int ROWS_A=2;
 int COLS_A=3;
 int ROWS_B=3;
 int COLS_B=3;
