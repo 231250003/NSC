@@ -5,5 +5,7 @@ source_filename = "my_module"
 
 define i32 @main() {
 mainEntry:
-  ret i32 2
+  %load_lval2 = load i32, i32* @global_var, align 4
+  %add = add i32 1, %load_lval2
+  ret i32 %add
 }
