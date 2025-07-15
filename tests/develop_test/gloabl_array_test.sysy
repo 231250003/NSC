@@ -27,9 +27,9 @@ int main() {
         {11, 12}
     };
 
-
+    int i=1;
     // 计算矩阵乘法
     matrix_multiply(matrix_a, matrix_b);
 
-    return result[1][1];
+    return result[1][i];
 }
