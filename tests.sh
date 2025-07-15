@@ -1,7 +1,7 @@
 #!/bin/bash
 
 GENERATE_RISCV=1
-SYSY_DIR="tests/develop_test"
+SYSY_DIR="tests/lab6_test"
 SPECIFIC_FILE=""
 
 # Parse command line arguments

@@ -1,7 +1,7 @@
 /src/*
-!/src/*.java
+!/src/main/java/com/example/*.java
 !/src/*.g4
-!/src/semantic_check
+/src/test
 /src/*Lexer.java
 /src/*Parser.java 
 /src/*ParserBaseListener.java
@@ -9,6 +9,7 @@
 /src/*ParserListener.java
 /src/*ParserVisitor.java
 /classes
+/target
 .DS_Store
 /out
 /.idea
