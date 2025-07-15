@@ -58,7 +58,7 @@ main_mainEntry:
   addi sp, sp, -52
   lw x1, 48(sp)
   la t1, result
-  addi t1, t1, 8
+  addi t1, t1, 12
   lw t0, 0(t1)
   mv x8, t0
   mv x10, x8
