@@ -1,0 +1,133 @@
+.data
+.globl e
+e:
+  .word 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+.globl dis
+dis:
+  .word 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+.globl book
+book:
+  .word 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+
+.text
+.globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  li t0, 1
+  mv x9, t0
+  li t1, 2
+  mv x8, t1
+  li t2, 0
+  sw t2, 1600(sp)
+  j main_while.cond
+main_cur:
+  mv x9, x9
+  mv x8, x8
+  add t0, x9, x8
+  mv x8, t0
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+main_while.stmt:
+  li t1, 2
+  sw t1, 1600(sp)
+  j main_while.cond3
+main_while.cond:
+  li t2, -1
+  li t0, 3
+  sw t0, 1600(sp)
+  bnez t2, main_while.stmt
+  j main_cur
+main_cur1:
+  mv x9, x9
+  li t1, 2
+  add t2, x9, t1
+  mv x9, t2
+  mv x9, x9
+  mv x11, x9
+  li t0, 30
+  sgt t1, x11, t0
+  mv x11, t1
+  mv t2, x11
+  mv x11, t2
+  li t0, 0
+  xor t1, x11, t0
+  snez t1, t1
+  mv x11, t1
+  li t2, 4
+  sw t2, 1600(sp)
+  bnez x11, main_if.then
+  j main_merge
+main_while.stmt2:
+  mv x9, x9
+  li t0, 1
+  add t1, x9, t0
+  mv x9, t1
+  mv x9, x9
+  mv x9, x8
+  mv x9, x9
+  li t2, 5
+  sw t2, 1600(sp)
+  j main_while.cond8
+main_while.cond3:
+  mv x11, x9
+  li t0, 10
+  slt t1, x11, t0
+  mv x11, t1
+  mv t2, x11
+  mv x11, t2
+  li t0, 0
+  xor t1, x11, t0
+  snez t1, t1
+  mv x11, t1
+  li t2, 6
+  sw t2, 1600(sp)
+  bnez x11, main_while.stmt2
+  j main_cur1
+main_cur6:
+  mv x9, x9
+  li t0, 1
+  add t1, x9, t0
+  mv x9, t1
+  mv x9, x9
+  li t2, 7
+  sw t2, 1600(sp)
+  j main_while.cond3
+main_while.stmt7:
+  mv x11, x9
+  mv x8, x8
+  add t0, x11, x8
+  mv x8, t0
+  mv x8, x8
+  li t1, 8
+  sw t1, 1600(sp)
+  j main_while.cond8
+main_while.cond8:
+  mv x11, x8
+  li t2, 20
+  slt t0, x11, t2
+  mv x11, t0
+  mv t1, x11
+  mv x11, t1
+  li t2, 0
+  xor t0, x11, t2
+  snez t0, t0
+  mv x11, t0
+  li t1, 9
+  sw t1, 1600(sp)
+  bnez x11, main_while.stmt7
+  j main_cur6
+main_merge:
+  li t2, 10
+  sw t2, 1600(sp)
+  j main_while.cond
+main_if.then:
+  li t0, 11
+  sw t0, 1600(sp)
+  j main_cur

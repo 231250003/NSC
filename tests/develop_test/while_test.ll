@@ -1,9 +1,9 @@
 ; ModuleID = 'my_module'
 source_filename = "my_module"
 
-@e = global [101 x [101 x i32]] zeroinitializer
-@dis = global [1001 x i32] zeroinitializer
-@book = global [1001 x i32] zeroinitializer
+@e = global [10 x [10 x i32]] zeroinitializer
+@dis = global [15 x i32] zeroinitializer
+@book = global [15 x i32] zeroinitializer
 
 define i32 @main() {
 mainEntry:
