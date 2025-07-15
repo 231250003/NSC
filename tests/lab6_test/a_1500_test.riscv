@@ -1,0 +1,57 @@
+.data
+
+.text
+.globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  li t0, 64
+  mv x9, t0
+  li t1, 0
+  mv x9, t1
+  li t2, 0
+  sw t2, 1600(sp)
+  j main_while.cond
+main_cur:
+  li t0, 0
+  mv x10, t0
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+main_while.stmt:
+  mv x8, x9
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x9, x8
+  li t0, 0
+  mv x8, t0
+  mv x8, x9
+  mv x8, x8
+  mv x11, x8
+  mv x8, x9
+  add t1, x11, x8
+  mv x8, t1
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x8, x8
+  li t1, 2
+  sw t1, 1600(sp)
+  j main_while.cond
+main_while.cond:
+  mv x8, x9
+  li t2, 10
+  slt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 3
+  sw t1, 1600(sp)
+  bnez x8, main_while.stmt
+  j main_cur
