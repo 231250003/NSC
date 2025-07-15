@@ -1,4 +1,4 @@
-int e[101][101],dis[1001],book[1001];
+int e[10][10],dis[15],book[15];
 int main()
 {
 	    int x=1;
