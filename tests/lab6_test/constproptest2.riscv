@@ -1,0 +1,30 @@
+.data
+.globl global_var
+global_var:
+  .word 1
+
+
+.text
+.globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  la t0, global_var
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x8, x8
+  li t0, 3
+  mv x8, t0
+  la t0, global_var
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x8, x8
+  mv x8, x8
+  li t1, 3
+  add t2, t1, x8
+  mv x8, t2
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
