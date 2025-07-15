@@ -9,5 +9,5 @@ int main(){
     }
     */
     i=i+1;
-    return 2;
+    return i+1;
 }
