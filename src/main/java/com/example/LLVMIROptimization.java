@@ -734,7 +734,10 @@ public class LLVMIROptimization {
         for (LLVMValueRef instr : allInstrs) {
             boolean shouldKeep = false;
             int opcode = LLVM.LLVMGetInstructionOpcode(instr);
-            if ((instr!=null&&usedInstrs.contains(instr)&&LLVM.LLVMGetValueName(instr).getString()!=null&&(!LLVM.LLVMGetValueName(instr).getString().isEmpty()))
+            if(opcode==LLVMAlloca&&LLVM.LLVMGetTypeKind(LLVM.LLVMGetAllocatedType(instr)) == LLVM.LLVMArrayTypeKind){
+                shouldKeep=true;
+            }
+            else if ((instr!=null&&usedInstrs.contains(instr)&&LLVM.LLVMGetValueName(instr).getString()!=null&&(!LLVM.LLVMGetValueName(instr).getString().isEmpty()))
                     ||opcode==LLVMCall||opcode==LLVMPHI) {
                 shouldKeep = true;
             }
