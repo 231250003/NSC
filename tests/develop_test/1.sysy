@@ -35,7 +35,8 @@ int main() {
 */
 int main(){
     int i=0;
+    int x=i;
     i=i+1;
     i=i+1;
-    return i;
+    return i+x;
 }
