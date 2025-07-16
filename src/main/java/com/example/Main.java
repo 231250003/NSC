@@ -67,6 +67,7 @@ public class Main {
        // LLVMDumpModule(module);
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             boolean flag1 = true, flag2=true,flag3 = false, flag4 = false;
+            System.out.println(LLVM.LLVMGetValueName(func).getString());
             while (flag1 || flag2||flag3 || flag4) {
                 flag1 = optimization.constprop(func);
                 flag2=optimization.pointer_must_optimize(func);
