@@ -199,7 +199,7 @@ public class LLVMIROptimization {
                 if(LLVM.LLVMIsAGetElementPtrInst(ptrOp) != null || (LLVM.LLVMIsAConstantExpr(ptrOp) != null && LLVM.LLVMGetConstOpcode(ptrOp) == LLVM.LLVMGetElementPtr)){
                     //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                     //resultVal=ConstPropValueHolder.NAC;
-                    if(src.contains("elemPtr6")) System.out.println("crzzz");
+                    if(dest.contains("lval")) System.out.println("crzzz");
                     resultVal=new ConstPropValueHolder(srcVal);
                 }
                  else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
