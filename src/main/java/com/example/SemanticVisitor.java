@@ -134,6 +134,7 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
     public Symbol getConstdef(SysYParser.ConstDefContext ctx) {
        Symbol symbol=new Symbol();
        symbol.name=ctx.IDENT().getText();
+       symbol.is_constant=true;
         if(symbolTable.is_cur_scopeGlobal()){
             if(!has_variable_in_init_val(ctx.constInitVal()))    OutputHelper.printSemanticError(ErrorType.ASSIGNING_VARIABLE_TO_GLOBAL_VARIABLE,ctx.getStart().getLine());
         }
@@ -493,6 +494,10 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         Symbol s=symbolTable.get_name_matched_symbol(name);
         if(s==null){
             OutputHelper.printSemanticError(ErrorType.UNDECLARED_VARIABLE,ctx.getStart().getLine());
+            return null;
+        }
+        if(s.is_constant){
+            OutputHelper.printSemanticError(ErrorType.ASSIGNING_TO_CONSTANT,ctx.getStart().getLine());
             return null;
         }
         if(!ctx.exp().isEmpty()) {

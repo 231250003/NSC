@@ -6,6 +6,7 @@ public class Symbol {
     public Type type;
     public String name;
     public LLVMValueRef reference;
+    public boolean is_constant=false;
     public Symbol(String name,Type type){
         this.name=name;
         this.type=type;

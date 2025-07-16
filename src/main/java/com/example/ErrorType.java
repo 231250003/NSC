@@ -12,7 +12,8 @@ public enum ErrorType {
     CALLING_NON_FUNCTION(10, "对变量使用函数调用"),
     INVALID_ASSIGNMENT_TARGET(11, "赋值号左侧非变量或数组元素"),
     ASSIGNING_TO_ARRAY_TYPE(12, "不能对数组赋值"),
-    ASSIGNING_VARIABLE_TO_GLOBAL_VARIABLE(13, "对全局变量赋非定值");
+    ASSIGNING_VARIABLE_TO_GLOBAL_VARIABLE(13, "对全局变量赋非定值"),
+    ASSIGNING_TO_CONSTANT(14,"对常量赋值");
 
     private final int errorCode;
     private final String message;
