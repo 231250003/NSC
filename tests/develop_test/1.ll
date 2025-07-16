@@ -24,15 +24,13 @@ mainEntry:
   store i32 3, i32* %elemPtr2, align 4
   %elemPtr3 = getelementptr [4 x i32], [4 x i32]* %a, i32 0, i32 3
   store i32 0, i32* %elemPtr3, align 4
-  %x = alloca i32, align 4
-  store i32 1, i32* %x, align 4
   %sum = alloca i32, align 4
   store i32 0, i32* %sum, align 4
   %i = alloca i32, align 4
   store i32 0, i32* %i, align 4
   br label %for.cond
 
-cur:                                              ; preds = %if.then, %for.cond
+cur:                                              ; preds = %for.stmt, %for.cond
   %load_lval24 = load i32, i32* %sum, align 4
   ret i32 %load_lval24
 
@@ -56,7 +54,7 @@ for.stmt:                                         ; preds = %for.cond
   %cmp17 = icmp eq i32 %load_lval16, 3
   %zext_to_i3218 = zext i1 %cmp17 to i32
   %to_bool19 = icmp ne i32 %zext_to_i3218, 0
-  br i1 %to_bool19, label %if.then, label %merge
+  br i1 %to_bool19, label %cur, label %merge
 
 for.cond:                                         ; preds = %merge, %mainEntry
   %elemPtr4 = getelementptr [4 x i32], [4 x i32]* %a, i32 0, i32 0
@@ -68,12 +66,8 @@ for.cond:                                         ; preds = %merge, %mainEntry
 
 merge:                                            ; preds = %for.stmt
   %elemPtr20 = getelementptr [4 x i32], [4 x i32]* %a, i32 0, i32 0
-  %elemPtr21 = getelementptr [4 x i32], [4 x i32]* %a, i32 0, i32 0
-  %load_lval22 = load i32, i32* %elemPtr21, align 4
+  %load_lval22 = load i32, i32* %elemPtr20, align 4
   %add23 = add i32 %load_lval22, 1
   store i32 %add23, i32* %elemPtr20, align 4
   br label %for.cond
-
-if.then:                                          ; preds = %for.stmt
-  br label %cur
 }
