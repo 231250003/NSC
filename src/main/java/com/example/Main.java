@@ -69,7 +69,7 @@ public class Main {
             boolean flag1 = true, flag2=true,flag3 = false, flag4 = false;
             while (flag1 || flag2||flag3 || flag4) {
                 flag1 = optimization.constprop(func);
-                LLVMDumpModule(module);
+                //LLVMDumpModule(module);
                 flag2=optimization.pointer_must_optimize(func);
                // flag4 = optimization.elem_unused(func);
                 //flag4 = optimization.elem_dead_code(func);
