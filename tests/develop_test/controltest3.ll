@@ -5,7 +5,7 @@ source_filename = "my_module"
 @y = global i32 98
 @z = global i32 3
 @a = global i32 4
-@b = global i32 5
+@bbbb = global i32 5
 @c = global i32 6
 @d = global i32 7
 @e = global i32 8
@@ -13,7 +13,7 @@ source_filename = "my_module"
 @g = global i32 10
 @h = global i32 11
 @i = global i32 12
-@j = global i32 13
+@jjjj = global i32 13
 @k = global i32 14
 @l = global i32 15
 @m = global i32 16
@@ -152,9 +152,9 @@ merge13:                                          ; preds = %if.then19, %cur
   %load_lval45 = load i32, i32* @i, align 4
   %add46 = add i32 %load_lval45, 12
   store i32 %add46, i32* @i, align 4
-  %load_lval47 = load i32, i32* @j, align 4
+  %load_lval47 = load i32, i32* @jjjj, align 4
   %add48 = add i32 %load_lval47, 13
-  store i32 %add48, i32* @j, align 4
+  store i32 %add48, i32* @jjjj, align 4
   %load_lval49 = load i32, i32* @k, align 4
   %add50 = add i32 %load_lval49, 14
   store i32 %add50, i32* @k, align 4

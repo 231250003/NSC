@@ -15,9 +15,9 @@ a:
   .word 4
 .globl a
 
-b:
+bbbb:
   .word 5
-.globl b
+.globl bbbb
 
 c:
   .word 6
@@ -47,9 +47,9 @@ i:
   .word 12
 .globl i
 
-j:
+jjjj:
   .word 13
-.globl j
+.globl jjjj
 
 k:
   .word 14
@@ -268,13 +268,13 @@ main_merge13:
   mv x8, t2
   la t0, i
   sw x8, 0(t0)
-  la t0, j
+  la t0, jjjj
   lw t0, 0(t0)
   mv x8, t0
   li t1, 13
   add t2, x8, t1
   mv x8, t2
-  la t0, j
+  la t0, jjjj
   sw x8, 0(t0)
   la t0, k
   lw t0, 0(t0)
