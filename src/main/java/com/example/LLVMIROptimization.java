@@ -213,6 +213,7 @@ public class LLVMIROptimization {
                 } else {
                     resultVal = ConstPropValueHolder.NAC; // fallback 安全策略
                 }
+                if(src.contains("elemPtr6")) System.out.println(resultVal);
                 new_out.put(dest, resultVal);
             }
             else if(opcode== LLVMPHI){
@@ -299,7 +300,6 @@ public class LLVMIROptimization {
                 } else {
                     newVal = ConstPropValueHolder.NAC;
                 }
-                if(dest.contains("elemPtr6")) System.out.println(newVal);
                 new_out.put(dest, newVal);
             } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                     opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
