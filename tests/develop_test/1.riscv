@@ -29,10 +29,10 @@ main_mainEntry:
   li t1, 25
   sw t1, 12(sp)
   lw x11, 4(sp)
-  mv x11, x11
+  mv x14, x11
   lw x12, 12(sp)
   mv x8, x12
-  add t2, x11, x8
+  add t2, x14, x8
   mv x8, t2
   sw x8, 20(sp)
   mv x8, x9
