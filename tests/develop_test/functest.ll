@@ -21,8 +21,7 @@ define i32 @main() {
 mainEntry:
   %x = alloca i32, align 4
   store i32 30, i32* %x, align 4
-  %load_lval = load i32, i32* %x, align 4
-  %f = call i32 @f(i32 10, i32 20, i32 %load_lval)
+  %f = call i32 @f(i32 10, i32 20, i32 30)
   store i32 %f, i32* %x, align 4
   %load_lval1 = load i32, i32* %x, align 4
   %add = add i32 %load_lval1, 5
