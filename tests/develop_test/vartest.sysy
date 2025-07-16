@@ -1,5 +1,5 @@
 const int a = 1,dddd=111;
-int bbbb,cccc;
+int crxz,cccc;
 int main(){
   /*
     int c = 3;
@@ -11,6 +11,6 @@ int main(){
     //b = c + a + 1+!!cccc;
     //const int d = 10+ a + b + c +0x10+z+p+q+dddd;
     //return a + b + c +d+0x10+z+p+q+dddd;
-    bbbb = a + 1+!!cccc;
-    return bbbb;
+    crxz = a + 1+!!cccc;
+    return crxz;
 }
