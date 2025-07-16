@@ -1,83 +1,83 @@
 .data
-.globl x
 x:
   .word 56
+.globl x
 
-.globl y
 y:
   .word 98
+.globl y
 
-.globl z
 z:
   .word 3
+.globl z
 
-.globl a
 a:
   .word 4
+.globl a
 
-.globl b
 b:
   .word 5
+.globl b
 
-.globl c
 c:
   .word 6
+.globl c
 
-.globl d
 d:
   .word 7
+.globl d
 
-.globl e
 e:
   .word 8
+.globl e
 
-.globl f
 f:
   .word 9
+.globl f
 
-.globl g
 g:
   .word 10
+.globl g
 
-.globl h
 h:
   .word 11
+.globl h
 
-.globl i
 i:
   .word 12
+.globl i
 
-.globl j
 j:
   .word 13
+.globl j
 
-.globl k
 k:
   .word 14
+.globl k
 
-.globl l
 l:
   .word 15
+.globl l
 
-.globl m
 m:
   .word 16
+.globl m
 
-.globl n
 n:
   .word 17
+.globl n
 
-.globl o
 o:
   .word 18
+.globl o
 
-.globl p
 p:
   .word 19
+.globl p
 
-.globl q
 q:
   .word 20
+.globl q
 
 
 .text
