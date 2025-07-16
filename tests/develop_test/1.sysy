@@ -17,6 +17,7 @@ int main(){
     return sum;
 }
 */
+/*
 int main() {
     int matrixGrid[2][3]={0,0,0,0,0,0};
     int fixedRow = 1;
@@ -30,4 +31,11 @@ int main() {
     valueAccessed = matrixGrid[fixedRow][fixedCol];
 
     return valueAccessed;
+}
+*/
+int main(){
+    int i=0;
+    i=i+1;
+    i=i+1;
+    return i;
 }
