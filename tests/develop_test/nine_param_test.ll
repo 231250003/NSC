@@ -97,4 +97,12 @@ fEntry:
   ret i32 %add38
 }
 
-declare i32 @main()
+define i32 @main() {
+mainEntry:
+  %p = alloca i32, align 4
+  %f = call i32 @f(i32 3, i32 3, i32 3, i32 3, i32 3, i32 5, i32 3, i32 3, i32 3, i32 3, i32 3)
+  store i32 %f, i32* %p, align 4
+  %load_lval10 = load i32, i32* %p, align 4
+  %add = add i32 %load_lval10, 3
+  ret i32 %add
+}
