@@ -71,7 +71,8 @@ public class Main {
             while (flag1 || flag2||flag3 ) {
                 LLVMDumpModule(module);
                 flag1 = optimization.constprop(func);
-                // flag2 = optimization.elem_unused(func);
+                flag2=optimization.pointer_must_optimize(func);
+               // flag2 = optimization.elem_unused(func);
                 //flag3 = optimization.elem_dead_code(func);
             }
         }

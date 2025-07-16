@@ -56,27 +56,11 @@ main_mainEntry:
   sw t2, 92(sp)
   li t0, 0
   sw t0, 96(sp)
-  sw x1, 100(sp)
-  addi x10, sp, 40
-  addi sp, sp, 104
-  jal x1, f
-  addi sp, sp, -104
-  lw x1, 100(sp)
   li t1, 1
-  mv x10, t1
+  sw t1, 24(sp)
+  lw x8, 24(sp)
+  mv x8, x8
+  mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
-f:
-  sw x10, 0(sp)
-  j f_fEntry
-f_fEntry:
-  lw t2, 0(sp)
-  addi t2, t2, 8
-  sw t2, 4(sp)
-  li t0, 1
-  lw t1, 4(sp)
-  sw t0, 0(t1)
-  li t2, 2
-  mv x10, t2
-  ret
