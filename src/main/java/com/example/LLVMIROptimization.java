@@ -752,11 +752,11 @@ public class LLVMIROptimization {
             else if (opcode == LLVM.LLVMStore) {
                 LLVMValueRef operand = LLVM.LLVMGetOperand(instr, 1);
                 if (operand != null && !operand.isNull()) {
-                    if (usedInstrs.contains(operand)||((LLVM.LLVMGetValueName(operand)).getString().contains("elemPtr"))) shouldKeep = true;
-                    else if(LLVM.LLVMGetValueName(operand).getString().contains("elemPtr")){
-                        if(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(instr).contains((LLVM.LLVMGetValueName(operand).getString())))
-                            shouldKeep=true;
-                    }
+                    if (usedInstrs.contains(operand)||(LLVM.LLVMGetValueName(operand).getString().contains("elemPtr"))) shouldKeep = true;
+//                    else if(LLVM.LLVMGetValueName(operand).getString().contains("elemPtr")){
+//                        if(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(instr).contains((LLVM.LLVMGetValueName(operand).getString())))
+//                            shouldKeep=true;
+//                    }
                 }
             }
             if (!shouldKeep) {
