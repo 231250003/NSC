@@ -1,4 +1,4 @@
-const int a = 1,dddd=111;
+int a = 1,dddd=111;
 int crxz,cccc;
 int main(){
   /*
