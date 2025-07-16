@@ -230,7 +230,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
     public static boolean naive_alias_must_analysis(array_variable dest, array_variable src) {
         if (!dest.array_name.equals(src.array_name)) return false;
         if(dest.cur_offset.size()!=src.cur_offset.size()) return false;
-        if(dest.variable_name.equals("elemPtr14")&&src.variable_name.equals("elemPtr5")) System.out.println("rzzzzzzzzz");
         for (int i = 0; i < dest.cur_offset.size(); i++){
             if((!(dest.cur_offset.get(i) instanceof Integer))||(!(src.cur_offset.get(i) instanceof Integer))) return false;
             if (dest.cur_offset.get(i) instanceof Integer && src.cur_offset.get(i) instanceof Integer&&(!src.cur_offset.get(i).equals(dest.cur_offset.get(i)))){
