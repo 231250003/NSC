@@ -442,8 +442,8 @@ public class LLVMIROptimization {
         }
         // for(String x:is_constant) System.out.println(x);
         Set<LLVMValueRef> inst_to_delete = new HashSet<>();
+        GraphColoringRegisterAllocator live_variable_analysis=new GraphColoringRegisterAllocator(func);
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
-            Set<String> has_store_variable = new HashSet<>();
             for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null; inst = LLVM.LLVMGetNextInstruction(inst)) {
                 int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                 String lhs;
@@ -453,8 +453,7 @@ public class LLVMIROptimization {
                 else if (opcode == LLVM.LLVMStore) {
                     String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
                     if (is_constant.contains(dest)) {
-                        if (!has_store_variable.contains(dest)) {
-                            has_store_variable.add(dest);
+                        if (GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(inst).contains(dest)) {
                             //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                             // System.out.println(out_inst.get(inst).get(dest));
                             LLVMValueRef constInst = LLVMConstInt(LLVM.LLVMTypeOf(LLVM.LLVMGetOperand(inst, 0)),
