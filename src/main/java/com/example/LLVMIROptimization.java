@@ -648,7 +648,7 @@ public class LLVMIROptimization {
                     }
                     array_variable av = new array_variable(variable_name, array_name, array_dim, cur_offset, array_size);
                     boolean has_must_alias=false;
-                    if(av.variable_name.equals("elemPtr27")) System.out.println("safd");
+                    System.out.println(av.variable_name);
                     for(array_variable x:arrayVariable_ref){
                         if(GraphColoringRegisterAllocator.naive_alias_must_analysis(av,x)==true){
                             has_must_alias=true;
