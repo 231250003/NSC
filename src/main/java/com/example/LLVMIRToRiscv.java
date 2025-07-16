@@ -509,6 +509,7 @@ public class LLVMIRToRiscv {
                         if (addr == null) {
                             String reg = "t0";
                             if (LLVM.LLVMIsAGetElementPtrInst(ptr) != null || (LLVM.LLVMIsAConstantExpr(ptr) != null && LLVM.LLVMGetConstOpcode(ptr) == LLVM.LLVMGetElementPtr)) {
+                                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                                 boolean has_variable_index=false;
                                 LLVMValueRef base_ptr = LLVM.LLVMGetOperand(ptr, 0);  // 正确：从 GEP 取出 base operand
                                 String array_name = LLVM.LLVMGetValueName(base_ptr).getString();  // 可以获取 @result
