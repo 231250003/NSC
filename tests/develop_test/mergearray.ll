@@ -32,7 +32,7 @@ cur:                                              ; preds = %and.merge
   %cmp38 = icmp eq i32 %load_lval36, %load_lval37
   %zext_to_i3239 = zext i1 %cmp38 to i32
   %to_bool42 = icmp ne i32 %zext_to_i3239, 0
-  br i1 %to_bool42, label %if.then40, label %if.else41
+  br i1 %to_bool42, label %while.cond45, label %while.cond62
 
 while.stmt:                                       ; preds = %and.merge
   %load_lval11 = load i32, i32* %i, align 4
@@ -98,7 +98,7 @@ if.else:                                          ; preds = %while.stmt
   store i32 %add32, i32* %j, align 4
   br label %merge
 
-merge35:                                          ; preds = %cur60, %cur43
+merge35:                                          ; preds = %while.cond62, %while.cond45
   %load_lval77 = load i32, i32* %param1_addr, align 4
   %load_lval78 = load i32, i32* %param3_addr, align 4
   %add79 = add i32 %load_lval77, %load_lval78
@@ -106,15 +106,6 @@ merge35:                                          ; preds = %cur60, %cur43
   %elemPtr80 = getelementptr [5 x i32], [5 x i32]* %sort_arr, i32 0, i32 %sub
   %load_lval81 = load i32, i32* %elemPtr80, align 4
   ret i32 %load_lval81
-
-if.then40:                                        ; preds = %cur
-  br label %while.cond45
-
-if.else41:                                        ; preds = %cur
-  br label %while.cond62
-
-cur43:                                            ; preds = %while.cond45
-  br label %merge35
 
 while.stmt44:                                     ; preds = %while.cond45
   %load_lval51 = load i32, i32* %k, align 4
@@ -131,16 +122,13 @@ while.stmt44:                                     ; preds = %while.cond45
   store i32 %add59, i32* %j, align 4
   br label %while.cond45
 
-while.cond45:                                     ; preds = %while.stmt44, %if.then40
+while.cond45:                                     ; preds = %cur, %while.stmt44
   %load_lval46 = load i32, i32* %j, align 4
   %load_lval47 = load i32, i32* %param3_addr, align 4
   %cmp48 = icmp slt i32 %load_lval46, %load_lval47
   %zext_to_i3249 = zext i1 %cmp48 to i32
   %to_bool50 = icmp ne i32 %zext_to_i3249, 0
-  br i1 %to_bool50, label %while.stmt44, label %cur43
-
-cur60:                                            ; preds = %while.cond62
-  br label %merge35
+  br i1 %to_bool50, label %while.stmt44, label %merge35
 
 while.stmt61:                                     ; preds = %while.cond62
   %load_lval68 = load i32, i32* %k, align 4
@@ -157,13 +145,13 @@ while.stmt61:                                     ; preds = %while.cond62
   store i32 %add76, i32* %i, align 4
   br label %while.cond62
 
-while.cond62:                                     ; preds = %while.stmt61, %if.else41
+while.cond62:                                     ; preds = %cur, %while.stmt61
   %load_lval63 = load i32, i32* %i, align 4
   %load_lval64 = load i32, i32* %param1_addr, align 4
   %cmp65 = icmp slt i32 %load_lval63, %load_lval64
   %zext_to_i3266 = zext i1 %cmp65 to i32
   %to_bool67 = icmp ne i32 %zext_to_i3266, 0
-  br i1 %to_bool67, label %while.stmt61, label %cur60
+  br i1 %to_bool67, label %while.stmt61, label %merge35
 }
 
 define i32 @main() {
@@ -174,24 +162,12 @@ mainEntry:
   %elemPtr1 = getelementptr [2 x i32], [2 x i32]* %a, i32 0, i32 1
   store i32 5, i32* %elemPtr1, align 4
   %b = alloca [3 x [3 x i32]], align 4
-  %elemPtr2 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 0, i32 0
-  store i32 1, i32* %elemPtr2, align 4
-  %elemPtr3 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 0, i32 1
-  store i32 4, i32* %elemPtr3, align 4
-  %elemPtr4 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 0, i32 2
-  store i32 14, i32* %elemPtr4, align 4
   %elemPtr5 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 1, i32 0
   store i32 1, i32* %elemPtr5, align 4
   %elemPtr6 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 1, i32 1
   store i32 4, i32* %elemPtr6, align 4
   %elemPtr7 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 1, i32 2
   store i32 14, i32* %elemPtr7, align 4
-  %elemPtr8 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 2, i32 0
-  store i32 1, i32* %elemPtr8, align 4
-  %elemPtr9 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 2, i32 1
-  store i32 4, i32* %elemPtr9, align 4
-  %elemPtr10 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 2, i32 2
-  store i32 14, i32* %elemPtr10, align 4
   %elemPtr11 = getelementptr [2 x i32], [2 x i32]* %a, i32 0
   %elemPtr12 = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %b, i32 0, i32 1
   %combine = call i32 @combine([2 x i32]* %elemPtr11, i32 2, [3 x i32]* %elemPtr12, i32 3)

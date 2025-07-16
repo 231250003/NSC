@@ -11,23 +11,11 @@ main_mainEntry:
   li t1, 5
   sw t1, 4(sp)
   li t2, 1
-  sw t2, 8(sp)
-  li t0, 4
-  sw t0, 12(sp)
-  li t1, 14
-  sw t1, 16(sp)
-  li t2, 1
   sw t2, 20(sp)
   li t0, 4
   sw t0, 24(sp)
   li t1, 14
   sw t1, 28(sp)
-  li t2, 1
-  sw t2, 32(sp)
-  li t0, 4
-  sw t0, 36(sp)
-  li t1, 14
-  sw t1, 40(sp)
   sw x8, 44(sp)
   sw x1, 48(sp)
   addi x10, sp, 0
@@ -86,8 +74,8 @@ combine_cur:
   mv x16, t2
   li t0, 1
   sw t0, 1600(sp)
-  bnez x16, combine_if.then40
-  j combine_if.else41
+  bnez x16, combine_while.cond45
+  j combine_while.cond62
 combine_while.stmt:
   mv x16, x12
   li t2, 0
@@ -283,37 +271,25 @@ combine_merge35:
   mv x8, x13
   mv x10, x8
   ret
-combine_if.then40:
-  li t0, 10
-  sw t0, 1600(sp)
-  j combine_while.cond45
-combine_if.else41:
-  li t1, 11
-  sw t1, 1600(sp)
-  j combine_while.cond62
-combine_cur43:
-  li t2, 12
-  sw t2, 1600(sp)
-  j combine_merge35
 combine_while.stmt44:
   mv x12, x9
   li t2, 0
-  li t1, 1
-  mul t1, x12, t1
-  add t2, t2, t1
-  slli t2, t2, 2
-  li t0, 8
+  li t0, 1
+  mul t0, x12, t0
   add t2, t2, t0
+  slli t2, t2, 2
+  li t1, 8
+  add t2, t2, t1
   add t2, t2, sp
   sw t2, 84(sp)
   mv x12, x11
   li t2, 0
-  li t1, 1
-  mul t1, x12, t1
-  add t2, t2, t1
-  slli t2, t2, 2
-  lw t0, 4(sp)
+  li t0, 1
+  mul t0, x12, t0
   add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 4(sp)
+  add t2, t2, t1
   sw t2, 88(sp)
   lw x14, 88(sp),
   lw x14, 0(x14)
@@ -332,7 +308,7 @@ combine_while.stmt44:
   mv x11, x11
   lw t0, 88(sp)
   sw x14, 0(t0)
-  li t1, 13
+  li t1, 10
   sw t1, 1600(sp)
   j combine_while.cond45
 combine_while.cond45:
@@ -346,13 +322,9 @@ combine_while.cond45:
   xor t2, x12, t1
   snez t2, t2
   mv x12, t2
-  li t0, 14
+  li t0, 11
   sw t0, 1600(sp)
   bnez x12, combine_while.stmt44
-  j combine_cur43
-combine_cur60:
-  li t1, 15
-  sw t1, 1600(sp)
   j combine_merge35
 combine_while.stmt61:
   mv x11, x9
@@ -374,36 +346,36 @@ combine_while.stmt61:
   lw t1, 4(sp)
   add t2, t2, t1
   sw t2, 96(sp)
-  lw t0, 96(sp)
-  lw t0, 0(t0)
-  mv x11, t0
-  lw t1, 92(sp)
-  sw x11, 0(t1)
+  lw t2, 96(sp)
+  lw t2, 0(t2)
+  mv x11, t2
+  lw t0, 92(sp)
+  sw x11, 0(t0)
   mv x9, x9
-  li t2, 1
-  add t0, x9, t2
-  mv x9, t0
+  li t1, 1
+  add t2, x9, t1
+  mv x9, t2
   mv x9, x9
   mv x11, x12
-  li t1, 1
-  add t2, x11, t1
-  mv x11, t2
+  li t0, 1
+  add t1, x11, t0
+  mv x11, t1
   mv x12, x11
-  li t0, 16
-  sw t0, 1600(sp)
+  li t2, 12
+  sw t2, 1600(sp)
   j combine_while.cond62
 combine_while.cond62:
   mv x11, x12
   mv x16, x15
-  slt t1, x11, x16
+  slt t0, x11, x16
+  mv x11, t0
+  mv t1, x11
   mv x11, t1
-  mv t2, x11
-  mv x11, t2
-  li t0, 0
-  xor t1, x11, t0
-  snez t1, t1
-  mv x11, t1
-  li t2, 17
-  sw t2, 1600(sp)
+  li t2, 0
+  xor t0, x11, t2
+  snez t0, t0
+  mv x11, t0
+  li t1, 13
+  sw t1, 1600(sp)
   bnez x11, combine_while.stmt61
-  j combine_cur60
+  j combine_merge35
