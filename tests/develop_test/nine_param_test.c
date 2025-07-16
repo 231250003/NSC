@@ -9,5 +9,6 @@ int f(int a,int b,int c,int d,int e,int f,int g,int h,int i,int j,int k){
 }
 int main(){
     int x=3;
-    f(x,x,x,x,x,5,x,x,x,x,x);
+    int p=f(x,x,x,x,x,5,x,x,x,x,x);
+    return p+x;
 }
