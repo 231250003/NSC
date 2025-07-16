@@ -453,7 +453,7 @@ public class LLVMIROptimization {
                 else if (opcode == LLVM.LLVMStore) {
                     String dest = LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString();
                     if (is_constant.contains(dest)) {
-                        if (!has_store_variable.contains(dest)) {
+                        if (!has_store_variable.contains(dest)||dest.contains("elemPtr")) {
                             has_store_variable.add(dest);
                             //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                             // System.out.println(out_inst.get(inst).get(dest));
