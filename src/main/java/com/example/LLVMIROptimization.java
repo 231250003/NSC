@@ -730,7 +730,7 @@ public class LLVMIROptimization {
                 }
             }
         }
-        List<LLVMValueRef> toErase = new ArrayList<>();
+        Stack<LLVMValueRef> toErase = new Stack<>();
         for (LLVMValueRef instr : allInstrs) {
             boolean shouldKeep = false;
             int opcode = LLVM.LLVMGetInstructionOpcode(instr);
@@ -775,7 +775,8 @@ public class LLVMIROptimization {
                 }
             }
         }
-        for (LLVMValueRef instr : toErase) {
+       while(!toErase.isEmpty()) {
+           LLVMValueRef instr=toErase.pop();
             System.out.println("cdzzz");
             System.out.println(LLVM.LLVMPrintValueToString(instr).getString());
             LLVM.LLVMInstructionEraseFromParent(instr);
