@@ -356,11 +356,12 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 in_instr_live_set.addAll(used);
                 if(LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMCall||LLVM.LLVMGetInstructionOpcode(instr)==LLVMLoad){
                     int argCount = LLVM.LLVMGetNumArgOperands(instr);
+                    if(LLVM.LLVMGetInstructionOpcode(instr)==LLVMLoad) System.out.println(argCount);
+                    System.out.println("crzzzzzzzzzzz");
                     for (int i = 0; i < argCount; i++) {
                         LLVMValueRef arg = LLVM.LLVMGetOperand(instr, i);
                         LLVMTypeRef type = LLVM.LLVMTypeOf(arg);
                         String name = LLVM.LLVMGetValueName(arg).getString();
-                        if(LLVM.LLVMGetInstructionOpcode(instr)==LLVMLoad) System.out.println(name);
                         int kind = LLVM.LLVMGetTypeKind(type);
                         if ((kind == LLVM.LLVMPointerTypeKind&&LLVM.LLVMGetInstructionOpcode(instr)==LLVM.LLVMCall)||(name.contains("elemPtr")&&LLVM.LLVMGetInstructionOpcode(instr)== LLVMLoad)) {
                             array_variable current_param_ref = null;
