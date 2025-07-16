@@ -6,14 +6,78 @@ main:
   addi sp, sp, -2044
   j main_mainEntry
 main_mainEntry:
-  li t0, 1
-  li t1, 1
-  add t2, t0, t1
-  li t0, 2
-  li t1, 1
-  add t2, t0, t1
-  li t0, 3
-  mv x10, t0
+  li t0, 0
+  sw t0, 0(sp)
+  li t1, 0
+  sw t1, 4(sp)
+  li t2, 0
+  sw t2, 8(sp)
+  li t0, 0
+  sw t0, 12(sp)
+  li t1, 0
+  sw t1, 16(sp)
+  li t2, 0
+  sw t2, 20(sp)
+  li t0, 0
+  sw t0, 24(sp)
+  li t1, 0
+  sw t1, 28(sp)
+  li t2, 0
+  sw t2, 32(sp)
+  li t0, 0
+  sw t0, 36(sp)
+  li t1, 0
+  sw t1, 40(sp)
+  li t2, 0
+  sw t2, 44(sp)
+  li t0, 0
+  sw t0, 48(sp)
+  li t1, 0
+  sw t1, 52(sp)
+  li t2, 0
+  sw t2, 56(sp)
+  li t0, 0
+  sw t0, 60(sp)
+  li t1, 0
+  sw t1, 64(sp)
+  li t2, 0
+  sw t2, 68(sp)
+  li t0, 0
+  sw t0, 72(sp)
+  li t1, 0
+  sw t1, 76(sp)
+  li t2, 0
+  sw t2, 80(sp)
+  li t0, 0
+  sw t0, 84(sp)
+  li t1, 0
+  sw t1, 88(sp)
+  li t2, 0
+  sw t2, 92(sp)
+  li t0, 0
+  sw t0, 96(sp)
+  sw x1, 100(sp)
+  addi x10, sp, 40
+  addi sp, sp, 104
+  jal x1, f
+  addi sp, sp, -104
+  lw x1, 100(sp)
+  lw t1, 24(sp)
+  mv x8, t1
+  mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
+f:
+  sw x10, 0(sp)
+  j f_fEntry
+f_fEntry:
+  lw t2, 0(sp)
+  addi t2, t2, 8
+  sw t2, 4(sp)
+  li t0, 1
+  lw t1, 4(sp)
+  sw t0, 0(t1)
+  li t2, 2
+  mv x10, t2
+  ret

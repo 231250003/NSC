@@ -225,7 +225,6 @@ public class LLVMIROptimization {
                 LLVMTypeRef base_type = LLVM.LLVMTypeOf(base_ptr);
                 LLVMTypeRef array_type = LLVM.LLVMGetElementType(base_type);
                 new_out.put(array_name,ConstPropValueHolder.NAC);
-                new_out.put(variable_name,in_inst.get(inst).get(variable_name));
                 if (LLVMGetValueKind(base_ptr) == LLVMGlobalVariableValueKind||(constpropinit.get(array_name)!=null&&constpropinit.get(array_name)==ConstPropValueHolder.NAC)) {
                     new_out.put(variable_name, ConstPropValueHolder.NAC);//全局数组或者参数数组
                 }
@@ -300,6 +299,7 @@ public class LLVMIROptimization {
                 } else {
                     newVal = ConstPropValueHolder.NAC;
                 }
+                if(dest.contains("elemPtr6")) System.out.println(newVal);
                 new_out.put(dest, newVal);
             } else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
                     opcode == LLVM.LLVMMul || opcode == LLVM.LLVMSDiv ||
