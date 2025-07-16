@@ -93,7 +93,7 @@ for.stmt18:                                       ; preds = %for.cond19
   %elemPtr33 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %matrixGrid, i32 0, i32 %load_lval31, i32 %load_lval32
   %load_lval34 = load i32, i32* %elemPtr33, align 4
   %add35 = add i32 %load_lval30, %load_lval34
-  %elemPtr36 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %matrixGrid, i32 0, i32 1, i32 1
+  %elemPtr36 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %matrixGrid, i32 0, i32 1, i32 2
   %load_lval37 = load i32, i32* %elemPtr36, align 4
   %add38 = add i32 %add35, %load_lval37
   store i32 %add38, i32* %elemPtr26, align 4

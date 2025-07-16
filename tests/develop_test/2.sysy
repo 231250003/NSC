@@ -1,6 +1,6 @@
 void f(int a[3]){
     for(int i=1;i<3;i=i+1){
-        a[i]=a[i]+a[i-1];
+        a[i]=a[i]*3+a[i-1]*5;
     }
 }
 int main() {
@@ -9,9 +9,6 @@ int main() {
     int fixedCol = 2;
     int valueAccessed=0;
 
-    matrixGrid[0][1] = 15;
-    matrixGrid[1][0] = 25;
-    matrixGrid[1][2] = matrixGrid[0][1] + matrixGrid[1][0];
 
     valueAccessed = matrixGrid[fixedRow][fixedCol];
     int sum=0;
