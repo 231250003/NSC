@@ -715,15 +715,24 @@ public class LLVMIROptimization {
                     LLVMValueRef v0 = LLVM.LLVMGetIncomingValue(inst, 0);
                     LLVMValueRef v1 = LLVM.LLVMGetIncomingValue(inst, 1);
                     if(v0!=null&&LLVM.LLVMGetValueName(v0).getString()!=null&&(!LLVM.LLVMGetValueName(v0).getString().isEmpty())) usedInstrs.add(v0);
+                    if(v1!=null&&LLVM.LLVMGetValueName(v1).getString()!=null&&(!LLVM.LLVMGetValueName(v1).getString().isEmpty())) usedInstrs.add(v1);
+                }
+                else if(opcode==LLVMGetElementPtr){
+                    int operand_count = LLVM.LLVMGetNumOperands(inst);
+                    for (int i = 2; i < operand_count; i++) {
+                        LLVMValueRef index = LLVM.LLVMGetOperand(inst, i);
+                        if (LLVM.LLVMIsAConstant(index) == null) usedInstrs.add(index);
+                    }
                 }
             }
         }
         List<LLVMValueRef> toErase = new ArrayList<>();
+        GraphColoringRegisterAllocator live_variable_analysis=new GraphColoringRegisterAllocator(func);
         for (LLVMValueRef instr : allInstrs) {
             boolean shouldKeep = false;
             int opcode = LLVM.LLVMGetInstructionOpcode(instr);
             if ((instr!=null&&usedInstrs.contains(instr)&&LLVM.LLVMGetValueName(instr).getString()!=null&&(!LLVM.LLVMGetValueName(instr).getString().isEmpty()))
-                    ||opcode==LLVMCall||opcode==LLVMPHI||opcode==LLVMGetElementPtr) {
+                    ||opcode==LLVMCall||opcode==LLVMPHI) {
                 shouldKeep = true;
             }
 //            else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
@@ -743,8 +752,11 @@ public class LLVMIROptimization {
             else if (opcode == LLVM.LLVMStore) {
                 LLVMValueRef operand = LLVM.LLVMGetOperand(instr, 1);
                 if (operand != null && !operand.isNull()) {
-                    if (usedInstrs.contains(operand)||(LLVM.LLVMGetValueName(operand)).getString().contains("elemPtr"))
-                        shouldKeep = true;
+                    if (usedInstrs.contains(operand)&&(!(LLVM.LLVMGetValueName(operand)).getString().contains("elemPtr"))) shouldKeep = true;
+                    else if(LLVM.LLVMGetValueName(operand).getString().contains("elemPtr")){
+                        if(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(instr).contains((LLVM.LLVMGetValueName(operand).getString())))
+                            shouldKeep=true;
+                    }
                 }
             }
             if (!shouldKeep) {
