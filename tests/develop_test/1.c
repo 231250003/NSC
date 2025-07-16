@@ -18,7 +18,7 @@ int main(){
 }
 */
 int main() {
-    int matrixGrid[2][3];
+    int matrixGrid[2][3]={0,0,0,0,0,0,0};
     int fixedRow = 1;
     int fixedCol = 2;
     int valueAccessed;
