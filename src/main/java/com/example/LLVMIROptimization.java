@@ -261,6 +261,7 @@ public class LLVMIROptimization {
                 }
                 if (cur_offset.size() != array_size.size())
                     new_out.put(variable_name, ConstPropValueHolder.NAC);
+                if(variable_name.equals("elemPtr26")) System.out.println(new_out.get(variable_name));
             }
             else if(opcode== LLVMCall){
                 int argCount = LLVM.LLVMGetNumArgOperands(inst);
