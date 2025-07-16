@@ -769,8 +769,8 @@ public class LLVMIROptimization {
                 }
             }
         }
-        System.out.println("craas");
         for (LLVMValueRef instr : toErase) {
+            System.out.println("craas");
             LLVM.LLVMInstructionEraseFromParent(instr);
             System.out.println(LLVM.LLVMPrintValueToString(instr).getString());
         }
