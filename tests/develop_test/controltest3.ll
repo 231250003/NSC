@@ -176,107 +176,47 @@ merge13:                                          ; preds = %if.then19, %cur
   %load_lval61 = load i32, i32* @q, align 4
   %add62 = add i32 %load_lval61, 20
   store i32 %add62, i32* @q, align 4
-  %load_lval63 = load i32, i32* %x1, align 4
-  %mul = mul i32 %load_lval63, 2
-  store i32 %mul, i32* %x1, align 4
-  %load_lval64 = load i32, i32* %x2, align 4
-  %mul65 = mul i32 %load_lval64, 2
-  store i32 %mul65, i32* %x2, align 4
-  %load_lval66 = load i32, i32* %x3, align 4
-  %mul67 = mul i32 %load_lval66, 2
-  store i32 %mul67, i32* %x3, align 4
-  %load_lval68 = load i32, i32* %x4, align 4
-  %mul69 = mul i32 %load_lval68, 2
-  store i32 %mul69, i32* %x4, align 4
-  %load_lval70 = load i32, i32* %x5, align 4
-  %mul71 = mul i32 %load_lval70, 2
-  store i32 %mul71, i32* %x5, align 4
-  %load_lval72 = load i32, i32* %x6, align 4
-  %mul73 = mul i32 %load_lval72, 2
-  store i32 %mul73, i32* %x6, align 4
-  %load_lval74 = load i32, i32* %x7, align 4
-  %mul75 = mul i32 %load_lval74, 2
-  store i32 %mul75, i32* %x7, align 4
-  %load_lval76 = load i32, i32* %x8, align 4
-  %mul77 = mul i32 %load_lval76, 2
-  store i32 %mul77, i32* %x8, align 4
-  %load_lval78 = load i32, i32* %x9, align 4
-  %mul79 = mul i32 %load_lval78, 2
-  store i32 %mul79, i32* %x9, align 4
-  %load_lval80 = load i32, i32* %x10, align 4
-  %mul81 = mul i32 %load_lval80, 2
-  store i32 %mul81, i32* %x10, align 4
-  %load_lval82 = load i32, i32* %x11, align 4
-  %mul83 = mul i32 %load_lval82, 2
-  store i32 %mul83, i32* %x11, align 4
-  %load_lval84 = load i32, i32* %x12, align 4
-  %mul85 = mul i32 %load_lval84, 2
-  store i32 %mul85, i32* %x12, align 4
-  %load_lval86 = load i32, i32* %x13, align 4
-  %mul87 = mul i32 %load_lval86, 2
-  store i32 %mul87, i32* %x13, align 4
-  %load_lval88 = load i32, i32* %x14, align 4
-  %mul89 = mul i32 %load_lval88, 2
-  store i32 %mul89, i32* %x14, align 4
-  %load_lval90 = load i32, i32* %x15, align 4
-  %mul91 = mul i32 %load_lval90, 2
-  store i32 %mul91, i32* %x15, align 4
-  %load_lval92 = load i32, i32* %x16, align 4
-  %mul93 = mul i32 %load_lval92, 2
-  store i32 %mul93, i32* %x16, align 4
-  %load_lval94 = load i32, i32* %x17, align 4
-  %mul95 = mul i32 %load_lval94, 2
-  store i32 %mul95, i32* %x17, align 4
-  %load_lval96 = load i32, i32* %x18, align 4
-  %mul97 = mul i32 %load_lval96, 2
-  store i32 %mul97, i32* %x18, align 4
-  %load_lval98 = load i32, i32* %x19, align 4
-  %mul99 = mul i32 %load_lval98, 2
-  store i32 %mul99, i32* %x19, align 4
-  %load_lval100 = load i32, i32* %x20, align 4
-  %mul101 = mul i32 %load_lval100, 2
-  store i32 %mul101, i32* %x20, align 4
+  %mul = mul i32 1, 2
+  %mul65 = mul i32 2, 2
+  %mul67 = mul i32 3, 2
+  %mul69 = mul i32 4, 2
+  %mul71 = mul i32 5, 2
+  %mul73 = mul i32 6, 2
+  %mul75 = mul i32 7, 2
+  %mul77 = mul i32 8, 2
+  %mul79 = mul i32 9, 2
+  %mul81 = mul i32 10, 2
+  %mul83 = mul i32 11, 2
+  %mul85 = mul i32 12, 2
+  %mul87 = mul i32 13, 2
+  %mul89 = mul i32 14, 2
+  %mul91 = mul i32 15, 2
+  %mul93 = mul i32 16, 2
+  %mul95 = mul i32 17, 2
+  %mul97 = mul i32 18, 2
+  %mul99 = mul i32 19, 2
+  %mul101 = mul i32 20, 2
   %load_lval102 = load i32, i32* %a, align 4
-  %load_lval103 = load i32, i32* %x1, align 4
-  %add104 = add i32 %load_lval102, %load_lval103
-  %load_lval105 = load i32, i32* %x2, align 4
-  %add106 = add i32 %add104, %load_lval105
-  %load_lval107 = load i32, i32* %x3, align 4
-  %add108 = add i32 %add106, %load_lval107
-  %load_lval109 = load i32, i32* %x4, align 4
-  %add110 = add i32 %add108, %load_lval109
-  %load_lval111 = load i32, i32* %x5, align 4
-  %add112 = add i32 %add110, %load_lval111
-  %load_lval113 = load i32, i32* %x6, align 4
-  %add114 = add i32 %add112, %load_lval113
-  %load_lval115 = load i32, i32* %x7, align 4
-  %add116 = add i32 %add114, %load_lval115
-  %load_lval117 = load i32, i32* %x8, align 4
-  %add118 = add i32 %add116, %load_lval117
-  %load_lval119 = load i32, i32* %x9, align 4
-  %add120 = add i32 %add118, %load_lval119
-  %load_lval121 = load i32, i32* %x10, align 4
-  %add122 = add i32 %add120, %load_lval121
-  %load_lval123 = load i32, i32* %x11, align 4
-  %add124 = add i32 %add122, %load_lval123
-  %load_lval125 = load i32, i32* %x12, align 4
-  %add126 = add i32 %add124, %load_lval125
-  %load_lval127 = load i32, i32* %x13, align 4
-  %add128 = add i32 %add126, %load_lval127
-  %load_lval129 = load i32, i32* %x14, align 4
-  %add130 = add i32 %add128, %load_lval129
-  %load_lval131 = load i32, i32* %x15, align 4
-  %add132 = add i32 %add130, %load_lval131
-  %load_lval133 = load i32, i32* %x16, align 4
-  %add134 = add i32 %add132, %load_lval133
-  %load_lval135 = load i32, i32* %x17, align 4
-  %add136 = add i32 %add134, %load_lval135
-  %load_lval137 = load i32, i32* %x18, align 4
-  %add138 = add i32 %add136, %load_lval137
-  %load_lval139 = load i32, i32* %x19, align 4
-  %add140 = add i32 %add138, %load_lval139
-  %load_lval141 = load i32, i32* %x20, align 4
-  %add142 = add i32 %add140, %load_lval141
+  %add104 = add i32 %load_lval102, 2
+  %add106 = add i32 %add104, 4
+  %add108 = add i32 %add106, 6
+  %add110 = add i32 %add108, 8
+  %add112 = add i32 %add110, 10
+  %add114 = add i32 %add112, 12
+  %add116 = add i32 %add114, 14
+  %add118 = add i32 %add116, 16
+  %add120 = add i32 %add118, 18
+  %add122 = add i32 %add120, 20
+  %add124 = add i32 %add122, 22
+  %add126 = add i32 %add124, 24
+  %add128 = add i32 %add126, 26
+  %add130 = add i32 %add128, 28
+  %add132 = add i32 %add130, 30
+  %add134 = add i32 %add132, 32
+  %add136 = add i32 %add134, 34
+  %add138 = add i32 %add136, 36
+  %add140 = add i32 %add138, 38
+  %add142 = add i32 %add140, 40
   ret i32 %add142
 
 if.then19:                                        ; preds = %cur
