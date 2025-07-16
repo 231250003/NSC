@@ -124,8 +124,7 @@ mainEntry:
   %elemPtr12 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %matrix_a, i32 0
   %elemPtr13 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %matrix_b, i32 0
   call void @matrix_multiply([2 x [3 x i32]]* %elemPtr12, [3 x [2 x i32]]* %elemPtr13)
-  %load_lval = load i32, i32* %i, align 4
-  %elemPtr14 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* @result, i32 0, i32 1, i32 %load_lval
+  %elemPtr14 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* @result, i32 0, i32 1, i32 1
   %load_lval15 = load i32, i32* %elemPtr14, align 4
   ret i32 %load_lval15
 }
