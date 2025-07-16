@@ -63,8 +63,8 @@ and.rhs:                                          ; preds = %while.cond
   br label %and.merge
 
 and.merge:                                        ; preds = %and.rhs, %while.cond
-  %and_result = phi i1 [ false, %while.cond ], [ %rhs_bool, %and.rhs ]
-  %zext_to_i3210 = zext i1 %and_result to i32
+  %phi_repl = phi i1 [ false, %while.cond ], [ %rhs_bool, %and.rhs ]
+  %zext_to_i3210 = zext i1 %phi_repl to i32
   %to_bool = icmp ne i32 %zext_to_i3210, 0
   br i1 %to_bool, label %while.stmt, label %cur
 
