@@ -620,7 +620,6 @@ public class LLVMIROptimization {
             Map<LLVMValueRef,LLVMValueRef> alias_must_pointer=new HashMap<>();
             for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
                 int opcode = LLVM.LLVMGetInstructionOpcode(inst);
-                System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
                 if(opcode==LLVMGetElementPtr){
                     String variable_name = LLVM.LLVMGetValueName(inst).getString();
                     LLVMValueRef base_ptr = LLVM.LLVMGetOperand(inst, 0);
