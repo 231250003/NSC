@@ -521,16 +521,6 @@ mainEntry:
   br label %for.cond
 
 cur:                                              ; preds = %for.cond
-  %n = alloca i32, align 4
-  store i32 6, i32* %n, align 4
-  %m = alloca i32, align 4
-  store i32 9, i32* %m, align 4
-  %a = alloca i32, align 4
-  store i32 64, i32* %a, align 4
-  %b = alloca i32, align 4
-  store i32 64, i32* %b, align 4
-  %c = alloca i32, align 4
-  store i32 64, i32* %c, align 4
   %i261 = alloca i32, align 4
   store i32 1, i32* %i261, align 4
   br label %for.cond260
