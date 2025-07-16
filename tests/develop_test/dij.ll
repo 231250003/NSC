@@ -581,8 +581,7 @@ for.stmt259:                                      ; preds = %for.cond260
 
 for.cond260:                                      ; preds = %cur267, %cur
   %load_lval262 = load i32, i32* %i261, align 4
-  %load_lval263 = load i32, i32* %n, align 4
-  %cmp264 = icmp sle i32 %load_lval262, %load_lval263
+  %cmp264 = icmp sle i32 %load_lval262, 6
   %zext_to_i32265 = zext i1 %cmp264 to i32
   %to_bool266 = icmp ne i32 %zext_to_i32265, 0
   br i1 %to_bool266, label %for.stmt259, label %cur258
@@ -603,8 +602,7 @@ for.stmt268:                                      ; preds = %for.cond269
 
 for.cond269:                                      ; preds = %merge, %for.stmt259
   %load_lval270 = load i32, i32* %j, align 4
-  %load_lval271 = load i32, i32* %n, align 4
-  %cmp272 = icmp sle i32 %load_lval270, %load_lval271
+  %cmp272 = icmp sle i32 %load_lval270, 6
   %zext_to_i32273 = zext i1 %cmp272 to i32
   %to_bool274 = icmp ne i32 %zext_to_i32273, 0
   br i1 %to_bool274, label %for.stmt268, label %cur267
@@ -652,8 +650,7 @@ for.stmt300:                                      ; preds = %for.cond301
 
 for.cond301:                                      ; preds = %for.stmt300, %cur258
   %load_lval303 = load i32, i32* %i302, align 4
-  %load_lval304 = load i32, i32* %n, align 4
-  %cmp305 = icmp sle i32 %load_lval303, %load_lval304
+  %cmp305 = icmp sle i32 %load_lval303, 6
   %zext_to_i32306 = zext i1 %cmp305 to i32
   %to_bool307 = icmp ne i32 %zext_to_i32306, 0
   br i1 %to_bool307, label %for.stmt300, label %cur299
@@ -671,8 +668,7 @@ for.stmt316:                                      ; preds = %for.cond317
 
 for.cond317:                                      ; preds = %cur356, %cur299
   %load_lval319 = load i32, i32* %i318, align 4
-  %load_lval320 = load i32, i32* %n, align 4
-  %cmp321 = icmp sle i32 %load_lval319, %load_lval320
+  %cmp321 = icmp sle i32 %load_lval319, 6
   %zext_to_i32322 = zext i1 %cmp321 to i32
   %to_bool323 = icmp ne i32 %zext_to_i32322, 0
   br i1 %to_bool323, label %for.stmt316, label %cur315
@@ -696,8 +692,7 @@ for.stmt325:                                      ; preds = %for.cond326
 
 for.cond326:                                      ; preds = %merge333, %for.stmt316
   %load_lval328 = load i32, i32* %j327, align 4
-  %load_lval329 = load i32, i32* %n, align 4
-  %cmp330 = icmp sle i32 %load_lval328, %load_lval329
+  %cmp330 = icmp sle i32 %load_lval328, 6
   %zext_to_i32331 = zext i1 %cmp330 to i32
   %to_bool332 = icmp ne i32 %zext_to_i32331, 0
   br i1 %to_bool332, label %for.stmt325, label %cur324
@@ -719,8 +714,8 @@ and.rhs:                                          ; preds = %for.stmt325
   br label %and.merge
 
 and.merge:                                        ; preds = %and.rhs, %for.stmt325
-  %and_result = phi i1 [ false, %for.stmt325 ], [ %rhs_bool, %and.rhs ]
-  %zext_to_i32345 = zext i1 %and_result to i32
+  %phi_repl408 = phi i1 [ false, %for.stmt325 ], [ %rhs_bool, %and.rhs ]
+  %zext_to_i32345 = zext i1 %phi_repl408 to i32
   %to_bool347 = icmp ne i32 %zext_to_i32345, 0
   br i1 %to_bool347, label %if.then346, label %merge333
 
@@ -750,8 +745,7 @@ for.stmt357:                                      ; preds = %for.cond358
 
 for.cond358:                                      ; preds = %merge364, %cur324
   %load_lval359 = load i32, i32* %k, align 4
-  %load_lval360 = load i32, i32* %n, align 4
-  %cmp361 = icmp sle i32 %load_lval359, %load_lval360
+  %cmp361 = icmp sle i32 %load_lval359, 6
   %zext_to_i32362 = zext i1 %cmp361 to i32
   %to_bool363 = icmp ne i32 %zext_to_i32362, 0
   br i1 %to_bool363, label %for.stmt357, label %cur356
@@ -780,8 +774,8 @@ and.rhs371:                                       ; preds = %for.stmt357
   br label %and.merge372
 
 and.merge372:                                     ; preds = %and.rhs371, %for.stmt357
-  %and_result387 = phi i1 [ false, %for.stmt357 ], [ %rhs_bool386, %and.rhs371 ]
-  %zext_to_i32388 = zext i1 %and_result387 to i32
+  %phi_repl = phi i1 [ false, %for.stmt357 ], [ %rhs_bool386, %and.rhs371 ]
+  %zext_to_i32388 = zext i1 %phi_repl to i32
   %to_bool390 = icmp ne i32 %zext_to_i32388, 0
   br i1 %to_bool390, label %if.then389, label %merge364
 
