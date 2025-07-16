@@ -1,3 +1,4 @@
+/*
 int z=3;
 int print(){
     z=z+3;
@@ -14,4 +15,19 @@ int main(){
         if(i==3) break;
     }
     return sum;
+}
+*/
+int main() {
+    int matrixGrid[2][3];
+    int fixedRow = 1;
+    int fixedCol = 2;
+    int valueAccessed;
+
+    matrixGrid[0][1] = 15;
+    matrixGrid[1][0] = 25;
+    matrixGrid[1][2] = matrixGrid[0][1] + matrixGrid[1][0];
+
+    valueAccessed = matrixGrid[fixedRow][fixedCol];
+
+    return valueAccessed;
 }
