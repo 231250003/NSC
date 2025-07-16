@@ -45,78 +45,56 @@ main_mainEntry:
   li t0, 0
   sw t0, 1600(sp)
   bnez x8, main_if.then
-  j main_merge
-main_merge:
-  li t1, 1
-  sw t1, 1600(sp)
-  j main_while.cond
+  j main_while.stmt
 main_if.then:
   mv x8, x12
-  li t2, 10
-  sgt t0, x8, t2
-  seqz t0, t0
+  li t1, 10
+  sgt t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
   mv x8, t0
-  mv t1, x8
-  mv x8, t1
-  li t2, 0
-  xor t0, x8, t2
-  snez t0, t0
-  mv x8, t0
-  li t1, 2
-  sw t1, 1600(sp)
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 1
+  sw t0, 1600(sp)
   bnez x8, main_if.then9
-  j main_merge5
-main_merge5:
-  li t2, 3
-  sw t2, 1600(sp)
-  j main_merge
+  j main_while.stmt
 main_if.then9:
-  li t0, 2
-  mv x10, t0
+  li t1, 2
+  mv x10, t1
   addi sp, sp, 2044
   li a7, 93
   ecall
 main_cur:
-  li t1, 0
-  mv x9, t1
-  li t2, 5
-  sw t2, 1600(sp)
+  li t2, 0
+  mv x9, t2
+  li t0, 3
+  sw t0, 1600(sp)
   j main_while.cond30
 main_while.stmt:
   mv x8, x12
-  li t0, 2
-  sub t1, x8, t0
-  mv x8, t1
+  li t1, 2
+  sub t2, x8, t1
+  mv x8, t2
   mv x12, x8
   mv x8, x12
-  li t2, 45
-  xor t0, x8, t2
-  seqz t0, t0
-  mv x8, t0
-  mv t1, x8
+  li t0, 45
+  xor t1, x8, t0
+  seqz t1, t1
   mv x8, t1
-  li t2, 0
-  xor t0, x8, t2
-  snez t0, t0
-  mv x8, t0
-  li t1, 6
-  sw t1, 1600(sp)
-  bnez x8, main_if.then16
-  j main_if.else
-main_while.cond:
-  li t2, -1
-  li t0, 7
-  sw t0, 1600(sp)
-  bnez t2, main_while.stmt
-  j main_cur
-main_merge12:
-  li t1, 8
-  sw t1, 1600(sp)
-  j main_while.cond
-main_if.then16:
-  li t2, 9
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 4
   sw t2, 1600(sp)
-  j main_cur
+  bnez x8, main_cur
+  j main_if.else
 main_if.else:
   mv x8, x12
   li t0, 48
@@ -129,29 +107,11 @@ main_if.else:
   xor t1, x8, t0
   snez t1, t1
   mv x8, t1
-  li t2, 10
+  li t2, 5
   sw t2, 1600(sp)
   bnez x8, main_if.then22
-  j main_merge18
-main_merge18:
-  li t0, 11
-  sw t0, 1600(sp)
-  j main_merge12
+  j main_while.stmt
 main_if.then22:
-  mv x8, x11
-  li t1, 3
-  sub t2, x8, t1
-  mv x8, t2
-  mv x11, x8
-  mv x8, x12
-  li t0, 1
-  add t1, x8, t0
-  mv x8, t1
-  mv x12, x8
-  li t2, 12
-  sw t2, 1600(sp)
-  j main_merge18
-main_cur28:
   mv x8, x11
   li t0, 3
   sub t1, x8, t0
@@ -162,10 +122,112 @@ main_cur28:
   add t0, x8, t2
   mv x8, t0
   mv x12, x8
+  li t1, 6
+  sw t1, 1600(sp)
+  j main_while.stmt
+main_cur28:
+  mv x8, x11
+  li t2, 3
+  sub t0, x8, t2
+  mv x8, t0
+  mv x11, x8
+  mv x8, x12
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x12, x8
   mv x9, x12
   mv x8, x11
-  add t1, x9, x8
+  add t0, x9, x8
+  mv x8, t0
+  li t1, 50
+  sgt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 7
+  sw t0, 1600(sp)
+  bnez x8, main_if.then104
+  j main_merge98
+main_while.stmt29:
+  mv x8, x9
+  li t1, 30
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 8
+  sw t0, 1600(sp)
+  bnez x8, main_cur28
+  j main_if.else50
+main_while.cond30:
+  mv x8, x11
+  li t1, 35
+  sgt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 9
+  sw t0, 1600(sp)
+  bnez x8, main_while.stmt29
+  j main_cur28
+main_if.else50:
+  mv x8, x11
+  li t1, 70
+  sgt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 10
+  sw t0, 1600(sp)
+  bnez x8, main_if.then59
+  j main_if.else60
+main_merge55:
+  mv x13, x11
+  mv x8, x12
+  add t1, x13, x8
   mv x8, t1
+  li t2, 40
+  sgt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 11
+  sw t1, 1600(sp)
+  bnez x8, main_if.then78
+  j main_if.else79
+main_if.then59:
+  mv x8, x11
+  li t2, 5
+  sub t0, x8, t2
+  mv x8, t0
+  mv x11, x8
+  li t1, 12
+  sw t1, 1600(sp)
+  j main_merge55
+main_if.else60:
+  mv x8, x11
   li t2, 50
   sgt t0, x8, t2
   mv x8, t0
@@ -177,205 +239,59 @@ main_cur28:
   mv x8, t0
   li t1, 13
   sw t1, 1600(sp)
-  bnez x8, main_if.then104
-  j main_merge98
-main_while.stmt29:
-  mv x8, x9
-  li t2, 30
-  xor t0, x8, t2
-  seqz t0, t0
-  mv x8, t0
-  mv t1, x8
-  mv x8, t1
-  li t2, 0
-  xor t0, x8, t2
-  snez t0, t0
-  mv x8, t0
-  li t1, 14
-  sw t1, 1600(sp)
-  bnez x8, main_if.then39
-  j main_merge35
-main_while.cond30:
-  mv x8, x11
-  li t2, 35
-  sgt t0, x8, t2
-  mv x8, t0
-  mv t1, x8
-  mv x8, t1
-  li t2, 0
-  xor t0, x8, t2
-  snez t0, t0
-  mv x8, t0
-  li t1, 15
-  sw t1, 1600(sp)
-  bnez x8, main_while.stmt29
-  j main_cur28
-main_merge35:
-  li t2, 30
-  mv x13, t2
-  li t0, 16
-  sw t0, 1600(sp)
-  j main_while.cond44
-main_if.then39:
-  li t1, 17
-  sw t1, 1600(sp)
-  j main_cur28
-main_cur42:
-  mv x8, x11
-  li t2, 70
-  sgt t0, x8, t2
-  mv x8, t0
-  mv t1, x8
-  mv x8, t1
-  li t2, 0
-  xor t0, x8, t2
-  snez t0, t0
-  mv x8, t0
-  li t1, 18
-  sw t1, 1600(sp)
-  bnez x8, main_if.then59
-  j main_if.else60
-main_while.stmt43:
-  mv x8, x13
-  li t2, 20
-  slt t0, x8, t2
-  mv x8, t0
-  mv t1, x8
-  mv x8, t1
-  li t2, 0
-  xor t0, x8, t2
-  snez t0, t0
-  mv x8, t0
-  li t1, 19
-  sw t1, 1600(sp)
-  bnez x8, main_if.then49
-  j main_if.else50
-main_while.cond44:
-  li t2, -1
-  li t0, 20
-  sw t0, 1600(sp)
-  bnez t2, main_while.stmt43
-  j main_cur42
-main_merge45:
-  li t1, 21
-  sw t1, 1600(sp)
-  j main_cur42
-main_if.then49:
-  mv x8, x13
-  mv x10, x8
-  addi sp, sp, 2044
-  li a7, 93
-  ecall
-main_if.else50:
-  mv x8, x13
-  li t2, 7
-  sub t0, x8, t2
-  mv x8, t0
-  mv x13, x8
-  li t1, 23
-  sw t1, 1600(sp)
-  j main_merge45
-main_merge55:
-  mv x13, x11
-  mv x8, x12
-  add t2, x13, x8
-  mv x8, t2
-  li t0, 40
-  sgt t1, x8, t0
-  mv x8, t1
-  mv t2, x8
-  mv x8, t2
-  li t0, 0
-  xor t1, x8, t0
-  snez t1, t1
-  mv x8, t1
-  li t2, 24
-  sw t2, 1600(sp)
-  bnez x8, main_if.then78
-  j main_if.else79
-main_if.then59:
-  mv x8, x11
-  li t0, 5
-  sub t1, x8, t0
-  mv x8, t1
-  mv x11, x8
-  li t2, 25
-  sw t2, 1600(sp)
-  j main_merge55
-main_if.else60:
-  mv x8, x11
-  li t0, 50
-  sgt t1, x8, t0
-  mv x8, t1
-  mv t2, x8
-  mv x8, t2
-  li t0, 0
-  xor t1, x8, t0
-  snez t1, t1
-  mv x8, t1
-  li t2, 26
-  sw t2, 1600(sp)
   bnez x8, main_if.then68
-  j main_merge64
-main_merge64:
-  li t0, 27
-  sw t0, 1600(sp)
   j main_merge55
 main_if.then68:
   mv x8, x11
-  li t1, 7
-  sub t2, x8, t1
-  mv x8, t2
+  li t2, 7
+  sub t0, x8, t2
+  mv x8, t0
   mv x11, x8
-  li t0, 28
-  sw t0, 1600(sp)
-  j main_merge64
+  li t1, 14
+  sw t1, 1600(sp)
+  j main_merge55
 main_merge72:
   mv x8, x9
-  li t1, 1
-  add t2, x8, t1
-  mv x8, t2
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
   mv x9, x8
-  li t0, 29
-  sw t0, 1600(sp)
+  li t1, 15
+  sw t1, 1600(sp)
   j main_while.cond30
 main_if.then78:
   mv x8, x11
-  li t1, 10
-  add t2, x8, t1
-  mv x8, t2
+  li t2, 10
+  add t0, x8, t2
+  mv x8, t0
   mv x11, x8
-  li t0, 30
-  sw t0, 1600(sp)
+  li t1, 16
+  sw t1, 1600(sp)
   j main_merge72
 main_if.else79:
   mv x8, x11
-  li t1, 30
-  sgt t2, x8, t1
-  mv x8, t2
-  mv t0, x8
+  li t2, 30
+  sgt t0, x8, t2
   mv x8, t0
-  li t1, 0
-  xor t2, x8, t1
-  snez t2, t2
-  mv x8, t2
-  li t0, 31
-  sw t0, 1600(sp)
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 17
+  sw t1, 1600(sp)
   bnez x8, main_if.then87
   j main_if.else88
-main_merge83:
-  li t1, 32
-  sw t1, 1600(sp)
-  j main_merge72
 main_if.then87:
   mv x8, x11
   li t2, 1
   sub t0, x8, t2
   mv x8, t0
   mv x11, x8
-  li t1, 33
+  li t1, 18
   sw t1, 1600(sp)
-  j main_merge83
+  j main_merge72
 main_if.else88:
   li t2, 10
   mv x10, t2
@@ -396,6 +312,6 @@ main_if.then104:
   sub t1, x8, t0
   mv x8, t1
   mv x12, x8
-  li t2, 36
+  li t2, 21
   sw t2, 1600(sp)
   j main_merge98
