@@ -136,6 +136,7 @@ public class LLVMIRToRiscv {
             }
             int paramCount = LLVM.LLVMCountParams(func);
             for (int i = 8; i < paramCount; i++) {
+                System.out.println(">>> Reached this point <<<");
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
                 String paramName = LLVM.LLVMGetValueName(param).getString();
                 LLVMTypeRef paramType = LLVM.LLVMTypeOf(param);
