@@ -579,6 +579,7 @@ public class LLVMIROptimization {
                 ret = true;
             LLVM.LLVMInstructionEraseFromParent(x);
         }
+        LLVMDumpModule(module);
         return ret;
     }
 
@@ -678,7 +679,6 @@ public class LLVMIROptimization {
                 ret=true;
             }
         }
-        LLVMDumpModule(module);
         return ret;
     }
 
