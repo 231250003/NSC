@@ -580,7 +580,7 @@ public class LLVMIROptimization {
             System.out.println(LLVM.LLVMPrintValueToString(x).getString());
             LLVM.LLVMInstructionEraseFromParent(x);
         }
-        System.out.println("-------------");
+        System.out.println("---------------------------");
         LLVMDumpModule(module);
         return ret;
     }
