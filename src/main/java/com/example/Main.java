@@ -64,7 +64,6 @@ public class Main {
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             while (remove_blocks_without_predecessors(func)) ;
         }
-        LLVMDumpModule(module);
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
             optimization.pointer_must_optimize(func);
             boolean flag1 = true, flag2=false,flag3 = false;
