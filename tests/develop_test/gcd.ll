@@ -33,9 +33,7 @@ mainEntry:
   %num2 = alloca i32, align 4
   store i32 40, i32* %num2, align 4
   %result = alloca i32, align 4
-  %load_lval = load i32, i32* %num1, align 4
-  %load_lval1 = load i32, i32* %num2, align 4
-  %gcd = call i32 @gcd(i32 %load_lval, i32 %load_lval1)
+  %gcd = call i32 @gcd(i32 25, i32 40)
   store i32 %gcd, i32* %result, align 4
   %load_lval2 = load i32, i32* %result, align 4
   ret i32 %load_lval2
