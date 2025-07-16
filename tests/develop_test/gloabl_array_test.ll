@@ -119,8 +119,6 @@ mainEntry:
   store i32 11, i32* %elemPtr10, align 4
   %elemPtr11 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %matrix_b, i32 0, i32 2, i32 1
   store i32 12, i32* %elemPtr11, align 4
-  %i = alloca i32, align 4
-  store i32 1, i32* %i, align 4
   %elemPtr12 = getelementptr [2 x [3 x i32]], [2 x [3 x i32]]* %matrix_a, i32 0
   %elemPtr13 = getelementptr [3 x [2 x i32]], [3 x [2 x i32]]* %matrix_b, i32 0
   call void @matrix_multiply([2 x [3 x i32]]* %elemPtr12, [3 x [2 x i32]]* %elemPtr13)
