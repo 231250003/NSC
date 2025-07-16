@@ -264,6 +264,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         current = LLVM.LLVMGetElementType(current);
                     }
                     List<Object> offset = new ArrayList<>();
+                    if(paramName.equals("arr")) System.out.println("cfsdf");
                     array_variable av = new array_variable(paramName, paramName, dimension, offset, arraySize);
                     param_array.add(av);
                 }
