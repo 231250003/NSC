@@ -574,6 +574,8 @@ public class LLVMIROptimization {
                 }
             }
         }
+        LLVMDumpModule(module);
+        System.out.println("---------------------------");
         for (LLVMValueRef x : inst_to_delete) {
             if (x != null)
                 ret = true;
