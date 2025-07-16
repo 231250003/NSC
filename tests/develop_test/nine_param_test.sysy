@@ -4,7 +4,7 @@ int p(int a,int b,int c,int d,int e,int f,int g,int h,int i,int j,int k,int arr[
 }
 int f(int a,int b,int c,int d,int e,int f,int g,int h,int i,int j,int k){
     int arr[3];
-    int x=p(a,b,c,d,e,f,g,h,i,j,k,arr)
+    int x=p(a,b,c,d,e,f,g,h,i,j,k,arr);
     return arr[2]+a+b+c+d+e+f+g+h+i+j+k+x;
 }
 int main(){
