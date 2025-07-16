@@ -771,6 +771,7 @@ public class LLVMIROptimization {
         }
         for (LLVMValueRef instr : toErase) {
             LLVM.LLVMInstructionEraseFromParent(instr);
+            System.out.println(LLVM.LLVMPrintValueToString(instr).getString());
         }
         return ret;
     }
