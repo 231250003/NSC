@@ -197,8 +197,9 @@ public class LLVMIROptimization {
                 ConstPropValueHolder resultVal;
                 // if(dest.isEmpty()) System.out.println("CRZZZZZ");
                 if(LLVM.LLVMIsAGetElementPtrInst(ptrOp) != null || (LLVM.LLVMIsAConstantExpr(ptrOp) != null && LLVM.LLVMGetConstOpcode(ptrOp) == LLVM.LLVMGetElementPtr)){
-                    System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
-                    resultVal=ConstPropValueHolder.NAC;
+                    //System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                    //resultVal=ConstPropValueHolder.NAC;
+                    resultVal=new ConstPropValueHolder(srcVal);
                 }
                  else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
                     resultVal = new ConstPropValueHolder(srcVal);
