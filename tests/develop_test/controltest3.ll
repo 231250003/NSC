@@ -51,71 +51,28 @@ while.stmt:                                       ; preds = %while.cond
   %to_bool7 = icmp ne i32 %zext_to_i326, 0
   br i1 %to_bool7, label %if.then, label %if.else
 
-while.cond:                                       ; preds = %merge, %mainEntry
+while.cond:                                       ; preds = %if.else, %if.then, %mainEntry
   %load_lval2 = load i32, i32* %b, align 4
   %cmp = icmp ne i32 %load_lval2, 0
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt, label %cur
 
-merge:                                            ; preds = %if.else, %if.then
-  br label %while.cond
-
 if.then:                                          ; preds = %while.stmt
   %load_lval8 = load i32, i32* %a, align 4
   %load_lval9 = load i32, i32* %b, align 4
   %sub = sub i32 %load_lval8, %load_lval9
   store i32 %sub, i32* %a, align 4
-  br label %merge
+  br label %while.cond
 
 if.else:                                          ; preds = %while.stmt
   %load_lval10 = load i32, i32* %b, align 4
   %load_lval11 = load i32, i32* %a, align 4
   %sub12 = sub i32 %load_lval10, %load_lval11
   store i32 %sub12, i32* %b, align 4
-  br label %merge
+  br label %while.cond
 
 merge13:                                          ; preds = %if.then19, %cur
-  %x1 = alloca i32, align 4
-  store i32 1, i32* %x1, align 4
-  %x2 = alloca i32, align 4
-  store i32 2, i32* %x2, align 4
-  %x3 = alloca i32, align 4
-  store i32 3, i32* %x3, align 4
-  %x4 = alloca i32, align 4
-  store i32 4, i32* %x4, align 4
-  %x5 = alloca i32, align 4
-  store i32 5, i32* %x5, align 4
-  %x6 = alloca i32, align 4
-  store i32 6, i32* %x6, align 4
-  %x7 = alloca i32, align 4
-  store i32 7, i32* %x7, align 4
-  %x8 = alloca i32, align 4
-  store i32 8, i32* %x8, align 4
-  %x9 = alloca i32, align 4
-  store i32 9, i32* %x9, align 4
-  %x10 = alloca i32, align 4
-  store i32 10, i32* %x10, align 4
-  %x11 = alloca i32, align 4
-  store i32 11, i32* %x11, align 4
-  %x12 = alloca i32, align 4
-  store i32 12, i32* %x12, align 4
-  %x13 = alloca i32, align 4
-  store i32 13, i32* %x13, align 4
-  %x14 = alloca i32, align 4
-  store i32 14, i32* %x14, align 4
-  %x15 = alloca i32, align 4
-  store i32 15, i32* %x15, align 4
-  %x16 = alloca i32, align 4
-  store i32 16, i32* %x16, align 4
-  %x17 = alloca i32, align 4
-  store i32 17, i32* %x17, align 4
-  %x18 = alloca i32, align 4
-  store i32 18, i32* %x18, align 4
-  %x19 = alloca i32, align 4
-  store i32 19, i32* %x19, align 4
-  %x20 = alloca i32, align 4
-  store i32 20, i32* %x20, align 4
   %load_lval23 = load i32, i32* @x, align 4
   %add24 = add i32 %load_lval23, 1
   store i32 %add24, i32* @x, align 4
@@ -176,26 +133,6 @@ merge13:                                          ; preds = %if.then19, %cur
   %load_lval61 = load i32, i32* @q, align 4
   %add62 = add i32 %load_lval61, 20
   store i32 %add62, i32* @q, align 4
-  %mul = mul i32 1, 2
-  %mul65 = mul i32 2, 2
-  %mul67 = mul i32 3, 2
-  %mul69 = mul i32 4, 2
-  %mul71 = mul i32 5, 2
-  %mul73 = mul i32 6, 2
-  %mul75 = mul i32 7, 2
-  %mul77 = mul i32 8, 2
-  %mul79 = mul i32 9, 2
-  %mul81 = mul i32 10, 2
-  %mul83 = mul i32 11, 2
-  %mul85 = mul i32 12, 2
-  %mul87 = mul i32 13, 2
-  %mul89 = mul i32 14, 2
-  %mul91 = mul i32 15, 2
-  %mul93 = mul i32 16, 2
-  %mul95 = mul i32 17, 2
-  %mul97 = mul i32 18, 2
-  %mul99 = mul i32 19, 2
-  %mul101 = mul i32 20, 2
   %load_lval102 = load i32, i32* %a, align 4
   %add104 = add i32 %load_lval102, 2
   %add106 = add i32 %add104, 4
