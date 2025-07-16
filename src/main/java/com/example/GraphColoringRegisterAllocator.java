@@ -9,6 +9,8 @@ import org.bytedeco.llvm.global.LLVM;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.bytedeco.llvm.global.LLVM.LLVMPointerTypeKind;
+
 public class GraphColoringRegisterAllocator implements RegisterAllocator {
     private Map<String, Set<String>> variable_def_in_block = new HashMap<>();
     private Map<String, Set<String>> variable_use_in_block = new HashMap<>();
@@ -79,6 +81,29 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
      */
 
     public void cal_def_use(LLVMValueRef func) {
+        int paramCount = LLVM.LLVMCountParams(func);
+        for(int i=0;i<paramCount;i++) {
+            LLVMValueRef param = LLVM.LLVMGetParam(func, i);
+            String paramName = LLVM.LLVMGetValueName(param).getString();
+            LLVMTypeRef paramType = LLVM.LLVMTypeOf(param);
+            if (LLVM.LLVMGetTypeKind(paramType) == LLVMPointerTypeKind) {
+                LLVMTypeRef elementType = LLVM.LLVMGetElementType(paramType);
+                if (LLVM.LLVMGetTypeKind(elementType) == LLVM.LLVMArrayTypeKind) {
+                    int array_dim = 0;
+                    List<Integer> array_size = new ArrayList<>();
+                    LLVMTypeRef current = elementType;
+                    while (LLVM.LLVMGetTypeKind(current) == LLVM.LLVMArrayTypeKind) {
+                        long len = LLVM.LLVMGetArrayLength(current);
+                        array_size.add((int) len);
+                        array_dim++;
+                        current = LLVM.LLVMGetElementType(current);
+                    }
+                    array_variable av = new array_variable(paramName, paramName, array_dim, new ArrayList<>(), array_size);
+                    array_variable_ref.add(av);
+                    variable_and_array_name_to_array_variable_ref.put(paramName, av);
+                }
+            }
+        }
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             variable_def_in_block.putIfAbsent(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
             variable_use_in_block.putIfAbsent(LLVM.LLVMGetBasicBlockName(bb).getString(), new HashSet<>());
@@ -264,7 +289,6 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                         current = LLVM.LLVMGetElementType(current);
                     }
                     List<Object> offset = new ArrayList<>();
-                    if(paramName.equals("arr")) System.out.println("cfsdf");
                     array_variable av = new array_variable(paramName, paramName, dimension, offset, arraySize);
                     param_array.add(av);
                 }
