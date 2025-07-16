@@ -772,7 +772,6 @@ public class LLVMIROptimization {
                         opcode != LLVM.LLVMUnreachable) {
                     ret = true;
                     toErase.push(instr);
-                    System.out.println(LLVM.LLVMPrintValueToString(instr).getString());
                 }
             }
         }

@@ -7,63 +7,23 @@ main:
   j main_mainEntry
 main_mainEntry:
   li t0, 0
-  sw t0, 0(sp)
+  sw t0, 40(sp)
   li t1, 0
-  sw t1, 4(sp)
+  sw t1, 44(sp)
   li t2, 0
-  sw t2, 8(sp)
+  sw t2, 48(sp)
   li t0, 0
-  sw t0, 12(sp)
+  sw t0, 52(sp)
   li t1, 0
-  sw t1, 16(sp)
-  li t2, 0
-  sw t2, 20(sp)
-  li t0, 0
-  sw t0, 24(sp)
-  li t1, 0
-  sw t1, 28(sp)
-  li t2, 0
-  sw t2, 32(sp)
-  li t0, 0
-  sw t0, 36(sp)
-  li t1, 0
-  sw t1, 40(sp)
-  li t2, 0
-  sw t2, 44(sp)
-  li t0, 0
-  sw t0, 48(sp)
-  li t1, 0
-  sw t1, 52(sp)
-  li t2, 0
-  sw t2, 56(sp)
-  li t0, 0
-  sw t0, 60(sp)
-  li t1, 0
-  sw t1, 64(sp)
-  li t2, 0
-  sw t2, 68(sp)
-  li t0, 0
-  sw t0, 72(sp)
-  li t1, 0
-  sw t1, 76(sp)
-  li t2, 0
-  sw t2, 80(sp)
-  li t0, 0
-  sw t0, 84(sp)
-  li t1, 0
-  sw t1, 88(sp)
-  li t2, 0
-  sw t2, 92(sp)
-  li t0, 0
-  sw t0, 96(sp)
+  sw t1, 56(sp)
   sw x1, 100(sp)
   addi x10, sp, 40
   addi sp, sp, 104
   jal x1, f
   addi sp, sp, -104
   lw x1, 100(sp)
-  li t1, 1
-  mv x10, t1
+  li t2, 1
+  mv x10, t2
   addi sp, sp, 2044
   li a7, 93
   ecall
@@ -71,12 +31,12 @@ f:
   sw x10, 0(sp)
   j f_fEntry
 f_fEntry:
-  lw t2, 0(sp)
-  addi t2, t2, 8
-  sw t2, 4(sp)
-  li t0, 1
-  lw t1, 4(sp)
-  sw t0, 0(t1)
-  li t2, 2
-  mv x10, t2
+  lw t0, 0(sp)
+  addi t0, t0, 8
+  sw t0, 4(sp)
+  li t1, 1
+  lw t2, 4(sp)
+  sw t1, 0(t2)
+  li t0, 2
+  mv x10, t0
   ret
