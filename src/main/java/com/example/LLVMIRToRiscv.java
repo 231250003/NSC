@@ -927,7 +927,6 @@ public class LLVMIRToRiscv {
 
             if (init == null || init.isNull()) continue;
 
-            asm.directive("globl", name);
             asm.label(name);
             List<Integer> result=new ArrayList<>();
             extractIntegerElements(init,result);
@@ -940,6 +939,7 @@ public class LLVMIRToRiscv {
                     .map(String::valueOf)
                     .toArray(String[]::new);
             asm.instr(".word",stringArgs);
+            asm.directive("globl", name);
             asm.add_blank_line();
         }
         asm.switchToText();
