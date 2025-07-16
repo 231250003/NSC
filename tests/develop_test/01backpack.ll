@@ -163,8 +163,8 @@ mainEntry:
   br label %while.cond
 
 cur:                                              ; preds = %while.cond
-  %load_lval109 = load i32, i32* null, align 4
-  %load_lval110 = load i32, i32* null, align 4
+  %load_lval109 = load i32, i32* %n, align 4
+  %load_lval110 = load i32, i32* %m, align 4
   %elemPtr111 = getelementptr [5 x [11 x i32]], [5 x [11 x i32]]* %f, i32 0, i32 %load_lval109, i32 %load_lval110
   %load_lval112 = load i32, i32* %elemPtr111, align 4
   ret i32 %load_lval112
@@ -176,8 +176,8 @@ while.stmt:                                       ; preds = %while.cond
 
 while.cond:                                       ; preds = %cur64, %mainEntry
   %load_lval = load i32, i32* %i, align 4
-  %load_lval63 = load i32, i32* null, align 4
-  %cmp = icmp slt i32 %load_lval, 4
+  %load_lval63 = load i32, i32* %n, align 4
+  %cmp = icmp slt i32 %load_lval, %load_lval63
   %zext_to_i32 = zext i1 %cmp to i32
   %to_bool = icmp ne i32 %zext_to_i32, 0
   br i1 %to_bool, label %while.stmt, label %cur
@@ -200,8 +200,8 @@ while.stmt65:                                     ; preds = %while.cond66
 
 while.cond66:                                     ; preds = %merge, %while.stmt
   %load_lval67 = load i32, i32* %v, align 4
-  %load_lval68 = load i32, i32* null, align 4
-  %cmp69 = icmp sle i32 %load_lval67, 10
+  %load_lval68 = load i32, i32* %m, align 4
+  %cmp69 = icmp sle i32 %load_lval67, %load_lval68
   %zext_to_i3270 = zext i1 %cmp69 to i32
   %to_bool71 = icmp ne i32 %zext_to_i3270, 0
   br i1 %to_bool71, label %while.stmt65, label %cur64
