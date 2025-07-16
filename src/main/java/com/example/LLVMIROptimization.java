@@ -685,6 +685,7 @@ public class LLVMIROptimization {
         boolean ret = false;
         Set<LLVMValueRef> allInstrs = new HashSet<>();
         Set<LLVMValueRef> usedInstrs = new HashSet<>();
+        GraphColoringRegisterAllocator live_variable_analysis=new GraphColoringRegisterAllocator(func);
         for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
             for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
                 allInstrs.add(inst);
@@ -710,6 +711,9 @@ public class LLVMIROptimization {
                                 usedInstrs.add(operand);
                         }
                     }
+                    if(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(inst).contains(LLVM.LLVMGetValueName(LLVM.LLVMGetOperand(inst, 1)).getString())){
+                        usedInstrs.add(LLVM.LLVMGetOperand(inst, 1));
+                    }
                 }
                 else if(opcode==LLVMPHI){
                     LLVMValueRef v0 = LLVM.LLVMGetIncomingValue(inst, 0);
@@ -727,7 +731,6 @@ public class LLVMIROptimization {
             }
         }
         List<LLVMValueRef> toErase = new ArrayList<>();
-        GraphColoringRegisterAllocator live_variable_analysis=new GraphColoringRegisterAllocator(func);
         for (LLVMValueRef instr : allInstrs) {
             boolean shouldKeep = false;
             int opcode = LLVM.LLVMGetInstructionOpcode(instr);
