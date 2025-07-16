@@ -621,6 +621,7 @@ public class LLVMIROptimization {
             for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
                 int opcode = LLVM.LLVMGetInstructionOpcode(inst);
                 if(opcode==LLVMGetElementPtr){
+                    System.out.println("av.variable_name");
                     String variable_name = LLVM.LLVMGetValueName(inst).getString();
                     LLVMValueRef base_ptr = LLVM.LLVMGetOperand(inst, 0);
                     String array_name = LLVM.LLVMGetValueName(base_ptr).getString();
@@ -648,7 +649,6 @@ public class LLVMIROptimization {
                     }
                     array_variable av = new array_variable(variable_name, array_name, array_dim, cur_offset, array_size);
                     boolean has_must_alias=false;
-                    System.out.println(av.variable_name);
                     for(array_variable x:arrayVariable_ref){
                         if(GraphColoringRegisterAllocator.naive_alias_must_analysis(av,x)==true){
                             has_must_alias=true;
