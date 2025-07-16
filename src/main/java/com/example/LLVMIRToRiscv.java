@@ -140,12 +140,14 @@ public class LLVMIRToRiscv {
                 String paramName = LLVM.LLVMGetValueName(param).getString();
                 LLVMTypeRef paramType = LLVM.LLVMTypeOf(param);
                 if (LLVM.LLVMGetTypeKind(paramType) == LLVMIntegerTypeKind) {
-                    if (allocator.allocate(paramName).contains("x")) {
-                        String reg = freshReg();
-                        asm.instr("lw", reg, String.format("%d(sp)", next_offset));
-                        asm.mv(allocator.allocate(paramName), reg);
-                    } else {
-                        value_stack_addr.putIfAbsent(paramName, String.format("%d(sp)", next_offset));
+                    if(allocator.allocate(paramName)!=null&&(!allocator.allocate(paramName).isEmpty())){
+                        if (allocator.allocate(paramName).contains("x")) {
+                            String reg = freshReg();
+                            asm.instr("lw", reg, String.format("%d(sp)", next_offset));
+                            asm.mv(allocator.allocate(paramName), reg);
+                        } else {
+                            value_stack_addr.putIfAbsent(paramName, String.format("%d(sp)", next_offset));
+                        }
                     }
                     next_offset += 4;
                 } else if (LLVM.LLVMGetTypeKind(paramType) == LLVMPointerTypeKind) {
