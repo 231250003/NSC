@@ -754,8 +754,10 @@ public class LLVMIROptimization {
                 if (operand != null && !operand.isNull()) {
                     if (usedInstrs.contains(operand)&&(!(LLVM.LLVMGetValueName(operand)).getString().contains("elemPtr"))) shouldKeep = true;
                     else if(LLVM.LLVMGetValueName(operand).getString().contains("elemPtr")){
+                        System.out.println("crxzxz");
                         if(GraphColoringRegisterAllocator.get_after_cur_inst_live_variable(instr).contains((LLVM.LLVMGetValueName(operand).getString())))
                             shouldKeep=true;
+                        System.out.println("dsfds");
                     }
                 }
             }
