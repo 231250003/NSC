@@ -62,9 +62,8 @@ main_mainEntry:
   jal x1, f
   addi sp, sp, -104
   lw x1, 100(sp)
-  lw t1, 24(sp)
-  mv x8, t1
-  mv x10, x8
+  li t1, 1
+  mv x10, t1
   addi sp, sp, 2044
   li a7, 93
   ecall
