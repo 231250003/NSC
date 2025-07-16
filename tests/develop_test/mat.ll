@@ -3,12 +3,6 @@ source_filename = "my_module"
 
 define i32 @main() {
 mainEntry:
-  %i = alloca i32, align 4
-  store i32 64, i32* %i, align 4
-  %j = alloca i32, align 4
-  store i32 64, i32* %j, align 4
-  %k = alloca i32, align 4
-  store i32 64, i32* %k, align 4
   %arr = alloca [3 x [3 x i32]], align 4
   %elemPtr = getelementptr [3 x [3 x i32]], [3 x [3 x i32]]* %arr, i32 0, i32 0, i32 0
   store i32 1, i32* %elemPtr, align 4
@@ -81,7 +75,7 @@ if.then:                                          ; preds = %for.stmt11
   store i32 %add, i32* %j13, align 4
   br label %for.cond12
 
-cur24:                                            ; preds = %if.then51, %for.cond26
+cur24:                                            ; preds = %for.stmt25, %for.cond26
   %load_lval55 = load i32, i32* %j13, align 4
   %add56 = add i32 %load_lval55, 1
   store i32 %add56, i32* %j13, align 4
@@ -108,7 +102,7 @@ for.stmt25:                                       ; preds = %for.cond26
   %cmp49 = icmp sgt i32 %load_lval48, 20
   %zext_to_i3250 = zext i1 %cmp49 to i32
   %to_bool52 = icmp ne i32 %zext_to_i3250, 0
-  br i1 %to_bool52, label %if.then51, label %merge44
+  br i1 %to_bool52, label %cur24, label %merge44
 
 for.cond26:                                       ; preds = %merge44, %merge
   %load_lval28 = load i32, i32* %k27, align 4
@@ -122,7 +116,4 @@ merge44:                                          ; preds = %for.stmt25
   %add54 = add i32 %load_lval53, 1
   store i32 %add54, i32* %k27, align 4
   br label %for.cond26
-
-if.then51:                                        ; preds = %for.stmt25
-  br label %cur24
 }
