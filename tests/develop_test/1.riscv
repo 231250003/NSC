@@ -1,7 +1,7 @@
 .data
-.globl z
 z:
   .word 3
+.globl z
 
 
 .text
