@@ -59,7 +59,7 @@ public class Main {
         LLVMBuilderRef builder = LLVMCreateBuilder();
         IRGenerationVisitor IR_visitor = new IRGenerationVisitor(module, builder);
         IR_visitor.visit(tree);
-       // LLVMDumpModule(module);
+       LLVMDumpModule(module);
        LLVMIROptimization optimization=new LLVMIROptimization(module);
         clean_terminator_inst(module);
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
@@ -72,6 +72,7 @@ public class Main {
                 flag2=optimization.pointer_must_optimize(func);
                // flag4 = optimization.elem_unused(func);
                 //flag4 = optimization.elem_dead_code(func);
+                LLVMDumpModule(module);
             }
         }
         BytePointer error = new BytePointer((Pointer) null);
