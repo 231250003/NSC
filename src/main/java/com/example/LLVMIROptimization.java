@@ -582,6 +582,105 @@ public class LLVMIROptimization {
         return ret;
     }
 
+    public boolean pointer_must_optimize(LLVMValueRef func){
+        boolean ret=false;
+        Map<String,LLVMValueRef> init_elementptr_ref=new HashMap<>();
+        int paramCount = LLVM.LLVMCountParams(func);
+        List<array_variable> init_arrayVariable_ref=new ArrayList<>();
+        Set<LLVMValueRef> inst_to_delete=new HashSet<>();
+        for(int i=0;i<paramCount;i++){
+            LLVMValueRef param = LLVM.LLVMGetParam(func, i);
+            String paramName = LLVM.LLVMGetValueName(param).getString();
+            LLVMTypeRef paramType = LLVM.LLVMTypeOf(param);
+            if (LLVM.LLVMGetTypeKind(paramType) == LLVMPointerTypeKind){
+                LLVMTypeRef elementType = LLVM.LLVMGetElementType(paramType);
+                if (LLVM.LLVMGetTypeKind(elementType) == LLVM.LLVMArrayTypeKind) {
+                    init_elementptr_ref.put(paramName,param);
+                    int array_dim = 0;
+                    List<Integer> array_size = new ArrayList<>();
+                    LLVMTypeRef current = elementType;
+                    while (LLVM.LLVMGetTypeKind(current) == LLVM.LLVMArrayTypeKind) {
+                        long len = LLVM.LLVMGetArrayLength(current);
+                        array_size.add((int) len);
+                        array_dim++;
+                        current = LLVM.LLVMGetElementType(current);
+                    }
+                    array_variable av = new array_variable(paramName, paramName, array_dim, new ArrayList<>(), array_size);
+                    init_arrayVariable_ref.add(av);
+                }
+            }
+        }
+        for (LLVMBasicBlockRef bb = LLVM.LLVMGetFirstBasicBlock(func); bb != null && !bb.isNull(); bb = LLVM.LLVMGetNextBasicBlock(bb)) {
+            Map<String,LLVMValueRef> elementptr_ref=new HashMap<>(init_elementptr_ref);
+            List<array_variable> arrayVariable_ref=new ArrayList<>(init_arrayVariable_ref);
+            Map<LLVMValueRef,LLVMValueRef> alias_must_pointer=new HashMap<>();
+            for (LLVMValueRef inst = LLVM.LLVMGetFirstInstruction(bb); inst != null && !inst.isNull(); inst = LLVM.LLVMGetNextInstruction(inst)) {
+                int opcode = LLVM.LLVMGetInstructionOpcode(inst);
+                if(opcode==LLVMGetElementPtr){
+                    String variable_name = LLVM.LLVMGetValueName(inst).getString();
+                    LLVMValueRef base_ptr = LLVM.LLVMGetOperand(inst, 0);
+                    String array_name = LLVM.LLVMGetValueName(base_ptr).getString();
+                    LLVMTypeRef base_type = LLVM.LLVMTypeOf(base_ptr);
+                    LLVMTypeRef array_type = LLVM.LLVMGetElementType(base_type);
+                    int array_dim = 0;
+                    List<Integer> array_size = new ArrayList<>();
+                    LLVMTypeRef current = array_type;
+                    while (LLVM.LLVMGetTypeKind(current) == LLVM.LLVMArrayTypeKind) {
+                        long len = LLVM.LLVMGetArrayLength(current);
+                        array_size.add((int) len);
+                        array_dim++;
+                        current = LLVM.LLVMGetElementType(current);
+                    }
+                    int operand_count = LLVM.LLVMGetNumOperands(inst);
+                    List<Object> cur_offset = new ArrayList<>();
+                    for (int i = 2; i < operand_count; i++) {
+                        LLVMValueRef index = LLVM.LLVMGetOperand(inst, i);
+                        if (LLVM.LLVMIsAConstant(index) != null) {
+                            long val = LLVM.LLVMConstIntGetZExtValue(index);
+                            cur_offset.add((int) val);
+                        } else {
+                            cur_offset.add(index);
+                        }
+                    }
+                    array_variable av = new array_variable(variable_name, array_name, array_dim, cur_offset, array_size);
+                    boolean has_must_alias=false;
+                    for(array_variable x:arrayVariable_ref){
+                        if(GraphColoringRegisterAllocator.naive_alias_must_analysis(av,x)==true){
+                            has_must_alias=true;
+                            alias_must_pointer.put(inst,elementptr_ref.get(x.variable_name));
+                            inst_to_delete.add(inst);
+                            break;
+                        }
+                    }
+                    if(has_must_alias==false) arrayVariable_ref.add(av);
+                    elementptr_ref.putIfAbsent(variable_name, inst);
+                }
+                else if(opcode==LLVMLoad){
+                    LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 0);
+                    if(alias_must_pointer.get(ptr)!=null)    LLVM.LLVMSetOperand(inst, 0, alias_must_pointer.get(ptr));
+                }
+                else if(opcode==LLVMStore){
+                    LLVMValueRef ptr = LLVM.LLVMGetOperand(inst, 1);
+                    if(alias_must_pointer.get(ptr)!=null)    LLVM.LLVMSetOperand(inst, 1, alias_must_pointer.get(ptr));
+                }
+                else if(opcode==LLVMCall){
+                    int argCount = LLVM.LLVMGetNumArgOperands(inst);
+                    for (int i = 0; i < argCount; i++) {
+                        LLVMValueRef arg = LLVM.LLVMGetOperand(inst, i);
+                        if(alias_must_pointer.get(arg)!=null)   LLVM.LLVMSetOperand(inst, i, alias_must_pointer.get(arg));
+                    }
+                }
+            }
+        }
+        for(LLVMValueRef x:inst_to_delete){
+            if(x!=null){
+                LLVM.LLVMInstructionEraseFromParent(x);
+                ret=true;
+            }
+        }
+        return ret;
+    }
+
     public boolean elem_unused(LLVMValueRef func) {
         boolean ret = false;
         Set<LLVMValueRef> allInstrs = new HashSet<>();
