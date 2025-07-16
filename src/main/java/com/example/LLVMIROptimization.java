@@ -771,16 +771,14 @@ public class LLVMIROptimization {
                         opcode != LLVM.LLVMSwitch &&
                         opcode != LLVM.LLVMUnreachable) {
                     ret = true;
-                    toErase.add(instr);
+                    toErase.push(instr);
+                    System.out.println(LLVM.LLVMPrintValueToString(instr).getString());
                 }
             }
         }
        while(!toErase.isEmpty()) {
            LLVMValueRef instr=toErase.pop();
-            System.out.println("cdzzz");
-            System.out.println(LLVM.LLVMPrintValueToString(instr).getString());
             LLVM.LLVMInstructionEraseFromParent(instr);
-            System.out.println("crzzzzzzzzzzzzz");
         }
         return ret;
     }
