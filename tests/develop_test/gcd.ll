@@ -28,10 +28,6 @@ if.then:                                          ; preds = %gcdEntry
 
 define i32 @main() {
 mainEntry:
-  %num1 = alloca i32, align 4
-  store i32 25, i32* %num1, align 4
-  %num2 = alloca i32, align 4
-  store i32 40, i32* %num2, align 4
   %result = alloca i32, align 4
   %gcd = call i32 @gcd(i32 25, i32 40)
   store i32 %gcd, i32* %result, align 4
