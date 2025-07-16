@@ -6,8 +6,323 @@ main:
   addi sp, sp, -2044
   j main_mainEntry
 main_mainEntry:
-  li t0, 40
-  mv x10, t0
+  li t0, 1
+  sw t0, 0(sp)
+  li t1, 3
+  sw t1, 8(sp)
+  li t2, 5
+  sw t2, 16(sp)
+  li t0, 15
+  sw t0, 4(sp)
+  li t1, 25
+  sw t1, 12(sp)
+  li t2, 40
+  sw t2, 20(sp)
+  li t0, 0
+  mv x12, t0
+  li t1, 0
+  mv x11, t1
+  li t2, 0
+  sw t2, 1600(sp)
+  j main_for.cond
+main_cur:
+  li t0, 0
+  mv x11, t0
+  li t1, 1
+  sw t1, 1600(sp)
+  j main_for.cond47
+main_for.stmt:
+  li t2, 1
+  mv x9, t2
+  li t0, 2
+  sw t0, 1600(sp)
+  j main_for.cond19
+main_for.cond:
+  mv x8, x11
+  li t1, 2
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 3
+  sw t0, 1600(sp)
+  bnez x8, main_for.stmt
+  j main_cur
+main_cur17:
+  mv x8, x11
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x11, x8
+  li t0, 4
+  sw t0, 1600(sp)
+  j main_for.cond
+main_for.stmt18:
+  mv x14, x11
+  mv x8, x9
+  li t2, 0
+  li t0, 3
+  mul t0, x14, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  li t0, 0
+  add t2, t2, t0
+  add t2, t2, sp
+  sw t2, 24(sp)
+  mv x14, x11
+  mv x8, x9
+  li t1, 1
+  sub t2, x8, t1
+  mv x8, t2
+  li t2, 0
+  li t1, 3
+  mul t1, x14, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x8, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  li t1, 0
+  add t2, t2, t1
+  add t2, t2, sp
+  sw t2, 28(sp)
+  lw t0, 28(sp)
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x15, x11
+  mv x14, x9
+  li t2, 0
+  li t1, 3
+  mul t1, x15, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x14, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  li t1, 0
+  add t2, t2, t1
+  add t2, t2, sp
+  sw t2, 32(sp)
+  lw t1, 32(sp)
+  lw t1, 0(t1)
+  mv x14, t1
+  add t2, x8, x14
+  mv x14, t2
+  lw t0, 16(sp)
+  mv x8, t0
+  add t1, x14, x8
+  mv x8, t1
+  lw t2, 24(sp)
+  sw x8, 0(t2)
+  mv x8, x11
+  li t2, 0
+  li t1, 3
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  li t0, 0
+  add t2, t2, t0
+  add t2, t2, sp
+  sw t2, 36(sp)
+  sw x11, 40(sp)
+  sw x12, 44(sp)
+  sw x9, 48(sp)
+  sw x13, 52(sp)
+  sw x1, 56(sp)
+  lw x10, 36(sp)
+  addi sp, sp, 60
+  jal x1, f
+  addi sp, sp, -60
+  lw x1, 56(sp)
+  lw x11, 40(sp)
+  lw x12, 44(sp)
+  lw x9, 48(sp)
+  lw x13, 52(sp)
+  mv x8, x9
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x9, x8
+  li t1, 5
+  sw t1, 1600(sp)
+  j main_for.cond19
+main_for.cond19:
+  mv x8, x9
+  li t2, 3
+  slt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 6
+  sw t1, 1600(sp)
+  bnez x8, main_for.stmt18
+  j main_cur17
+main_cur45:
+  mv x8, x12
+  mv x10, x8
   addi sp, sp, 2044
   li a7, 93
   ecall
+main_for.stmt46:
+  li t2, 0
+  mv x14, t2
+  li t0, 8
+  sw t0, 1600(sp)
+  j main_for.cond55
+main_for.cond47:
+  mv x8, x11
+  li t1, 2
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 9
+  sw t0, 1600(sp)
+  bnez x8, main_for.stmt46
+  j main_cur45
+main_cur53:
+  mv x8, x11
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x11, x8
+  li t0, 10
+  sw t0, 1600(sp)
+  j main_for.cond47
+main_for.stmt54:
+  mv x8, x12
+  mv x12, x11
+  mv x9, x14
+  li t2, 0
+  li t1, 3
+  mul t1, x12, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x9, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  li t1, 0
+  add t2, t2, t1
+  add t2, t2, sp
+  sw t2, 40(sp)
+  lw x13, 40(sp),
+  lw x13, 0(x13)
+  mv x9, x13
+  add t1, x8, x9
+  mv x8, t1
+  mv x12, x8
+  mv x8, x14
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x14, x8
+  lw t1, 40(sp)
+  sw x13, 0(t1)
+  li t2, 11
+  sw t2, 1600(sp)
+  j main_for.cond55
+main_for.cond55:
+  mv x8, x14
+  li t0, 3
+  slt t1, x8, t0
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 12
+  sw t2, 1600(sp)
+  bnez x8, main_for.stmt54
+  j main_cur53
+f:
+  sw x10, 0(sp)
+  j f_fEntry
+f_fEntry:
+  li t0, 1
+  mv x9, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  j f_for.cond
+f_cur:
+  ret
+f_for.stmt:
+  mv x8, x9
+  li t2, 0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 4(sp)
+  mv x8, x9
+  li t2, 0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 8(sp)
+  lw t0, 8(sp)
+  lw t0, 0(t0)
+  mv x11, t0
+  mv x8, x9
+  li t1, 1
+  sub t2, x8, t1
+  mv x8, t2
+  li t2, 0
+  li t0, 1
+  mul t0, x8, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 12(sp)
+  lw t2, 12(sp)
+  lw t2, 0(t2)
+  mv x8, t2
+  add t0, x11, x8
+  mv x8, t0
+  lw t1, 4(sp)
+  sw x8, 0(t1)
+  mv x8, x9
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x9, x8
+  li t1, 2
+  sw t1, 1600(sp)
+  j f_for.cond
+f_for.cond:
+  mv x8, x9
+  li t2, 3
+  slt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 3
+  sw t1, 1600(sp)
+  bnez x8, f_for.stmt
+  j f_cur
