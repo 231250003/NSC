@@ -577,10 +577,9 @@ public class LLVMIROptimization {
             }
         }
         for (LLVMValueRef x : inst_to_delete) {
-            System.out.println(LLVM.LLVMPrintValueToString(x).getString());
-//            if (x != null)
-//                ret = true;
-//            LLVM.LLVMInstructionEraseFromParent(x);
+            if (x != null)
+                ret = true;
+            LLVM.LLVMInstructionEraseFromParent(x);
         }
         return ret;
     }
