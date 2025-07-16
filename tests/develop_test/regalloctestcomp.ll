@@ -24,46 +24,6 @@ source_filename = "my_module"
 
 define i32 @main() {
 mainEntry:
-  %x1 = alloca i32, align 4
-  store i32 1, i32* %x1, align 4
-  %x2 = alloca i32, align 4
-  store i32 2, i32* %x2, align 4
-  %x3 = alloca i32, align 4
-  store i32 3, i32* %x3, align 4
-  %x4 = alloca i32, align 4
-  store i32 4, i32* %x4, align 4
-  %x5 = alloca i32, align 4
-  store i32 5, i32* %x5, align 4
-  %x6 = alloca i32, align 4
-  store i32 6, i32* %x6, align 4
-  %x7 = alloca i32, align 4
-  store i32 7, i32* %x7, align 4
-  %x8 = alloca i32, align 4
-  store i32 8, i32* %x8, align 4
-  %x9 = alloca i32, align 4
-  store i32 9, i32* %x9, align 4
-  %x10 = alloca i32, align 4
-  store i32 10, i32* %x10, align 4
-  %x11 = alloca i32, align 4
-  store i32 11, i32* %x11, align 4
-  %x12 = alloca i32, align 4
-  store i32 12, i32* %x12, align 4
-  %x13 = alloca i32, align 4
-  store i32 13, i32* %x13, align 4
-  %x14 = alloca i32, align 4
-  store i32 14, i32* %x14, align 4
-  %x15 = alloca i32, align 4
-  store i32 15, i32* %x15, align 4
-  %x16 = alloca i32, align 4
-  store i32 16, i32* %x16, align 4
-  %x17 = alloca i32, align 4
-  store i32 17, i32* %x17, align 4
-  %x18 = alloca i32, align 4
-  store i32 18, i32* %x18, align 4
-  %x19 = alloca i32, align 4
-  store i32 19, i32* %x19, align 4
-  %x20 = alloca i32, align 4
-  store i32 20, i32* %x20, align 4
   %load_lval = load i32, i32* @x, align 4
   %add = add i32 %load_lval, 1
   store i32 %add, i32* @x, align 4
@@ -124,45 +84,6 @@ mainEntry:
   %load_lval37 = load i32, i32* @q, align 4
   %add38 = add i32 %load_lval37, 20
   store i32 %add38, i32* @q, align 4
-  %mul = mul i32 1, 2
-  %mul41 = mul i32 2, 2
-  %mul43 = mul i32 3, 2
-  %mul45 = mul i32 4, 2
-  %mul47 = mul i32 5, 2
-  %mul49 = mul i32 6, 2
-  %mul51 = mul i32 7, 2
-  %mul53 = mul i32 8, 2
-  %mul55 = mul i32 9, 2
-  %mul57 = mul i32 10, 2
-  %mul59 = mul i32 11, 2
-  %mul61 = mul i32 12, 2
-  %mul63 = mul i32 13, 2
-  %mul65 = mul i32 14, 2
-  %mul67 = mul i32 15, 2
-  %mul69 = mul i32 16, 2
-  %mul71 = mul i32 17, 2
-  %mul73 = mul i32 18, 2
-  %mul75 = mul i32 19, 2
-  %mul77 = mul i32 20, 2
-  %add80 = add i32 2, 4
-  %add82 = add i32 6, 6
-  %add84 = add i32 12, 8
-  %add86 = add i32 20, 10
-  %add88 = add i32 30, 12
-  %add90 = add i32 42, 14
-  %add92 = add i32 56, 16
-  %add94 = add i32 72, 18
-  %add96 = add i32 90, 20
-  %add98 = add i32 110, 22
-  %add100 = add i32 132, 24
-  %add102 = add i32 156, 26
-  %add104 = add i32 182, 28
-  %add106 = add i32 210, 30
-  %add108 = add i32 240, 32
-  %add110 = add i32 272, 34
-  %add112 = add i32 306, 36
-  %add114 = add i32 342, 38
-  %add116 = add i32 380, 40
   %load_lval117 = load i32, i32* @x, align 4
   %add118 = add i32 420, %load_lval117
   %load_lval119 = load i32, i32* @y, align 4
