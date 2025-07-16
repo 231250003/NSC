@@ -66,10 +66,10 @@ public class Main {
             while (remove_blocks_without_predecessors(func)) ;
         }
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
-            boolean flag1 = true, flag2=false,flag3 = false, flag4 = false;
+            boolean flag1 = true, flag2=true,flag3 = false, flag4 = false;
             while (flag1 || flag2||flag3 || flag4) {
                 flag1 = optimization.constprop(func);
-                //flag2=optimization.pointer_must_optimize(func);
+                flag2=optimization.pointer_must_optimize(func);
                // flag4 = optimization.elem_unused(func);
                 //flag4 = optimization.elem_dead_code(func);
             }
