@@ -1,11 +1,11 @@
 .data
-.globl x
 x:
   .word 56
+.globl x
 
-.globl y
 y:
   .word 98
+.globl y
 
 
 .text
