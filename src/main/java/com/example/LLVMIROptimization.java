@@ -649,6 +649,7 @@ public class LLVMIROptimization {
                             has_must_alias=true;
                             alias_must_pointer.put(inst,elementptr_ref.get(x.variable_name));
                             inst_to_delete.add(inst);
+                            System.out.println("crzzzz");
                             break;
                         }
                     }
