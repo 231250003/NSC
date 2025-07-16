@@ -288,7 +288,8 @@ public class LLVMIROptimization {
                 ConstPropValueHolder srcVal = getConstValue(valueOp, in_inst.get(inst));
                 ConstPropValueHolder destVal = in_inst.get(inst).getOrDefault(dest, ConstPropValueHolder.UNDEF);
                 ConstPropValueHolder newVal;
-                if(dest.contains("elemPtr27")) System.out.println(srcVal);
+                System.out.println(dest);
+               // if(dest.contains("elemPtr27")) System.out.println(srcVal);
                 if (destVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
                     newVal = new ConstPropValueHolder(srcVal);
                 } else if (destVal.getKind() == ConstPropValueHolder.Kind.NAC) {
