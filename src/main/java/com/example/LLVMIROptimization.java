@@ -196,7 +196,7 @@ public class LLVMIROptimization {
                 ConstPropValueHolder oldDestVal = in_inst.get(inst).get(dest);
                 ConstPropValueHolder resultVal;
                 if(LLVM.LLVMIsAGetElementPtrInst(ptrOp) != null || (LLVM.LLVMIsAConstantExpr(ptrOp) != null && LLVM.LLVMGetConstOpcode(ptrOp) == LLVM.LLVMGetElementPtr)){
-                    if(srcVal!=ConstPropValueHolder.UNDEF)  resultVal=new ConstPropValueHolder(srcVal);
+                    if(srcVal!=ConstPropValueHolder.UNDEF&&srcVal!=null)  resultVal=new ConstPropValueHolder(srcVal);//be careful with load with inbounds
                     else resultVal=ConstPropValueHolder.NAC;
                 }
                  else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
@@ -213,7 +213,6 @@ public class LLVMIROptimization {
                 } else {
                     resultVal = ConstPropValueHolder.NAC; // fallback 安全策略
                 }
-                //if(src.contains("elemPtr6")) System.out.println(resultVal);
                 new_out.put(dest, resultVal);
             }
             else if(opcode== LLVMPHI){
@@ -286,8 +285,6 @@ public class LLVMIROptimization {
                 ConstPropValueHolder srcVal = getConstValue(valueOp, in_inst.get(inst));
                 ConstPropValueHolder destVal = in_inst.get(inst).getOrDefault(dest, ConstPropValueHolder.UNDEF);
                 ConstPropValueHolder newVal;
-                //System.out.println(dest);
-               // if(dest.contains("elemPtr27")) System.out.println(srcVal);
                 if (destVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
                     newVal = new ConstPropValueHolder(srcVal);
                 } else if (destVal.getKind() == ConstPropValueHolder.Kind.NAC) {

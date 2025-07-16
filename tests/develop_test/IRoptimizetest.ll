@@ -54,5 +54,9 @@ mainEntry:
   store i32 0, i32* %elemPtr23, align 4
   %elemPtr24 = getelementptr [5 x [5 x i32]], [5 x [5 x i32]]* %a, i32 0, i32 4, i32 4
   store i32 0, i32* %elemPtr24, align 4
-  ret i32 1
+  %elemPtr25 = getelementptr [5 x [5 x i32]], [5 x [5 x i32]]* %a, i32 0, i32 1, i32 1
+  store i32 1, i32* %elemPtr25, align 4
+  %elemPtr26 = getelementptr [5 x [5 x i32]], [5 x [5 x i32]]* %a, i32 0, i32 1, i32 1
+  %load_lval = load i32, i32* %elemPtr26, align 4
+  ret i32 %load_lval
 }
