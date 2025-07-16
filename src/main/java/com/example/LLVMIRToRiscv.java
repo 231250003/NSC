@@ -135,12 +135,10 @@ public class LLVMIRToRiscv {
                 id++;
             }
             int paramCount = LLVM.LLVMCountParams(func);
-            if(funcName.equals("p")) System.out.println(paramCount);
             for (int i = 8; i < paramCount; i++) {
                 LLVMValueRef param = LLVM.LLVMGetParam(func, i);
                 String paramName = LLVM.LLVMGetValueName(param).getString();
                 LLVMTypeRef paramType = LLVM.LLVMTypeOf(param);
-                if (allocator.allocate(paramName) == null || allocator.allocate(paramName).isEmpty()) continue;
                 if (LLVM.LLVMGetTypeKind(paramType) == LLVMIntegerTypeKind) {
                     if (allocator.allocate(paramName).contains("x")) {
                         String reg = freshReg();
