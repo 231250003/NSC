@@ -6,7 +6,7 @@ main:
   addi sp, sp, -2044
   j main_mainEntry
 main_mainEntry:
-  li t0, 64
+  li t0, 0
   mv x8, t0
   lw x8, 20(sp)
   mv x8, x8

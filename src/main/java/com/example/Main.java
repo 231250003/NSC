@@ -65,7 +65,7 @@ public class Main {
             while (remove_blocks_without_predecessors(func)) ;
         }
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
-            optimization.pointer_must_optimize(func);
+           // optimization.pointer_must_optimize(func);
             boolean flag1 = true, flag2=true,flag3 = false;
             while (flag1 || flag2||flag3 ) {
                 flag1 = optimization.constprop(func);
