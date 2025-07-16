@@ -225,6 +225,7 @@ public class LLVMIROptimization {
                 LLVMTypeRef base_type = LLVM.LLVMTypeOf(base_ptr);
                 LLVMTypeRef array_type = LLVM.LLVMGetElementType(base_type);
                 new_out.put(array_name,ConstPropValueHolder.NAC);
+                new_out.put(variable_name,in_inst.get(inst).get(variable_name));
                 if (LLVMGetValueKind(base_ptr) == LLVMGlobalVariableValueKind||(constpropinit.get(array_name)!=null&&constpropinit.get(array_name)==ConstPropValueHolder.NAC)) {
                     new_out.put(variable_name, ConstPropValueHolder.NAC);//全局数组或者参数数组
                 }
