@@ -578,7 +578,10 @@ public class LLVMIROptimization {
             if (x != null)
                 ret = true;
             LLVM.LLVMInstructionEraseFromParent(x);
+            System.out.println(LLVM.LLVMPrintValueToString(x).getString());
         }
+        System.out.println("-------------");
+        LLVMDumpModule(module);
         return ret;
     }
 
