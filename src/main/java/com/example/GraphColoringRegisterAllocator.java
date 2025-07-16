@@ -510,7 +510,7 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
 //            System.out.print(" ");
 //            System.out.println(entry.getValue());
 //        }
-       System.out.println("--------------------------------");
+//       System.out.println("--------------------------------");
     }
 
     public String allocate(String varName) {
