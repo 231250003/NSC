@@ -624,7 +624,7 @@ public class LLVMIROptimization {
             boolean shouldKeep = false;
             int opcode = LLVM.LLVMGetInstructionOpcode(instr);
             if ((instr!=null&&usedInstrs.contains(instr)&&LLVM.LLVMGetValueName(instr).getString()!=null&&(!LLVM.LLVMGetValueName(instr).getString().isEmpty()))
-                    ||opcode==LLVMCall||opcode==LLVMPHI) {
+                    ||opcode==LLVMCall||opcode==LLVMPHI||opcode==LLVMGetElementPtr) {
                 shouldKeep = true;
             }
 //            else if (opcode == LLVM.LLVMAdd || opcode == LLVM.LLVMSub ||
@@ -644,7 +644,7 @@ public class LLVMIROptimization {
             else if (opcode == LLVM.LLVMStore) {
                 LLVMValueRef operand = LLVM.LLVMGetOperand(instr, 1);
                 if (operand != null && !operand.isNull()) {
-                    if (usedInstrs.contains(operand))
+                    if (usedInstrs.contains(operand)||(LLVM.LLVMGetValueName(operand)).getString().contains("elemPtr"))
                         shouldKeep = true;
                 }
             }
@@ -657,7 +657,6 @@ public class LLVMIROptimization {
                     toErase.add(instr);
                 }
             }
-
         }
         for (LLVMValueRef instr : toErase) {
             LLVM.LLVMInstructionEraseFromParent(instr);

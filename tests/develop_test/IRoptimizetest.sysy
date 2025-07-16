@@ -1,13 +1,10 @@
+int f(int a[5]){
+    a[2]=1;
+    return 2;
+}
 int main(){
-    int i=0;
-    int n=6;
-    /*
-    while(i<n)  // i < n而不是i <= n
-    {
-
-        i=i+1;
-    }
-    */
-    i=i+1;
-    return i+1;
+    int a[5][5];
+    a[1][1]=1;
+    f(a[2]);
+    return a[1][1];
 }
