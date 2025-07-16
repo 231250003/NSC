@@ -511,8 +511,6 @@ public class LLVMIROptimization {
                         LLVMValueRef index = LLVM.LLVMGetOperand(inst, i);
                         if(is_constant.contains(LLVM.LLVMGetValueName(index).getString())){
                             int value = out_inst.get(inst).get(LLVM.LLVMGetValueName(index).getString()).getIntValue();
-                            System.out.println(LLVM.LLVMGetValueName(index).getString());
-                            System.out.println(value);
                             LLVMValueRef constOp = LLVMConstInt(LLVM.LLVMTypeOf(index), value, 0);
                             LLVM.LLVMSetOperand(inst, i, constOp);
                         }
