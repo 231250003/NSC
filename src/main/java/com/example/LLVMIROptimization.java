@@ -678,6 +678,7 @@ public class LLVMIROptimization {
                 ret=true;
             }
         }
+        LLVMDumpModule(module);
         return ret;
     }
 
