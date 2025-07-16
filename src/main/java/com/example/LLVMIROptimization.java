@@ -196,10 +196,11 @@ public class LLVMIROptimization {
                 ConstPropValueHolder oldDestVal = in_inst.get(inst).get(dest);
                 ConstPropValueHolder resultVal;
                 // if(dest.isEmpty()) System.out.println("CRZZZZZ");
-//                if(LLVM.LLVMIsAGetElementPtrInst(ptrOp) != null || (LLVM.LLVMIsAConstantExpr(ptrOp) != null && LLVM.LLVMGetConstOpcode(ptrOp) == LLVM.LLVMGetElementPtr)){
-//                    resultVal=ConstPropValueHolder.NAC;
-//                }
-                 if (oldDestVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
+                if(LLVM.LLVMIsAGetElementPtrInst(ptrOp) != null || (LLVM.LLVMIsAConstantExpr(ptrOp) != null && LLVM.LLVMGetConstOpcode(ptrOp) == LLVM.LLVMGetElementPtr)){
+                    System.out.println(LLVM.LLVMPrintValueToString(inst).getString());
+                    resultVal=ConstPropValueHolder.NAC;
+                }
+                 else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
                     resultVal = new ConstPropValueHolder(srcVal);
                 } else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.NAC) {
                     resultVal = ConstPropValueHolder.NAC;
@@ -213,7 +214,7 @@ public class LLVMIROptimization {
                 } else {
                     resultVal = ConstPropValueHolder.NAC; // fallback 安全策略
                 }
-                if(src.contains("elemPtr6")) System.out.println(resultVal);
+                //if(src.contains("elemPtr6")) System.out.println(resultVal);
                 new_out.put(dest, resultVal);
             }
             else if(opcode== LLVMPHI){
