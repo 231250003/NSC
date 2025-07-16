@@ -72,7 +72,7 @@ public class Main {
                 flag2=optimization.pointer_must_optimize(func);
                // flag4 = optimization.elem_unused(func);
                 //flag4 = optimization.elem_dead_code(func);
-                //LLVMDumpModule(module);
+                LLVMDumpModule(module);
             }
         }
         BytePointer error = new BytePointer((Pointer) null);
