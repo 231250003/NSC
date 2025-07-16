@@ -343,6 +343,10 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                                     break;
                                 }
                             }
+                            if(current_param_ref==null) {
+                                System.out.println(name);
+                                System.out.println(LLVM.LLVMPrintValueToString(instr).getString());
+                            }
                             for (array_variable x : array_variable_ref) {
                                 if (!x.array_name.equals(current_param_ref.array_name)) continue;
                                 if (x.cur_offset.size() != x.array_size.size()) continue;
