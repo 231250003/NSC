@@ -37,13 +37,6 @@ if.else:                                          ; preds = %merge
 
 define i32 @main() {
 mainEntry:
-  %x = alloca i32, align 4
-  store i32 1, i32* %x, align 4
-  %y = alloca i32, align 4
-  store i32 2, i32* %y, align 4
-  %z = alloca i32, align 4
-  store i32 64, i32* %z, align 4
-  %add = add i32 1, 2
   %f = call i32 @f(i32 5)
   ret i32 %f
 }
