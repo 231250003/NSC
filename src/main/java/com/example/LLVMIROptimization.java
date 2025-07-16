@@ -196,7 +196,7 @@ public class LLVMIROptimization {
                 ConstPropValueHolder oldDestVal = in_inst.get(inst).get(dest);
                 ConstPropValueHolder resultVal;
                 if(LLVM.LLVMIsAGetElementPtrInst(ptrOp) != null || (LLVM.LLVMIsAConstantExpr(ptrOp) != null && LLVM.LLVMGetConstOpcode(ptrOp) == LLVM.LLVMGetElementPtr)){
-                    if(srcVal!=ConstPropValueHolder.UNDEF&&srcVal!=null)  resultVal=new ConstPropValueHolder(srcVal);//be careful with load with inbounds
+                    if(srcVal!=ConstPropValueHolder.UNDEF)  resultVal=new ConstPropValueHolder(srcVal);//be careful with load with inbounds
                     else resultVal=ConstPropValueHolder.NAC;
                 }
                  else if (oldDestVal.getKind() == ConstPropValueHolder.Kind.UNDEF) {
