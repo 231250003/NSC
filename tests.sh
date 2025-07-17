@@ -73,7 +73,7 @@ for sysy_file in "${FILE_LIST[@]}"; do
       riscv_file="$SYSY_DIR/$filename.riscv"
         if [ -f "$riscv_file" ]; then
               echo "Running RARS on: $riscv_file"
-              java -jar ../rars.jar nc me "$riscv_file"
+              java -jar utils/rars.jar nc me "$riscv_file"
               riscv_return_value=$?
               echo "RISC-V Return value: $riscv_return_value"
               if [ "$c_return_value" -eq "$riscv_return_value" ]; then

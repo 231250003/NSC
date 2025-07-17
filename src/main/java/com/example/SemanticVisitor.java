@@ -375,6 +375,10 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
                 OutputHelper.printSemanticError(ErrorType.INVALID_ASSIGNMENT_TARGET,ctx.getStart().getLine());
                 return null;
             }
+            if(left!=null&&symbolTable.get_name_matched_symbol(ctx.lVal().IDENT().getText()).is_constant){
+                OutputHelper.printSemanticError(ErrorType.ASSIGNING_TO_CONSTANT,ctx.getStart().getLine());
+                return null;
+            }
             // System.out.println(ctx.exp());
             Type right=getExp(ctx.exp().get(0));
 //            System.out.println(left.toString());
@@ -494,10 +498,6 @@ public class SemanticVisitor extends SysYParserBaseVisitor<Void> {
         Symbol s=symbolTable.get_name_matched_symbol(name);
         if(s==null){
             OutputHelper.printSemanticError(ErrorType.UNDECLARED_VARIABLE,ctx.getStart().getLine());
-            return null;
-        }
-        if(s.is_constant){
-            OutputHelper.printSemanticError(ErrorType.ASSIGNING_TO_CONSTANT,ctx.getStart().getLine());
             return null;
         }
         if(!ctx.exp().isEmpty()) {

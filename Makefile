@@ -39,8 +39,5 @@ clean:
 	rm -rf classes
 	rm -rf out
 
-submit: clean
-	git gc
-	bash submit.sh
 
 .PHONY: compile antlr test run clean submit

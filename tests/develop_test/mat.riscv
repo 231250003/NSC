@@ -1,5 +1,408 @@
 .data
+x:
+  .word 56
+.globl x
 
+y:
+  .word 98
+.globl y
+
+z:
+  .word 3
+.globl z
+
+a:
+  .word 4
+.globl a
+
+bbbb:
+  .word 5
+.globl bbbb
+
+c:
+  .word 6
+.globl c
+
+d:
+  .word 7
+.globl d
+
+e:
+  .word 8
+.globl e
+
+f:
+  .word 9
+.globl f
+
+g:
+  .word 10
+.globl g
+
+h:
+  .word 11
+.globl h
+
+i:
+  .word 12
+.globl i
+
+jjjj:
+  .word 13
+.globl jjjj
+
+k:
+  .word 14
+.globl k
+
+l:
+  .word 15
+.globl l
+
+m:
+  .word 16
+.globl m
+
+n:
+  .word 17
+.globl n
+
+o:
+  .word 18
+.globl o
+
+p:
+  .word 19
+.globl p
+
+q:
+  .word 20
+.globl q
+
+.data
+
+.text
+.globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  la t0, x
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x11, x8
+  la t0, y
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x9, x8
+  li t0, 0
+  sw t0, 1600(sp)
+  j main_while.cond
+main_cur:
+  mv x12, x11
+  la t0, x
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 3
+  add t2, x8, t1
+  mv x8, t2
+  xor t0, x12, x8
+  snez t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 1
+  sw t1, 1600(sp)
+  bnez x8, main_if.then19
+  j main_merge13
+main_while.stmt:
+  mv x8, x11
+  mv x12, x9
+  sgt t2, x8, x12
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 2
+  sw t0, 1600(sp)
+  bnez x8, main_if.then
+  j main_if.else
+main_while.cond:
+  mv x8, x9
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 3
+  sw t0, 1600(sp)
+  bnez x8, main_while.stmt
+  j main_cur
+main_if.then:
+  mv x11, x11
+  mv x8, x9
+  sub t1, x11, x8
+  mv x8, t1
+  mv x11, x8
+  li t2, 4
+  sw t2, 1600(sp)
+  j main_while.cond
+main_if.else:
+  mv x8, x9
+  mv x9, x11
+  sub t0, x8, x9
+  mv x8, t0
+  mv x9, x8
+  li t1, 5
+  sw t1, 1600(sp)
+  j main_while.cond
+main_merge13:
+  la t0, x
+  lw t0, 0(t0)
+  mv x8, t0
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  la t1, x
+  sw x8, 0(t1)
+  la t0, y
+  lw t0, 0(t0)
+  mv x8, t0
+  li t2, 2
+  add t0, x8, t2
+  mv x8, t0
+  la t1, y
+  sw x8, 0(t1)
+  la t0, z
+  lw t0, 0(t0)
+  mv x8, t0
+  li t2, 3
+  add t0, x8, t2
+  mv x8, t0
+  la t1, z
+  sw x8, 0(t1)
+  mv x8, x11
+  li t2, 4
+  add t0, x8, t2
+  mv x8, t0
+  mv x11, x8
+  mv x8, x9
+  li t1, 5
+  add t2, x8, t1
+  mv x8, t2
+  mv x9, x8
+  la t0, c
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 6
+  add t1, x8, t0
+  mv x8, t1
+  la t2, c
+  sw x8, 0(t2)
+  la t0, d
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 7
+  add t1, x8, t0
+  mv x8, t1
+  la t2, d
+  sw x8, 0(t2)
+  la t0, e
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 8
+  add t1, x8, t0
+  mv x8, t1
+  la t2, e
+  sw x8, 0(t2)
+  la t0, f
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 9
+  add t1, x8, t0
+  mv x8, t1
+  la t2, f
+  sw x8, 0(t2)
+  la t0, g
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 10
+  add t1, x8, t0
+  mv x8, t1
+  la t2, g
+  sw x8, 0(t2)
+  la t0, h
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 11
+  add t1, x8, t0
+  mv x8, t1
+  la t2, h
+  sw x8, 0(t2)
+  la t0, i
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 12
+  add t1, x8, t0
+  mv x8, t1
+  la t2, i
+  sw x8, 0(t2)
+  la t0, jjjj
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 13
+  add t1, x8, t0
+  mv x8, t1
+  la t2, jjjj
+  sw x8, 0(t2)
+  la t0, k
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 14
+  add t1, x8, t0
+  mv x8, t1
+  la t2, k
+  sw x8, 0(t2)
+  la t0, l
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 15
+  add t1, x8, t0
+  mv x8, t1
+  la t2, l
+  sw x8, 0(t2)
+  la t0, m
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 16
+  add t1, x8, t0
+  mv x8, t1
+  la t2, m
+  sw x8, 0(t2)
+  la t0, n
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 17
+  add t1, x8, t0
+  mv x8, t1
+  la t2, n
+  sw x8, 0(t2)
+  la t0, o
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 18
+  add t1, x8, t0
+  mv x8, t1
+  la t2, o
+  sw x8, 0(t2)
+  la t0, p
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 19
+  add t1, x8, t0
+  mv x8, t1
+  la t2, p
+  sw x8, 0(t2)
+  la t0, q
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 20
+  add t1, x8, t0
+  mv x8, t1
+  la t2, q
+  sw x8, 0(t2)
+  mv x8, x11
+  li t0, 2
+  add t1, x8, t0
+  mv x8, t1
+  li t2, 4
+  add t0, x8, t2
+  mv x8, t0
+  li t1, 6
+  add t2, x8, t1
+  mv x8, t2
+  li t0, 8
+  add t1, x8, t0
+  mv x8, t1
+  li t2, 10
+  add t0, x8, t2
+  mv x8, t0
+  li t1, 12
+  add t2, x8, t1
+  mv x8, t2
+  li t0, 14
+  add t1, x8, t0
+  mv x8, t1
+  li t2, 16
+  add t0, x8, t2
+  mv x8, t0
+  li t1, 18
+  add t2, x8, t1
+  mv x8, t2
+  li t0, 20
+  add t1, x8, t0
+  mv x8, t1
+  li t2, 22
+  add t0, x8, t2
+  mv x8, t0
+  li t1, 24
+  add t2, x8, t1
+  mv x8, t2
+  li t0, 26
+  add t1, x8, t0
+  mv x8, t1
+  li t2, 28
+  add t0, x8, t2
+  mv x8, t0
+  li t1, 30
+  add t2, x8, t1
+  mv x8, t2
+  li t0, 32
+  add t1, x8, t0
+  mv x8, t1
+  li t2, 34
+  add t0, x8, t2
+  mv x8, t0
+  li t1, 36
+  add t2, x8, t1
+  mv x8, t2
+  li t0, 38
+  add t1, x8, t0
+  mv x8, t1
+  li t2, 40
+  add t0, x8, t2
+  mv x8, t0
+  mv x10, x8
+  addi sp, sp, 2044
+  li a7, 93
+  ecall
+main_if.then19:
+  mv x8, x11
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x11, x8
+  li t0, 7
+  sw t0, 1600(sp)
+  j main_merge13
 .text
 .globl main
 main:
