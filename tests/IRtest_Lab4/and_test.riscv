@@ -30,61 +30,8 @@ main_mainEntry:
   sw t1, 0(t2)
   li t0, 0
   sw t0, 1600(sp)
-  j main_while.cond
-main_while.cond:
-  li t1, 1
-  sw t1, 1600(sp)
   j main_while.cond3
-main_cur1:
-  la t0, x
-  lw t0, 0(t0)
-  mv x8, t0
-  li t2, 10
-  sgt t0, x8, t2
-  mv x8, t0
-  mv t1, x8
-  mv x8, t1
-  li t2, 0
-  xor t0, x8, t2
-  snez t0, t0
-  mv x8, t0
-  li t1, 2
-  sw t1, 1600(sp)
-  bnez x8, main_if.then
-  j main_merge
-main_while.stmt2:
-  sw x1, 0(sp)
-  li x10, 10
-  li x11, 20
-  addi sp, sp, 4
-  jal x1, g
-  addi sp, sp, -4
-  lw x1, 0(sp)
-  li t2, 3
-  sw t2, 1600(sp)
-  j main_while.cond3
-main_while.cond3:
-  la t0, z
-  lw t0, 0(t0)
-  mv x8, t0
-  li t0, 102
-  slt t1, x8, t0
-  mv x8, t1
-  mv t2, x8
-  mv x8, t2
-  li t0, 0
-  xor t1, x8, t0
-  snez t1, t1
-  mv x8, t1
-  li t2, 4
-  sw t2, 1600(sp)
-  bnez x8, main_while.stmt2
-  j main_cur1
-main_merge:
-  li t0, 5
-  sw t0, 1600(sp)
-  j main_while.cond
-main_if.then:
+main_cur:
   la t0, x
   lw t0, 0(t0)
   mv x8, t0
@@ -95,15 +42,12 @@ main_if.then:
   addi sp, sp, 2044
   li a7, 93
   ecall
-fib:
-  mv x8, x10
-  j fib_fibEntry
-fib_fibEntry:
-  mv x9, x8
-  mv x8, x9
-  li t0, 1
+main_cur1:
+  la t0, x
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 10
   sgt t1, x8, t0
-  seqz t1, t1
   mv x8, t1
   mv t2, x8
   mv x8, t2
@@ -111,8 +55,56 @@ fib_fibEntry:
   xor t1, x8, t0
   snez t1, t1
   mv x8, t1
-  li t2, 0
+  li t2, 2
   sw t2, 1600(sp)
+  bnez x8, main_cur
+  j main_while.cond3
+main_while.stmt2:
+  sw x1, 0(sp)
+  li x10, 10
+  li x11, 20
+  addi sp, sp, 4
+  jal x1, g
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  li t0, 3
+  sw t0, 1600(sp)
+  j main_while.cond3
+main_while.cond3:
+  la t0, z
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 102
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 4
+  sw t0, 1600(sp)
+  bnez x8, main_while.stmt2
+  j main_cur1
+fib:
+  mv x8, x10
+  j fib_fibEntry
+fib_fibEntry:
+  mv x9, x8
+  mv x8, x9
+  li t1, 1
+  sgt t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 0
+  sw t0, 1600(sp)
   bnez x8, fib_if.then
   j fib_if.else
 fib_if.then:
@@ -121,9 +113,9 @@ fib_if.then:
   ret
 fib_if.else:
   mv x8, x9
-  li t0, 1
-  sub t1, x8, t0
-  mv x8, t1
+  li t1, 1
+  sub t2, x8, t1
+  mv x8, t2
   sw x9, 0(sp)
   sw x8, 4(sp)
   sw x1, 8(sp)
@@ -136,9 +128,9 @@ fib_if.else:
   lw x8, 4(sp)
   mv x8, x10
   mv x9, x9
-  li t2, 2
-  sub t0, x9, t2
-  mv x9, t0
+  li t0, 2
+  sub t1, x9, t0
+  mv x9, t1
   sw x9, 0(sp)
   sw x8, 4(sp)
   sw x1, 8(sp)
@@ -150,8 +142,8 @@ fib_if.else:
   lw x9, 0(sp)
   lw x8, 4(sp)
   mv x9, x10
-  add t1, x8, x9
-  mv x8, t1
+  add t2, x8, x9
+  mv x8, t2
   mv x10, x8
   ret
 g:
@@ -160,29 +152,29 @@ g:
 g_gEntry:
   mv x9, x8
   mv x8, x9
-  li t2, 1
-  add t0, x8, t2
-  mv x8, t0
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
   mv x9, x8
   la t0, z
   lw t0, 0(t0)
   mv x8, t0
-  li t1, 1
-  add t2, x8, t1
-  mv x8, t2
-  la t0, z
-  sw x8, 0(t0)
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  la t1, z
+  sw x8, 0(t1)
   la t0, x
   lw t0, 0(t0)
   mv x8, t0
-  li t1, 1
-  add t2, x8, t1
-  mv x8, t2
-  la t0, x
-  sw x8, 0(t0)
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  la t1, x
+  sw x8, 0(t1)
   mv x8, x9
-  li t1, 1
-  add t2, x8, t1
-  mv x8, t2
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
   mv x10, x8
   ret
