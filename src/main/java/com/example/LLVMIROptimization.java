@@ -948,13 +948,9 @@ public class LLVMIROptimization {
     }
 
     public boolean simplifySingleInstructionBlocks(LLVMValueRef func) {
-        System.out.println(LLVM.LLVMGetValueName(func).getString());
         Set<LLVMBasicBlockRef> toRemove = new HashSet<>();
         List<LLVMBasicBlockRef> candidateBlocks = new ArrayList<>();
-        for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(
-                function)) {
-            for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(
-                    function); block != null; block = LLVMGetNextBasicBlock(block)) {
+        for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func); block != null; block = LLVMGetNextBasicBlock(block)) {
                 boolean onlyTerminator = true;
                 if (LLVMGetInstructionOpcode(LLVMGetFirstInstruction(block)) != LLVMBr
                         || LLVM.LLVMGetNumOperands(LLVMGetFirstInstruction(block)) != 1)
@@ -967,12 +963,10 @@ public class LLVMIROptimization {
                         break;
                     }
                 }
-                if (onlyTerminator && LLVMGetFirstInstruction(block) != null && !LLVMBasicBlockAsValue(block)
-                        .equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(function)))) {
+                if (onlyTerminator && LLVMGetFirstInstruction(block) != null && !LLVMBasicBlockAsValue(block).equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(func)))) {
                     candidateBlocks.add(block);
                 }
             }
-        }
         for (LLVMBasicBlockRef candidate : candidateBlocks) {
             // System.out.println(LLVMGetBasicBlockName(candidate).getString());
             LLVMValueRef terminator = LLVMGetFirstInstruction(candidate);
