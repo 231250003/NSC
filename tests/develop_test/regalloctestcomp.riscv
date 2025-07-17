@@ -15,9 +15,9 @@ a:
   .word 4
 .globl a
 
-b:
+bbbbb:
   .word 5
-.globl b
+.globl bbbbb
 
 c:
   .word 6
@@ -118,13 +118,13 @@ main_mainEntry:
   mv x8, t1
   la t2, a
   sw x8, 0(t2)
-  la t0, b
+  la t0, bbbbb
   lw t0, 0(t0)
   mv x8, t0
   li t0, 5
   add t1, x8, t0
   mv x8, t1
-  la t2, b
+  la t2, bbbbb
   sw x8, 0(t2)
   la t0, c
   lw t0, 0(t0)
@@ -267,7 +267,7 @@ main_mainEntry:
   mv x9, t0
   add t1, x8, x9
   mv x8, t1
-  la t0, b
+  la t0, bbbbb
   lw t0, 0(t0)
   mv x9, t0
   add t2, x8, x9

@@ -1,3 +1,4 @@
+int main() {
 int x = 1;
 int y = 2;
 int z = 3;
@@ -10,7 +11,7 @@ int f = 9;
 int g = 10;
 int h = 11;
 int i = 12;
-int j = 13;
+int jj = 13;
 int k = 14;
 int l = 15;
 int m = 16;
@@ -18,8 +19,6 @@ int n = 17;
 int o = 18;
 int p = 19;
 int q = 20;
-
-int main() {
     // Local variables
     int x1 = 1;
     int x2 = 2;
@@ -55,7 +54,7 @@ int main() {
     g = g + 10;
     h = h + 11;
     i = i + 12;
-    j = j + 13;
+    jj = jj + 13;
     k = k + 14;
     l = l + 15;
     m = m + 16;
@@ -87,5 +86,5 @@ int main() {
     x20 = x20 * 2;
 
     return x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20
-    + x + y + z + a + bbbbb + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q;
+    + x + y + z + a + bbbbb + c + d + e + f + g + h + i + jj + k + l + m + n + o + p + q;
 }

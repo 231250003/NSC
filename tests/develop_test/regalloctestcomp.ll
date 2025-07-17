@@ -5,7 +5,7 @@ source_filename = "my_module"
 @y = global i32 2
 @z = global i32 3
 @a = global i32 4
-@b = global i32 5
+@bbbbb = global i32 5
 @c = global i32 6
 @d = global i32 7
 @e = global i32 8
@@ -36,9 +36,9 @@ mainEntry:
   %load_lval5 = load i32, i32* @a, align 4
   %add6 = add i32 %load_lval5, 4
   store i32 %add6, i32* @a, align 4
-  %load_lval7 = load i32, i32* @b, align 4
+  %load_lval7 = load i32, i32* @bbbbb, align 4
   %add8 = add i32 %load_lval7, 5
-  store i32 %add8, i32* @b, align 4
+  store i32 %add8, i32* @bbbbb, align 4
   %load_lval9 = load i32, i32* @c, align 4
   %add10 = add i32 %load_lval9, 6
   store i32 %add10, i32* @c, align 4
@@ -92,7 +92,7 @@ mainEntry:
   %add122 = add i32 %add120, %load_lval121
   %load_lval123 = load i32, i32* @a, align 4
   %add124 = add i32 %add122, %load_lval123
-  %load_lval125 = load i32, i32* @b, align 4
+  %load_lval125 = load i32, i32* @bbbbb, align 4
   %add126 = add i32 %add124, %load_lval125
   %load_lval127 = load i32, i32* @c, align 4
   %add128 = add i32 %add126, %load_lval127
