@@ -2,7 +2,7 @@ int x = 1;
 int y = 2;
 int z = 3;
 int a = 4;
-int b = 5;
+int bbbbb = 5;
 int c = 6;
 int d = 7;
 int e = 8;
@@ -47,7 +47,7 @@ int main() {
     y = y + 2;
     z = z + 3;
     a = a + 4;
-    b = b + 5;
+    bbbbb = bbbbb + 5;
     c = c + 6;
     d = d + 7;
     e = e + 8;
@@ -87,5 +87,5 @@ int main() {
     x20 = x20 * 2;
 
     return x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20
-    + x + y + z + a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q;
+    + x + y + z + a + bbbbb + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q;
 }
