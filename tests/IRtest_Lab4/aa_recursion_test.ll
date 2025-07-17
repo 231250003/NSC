@@ -12,12 +12,7 @@ gEntry:
 
 define i32 @f(i32 %x) {
 fEntry:
-  %param0_addr = alloca i32, align 4
-  store i32 %x, i32* %param0_addr, align 4
-  %f = alloca i32, align 4
-  store i32 10, i32* %f, align 4
-  %load_lval = load i32, i32* %f, align 4
-  ret i32 %load_lval
+  ret i32 10
 }
 
 define void @x() {
