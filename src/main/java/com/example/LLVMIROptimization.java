@@ -965,7 +965,7 @@ public class LLVMIROptimization {
                     candidateBlocks.add(block);
                 }
         }
-        if(!candidateBlocks.isEmpty()&&LLVM.LLVMGetValueName(func).getString().equals("fib")) System.out.println("cds");
+        if(LLVM.LLVMGetValueName(func).getString().equals("fib")) System.out.println("cds");
         for (LLVMBasicBlockRef candidate : candidateBlocks) {
             // System.out.println(LLVMGetBasicBlockName(candidate).getString());
             LLVMValueRef terminator = LLVMGetFirstInstruction(candidate);
