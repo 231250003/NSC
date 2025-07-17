@@ -31,8 +31,6 @@ define i32 @g(i32 %x, i32 %y, i32 %z) {
 gEntry:
   %param0_addr = alloca i32, align 4
   store i32 %x, i32* %param0_addr, align 4
-  %param1_addr = alloca i32, align 4
-  store i32 %y, i32* %param1_addr, align 4
   %param2_addr = alloca i32, align 4
   store i32 %z, i32* %param2_addr, align 4
   %load_lval = load i32, i32* %param0_addr, align 4
@@ -43,11 +41,8 @@ gEntry:
 
 define i32 @main() {
 mainEntry:
-  %t = alloca i32, align 4
-  store i32 100, i32* %t, align 4
   %x = alloca i32, align 4
-  %load_lval = load i32, i32* %t, align 4
-  %g = call i32 @g(i32 2, i32 4, i32 %load_lval)
+  %g = call i32 @g(i32 2, i32 4, i32 100)
   store i32 %g, i32* %x, align 4
   %load_lval1 = load i32, i32* %x, align 4
   ret i32 %load_lval1
