@@ -252,6 +252,8 @@ public class GraphColoringRegisterAllocator implements RegisterAllocator {
                 for (int i = 0; i < numSuccessors; i++) {
                     LLVMBasicBlockRef succ = LLVM.LLVMGetSuccessor(LLVM.LLVMGetLastInstruction(bb), i);
                     String succName = LLVM.LLVMGetBasicBlockName(succ).getString();
+                    System.out.println(LLVMGetValueName(func));
+                    System.out.println(succName);
                     out.addAll(live_variable_block_in.get(succName));
                 }
                 if (!out.equals(live_variable_block_out.get(LLVM.LLVMGetBasicBlockName(bb).getString()))) {

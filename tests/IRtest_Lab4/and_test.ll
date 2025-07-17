@@ -31,8 +31,6 @@ if.else:                                          ; preds = %fibEntry
 
 define i32 @g(i32 %t, i32 %y) {
 gEntry:
-  %param0_addr = alloca i32, align 4
-  store i32 %t, i32* %param0_addr, align 4
   %param1_addr = alloca i32, align 4
   store i32 %y, i32* %param1_addr, align 4
   %load_lval = load i32, i32* %param1_addr, align 4
@@ -54,8 +52,6 @@ mainEntry:
   %fib = call i32 @fib(i32 7)
   store i32 %fib, i32* @z, align 4
   store i32 4, i32* @z, align 4
-  %p = alloca i32, align 4
-  store i32 5, i32* %p, align 4
   br label %while.cond3
 
 cur:                                              ; preds = %cur1, %fibEntry
