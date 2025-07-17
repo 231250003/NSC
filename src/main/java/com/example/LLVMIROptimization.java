@@ -942,6 +942,7 @@ public class LLVMIROptimization {
         }
         cleanUnreachableBlocks(func);
         buildgraph(func);
+        System.out.println("crzzzzzzz");
         if (IRGenerationVisitor.while_stmt_count >= 0) {
             while (simplifySingleInstructionBlocks(func));
         }
@@ -1062,6 +1063,5 @@ public class LLVMIROptimization {
             }
             block = next;
         }
-        System.out.println("crzzzzzzzzzzz");
     }
 }
