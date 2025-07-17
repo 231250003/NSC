@@ -71,7 +71,7 @@ public class Main {
                 flag0=optimization.pointer_must_optimize(func);
 //                flag1 = optimization.constprop(func);
 //                flag2 = optimization.elem_unused(func);
-//                flag3 = optimization.elem_dead_code(func);
+                flag3 = optimization.elem_dead_code(func);
             }
         }
         BytePointer error = new BytePointer((Pointer) null);
