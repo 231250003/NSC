@@ -1,8 +1,6 @@
-include Makefile.git
-
-LLVM_JAR = $(shell echo `find /usr/local/lib -name "llvm-*.jar"` | sed  "s/\s\+/:/g")
-JAVACPP_JAR = $(shell echo `find /usr/local/lib -name "javacpp-*.jar"` | sed  "s/\s\+/:/g")
-ANTLR_PATH = $(shell find /usr/local/lib -name "antlr-*-complete.jar")
+LLVM_JAR = $(shell echo `find utils -name "llvm-*.jar"` | sed  "s/\s\+/:/g")
+JAVACPP_JAR = $(shell echo `find utils -name "javacpp-*.jar"` | sed  "s/\s\+/:/g")
+ANTLR_PATH = $(shell find utils -name "antlr-*-complete.jar")
 
 export CLASSPATH=$(ANTLR_PATH):$(LLVM_JAR):$(JAVACPP_JAR)
 
@@ -14,23 +12,18 @@ JAVA = java
 
 PFILE = $(shell find . -name "SysYParser.g4")
 LFILE = $(shell find . -name "SysYLexer.g4")
-JAVAFILE = $(shell find ./src/main/java -name "*.java")
+JAVAFILE = $(shell find ./src -name "*.java")
 
 compile: antlr
-	$(call git_commit,"make")
 	mkdir -p classes
 	$(JAVAC) -classpath $(CLASSPATH) $(JAVAFILE) -d classes
 
 run: compile
-	java -classpath ./classes:$(CLASSPATH) com.example.Main $(SRCFILE) $(OUTFILE)
+	java -classpath ./classes:$(CLASSPATH) Main $(SRCFILE) $(OUTFILE)
 
 antlr: $(LFILE) $(PFILE)
 	$(ANTLR) $(PFILE) $(LFILE)
 
-test: compile
-	$(call git_commit, "test")
-	if [ -e nohup.out ]; then rm nohup.out; fi
-	nohup java -classpath ./classes:$(CLASSPATH) com.example.Main ./tests/test1.sysy ./tests/test1.ll &
 
 clean:
 	rm -f src/*.tokens

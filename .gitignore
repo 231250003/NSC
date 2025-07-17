@@ -4,23 +4,19 @@
 # 取消忽略 .g4 文件（必须先 unignore 父路径）
 !/src/
 !/src/*.g4
-
+!/src/*.java
 # 取消忽略你指定的 Java 文件（必须层层 unignore）
-!/src/main/
-!/src/main/java/
-!/src/main/java/com/
-!/src/main/java/com/example/
-!/src/main/java/com/example/*.java
+
 
 # 再次忽略 ANTLR 生成的文件（通常不在你指定的路径里）
 # 例如如果 ANTLR 生成在 /src/main/java/com/example/
 # 就需要单独再忽略一遍它们：
-/src/**/Lexer.java
-/src/**/Parser.java
-/src/**/ParserBaseListener.java
-/src/**/ParserBaseVisitor.java
-/src/**/ParserListener.java
-/src/**/ParserVisitor.java
+/src/Lexer.java
+/src/Parser.java
+/src/ParserBaseListener.java
+/src/ParserBaseVisitor.java
+/src/ParserListener.java
+/src/ParserVisitor.java
 
 # 忽略构建产物
 /classes
