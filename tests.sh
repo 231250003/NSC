@@ -51,6 +51,7 @@ for sysy_file in "${FILE_LIST[@]}"; do
     echo "C Return value: $c_return_value"
 
     # Step 4: 用 make run 生成 .ll 文件
+    #mvn -q compile exec:java -Dexec.args="$sysy_file $ll_file"
     make -s run SRCFILE="$sysy_file" OUTFILE="$ll_file"
     if [ $? -ne 0 ]; then
         echo "IR generation failed for $exe_file"
