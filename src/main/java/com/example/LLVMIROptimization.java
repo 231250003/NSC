@@ -942,7 +942,7 @@ public class LLVMIROptimization {
         }
         cleanUnreachableBlocks(func);
         buildgraph(func);
-        //while (simplifySingleInstructionBlocks(func));
+        while (simplifySingleInstructionBlocks(func));
         while (remove_redundant_block(func)) ;
         return ret;
     }
@@ -952,21 +952,20 @@ public class LLVMIROptimization {
         List<LLVMBasicBlockRef> candidateBlocks = new ArrayList<>();
         for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func); block != null; block = LLVMGetNextBasicBlock(block)) {
                 boolean onlyTerminator = true;
-                if (LLVMGetInstructionOpcode(LLVMGetFirstInstruction(block)) != LLVMBr
-                        || LLVM.LLVMGetNumOperands(LLVMGetFirstInstruction(block)) != 1)
+                if (LLVMGetInstructionOpcode(LLVMGetFirstInstruction(block)) != LLVMBr || LLVM.LLVMGetNumOperands(LLVMGetFirstInstruction(block)) != 1)
                     onlyTerminator = false;
-                for (LLVMValueRef inst = LLVMGetFirstInstruction(block); inst != null; inst = LLVMGetNextInstruction(
-                        inst)) {
+                for (LLVMValueRef inst = LLVMGetFirstInstruction(block); inst != null; inst = LLVMGetNextInstruction(inst)) {
                     int opcode = LLVMGetInstructionOpcode(inst);
                     if (opcode != LLVMBr && opcode != LLVMRet) {
                         onlyTerminator = false;
                         break;
                     }
                 }
-                if (onlyTerminator && LLVMGetFirstInstruction(block) != null && !LLVMBasicBlockAsValue(block).equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(func)))) {
+                if (onlyTerminator && LLVMGetFirstInstruction(block) != null && (!LLVMBasicBlockAsValue(block).equals(LLVMBasicBlockAsValue(LLVMGetEntryBasicBlock(func))))) {
                     candidateBlocks.add(block);
                 }
-            }
+        }
+        if(!candidateBlocks.isEmpty()&&LLVM.LLVMGetValueName(func).getString().equals("fib")) System.out.println("cds");
         for (LLVMBasicBlockRef candidate : candidateBlocks) {
             // System.out.println(LLVMGetBasicBlockName(candidate).getString());
             LLVMValueRef terminator = LLVMGetFirstInstruction(candidate);
