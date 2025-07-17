@@ -12,6 +12,9 @@
 !/src/main/java/com/example/
 !/src/main/java/com/example/*.java
 
+!/src/test/
+!/src/test/java/
+!/src/test/java/*.java
 # 再次忽略 ANTLR 生成的文件（通常不在你指定的路径里）
 # 例如如果 ANTLR 生成在 /src/main/java/com/example/
 # 就需要单独再忽略一遍它们：
@@ -26,6 +29,8 @@
 /classes
 /target
 /out
+/Makefile
+/Makefile.git
 
 # IDE/系统文件
 .DS_Store
