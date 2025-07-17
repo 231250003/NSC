@@ -66,11 +66,11 @@ public class Main {
         }
 
         for (LLVMValueRef func = LLVM.LLVMGetFirstFunction(module); func != null && !func.isNull(); func = LLVM.LLVMGetNextFunction(func)) {
-            boolean flag0=true,flag1 = false, flag2=true,flag3 = false;
+            boolean flag0=true,flag1 = true, flag2=flag0,flag3 = false;
             while (flag0||flag1 || flag2||flag3 ) {
                 flag0=optimization.pointer_must_optimize(func);
-                //flag1 = optimization.constprop(func);
-                flag2 = optimization.elem_unused(func);
+                flag1 = optimization.constprop(func);
+                //flag2 = optimization.elem_unused(func);
                 flag3 = optimization.elem_dead_code(func);
             }
         }
