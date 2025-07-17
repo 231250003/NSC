@@ -948,6 +948,7 @@ public class LLVMIROptimization {
     }
 
     public boolean simplifySingleInstructionBlocks(LLVMValueRef func) {
+        System.out.println(LLVM.LLVMGetValueName(func).getString());
         Set<LLVMBasicBlockRef> toRemove = new HashSet<>();
         List<LLVMBasicBlockRef> candidateBlocks = new ArrayList<>();
         for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(
@@ -1010,7 +1011,6 @@ public class LLVMIROptimization {
             }
             toRemove.add(candidate);
         }
-        LLVMDumpModule(module);
         // System.out.println("-----------end of change");
         boolean changed = false;
         for (LLVMBasicBlockRef bb : toRemove) {
