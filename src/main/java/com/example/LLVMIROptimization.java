@@ -1062,5 +1062,6 @@ public class LLVMIROptimization {
             }
             block = next;
         }
+        System.out.println("crzzzzzzzzzzz");
     }
 }
