@@ -942,10 +942,7 @@ public class LLVMIROptimization {
         }
         cleanUnreachableBlocks(func);
         buildgraph(func);
-        if (IRGenerationVisitor.while_stmt_count >= 0) {
-            while (simplifySingleInstructionBlocks(func));
-        }
-        System.out.println("crzzzzzzz");
+        while (simplifySingleInstructionBlocks(func));
         while (remove_redundant_block(func)) ;
         return ret;
     }
@@ -1013,7 +1010,7 @@ public class LLVMIROptimization {
             }
             toRemove.add(candidate);
         }
-        // LLVMDumpModule(module);
+        LLVMDumpModule(module);
         // System.out.println("-----------end of change");
         boolean changed = false;
         for (LLVMBasicBlockRef bb : toRemove) {

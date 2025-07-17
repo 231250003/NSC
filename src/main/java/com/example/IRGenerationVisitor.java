@@ -14,8 +14,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
     private final LLVMBuilderRef builder;
     private static final LLVMTypeRef i32Type = LLVMInt32Type();
     private static final   LLVMValueRef zero = LLVMConstInt(i32Type, 0, /* signExtend */ 0);
-    public static int while_stmt_count=0;
-    public static int block_count=0;
     Boolean pointer_need_load=false;
     private SymbolTable symbolTable=new SymbolTable();
     public IRGenerationVisitor(LLVMModuleRef module, LLVMBuilderRef builder) {
@@ -29,7 +27,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
          return null;
     }
     public Void visit_block(SysYParser.BlockContext ctx,LLVMBasicBlockRef condblock,LLVMBasicBlockRef mergeblock) {
-        block_count++;
         ParseTree parent = ctx.getParent();
         if ((parent instanceof SysYParser.StmtContext)) {
             SysYParser.StmtContext stmtCtx = (SysYParser.StmtContext) parent;
@@ -61,7 +58,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         return null;
     }
     public Void visit_block(SysYParser.BlockContext ctx) {
-        block_count++;
         symbolTable.enterScope();
         for(int i=0;i<ctx.blockItem().size();i++){
             visit(ctx.blockItem(i));
@@ -78,7 +74,6 @@ public class IRGenerationVisitor extends   SysYParserBaseVisitor<LLVMValueRef> {
         return null;
     }
     public Void visit_block(SysYParser.BlockContext ctx, List<Symbol> symbols) {
-        block_count++;
         symbolTable.enterScope();
         if(symbols!=null){
             LLVMValueRef function=symbolTable.get_cur_scope_func();
