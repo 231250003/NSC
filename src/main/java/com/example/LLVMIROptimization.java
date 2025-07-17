@@ -942,7 +942,7 @@ public class LLVMIROptimization {
         }
         cleanUnreachableBlocks(func);
         buildgraph(func);
-        //while (simplifySingleInstructionBlocks(func));
+        while (simplifySingleInstructionBlocks(func));
         while (remove_redundant_block(func)) ;
         return ret;
     }
@@ -965,39 +965,34 @@ public class LLVMIROptimization {
                     candidateBlocks.add(block);
                 }
         }
-        if(LLVM.LLVMGetValueName(func).getString().equals("fib")) System.out.println("cds");
         for (LLVMBasicBlockRef candidate : candidateBlocks) {
             // System.out.println(LLVMGetBasicBlockName(candidate).getString());
             LLVMValueRef terminator = LLVMGetFirstInstruction(candidate);
             LLVMValueRef jmp_block = LLVM.LLVMGetOperand(terminator, 0);
-            for (LLVMValueRef function = LLVMGetFirstFunction(module); function != null; function = LLVMGetNextFunction(
-                    function)) {
-                for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(
-                        function); block != null; block = LLVMGetNextBasicBlock(block)) {
-                    for (LLVMValueRef term = LLVMGetFirstInstruction(
-                            block); term != null; term = LLVMGetNextInstruction(term)) {
-                        if (LLVMGetInstructionOpcode(term) != LLVMBr)
-                            continue;
-                        int numOps = LLVMGetNumOperands(term);
-                        if (numOps == 1) {
-                            // System.out.println((LLVMGetBasicBlockName(candidate).getString()));
-                            // System.out.println((LLVMGetValueName(LLVM.LLVMGetOperand(term,
-                            // 0)).getString()));
-                            // System.out.println("-----------");
-                            if (LLVMGetBasicBlockName(candidate).getString()
-                                    .equals(LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString())) {
-                                LLVMSetOperand(term, 0, jmp_block);
-                            }
-                        } else if (numOps == 3) {
-                            LLVMValueRef op1 = LLVMGetOperand(term, 1);
-                            LLVMValueRef op2 = LLVMGetOperand(term, 2);
-                            if (LLVMGetBasicBlockName(candidate).getString()
-                                    .equals(LLVMGetValueName(op1).getString())) {
-                                LLVMSetOperand(term, 1, jmp_block);
-                            } else if (LLVMGetBasicBlockName(candidate).getString()
-                                    .equals(LLVMGetValueName(op2).getString())) {
-                                LLVMSetOperand(term, 2, jmp_block);
-                            }
+            for (LLVMBasicBlockRef block = LLVMGetFirstBasicBlock(func); block != null; block = LLVMGetNextBasicBlock(block)) {
+                for (LLVMValueRef term = LLVMGetFirstInstruction(
+                        block); term != null; term = LLVMGetNextInstruction(term)) {
+                    if (LLVMGetInstructionOpcode(term) != LLVMBr)
+                        continue;
+                    int numOps = LLVMGetNumOperands(term);
+                    if (numOps == 1) {
+                        // System.out.println((LLVMGetBasicBlockName(candidate).getString()));
+                        // System.out.println((LLVMGetValueName(LLVM.LLVMGetOperand(term,
+                        // 0)).getString()));
+                        // System.out.println("-----------");
+                        if (LLVMGetBasicBlockName(candidate).getString()
+                                .equals(LLVMGetValueName(LLVM.LLVMGetOperand(term, 0)).getString())) {
+                            LLVMSetOperand(term, 0, jmp_block);
+                        }
+                    } else if (numOps == 3) {
+                        LLVMValueRef op1 = LLVMGetOperand(term, 1);
+                        LLVMValueRef op2 = LLVMGetOperand(term, 2);
+                        if (LLVMGetBasicBlockName(candidate).getString()
+                                .equals(LLVMGetValueName(op1).getString())) {
+                            LLVMSetOperand(term, 1, jmp_block);
+                        } else if (LLVMGetBasicBlockName(candidate).getString()
+                                .equals(LLVMGetValueName(op2).getString())) {
+                            LLVMSetOperand(term, 2, jmp_block);
                         }
                     }
                 }
