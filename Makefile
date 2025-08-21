@@ -1,6 +1,6 @@
-LLVM_JAR = $(shell echo `find utils -name "llvm-*.jar"` | sed  "s/\s\+/:/g")
-JAVACPP_JAR = $(shell echo `find utils -name "javacpp-*.jar"` | sed  "s/\s\+/:/g")
-ANTLR_PATH = $(shell find utils -name "antlr-*-complete.jar")
+LLVM_JAR = $(shell echo `find compiler/utils -name "llvm-*.jar"` | sed  "s/\s\+/:/g")
+JAVACPP_JAR = $(shell echo `find compiler/utils -name "javacpp-*.jar"` | sed  "s/\s\+/:/g")
+ANTLR_PATH = $(shell find compiler/utils -name "antlr-*-complete.jar")
 
 export CLASSPATH=$(ANTLR_PATH):$(LLVM_JAR):$(JAVACPP_JAR)
 
@@ -12,18 +12,20 @@ JAVA = java
 
 PFILE = $(shell find . -name "SysYParser.g4")
 LFILE = $(shell find . -name "SysYLexer.g4")
-JAVAFILE = $(shell find ./src -name "*.java")
+JAVAFILE = $(shell find ./compiler/src -name "*.java")
 
-compile: antlr
+compile_: antlr
 	mkdir -p classes
 	$(JAVAC) -classpath $(CLASSPATH) $(JAVAFILE) -d classes
 
-run: compile
-	java -classpath ./classes:$(CLASSPATH) Main $(SRCFILE) $(OUTFILE)
+compile: compile_
+	java -classpath ./classes:$(CLASSPATH) Main $(SRCFILE) $(ARGS)
 
 antlr: $(LFILE) $(PFILE)
 	$(ANTLR) $(PFILE) $(LFILE)
 
+run_os:
+	g++ os/syscall.cpp os/console.cpp os/process.cpp os/os.cpp os/main.cpp -o nos
 
 clean:
 	rm -f src/*.tokens

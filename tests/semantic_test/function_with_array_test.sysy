@@ -1,0 +1,29 @@
+int z=3;
+int print(){
+    return z+3;
+}
+int print=4;
+int main(int argc,int argv[200]){
+    int x=1;
+    int t=print();
+    int arg[2003];
+    int argv;
+    main(2+5-x+arg[3],argv)
+    main(print(),arg);
+}
+int z(){
+return -1;
+}
+int t(int x,int y,int x[2003],int x,int y,int z){
+    t(2,3);
+    //int z[2003][12];
+    z[2003]=z[2003][12];
+    z=x+z;
+    z()=z();
+    int p[2-3];
+    const int t11=p[z()];
+    int z[2003][12];
+    t(2,3,z[12]);
+    t(2,3,1);
+    while(z) main(print(),z[1]);
+}

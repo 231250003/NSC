@@ -1,0 +1,65 @@
+const int a = 5;
+const int b[2] = {1, 2};
+const int c[2][2] = {{1, 2}, {3, 4}};
+const int d[3][3][3] = {{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
+                        {{10, 11, 12}, {13, 14, 15}, {16, 17, 18}},
+                        {{19, 20, 21}, {22, 23, 24}, {25, 26, 27}}};
+
+int e;
+int f = 10;
+int g[3];
+int h[2] = {1, 2};
+int i[2][2] = {{1, 2}, {3, 4}};
+
+int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+int fibonacci(int n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+void printArray(int arr[][3]) {
+  while(1){
+        while(j==2) {
+            if (arr[i][j] % 2 == 0) {
+                continue;
+            }
+            if (arr[i][j] > 20) {
+                break;
+            }
+        }
+    }
+    return;
+}
+
+int main() {
+    int x = 10;
+    int y = 20;
+    int z = factorial(x);
+    int fib = fibonacci(7);
+
+    if (z > 100) {
+        z = z / 2;
+    } else if (z > 50) {
+        z = z - 10;
+    } else {
+        z = z + 5;
+    }
+
+    while (x > 0) {
+        x = x - 1;
+        if (x == 5) {
+            continue;
+        }
+        if (x == 2) {
+            break;
+        }
+    }
+
+    int arr[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    printArray(arr);
+    return 0;
+}

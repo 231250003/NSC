@@ -1,0 +1,3074 @@
+.data
+BOARD_WIDTH:
+  .word 10
+.globl BOARD_WIDTH
+
+BOARD_HEIGHT:
+  .word 20
+.globl BOARD_HEIGHT
+
+TETRIS_TYPES:
+  .word 7
+.globl TETRIS_TYPES
+
+board:
+  .word 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+.globl board
+
+score:
+  .word 0
+.globl score
+
+level:
+  .word 0
+.globl level
+
+lines_cleared:
+  .word 0
+.globl lines_cleared
+
+game_over:
+  .word 0
+.globl game_over
+
+current_piece:
+  .word 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+.globl current_piece
+
+current_x:
+  .word 0
+.globl current_x
+
+current_y:
+  .word 0
+.globl current_y
+
+current_type:
+  .word 0
+.globl current_type
+
+current_rotation:
+  .word 0
+.globl current_rotation
+
+prev_board:
+  .word 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+.globl prev_board
+
+prev_piece:
+  .word 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+.globl prev_piece
+
+next_piece_type:
+  .word 0
+.globl next_piece_type
+
+pieces:
+  .word 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0
+.globl pieces
+
+seed:
+  .word 1
+.globl seed
+
+
+.text
+.globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, init_game
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, game_loop
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, show_game_over
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  li t0, 0
+  mv x10, t0
+  addi sp, sp, 2044
+  jal x1, exit
+delay_ms:
+  mv x8, x10
+  j delay_ms_delay_msEntry
+delay_ms_delay_msEntry:
+  mv x8, x8
+  mv x8, x8
+  li t1, 1000
+  mul t2, x8, t1
+  mv x8, t2
+  sw x1, 0(sp)
+  mv x10, x8
+  addi sp, sp, 4
+  jal x1, usleep_
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  ret
+rand_:
+  j rand__rand_Entry
+rand__rand_Entry:
+  sw x8, 0(sp)
+  sw x1, 4(sp)
+  addi sp, sp, 8
+  jal x1, gettimeofday_
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x8, 0(sp)
+  mv x8, x10
+  mv x8, x8
+  la t0, seed
+  lw t0, 0(t0)
+  mv x9, t0
+  li t0, 48271
+  mul t1, x9, t0
+  mv x9, t1
+  mv x8, x8
+  add t2, x9, x8
+  mv x8, t2
+  la t0, seed
+  sw x8, 0(t0)
+  la t0, seed
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 0
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 0
+  sw t0, 1600(sp)
+  bnez x8, rand__if.then
+  j rand__merge
+rand__merge:
+  la t0, seed
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 32768
+  rem t2, x8, t1
+  mv x8, t2
+  mv x10, x8
+  ret
+rand__if.then:
+  la t0, seed
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 0
+  sub t1, t0, x8
+  mv x8, t1
+  la t2, seed
+  sw x8, 0(t2)
+  li t0, 2
+  sw t0, 1600(sp)
+  j rand__merge
+clear_board_area:
+  j clear_board_area_clear_board_areaEntry
+clear_board_area_clear_board_areaEntry:
+  li t1, 0
+  mv x11, t1
+  li t2, 0
+  sw t2, 1600(sp)
+  j clear_board_area_for.cond
+clear_board_area_cur:
+  ret
+clear_board_area_for.stmt:
+  mv x8, x11
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  sw x11, 0(sp)
+  sw x1, 4(sp)
+  mv x11, x8
+  li x10, 1
+  addi sp, sp, 8
+  jal x1, set_cursor
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x11, 0(sp)
+  li t2, 0
+  mv x9, t2
+  li t0, 2
+  sw t0, 1600(sp)
+  j clear_board_area_for.cond5
+clear_board_area_for.cond:
+  mv x9, x11
+  la t0, BOARD_HEIGHT
+  lw t0, 0(t0)
+  mv x8, t0
+  slt t1, x9, x8
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 3
+  sw t2, 1600(sp)
+  bnez x8, clear_board_area_for.stmt
+  j clear_board_area_cur
+clear_board_area_cur3:
+  mv x8, x11
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  li t2, 4
+  sw t2, 1600(sp)
+  j clear_board_area_for.cond
+clear_board_area_for.stmt4:
+  sw x11, 0(sp)
+  sw x9, 4(sp)
+  sw x1, 8(sp)
+  li x10, 0
+  li x11, 32
+  addi sp, sp, 12
+  jal x1, print
+  addi sp, sp, -12
+  lw x1, 8(sp)
+  lw x11, 0(sp)
+  lw x9, 4(sp)
+  mv x8, x9
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x9, x8
+  li t2, 5
+  sw t2, 1600(sp)
+  j clear_board_area_for.cond5
+clear_board_area_for.cond5:
+  mv x12, x9
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x8, t0
+  slt t0, x12, x8
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 6
+  sw t1, 1600(sp)
+  bnez x8, clear_board_area_for.stmt4
+  j clear_board_area_cur3
+is_collision:
+  mv x9, x10
+  mv x8, x11
+  j is_collision_is_collisionEntry
+is_collision_is_collisionEntry:
+  mv x14, x9
+  mv x15, x8
+  mv x18, x12
+  li t2, 64
+  mv x13, t2
+  li t0, 64
+  mv x12, t0
+  li t1, 64
+  mv x19, t1
+  li t2, 64
+  mv x9, t2
+  li t0, 0
+  mv x13, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  j is_collision_while.cond
+is_collision_cur:
+  li t2, 0
+  mv x10, t2
+  ret
+is_collision_while.stmt:
+  li t0, 0
+  mv x12, t0
+  li t1, 2
+  sw t1, 1600(sp)
+  j is_collision_while.cond3
+is_collision_while.cond:
+  mv x8, x13
+  li t2, 4
+  slt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 3
+  sw t1, 1600(sp)
+  bnez x8, is_collision_while.stmt
+  j is_collision_cur
+is_collision_cur1:
+  mv x8, x13
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x13, x8
+  li t1, 4
+  sw t1, 1600(sp)
+  j is_collision_while.cond
+is_collision_while.stmt2:
+  la t0, current_type
+  lw t0, 0(t0)
+  mv x9, t0
+  mv x8, x18
+  mv x19, x13
+  mv x20, x12
+  la t2, pieces
+  sw t2, 0(sp)
+  li t2, 0
+  li t0, 64
+  mul t0, x9, t0
+  add t2, t2, t0
+  li t1, 16
+  mul t1, x8, t1
+  add t2, t2, t1
+  li t0, 4
+  mul t0, x19, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x20, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 4(sp)
+  lw t2, 4(sp)
+  lw t2, 0(t2)
+  mv x8, t2
+  li t0, 1
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 5
+  sw t2, 1600(sp)
+  bnez x8, is_collision_if.then
+  j is_collision_merge
+is_collision_while.cond3:
+  mv x8, x12
+  li t0, 4
+  slt t1, x8, t0
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 6
+  sw t2, 1600(sp)
+  bnez x8, is_collision_while.stmt2
+  j is_collision_cur1
+is_collision_merge:
+  mv x8, x12
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x12, x8
+  li t2, 7
+  sw t2, 1600(sp)
+  j is_collision_while.cond3
+is_collision_if.then:
+  mv x8, x14
+  mv x9, x12
+  add t0, x8, x9
+  mv x8, t0
+  mv x19, x8
+  mv x8, x15
+  mv x9, x13
+  add t1, x8, x9
+  mv x8, t1
+  mv x9, x8
+  mv x8, x19
+  li t2, 0
+  slt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 8
+  sw t1, 1600(sp)
+  bnez x8, is_collision_or.merge
+  j is_collision_or.rhs
+is_collision_merge21:
+  mv x8, x9
+  li t2, 0
+  slt t0, x8, t2
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 9
+  sw t1, 1600(sp)
+  bnez x8, is_collision_and.rhs
+  j is_collision_and.merge
+is_collision_or.rhs:
+  mv x8, x19
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x16, t0
+  slt t2, x8, x16
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x16, t2
+  li t0, 10
+  sw t0, 1600(sp)
+  j is_collision_or.merge
+is_collision_or.merge:
+  li t0, -1
+  lw t1, 1600(sp)
+  xori t2, t1, 8
+  seqz t2, t2
+  mul t2, t2, t0
+  xori t1, t1, 10
+  seqz t1, t1
+  mul t1, t1, x16
+  add t2, t2, t1
+  mv x8, t2
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 11
+  sw t2, 1600(sp)
+  bnez x8, is_collision_or.merge32
+  j is_collision_or.rhs31
+is_collision_or.rhs31:
+  mv x11, x9
+  la t0, BOARD_HEIGHT
+  lw t0, 0(t0)
+  mv x8, t0
+  slt t0, x11, x8
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x11, t0
+  li t1, 12
+  sw t1, 1600(sp)
+  j is_collision_or.merge32
+is_collision_or.merge32:
+  li t0, -1
+  lw t1, 1600(sp)
+  xori t2, t1, 11
+  seqz t2, t2
+  mul t2, t2, t0
+  xori t1, t1, 12
+  seqz t1, t1
+  mul t1, t1, x11
+  add t2, t2, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 13
+  sw t0, 1600(sp)
+  bnez x8, is_collision_if.then40
+  j is_collision_merge21
+is_collision_if.then40:
+  li t1, 1
+  mv x10, t1
+  ret
+is_collision_and.rhs:
+  mv x8, x9
+  mv x9, x19
+  la t2, board
+  sw t2, 8(sp)
+  li t2, 0
+  li t1, 10
+  mul t1, x8, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x9, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 8(sp)
+  add t2, t2, t1
+  sw t2, 12(sp)
+  lw t0, 12(sp)
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 1
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x17, t2
+  li t0, 15
+  sw t0, 1600(sp)
+  j is_collision_and.merge
+is_collision_and.merge:
+  li t0, 0
+  lw t1, 1600(sp)
+  xori t2, t1, 9
+  seqz t2, t2
+  mul t2, t2, t0
+  xori t1, t1, 15
+  seqz t1, t1
+  mul t1, t1, x17
+  add t2, t2, t1
+  mv x8, t2
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 16
+  sw t2, 1600(sp)
+  bnez x8, is_collision_if.then55
+  j is_collision_merge
+is_collision_if.then55:
+  li t0, 1
+  mv x10, t0
+  ret
+spawn_new_piece:
+  j spawn_new_piece_spawn_new_pieceEntry
+spawn_new_piece_spawn_new_pieceEntry:
+  li t1, 64
+  mv x9, t1
+  li t2, 64
+  mv x8, t2
+  la t0, next_piece_type
+  lw t0, 0(t0)
+  mv x8, t0
+  la t0, current_type
+  sw x8, 0(t0)
+  sw x8, 0(sp)
+  sw x1, 4(sp)
+  addi sp, sp, 8
+  jal x1, rand_
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x8, 0(sp)
+  mv x8, x10
+  la t0, TETRIS_TYPES
+  lw t0, 0(t0)
+  mv x9, t0
+  rem t1, x8, x9
+  mv x8, t1
+  la t2, next_piece_type
+  sw x8, 0(t2)
+  li t0, 0
+  la t1, current_rotation
+  sw t0, 0(t1)
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x8, t0
+  li t2, 2
+  div t0, x8, t2
+  mv x8, t0
+  li t1, 2
+  sub t2, x8, t1
+  mv x8, t2
+  la t0, current_x
+  sw x8, 0(t0)
+  li t1, 0
+  la t2, current_y
+  sw t1, 0(t2)
+  li t0, 0
+  mv x9, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  j spawn_new_piece_while.cond
+spawn_new_piece_cur:
+  la t0, current_x
+  lw t0, 0(t0)
+  mv x9, t0
+  la t0, current_y
+  lw t0, 0(t0)
+  mv x8, t0
+  la t0, current_rotation
+  lw t0, 0(t0)
+  mv x11, t0
+  sw x1, 0(sp)
+  mv x10, x9
+  mv x12, x11
+  mv x11, x8
+  addi sp, sp, 4
+  jal x1, is_collision
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  ret
+spawn_new_piece_while.stmt:
+  li t2, 0
+  mv x8, t2
+  li t0, 2
+  sw t0, 1600(sp)
+  j spawn_new_piece_while.cond6
+spawn_new_piece_while.cond:
+  mv x8, x9
+  li t1, 4
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 3
+  sw t0, 1600(sp)
+  bnez x8, spawn_new_piece_while.stmt
+  j spawn_new_piece_cur
+spawn_new_piece_cur4:
+  mv x8, x9
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x9, x8
+  li t0, 4
+  sw t0, 1600(sp)
+  j spawn_new_piece_while.cond
+spawn_new_piece_while.stmt5:
+  mv x12, x9
+  mv x11, x8
+  la t1, current_piece
+  sw t1, 0(sp)
+  li t2, 0
+  li t1, 4
+  mul t1, x12, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x11, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 4(sp)
+  la t0, current_type
+  lw t0, 0(t0)
+  mv x12, t0
+  la t0, current_rotation
+  lw t0, 0(t0)
+  mv x11, t0
+  mv x14, x9
+  mv x13, x8
+  la t2, pieces
+  sw t2, 8(sp)
+  li t2, 0
+  li t1, 64
+  mul t1, x12, t1
+  add t2, t2, t1
+  li t0, 16
+  mul t0, x11, t0
+  add t2, t2, t0
+  li t1, 4
+  mul t1, x14, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x13, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 8(sp)
+  add t2, t2, t1
+  sw t2, 12(sp)
+  lw t2, 12(sp)
+  lw t2, 0(t2)
+  mv x11, t2
+  lw t0, 4(sp)
+  sw x11, 0(t0)
+  mv x8, x8
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x8, x8
+  li t0, 5
+  sw t0, 1600(sp)
+  j spawn_new_piece_while.cond6
+spawn_new_piece_while.cond6:
+  mv x11, x8
+  li t1, 4
+  slt t2, x11, t1
+  mv x11, t2
+  mv t0, x11
+  mv x11, t0
+  li t1, 0
+  xor t2, x11, t1
+  snez t2, t2
+  mv x11, t2
+  li t0, 6
+  sw t0, 1600(sp)
+  bnez x11, spawn_new_piece_while.stmt5
+  j spawn_new_piece_cur4
+init_game:
+  j init_game_init_gameEntry
+init_game_init_gameEntry:
+  li t1, 64
+  mv x12, t1
+  li t2, 64
+  mv x11, t2
+  li t0, 0
+  mv x12, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  j init_game_while.cond
+init_game_cur:
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, rand_
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, spawn_new_piece
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  ret
+init_game_while.stmt:
+  li t2, 0
+  mv x11, t2
+  li t0, 2
+  sw t0, 1600(sp)
+  j init_game_while.cond4
+init_game_while.cond:
+  mv x9, x12
+  la t0, BOARD_HEIGHT
+  lw t0, 0(t0)
+  mv x8, t0
+  slt t1, x9, x8
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 3
+  sw t2, 1600(sp)
+  bnez x8, init_game_while.stmt
+  j init_game_cur
+init_game_cur2:
+  mv x8, x12
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x12, x8
+  li t2, 4
+  sw t2, 1600(sp)
+  j init_game_while.cond
+init_game_while.stmt3:
+  mv x8, x12
+  mv x9, x11
+  la t0, board
+  sw t0, 0(sp)
+  li t2, 0
+  li t0, 10
+  mul t0, x8, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x9, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 4(sp)
+  li t1, 0
+  lw t2, 4(sp)
+  sw t1, 0(t2)
+  mv x8, x11
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  li t2, 5
+  sw t2, 1600(sp)
+  j init_game_while.cond4
+init_game_while.cond4:
+  mv x8, x11
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x9, t0
+  slt t0, x8, x9
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 6
+  sw t1, 1600(sp)
+  bnez x8, init_game_while.stmt3
+  j init_game_cur2
+place_piece:
+  j place_piece_place_pieceEntry
+place_piece_place_pieceEntry:
+  li t2, 64
+  mv x12, t2
+  li t0, 64
+  mv x11, t0
+  li t1, 64
+  mv x13, t1
+  li t2, 64
+  mv x8, t2
+  li t0, 0
+  mv x12, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  j place_piece_while.cond
+place_piece_cur:
+  ret
+place_piece_while.stmt:
+  li t2, 0
+  mv x11, t2
+  li t0, 2
+  sw t0, 1600(sp)
+  j place_piece_while.cond3
+place_piece_while.cond:
+  mv x8, x12
+  li t1, 4
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 3
+  sw t0, 1600(sp)
+  bnez x8, place_piece_while.stmt
+  j place_piece_cur
+place_piece_cur1:
+  mv x8, x12
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x12, x8
+  li t0, 4
+  sw t0, 1600(sp)
+  j place_piece_while.cond
+place_piece_while.stmt2:
+  mv x9, x12
+  mv x8, x11
+  la t1, current_piece
+  sw t1, 0(sp)
+  li t2, 0
+  li t1, 4
+  mul t1, x9, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x8, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 4(sp)
+  lw t2, 4(sp)
+  lw t2, 0(t2)
+  mv x8, t2
+  li t0, 1
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 5
+  sw t2, 1600(sp)
+  bnez x8, place_piece_if.then
+  j place_piece_merge
+place_piece_while.cond3:
+  mv x8, x11
+  li t0, 4
+  slt t1, x8, t0
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 6
+  sw t2, 1600(sp)
+  bnez x8, place_piece_while.stmt2
+  j place_piece_cur1
+place_piece_merge:
+  mv x8, x11
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  li t2, 7
+  sw t2, 1600(sp)
+  j place_piece_while.cond3
+place_piece_if.then:
+  la t0, current_x
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x9, x11
+  add t0, x8, x9
+  mv x8, t0
+  mv x13, x8
+  la t0, current_y
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x9, x12
+  add t1, x8, x9
+  mv x8, t1
+  mv x8, x8
+  mv x9, x8
+  li t2, 0
+  slt t0, x9, t2
+  seqz t0, t0
+  mv x9, t0
+  mv t1, x9
+  mv x9, t1
+  li t2, 0
+  xor t0, x9, t2
+  snez t0, t0
+  mv x9, t0
+  li t1, 8
+  sw t1, 1600(sp)
+  bnez x9, place_piece_if.then23
+  j place_piece_merge
+place_piece_if.then23:
+  mv x8, x8
+  mv x9, x13
+  la t2, board
+  sw t2, 8(sp)
+  li t2, 0
+  li t1, 10
+  mul t1, x8, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x9, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 8(sp)
+  add t2, t2, t1
+  sw t2, 12(sp)
+  li t0, 1
+  lw t1, 12(sp)
+  sw t0, 0(t1)
+  li t2, 9
+  sw t2, 1600(sp)
+  j place_piece_merge
+clear_lines:
+  j clear_lines_clear_linesEntry
+clear_lines_clear_linesEntry:
+  li t0, 64
+  mv x12, t0
+  li t1, 64
+  mv x11, t1
+  li t2, 64
+  mv x9, t2
+  li t0, 64
+  mv x14, t0
+  li t1, 64
+  mv x13, t1
+  li t2, 0
+  mv x13, t2
+  la t0, BOARD_HEIGHT
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 1
+  sub t1, x8, t0
+  mv x8, t1
+  mv x12, x8
+  li t2, 0
+  sw t2, 1600(sp)
+  j clear_lines_while.cond
+clear_lines_cur:
+  mv x8, x13
+  li t0, 0
+  sgt t1, x8, t0
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 1
+  sw t2, 1600(sp)
+  bnez x8, clear_lines_if.then71
+  j clear_lines_merge67
+clear_lines_while.stmt:
+  li t0, 1
+  mv x14, t0
+  li t1, 0
+  mv x11, t1
+  li t2, 2
+  sw t2, 1600(sp)
+  j clear_lines_while.cond4
+clear_lines_while.cond:
+  mv x8, x12
+  li t0, 0
+  slt t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 3
+  sw t2, 1600(sp)
+  bnez x8, clear_lines_while.stmt
+  j clear_lines_cur
+clear_lines_cur2:
+  mv x8, x14
+  li t0, 1
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 4
+  sw t2, 1600(sp)
+  bnez x8, clear_lines_if.then21
+  j clear_lines_if.else
+clear_lines_while.stmt3:
+  mv x8, x12
+  mv x9, x11
+  la t0, board
+  sw t0, 0(sp)
+  li t2, 0
+  li t0, 10
+  mul t0, x8, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x9, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 4(sp)
+  lw t1, 4(sp)
+  lw t1, 0(t1)
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 5
+  sw t1, 1600(sp)
+  bnez x8, clear_lines_if.then
+  j clear_lines_merge
+clear_lines_while.cond4:
+  mv x8, x11
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x9, t0
+  slt t2, x8, x9
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 6
+  sw t0, 1600(sp)
+  bnez x8, clear_lines_while.stmt3
+  j clear_lines_cur2
+clear_lines_merge:
+  mv x8, x11
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x11, x8
+  li t0, 7
+  sw t0, 1600(sp)
+  j clear_lines_while.cond4
+clear_lines_if.then:
+  li t1, 0
+  mv x14, t1
+  li t2, 8
+  sw t2, 1600(sp)
+  j clear_lines_cur2
+clear_lines_if.then21:
+  mv x8, x12
+  mv x9, x8
+  li t0, 9
+  sw t0, 1600(sp)
+  j clear_lines_while.cond26
+clear_lines_if.else:
+  mv x8, x12
+  li t1, 1
+  sub t2, x8, t1
+  mv x8, t2
+  mv x12, x8
+  li t0, 10
+  sw t0, 1600(sp)
+  j clear_lines_while.cond
+clear_lines_cur24:
+  li t1, 0
+  mv x11, t1
+  li t2, 11
+  sw t2, 1600(sp)
+  j clear_lines_while.cond53
+clear_lines_while.stmt25:
+  li t0, 0
+  mv x11, t0
+  li t1, 12
+  sw t1, 1600(sp)
+  j clear_lines_while.cond33
+clear_lines_while.cond26:
+  mv x8, x9
+  li t2, 0
+  sgt t0, x8, t2
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 13
+  sw t1, 1600(sp)
+  bnez x8, clear_lines_while.stmt25
+  j clear_lines_cur24
+clear_lines_cur31:
+  mv x8, x9
+  li t2, 1
+  sub t0, x8, t2
+  mv x8, t0
+  mv x9, x8
+  li t1, 14
+  sw t1, 1600(sp)
+  j clear_lines_while.cond26
+clear_lines_while.stmt32:
+  mv x14, x9
+  mv x8, x11
+  li t2, 0
+  li t1, 10
+  mul t1, x14, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x8, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 8(sp)
+  mv x8, x9
+  li t2, 1
+  sub t0, x8, t2
+  mv x14, t0
+  mv x8, x11
+  li t2, 0
+  li t0, 10
+  mul t0, x14, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 12(sp)
+  lw t1, 12(sp)
+  lw t1, 0(t1)
+  mv x8, t1
+  lw t2, 8(sp)
+  sw x8, 0(t2)
+  mv x8, x11
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  li t2, 15
+  sw t2, 1600(sp)
+  j clear_lines_while.cond33
+clear_lines_while.cond33:
+  mv x8, x11
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x14, t0
+  slt t0, x8, x14
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 16
+  sw t1, 1600(sp)
+  bnez x8, clear_lines_while.stmt32
+  j clear_lines_cur31
+clear_lines_cur51:
+  mv x8, x13
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x13, x8
+  li t1, 17
+  sw t1, 1600(sp)
+  j clear_lines_while.cond
+clear_lines_while.stmt52:
+  mv x8, x11
+  li t2, 0
+  li t0, 0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 16(sp)
+  li t2, 0
+  lw t0, 16(sp)
+  sw t2, 0(t0)
+  mv x8, x11
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x11, x8
+  li t0, 18
+  sw t0, 1600(sp)
+  j clear_lines_while.cond53
+clear_lines_while.cond53:
+  mv x8, x11
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x9, t0
+  slt t1, x8, x9
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 19
+  sw t2, 1600(sp)
+  bnez x8, clear_lines_while.stmt52
+  j clear_lines_cur51
+clear_lines_merge67:
+  ret
+clear_lines_if.then71:
+  la t0, lines_cleared
+  lw t0, 0(t0)
+  mv x9, t0
+  mv x8, x13
+  add t0, x9, x8
+  mv x8, t0
+  la t1, lines_cleared
+  sw x8, 0(t1)
+  la t0, score
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x9, x13
+  li t2, 100
+  mul t0, x9, t2
+  mv x11, t0
+  la t0, level
+  lw t0, 0(t0)
+  mv x9, t0
+  mul t1, x11, x9
+  mv x9, t1
+  add t2, x8, x9
+  mv x8, t2
+  la t0, score
+  sw x8, 0(t0)
+  la t0, lines_cleared
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 10
+  div t2, x8, t1
+  mv x8, t2
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  la t2, level
+  sw x8, 0(t2)
+  li t0, 21
+  sw t0, 1600(sp)
+  j clear_lines_merge67
+move_piece:
+  mv x9, x10
+  mv x8, x11
+  j move_piece_move_pieceEntry
+move_piece_move_pieceEntry:
+  mv x9, x9
+  mv x8, x8
+  li t1, 64
+  mv x13, t1
+  li t2, 64
+  mv x11, t2
+  la t0, current_x
+  lw t0, 0(t0)
+  mv x11, t0
+  mv x9, x9
+  add t0, x11, x9
+  mv x9, t0
+  mv x13, x9
+  la t0, current_y
+  lw t0, 0(t0)
+  mv x9, t0
+  mv x8, x8
+  add t1, x9, x8
+  mv x8, t1
+  mv x11, x8
+  mv x8, x13
+  mv x12, x11
+  la t0, current_rotation
+  lw t0, 0(t0)
+  mv x9, t0
+  sw x8, 0(sp)
+  sw x13, 4(sp)
+  sw x11, 8(sp)
+  sw x1, 12(sp)
+  mv x10, x8
+  mv x11, x12
+  mv x12, x9
+  addi sp, sp, 16
+  jal x1, is_collision
+  addi sp, sp, -16
+  lw x1, 12(sp)
+  lw x8, 0(sp)
+  lw x13, 4(sp)
+  lw x11, 8(sp)
+  mv x8, x10
+  li t2, 0
+  xor t0, x8, t2
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  bnez x8, move_piece_if.then
+  j move_piece_merge
+move_piece_merge:
+  li t2, 0
+  mv x10, t2
+  ret
+move_piece_if.then:
+  mv x8, x13
+  la t0, current_x
+  sw x8, 0(t0)
+  mv x8, x11
+  la t1, current_y
+  sw x8, 0(t1)
+  li t2, 1
+  mv x10, t2
+  ret
+rotate_piece:
+  j rotate_piece_rotate_pieceEntry
+rotate_piece_rotate_pieceEntry:
+  li t0, 64
+  mv x12, t0
+  la t0, current_rotation
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  li t0, 4
+  rem t1, x8, t0
+  mv x8, t1
+  mv x12, x8
+  la t0, current_x
+  lw t0, 0(t0)
+  mv x8, t0
+  la t0, current_y
+  lw t0, 0(t0)
+  mv x11, t0
+  mv x9, x12
+  sw x8, 0(sp)
+  sw x12, 4(sp)
+  sw x1, 8(sp)
+  mv x10, x8
+  mv x12, x9
+  addi sp, sp, 12
+  jal x1, is_collision
+  addi sp, sp, -12
+  lw x1, 8(sp)
+  lw x8, 0(sp)
+  lw x12, 4(sp)
+  mv x8, x10
+  li t2, 0
+  xor t0, x8, t2
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  bnez x8, rotate_piece_if.then
+  j rotate_piece_merge
+rotate_piece_merge:
+  ret
+rotate_piece_if.then:
+  mv x8, x12
+  la t2, current_rotation
+  sw x8, 0(t2)
+  li t0, 64
+  mv x12, t0
+  li t1, 64
+  mv x11, t1
+  li t2, 0
+  mv x12, t2
+  li t0, 2
+  sw t0, 1600(sp)
+  j rotate_piece_while.cond
+rotate_piece_while.stmt:
+  li t1, 0
+  mv x11, t1
+  li t2, 3
+  sw t2, 1600(sp)
+  j rotate_piece_while.cond11
+rotate_piece_while.cond:
+  mv x8, x12
+  li t0, 4
+  slt t1, x8, t0
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 4
+  sw t2, 1600(sp)
+  bnez x8, rotate_piece_while.stmt
+  j rotate_piece_merge
+rotate_piece_cur9:
+  mv x8, x12
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x12, x8
+  li t2, 5
+  sw t2, 1600(sp)
+  j rotate_piece_while.cond
+rotate_piece_while.stmt10:
+  mv x8, x12
+  mv x9, x11
+  la t0, current_piece
+  sw t0, 0(sp)
+  li t2, 0
+  li t0, 4
+  mul t0, x8, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x9, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 4(sp)
+  la t0, current_type
+  lw t0, 0(t0)
+  mv x13, t0
+  la t0, current_rotation
+  lw t0, 0(t0)
+  mv x14, t0
+  mv x9, x12
+  mv x8, x11
+  la t1, pieces
+  sw t1, 8(sp)
+  li t2, 0
+  li t0, 64
+  mul t0, x13, t0
+  add t2, t2, t0
+  li t1, 16
+  mul t1, x14, t1
+  add t2, t2, t1
+  li t0, 4
+  mul t0, x9, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 8(sp)
+  add t2, t2, t0
+  sw t2, 12(sp)
+  lw t1, 12(sp)
+  lw t1, 0(t1)
+  mv x8, t1
+  lw t2, 4(sp)
+  sw x8, 0(t2)
+  mv x8, x11
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  li t2, 6
+  sw t2, 1600(sp)
+  j rotate_piece_while.cond11
+rotate_piece_while.cond11:
+  mv x8, x11
+  li t0, 4
+  slt t1, x8, t0
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 7
+  sw t2, 1600(sp)
+  bnez x8, rotate_piece_while.stmt10
+  j rotate_piece_cur9
+drop_piece:
+  j drop_piece_drop_pieceEntry
+drop_piece_drop_pieceEntry:
+  sw x8, 0(sp)
+  sw x1, 4(sp)
+  li x10, 0
+  li x11, 1
+  addi sp, sp, 8
+  jal x1, move_piece
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x8, 0(sp)
+  mv x8, x10
+  li t0, 0
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 0
+  sw t2, 1600(sp)
+  bnez x8, drop_piece_if.then
+  j drop_piece_merge
+drop_piece_merge:
+  ret
+drop_piece_if.then:
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, place_piece
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, clear_lines
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, spawn_new_piece
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  li t0, 2
+  sw t0, 1600(sp)
+  j drop_piece_merge
+display_game:
+  j display_game_display_gameEntry
+display_game_display_gameEntry:
+  li t1, 64
+  mv x16, t1
+  li t2, 64
+  mv x15, t2
+  sw x17, 0(sp)
+  sw x19, 4(sp)
+  sw x20, 8(sp)
+  sw x14, 12(sp)
+  sw x18, 16(sp)
+  sw x9, 20(sp)
+  sw x1, 24(sp)
+  li x10, 0
+  li x11, 0
+  addi sp, sp, 28
+  jal x1, set_cursor
+  addi sp, sp, -28
+  lw x1, 24(sp)
+  lw x17, 0(sp)
+  lw x19, 4(sp)
+  lw x20, 8(sp)
+  lw x14, 12(sp)
+  lw x18, 16(sp)
+  lw x9, 20(sp)
+  sw x17, 0(sp)
+  sw x19, 4(sp)
+  sw x20, 8(sp)
+  sw x14, 12(sp)
+  sw x18, 16(sp)
+  sw x9, 20(sp)
+  sw x1, 24(sp)
+  li x10, 0
+  li x11, 10
+  addi sp, sp, 28
+  jal x1, print
+  addi sp, sp, -28
+  lw x1, 24(sp)
+  lw x17, 0(sp)
+  lw x19, 4(sp)
+  lw x20, 8(sp)
+  lw x14, 12(sp)
+  lw x18, 16(sp)
+  lw x9, 20(sp)
+  li t0, 0
+  mv x16, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  j display_game_while.cond
+display_game_cur:
+  li t2, 0
+  mv x16, t2
+  li t0, 1
+  sw t0, 1600(sp)
+  j display_game_while.cond35
+display_game_while.stmt:
+  li t1, 0
+  mv x15, t1
+  li t2, 2
+  sw t2, 1600(sp)
+  j display_game_while.cond4
+display_game_while.cond:
+  mv x11, x16
+  la t0, BOARD_HEIGHT
+  lw t0, 0(t0)
+  mv x8, t0
+  slt t0, x11, x8
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 3
+  sw t1, 1600(sp)
+  bnez x8, display_game_while.stmt
+  j display_game_cur
+display_game_cur2:
+  mv x8, x16
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x16, x8
+  li t1, 4
+  sw t1, 1600(sp)
+  j display_game_while.cond
+display_game_while.stmt3:
+  mv x8, x16
+  mv x11, x15
+  la t2, prev_piece
+  sw t2, 0(sp)
+  li t2, 0
+  li t0, 10
+  mul t0, x8, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x11, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 4(sp)
+  lw t0, 4(sp)
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 1
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 5
+  sw t0, 1600(sp)
+  bnez x8, display_game_and.rhs
+  j display_game_and.merge
+display_game_while.cond4:
+  mv x8, x15
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x11, t0
+  slt t1, x8, x11
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 6
+  sw t2, 1600(sp)
+  bnez x8, display_game_while.stmt3
+  j display_game_cur2
+display_game_merge:
+  mv x11, x16
+  mv x8, x15
+  li t2, 0
+  li t1, 10
+  mul t1, x11, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x8, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 8(sp)
+  li t0, 0
+  lw t1, 8(sp)
+  sw t0, 0(t1)
+  mv x8, x15
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x15, x8
+  li t1, 7
+  sw t1, 1600(sp)
+  j display_game_while.cond4
+display_game_and.rhs:
+  mv x9, x16
+  mv x8, x15
+  la t2, board
+  sw t2, 12(sp)
+  li t2, 0
+  li t0, 10
+  mul t0, x9, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 12(sp)
+  add t2, t2, t0
+  sw t2, 16(sp)
+  lw t0, 16(sp)
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x9, t2
+  li t0, 8
+  sw t0, 1600(sp)
+  j display_game_and.merge
+display_game_and.merge:
+  li t0, 0
+  lw t1, 1600(sp)
+  xori t2, t1, 5
+  seqz t2, t2
+  mul t2, t2, t0
+  xori t1, t1, 8
+  seqz t1, t1
+  mul t1, t1, x9
+  add t2, t2, t1
+  mv x8, t2
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 9
+  sw t2, 1600(sp)
+  bnez x8, display_game_if.then
+  j display_game_merge
+display_game_if.then:
+  mv x8, x15
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x16
+  li t2, 1
+  add t0, x11, t2
+  mv x11, t0
+  sw x17, 20(sp)
+  sw x16, 24(sp)
+  sw x19, 28(sp)
+  sw x15, 32(sp)
+  sw x20, 36(sp)
+  sw x14, 40(sp)
+  sw x18, 44(sp)
+  sw x9, 48(sp)
+  sw x1, 52(sp)
+  mv x10, x8
+  addi sp, sp, 56
+  jal x1, set_cursor
+  addi sp, sp, -56
+  lw x1, 52(sp)
+  lw x17, 20(sp)
+  lw x16, 24(sp)
+  lw x19, 28(sp)
+  lw x15, 32(sp)
+  lw x20, 36(sp)
+  lw x14, 40(sp)
+  lw x18, 44(sp)
+  lw x9, 48(sp)
+  sw x17, 20(sp)
+  sw x16, 24(sp)
+  sw x19, 28(sp)
+  sw x15, 32(sp)
+  sw x20, 36(sp)
+  sw x14, 40(sp)
+  sw x18, 44(sp)
+  sw x9, 48(sp)
+  sw x1, 52(sp)
+  li x10, 0
+  li x11, 32
+  addi sp, sp, 56
+  jal x1, print
+  addi sp, sp, -56
+  lw x1, 52(sp)
+  lw x17, 20(sp)
+  lw x16, 24(sp)
+  lw x19, 28(sp)
+  lw x15, 32(sp)
+  lw x20, 36(sp)
+  lw x14, 40(sp)
+  lw x18, 44(sp)
+  lw x9, 48(sp)
+  li t1, 10
+  sw t1, 1600(sp)
+  j display_game_merge
+display_game_cur33:
+  li t2, 0
+  mv x16, t2
+  li t0, 11
+  sw t0, 1600(sp)
+  j display_game_while.cond148
+display_game_while.stmt34:
+  li t1, 0
+  mv x15, t1
+  li t2, 12
+  sw t2, 1600(sp)
+  j display_game_while.cond43
+display_game_while.cond35:
+  mv x8, x16
+  la t0, BOARD_HEIGHT
+  lw t0, 0(t0)
+  mv x9, t0
+  slt t0, x8, x9
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 13
+  sw t1, 1600(sp)
+  bnez x8, display_game_while.stmt34
+  j display_game_cur33
+display_game_cur41:
+  mv x8, x16
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x16, x8
+  li t1, 14
+  sw t1, 1600(sp)
+  j display_game_while.cond35
+display_game_while.stmt42:
+  mv x9, x16
+  mv x8, x15
+  li t2, 0
+  li t0, 10
+  mul t0, x9, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 12(sp)
+  add t2, t2, t0
+  sw t2, 20(sp)
+  lw t2, 20(sp)
+  lw t2, 0(t2)
+  mv x8, t2
+  mv x21, x8
+  li t0, 64
+  mv x11, t0
+  li t1, 64
+  mv x9, t1
+  li t2, 0
+  mv x12, t2
+  li t0, 0
+  mv x11, t0
+  li t1, 15
+  sw t1, 1600(sp)
+  j display_game_while.cond55
+display_game_while.cond43:
+  mv x9, x15
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x8, t0
+  slt t2, x9, x8
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 16
+  sw t0, 1600(sp)
+  bnez x8, display_game_while.stmt42
+  j display_game_cur41
+display_game_cur53:
+  mv x8, x21
+  li t1, 1
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 17
+  sw t0, 1600(sp)
+  bnez x8, display_game_or.merge
+  j display_game_or.rhs
+display_game_while.stmt54:
+  li t1, 0
+  mv x9, t1
+  li t2, 18
+  sw t2, 1600(sp)
+  j display_game_while.cond70
+display_game_while.cond55:
+  mv x8, x11
+  li t0, 4
+  slt t1, x8, t0
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 19
+  sw t2, 1600(sp)
+  bnez x8, display_game_and.rhs60
+  j display_game_and.merge61
+display_game_and.rhs60:
+  mv x8, x12
+  li t0, 0
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x19, t1
+  li t2, 20
+  sw t2, 1600(sp)
+  j display_game_and.merge61
+display_game_and.merge61:
+  li t0, 0
+  lw t1, 1600(sp)
+  xori t2, t1, 19
+  seqz t2, t2
+  mul t2, t2, t0
+  xori t1, t1, 20
+  seqz t1, t1
+  mul t1, t1, x19
+  add t2, t2, t1
+  mv x8, t2
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 21
+  sw t1, 1600(sp)
+  bnez x8, display_game_while.stmt54
+  j display_game_cur53
+display_game_cur68:
+  mv x8, x11
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x11, x8
+  li t1, 22
+  sw t1, 1600(sp)
+  j display_game_while.cond55
+display_game_while.stmt69:
+  mv x8, x11
+  mv x13, x9
+  la t2, current_piece
+  sw t2, 24(sp)
+  li t2, 0
+  li t1, 4
+  mul t1, x8, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x13, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 24(sp)
+  add t2, t2, t1
+  sw t2, 28(sp)
+  lw t0, 28(sp)
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 1
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 23
+  sw t0, 1600(sp)
+  bnez x8, display_game_and.rhs92
+  j display_game_and.merge93
+display_game_while.cond70:
+  mv x8, x9
+  li t1, 4
+  slt t2, x8, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 24
+  sw t0, 1600(sp)
+  bnez x8, display_game_and.rhs75
+  j display_game_and.merge76
+display_game_and.rhs75:
+  mv x8, x12
+  li t1, 0
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x17, t2
+  li t0, 25
+  sw t0, 1600(sp)
+  j display_game_and.merge76
+display_game_and.merge76:
+  li t0, 0
+  lw t1, 1600(sp)
+  xori t2, t1, 24
+  seqz t2, t2
+  mul t2, t2, t0
+  xori t1, t1, 25
+  seqz t1, t1
+  mul t1, t1, x17
+  add t2, t2, t1
+  mv x8, t2
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 26
+  sw t2, 1600(sp)
+  bnez x8, display_game_while.stmt69
+  j display_game_cur68
+display_game_merge84:
+  mv x8, x9
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x9, x8
+  li t2, 27
+  sw t2, 1600(sp)
+  j display_game_while.cond70
+display_game_and.rhs92:
+  la t0, current_x
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x13, x9
+  add t0, x8, x13
+  mv x8, t0
+  mv x13, x15
+  xor t1, x8, x13
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x20, t1
+  li t2, 28
+  sw t2, 1600(sp)
+  j display_game_and.merge93
+display_game_and.merge93:
+  li t0, 0
+  lw t1, 1600(sp)
+  xori t2, t1, 23
+  seqz t2, t2
+  mul t2, t2, t0
+  xori t1, t1, 28
+  seqz t1, t1
+  mul t1, t1, x20
+  add t2, t2, t1
+  mv x8, t2
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 29
+  sw t1, 1600(sp)
+  bnez x8, display_game_and.rhs104
+  j display_game_and.merge105
+display_game_and.rhs104:
+  la t0, current_y
+  lw t0, 0(t0)
+  mv x8, t0
+  mv x13, x11
+  add t2, x8, x13
+  mv x8, t2
+  mv x13, x16
+  xor t0, x8, x13
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x14, t0
+  li t1, 30
+  sw t1, 1600(sp)
+  j display_game_and.merge105
+display_game_and.merge105:
+  li t0, 0
+  lw t1, 1600(sp)
+  xori t2, t1, 29
+  seqz t2, t2
+  mul t2, t2, t0
+  xori t1, t1, 30
+  seqz t1, t1
+  mul t1, t1, x14
+  add t2, t2, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 31
+  sw t0, 1600(sp)
+  bnez x8, display_game_if.then115
+  j display_game_merge84
+display_game_if.then115:
+  li t1, 1
+  mv x12, t1
+  mv x8, x16
+  mv x13, x15
+  li t2, 0
+  li t0, 10
+  mul t0, x8, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x13, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 32(sp)
+  li t2, 1
+  lw t0, 32(sp)
+  sw t2, 0(t0)
+  li t1, 32
+  sw t1, 1600(sp)
+  j display_game_merge84
+display_game_merge124:
+  mv x8, x15
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x15, x8
+  li t1, 33
+  sw t1, 1600(sp)
+  j display_game_while.cond43
+display_game_or.rhs:
+  mv x8, x12
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x18, t0
+  li t1, 34
+  sw t1, 1600(sp)
+  j display_game_or.merge
+display_game_or.merge:
+  li t0, -1
+  lw t1, 1600(sp)
+  xori t2, t1, 17
+  seqz t2, t2
+  mul t2, t2, t0
+  xori t1, t1, 34
+  seqz t1, t1
+  mul t1, t1, x18
+  add t2, t2, t1
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 35
+  sw t0, 1600(sp)
+  bnez x8, display_game_if.then132
+  j display_game_merge124
+display_game_if.then132:
+  mv x8, x15
+  li t1, 1
+  add t2, x8, t1
+  mv x9, t2
+  mv x8, x16
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  sw x17, 36(sp)
+  sw x16, 40(sp)
+  sw x19, 44(sp)
+  sw x15, 48(sp)
+  sw x20, 52(sp)
+  sw x14, 56(sp)
+  sw x12, 60(sp)
+  sw x18, 64(sp)
+  sw x1, 68(sp)
+  mv x11, x8
+  mv x10, x9
+  addi sp, sp, 72
+  jal x1, set_cursor
+  addi sp, sp, -72
+  lw x1, 68(sp)
+  lw x17, 36(sp)
+  lw x16, 40(sp)
+  lw x19, 44(sp)
+  lw x15, 48(sp)
+  lw x20, 52(sp)
+  lw x14, 56(sp)
+  lw x12, 60(sp)
+  lw x18, 64(sp)
+  mv x8, x12
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 36
+  sw t1, 1600(sp)
+  bnez x8, display_game_if.then140
+  j display_game_if.else
+display_game_if.then140:
+  sw x17, 36(sp)
+  sw x16, 40(sp)
+  sw x19, 44(sp)
+  sw x15, 48(sp)
+  sw x20, 52(sp)
+  sw x14, 56(sp)
+  sw x18, 60(sp)
+  sw x1, 64(sp)
+  li x10, 0
+  li x11, 42
+  addi sp, sp, 68
+  jal x1, print
+  addi sp, sp, -68
+  lw x1, 64(sp)
+  lw x17, 36(sp)
+  lw x16, 40(sp)
+  lw x19, 44(sp)
+  lw x15, 48(sp)
+  lw x20, 52(sp)
+  lw x14, 56(sp)
+  lw x18, 60(sp)
+  li t2, 37
+  sw t2, 1600(sp)
+  j display_game_merge124
+display_game_if.else:
+  sw x17, 36(sp)
+  sw x16, 40(sp)
+  sw x19, 44(sp)
+  sw x15, 48(sp)
+  sw x20, 52(sp)
+  sw x14, 56(sp)
+  sw x18, 60(sp)
+  sw x1, 64(sp)
+  li x10, 0
+  li x11, 35
+  addi sp, sp, 68
+  jal x1, print
+  addi sp, sp, -68
+  lw x1, 64(sp)
+  lw x17, 36(sp)
+  lw x16, 40(sp)
+  lw x19, 44(sp)
+  lw x15, 48(sp)
+  lw x20, 52(sp)
+  lw x14, 56(sp)
+  lw x18, 60(sp)
+  li t0, 38
+  sw t0, 1600(sp)
+  j display_game_merge124
+display_game_cur146:
+  la t0, BOARD_HEIGHT
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  sw x1, 36(sp)
+  mv x11, x8
+  li x10, 0
+  addi sp, sp, 40
+  jal x1, set_cursor
+  addi sp, sp, -40
+  lw x1, 36(sp)
+  sw x1, 36(sp)
+  li x10, 0
+  li x11, 43
+  addi sp, sp, 40
+  jal x1, print
+  addi sp, sp, -40
+  lw x1, 36(sp)
+  li t0, 0
+  mv x15, t0
+  li t1, 39
+  sw t1, 1600(sp)
+  j display_game_while.cond166
+display_game_while.stmt147:
+  mv x8, x16
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  sw x16, 36(sp)
+  sw x1, 40(sp)
+  mv x11, x8
+  li x10, 0
+  addi sp, sp, 44
+  jal x1, set_cursor
+  addi sp, sp, -44
+  lw x1, 40(sp)
+  lw x16, 36(sp)
+  sw x16, 36(sp)
+  sw x1, 40(sp)
+  li x10, 0
+  li x11, 124
+  addi sp, sp, 44
+  jal x1, print
+  addi sp, sp, -44
+  lw x1, 40(sp)
+  lw x16, 36(sp)
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x8, t0
+  li t1, 1
+  add t2, x8, t1
+  mv x9, t2
+  mv x8, x16
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  sw x16, 36(sp)
+  sw x1, 40(sp)
+  mv x11, x8
+  mv x10, x9
+  addi sp, sp, 44
+  jal x1, set_cursor
+  addi sp, sp, -44
+  lw x1, 40(sp)
+  lw x16, 36(sp)
+  sw x16, 36(sp)
+  sw x1, 40(sp)
+  li x10, 0
+  li x11, 124
+  addi sp, sp, 44
+  jal x1, print
+  addi sp, sp, -44
+  lw x1, 40(sp)
+  lw x16, 36(sp)
+  mv x8, x16
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x16, x8
+  li t1, 40
+  sw t1, 1600(sp)
+  j display_game_while.cond148
+display_game_while.cond148:
+  mv x8, x16
+  la t0, BOARD_HEIGHT
+  lw t0, 0(t0)
+  mv x9, t0
+  slt t2, x8, x9
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 41
+  sw t0, 1600(sp)
+  bnez x8, display_game_while.stmt147
+  j display_game_cur146
+display_game_cur164:
+  sw x1, 36(sp)
+  li x10, 0
+  li x11, 43
+  addi sp, sp, 40
+  jal x1, print
+  addi sp, sp, -40
+  lw x1, 36(sp)
+  li t1, 0
+  mv x16, t1
+  li t2, 42
+  sw t2, 1600(sp)
+  j display_game_while.cond176
+display_game_while.stmt165:
+  sw x15, 36(sp)
+  sw x1, 40(sp)
+  li x10, 0
+  li x11, 45
+  addi sp, sp, 44
+  jal x1, print
+  addi sp, sp, -44
+  lw x1, 40(sp)
+  lw x15, 36(sp)
+  mv x8, x15
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x15, x8
+  li t2, 43
+  sw t2, 1600(sp)
+  j display_game_while.cond166
+display_game_while.cond166:
+  mv x8, x15
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x9, t0
+  slt t0, x8, x9
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 44
+  sw t1, 1600(sp)
+  bnez x8, display_game_while.stmt165
+  j display_game_cur164
+display_game_cur174:
+  ret
+display_game_while.stmt175:
+  li t2, 0
+  mv x15, t2
+  li t0, 46
+  sw t0, 1600(sp)
+  j display_game_while.cond184
+display_game_while.cond176:
+  mv x8, x16
+  la t0, BOARD_HEIGHT
+  lw t0, 0(t0)
+  mv x9, t0
+  slt t1, x8, x9
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 47
+  sw t2, 1600(sp)
+  bnez x8, display_game_while.stmt175
+  j display_game_cur174
+display_game_cur182:
+  mv x8, x16
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x16, x8
+  li t2, 48
+  sw t2, 1600(sp)
+  j display_game_while.cond176
+display_game_while.stmt183:
+  mv x8, x16
+  mv x9, x15
+  la t0, prev_board
+  sw t0, 36(sp)
+  li t2, 0
+  li t1, 10
+  mul t1, x8, t1
+  add t2, t2, t1
+  li t0, 1
+  mul t0, x9, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 36(sp)
+  add t2, t2, t1
+  sw t2, 40(sp)
+  mv x8, x16
+  mv x9, x15
+  li t2, 0
+  li t0, 10
+  mul t0, x8, t0
+  add t2, t2, t0
+  li t1, 1
+  mul t1, x9, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 12(sp)
+  add t2, t2, t0
+  sw t2, 44(sp)
+  lw t1, 44(sp)
+  lw t1, 0(t1)
+  mv x8, t1
+  lw t2, 40(sp)
+  sw x8, 0(t2)
+  mv x8, x15
+  li t0, 1
+  add t1, x8, t0
+  mv x8, t1
+  mv x15, x8
+  li t2, 49
+  sw t2, 1600(sp)
+  j display_game_while.cond184
+display_game_while.cond184:
+  mv x8, x15
+  la t0, BOARD_WIDTH
+  lw t0, 0(t0)
+  mv x9, t0
+  slt t0, x8, x9
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 50
+  sw t1, 1600(sp)
+  bnez x8, display_game_while.stmt183
+  j display_game_cur182
+game_loop:
+  j game_loop_game_loopEntry
+game_loop_game_loopEntry:
+  li t2, 64
+  mv x9, t2
+  li t0, 64
+  mv x11, t0
+  li t1, 0
+  mv x11, t1
+  li t2, 0
+  sw t2, 1600(sp)
+  j game_loop_while.cond
+game_loop_cur:
+  ret
+game_loop_while.stmt:
+  sw x11, 0(sp)
+  sw x1, 4(sp)
+  addi sp, sp, 8
+  jal x1, display_game
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x11, 0(sp)
+  sw x11, 0(sp)
+  sw x8, 4(sp)
+  sw x1, 8(sp)
+  addi sp, sp, 12
+  jal x1, get_key
+  addi sp, sp, -12
+  lw x1, 8(sp)
+  lw x11, 0(sp)
+  lw x8, 4(sp)
+  mv x8, x10
+  mv x9, x8
+  mv x8, x9
+  li t0, 97
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 2
+  sw t2, 1600(sp)
+  bnez x8, game_loop_if.then
+  j game_loop_if.else
+game_loop_while.cond:
+  la t0, game_over
+  lw t0, 0(t0)
+  mv x8, t0
+  li t0, 0
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 3
+  sw t2, 1600(sp)
+  bnez x8, game_loop_while.stmt
+  j game_loop_cur
+game_loop_merge:
+  mv x8, x11
+  li t0, 50
+  add t1, x8, t0
+  mv x8, t1
+  mv x11, x8
+  mv x9, x11
+  la t0, level
+  lw t0, 0(t0)
+  mv x8, t0
+  li t2, 1
+  sub t0, x8, t2
+  mv x8, t0
+  li t1, 50
+  mul t2, x8, t1
+  mv x8, t2
+  li t0, 500
+  sub t1, t0, x8
+  mv x8, t1
+  slt t2, x9, x8
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 4
+  sw t0, 1600(sp)
+  bnez x8, game_loop_if.then41
+  j game_loop_merge34
+game_loop_if.then:
+  sw x11, 0(sp)
+  sw x1, 4(sp)
+  li x10, -1
+  li x11, 0
+  addi sp, sp, 8
+  jal x1, move_piece
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x11, 0(sp)
+  li t1, 5
+  sw t1, 1600(sp)
+  j game_loop_merge
+game_loop_if.else:
+  mv x8, x9
+  li t2, 100
+  xor t0, x8, t2
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 6
+  sw t1, 1600(sp)
+  bnez x8, game_loop_if.then9
+  j game_loop_if.else10
+game_loop_if.then9:
+  sw x11, 0(sp)
+  sw x1, 4(sp)
+  li x10, 1
+  li x11, 0
+  addi sp, sp, 8
+  jal x1, move_piece
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x11, 0(sp)
+  li t2, 7
+  sw t2, 1600(sp)
+  j game_loop_merge
+game_loop_if.else10:
+  mv x8, x9
+  li t0, 115
+  xor t1, x8, t0
+  seqz t1, t1
+  mv x8, t1
+  mv t2, x8
+  mv x8, t2
+  li t0, 0
+  xor t1, x8, t0
+  snez t1, t1
+  mv x8, t1
+  li t2, 8
+  sw t2, 1600(sp)
+  bnez x8, game_loop_if.then17
+  j game_loop_if.else18
+game_loop_if.then17:
+  sw x11, 0(sp)
+  sw x1, 4(sp)
+  addi sp, sp, 8
+  jal x1, drop_piece
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x11, 0(sp)
+  li t0, 9
+  sw t0, 1600(sp)
+  j game_loop_merge
+game_loop_if.else18:
+  mv x8, x9
+  li t1, 119
+  xor t2, x8, t1
+  seqz t2, t2
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 10
+  sw t0, 1600(sp)
+  bnez x8, game_loop_if.then24
+  j game_loop_if.else25
+game_loop_if.then24:
+  sw x11, 0(sp)
+  sw x1, 4(sp)
+  addi sp, sp, 8
+  jal x1, rotate_piece
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x11, 0(sp)
+  li t1, 11
+  sw t1, 1600(sp)
+  j game_loop_merge
+game_loop_if.else25:
+  mv x8, x9
+  li t2, 113
+  xor t0, x8, t2
+  seqz t0, t0
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 12
+  sw t1, 1600(sp)
+  bnez x8, game_loop_if.then31
+  j game_loop_merge
+game_loop_if.then31:
+  li t2, 1
+  la t0, game_over
+  sw t2, 0(t0)
+  li t1, 13
+  sw t1, 1600(sp)
+  j game_loop_merge
+game_loop_merge34:
+  sw x11, 0(sp)
+  sw x1, 4(sp)
+  li x10, 50
+  addi sp, sp, 8
+  jal x1, delay_ms
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  lw x11, 0(sp)
+  li t2, 14
+  sw t2, 1600(sp)
+  j game_loop_while.cond
+game_loop_if.then41:
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, drop_piece
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  li t0, 0
+  mv x11, t0
+  li t1, 15
+  sw t1, 1600(sp)
+  j game_loop_merge34
+show_game_over:
+  j show_game_over_show_game_overEntry
+show_game_over_show_game_overEntry:
+  sw x1, 0(sp)
+  addi sp, sp, 4
+  jal x1, clear_screen
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 0
+  addi sp, sp, 4
+  jal x1, set_cursor
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 71
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 97
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 109
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 101
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 32
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 79
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 118
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 101
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 114
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 33
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 10
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 70
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 105
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 110
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 97
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 108
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 32
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 83
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 99
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 111
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 114
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 101
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 58
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 32
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  la t0, score
+  lw t0, 0(t0)
+  mv x8, t0
+  sw x1, 0(sp)
+  mv x11, x8
+  li x10, 1
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  sw x1, 0(sp)
+  li x10, 0
+  li x11, 10
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  ret

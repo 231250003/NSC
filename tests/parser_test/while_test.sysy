@@ -1,0 +1,14 @@
+const int a = 1;
+int b = 2;
+int A[10] = {8, 7, 4};
+
+void print(int x,int y,int a[][321312][12]) {
+}
+
+int func() {
+    while(1){
+        while(x<=3&&a[0]>=9)
+        x=x+1;
+    }
+    print(x,y,yy,_x_1);
+}

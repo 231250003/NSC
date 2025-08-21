@@ -1,0 +1,475 @@
+.data
+
+.text
+.globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  li t0, 0
+  sw t0, 0(sp)
+  li t1, 0
+  sw t1, 4(sp)
+  li t2, 0
+  sw t2, 8(sp)
+  li t0, 0
+  sw t0, 12(sp)
+  li t1, 0
+  sw t1, 16(sp)
+  li t2, 0
+  sw t2, 20(sp)
+  li t0, 0
+  sw t0, 24(sp)
+  li t1, 0
+  sw t1, 28(sp)
+  li t2, 0
+  sw t2, 32(sp)
+  li t0, 0
+  sw t0, 36(sp)
+  li t1, 64
+  mv x11, t1
+  sw x8, 40(sp)
+  sw x12, 44(sp)
+  sw x1, 48(sp)
+  li x10, 1
+  addi sp, sp, 52
+  jal x1, read
+  addi sp, sp, -52
+  lw x1, 48(sp)
+  lw x8, 40(sp)
+  lw x12, 44(sp)
+  mv x8, x10
+  mv x11, x8
+  li t2, 0
+  mv x9, t2
+  li t0, 0
+  sw t0, 1600(sp)
+  j main_for.cond
+main_cur:
+  mv x8, x11
+  li t1, 1
+  sub t2, x8, t1
+  mv x8, t2
+  sw x11, 40(sp)
+  sw x12, 44(sp)
+  sw x1, 48(sp)
+  addi x10, sp, 0
+  mv x12, x8
+  li x11, 0
+  addi sp, sp, 52
+  jal x1, quickSort
+  addi sp, sp, -52
+  lw x1, 48(sp)
+  lw x11, 40(sp)
+  lw x12, 44(sp)
+  li t0, 0
+  mv x13, t0
+  li t1, 1
+  sw t1, 1600(sp)
+  j main_for.cond19
+main_for.stmt:
+  mv x8, x9
+  li t2, 0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  li t0, 0
+  add t2, t2, t0
+  add t2, t2, sp
+  sw t2, 40(sp)
+  sw x9, 44(sp)
+  sw x11, 48(sp)
+  sw x12, 52(sp)
+  sw x8, 56(sp)
+  sw x1, 60(sp)
+  li x10, 1
+  addi sp, sp, 64
+  jal x1, read
+  addi sp, sp, -64
+  lw x1, 60(sp)
+  lw x9, 44(sp)
+  lw x11, 48(sp)
+  lw x12, 52(sp)
+  lw x8, 56(sp)
+  mv x8, x10
+  lw t1, 40(sp)
+  sw x8, 0(t1)
+  mv x8, x9
+  li t2, 1
+  add t0, x8, t2
+  mv x8, t0
+  mv x9, x8
+  li t1, 2
+  sw t1, 1600(sp)
+  j main_for.cond
+main_for.cond:
+  mv x8, x9
+  mv x13, x11
+  slt t2, x8, x13
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 3
+  sw t0, 1600(sp)
+  bnez x8, main_for.stmt
+  j main_cur
+main_cur17:
+  sw x1, 44(sp)
+  li x10, 0
+  li x11, 10
+  addi sp, sp, 48
+  jal x1, print
+  addi sp, sp, -48
+  lw x1, 44(sp)
+  li t1, 0
+  mv x10, t1
+  addi sp, sp, 2044
+  jal x1, exit
+main_for.stmt18:
+  mv x8, x13
+  li t2, 0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  li t0, 0
+  add t2, t2, t0
+  add t2, t2, sp
+  sw t2, 44(sp)
+  lw x12, 44(sp),
+  lw x12, 0(x12)
+  mv x8, x12
+  sw x13, 48(sp)
+  sw x11, 52(sp)
+  sw x12, 56(sp)
+  sw x1, 60(sp)
+  mv x11, x8
+  li x10, 1
+  addi sp, sp, 64
+  jal x1, print
+  addi sp, sp, -64
+  lw x1, 60(sp)
+  lw x13, 48(sp)
+  lw x11, 52(sp)
+  lw x12, 56(sp)
+  sw x13, 48(sp)
+  sw x11, 52(sp)
+  sw x12, 56(sp)
+  sw x1, 60(sp)
+  li x10, 0
+  li x11, 32
+  addi sp, sp, 64
+  jal x1, print
+  addi sp, sp, -64
+  lw x1, 60(sp)
+  lw x13, 48(sp)
+  lw x11, 52(sp)
+  lw x12, 56(sp)
+  mv x8, x13
+  li t1, 1
+  add t2, x8, t1
+  mv x8, t2
+  mv x13, x8
+  lw t0, 44(sp)
+  sw x12, 0(t0)
+  li t1, 5
+  sw t1, 1600(sp)
+  j main_for.cond19
+main_for.cond19:
+  mv x8, x13
+  mv x9, x11
+  slt t2, x8, x9
+  mv x8, t2
+  mv t0, x8
+  mv x8, t0
+  li t1, 0
+  xor t2, x8, t1
+  snez t2, t2
+  mv x8, t2
+  li t0, 6
+  sw t0, 1600(sp)
+  bnez x8, main_for.stmt18
+  j main_cur17
+swap:
+  sw x10, 0(sp)
+  mv x8, x11
+  mv x9, x12
+  j swap_swapEntry
+swap_swapEntry:
+  mv x8, x8
+  mv x11, x9
+  mv x9, x8
+  li t2, 0
+  li t0, 1
+  mul t0, x9, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 4(sp)
+  lw t0, 4(sp)
+  lw t0, 0(t0)
+  mv x9, t0
+  mv x9, x9
+  mv x8, x8
+  li t2, 0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 8(sp)
+  mv x8, x11
+  li t2, 0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 12(sp)
+  lw t2, 12(sp)
+  lw t2, 0(t2)
+  mv x8, t2
+  lw t0, 8(sp)
+  sw x8, 0(t0)
+  mv x8, x11
+  li t2, 0
+  li t1, 1
+  mul t1, x8, t1
+  add t2, t2, t1
+  slli t2, t2, 2
+  lw t0, 0(sp)
+  add t2, t2, t0
+  sw t2, 16(sp)
+  mv x8, x9
+  lw t0, 16(sp)
+  sw x8, 0(t0)
+  ret
+partition:
+  sw x10, 0(sp)
+  mv x9, x11
+  mv x11, x12
+  j partition_partitionEntry
+partition_partitionEntry:
+  mv x9, x9
+  mv x16, x11
+  mv x8, x16
+  li t2, 0
+  li t0, 1
+  mul t0, x8, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 4(sp)
+  lw x8, 4(sp),
+  lw x8, 0(x8)
+  mv x11, x8
+  mv x14, x11
+  mv x11, x9
+  li t0, 1
+  sub t1, x11, t0
+  mv x11, t1
+  mv x12, x11
+  mv x9, x9
+  mv x9, x9
+  lw t2, 4(sp)
+  sw x8, 0(t2)
+  li t0, 0
+  sw t0, 1600(sp)
+  j partition_for.cond
+partition_cur:
+  mv x9, x12
+  li t1, 1
+  add t2, x9, t1
+  mv x11, t2
+  mv x9, x16
+  sw x12, 8(sp)
+  sw x8, 12(sp)
+  sw x15, 16(sp)
+  sw x1, 20(sp)
+  lw x10, 0(sp)
+  mv x12, x9
+  addi sp, sp, 24
+  jal x1, swap
+  addi sp, sp, -24
+  lw x1, 20(sp)
+  lw x12, 8(sp)
+  lw x8, 12(sp)
+  lw x15, 16(sp)
+  mv x9, x12
+  li t0, 1
+  add t1, x9, t0
+  mv x9, t1
+  mv x10, x9
+  ret
+partition_for.stmt:
+  mv x11, x9
+  li t2, 0
+  li t0, 1
+  mul t0, x11, t0
+  add t2, t2, t0
+  slli t2, t2, 2
+  lw t1, 0(sp)
+  add t2, t2, t1
+  sw t2, 8(sp)
+  lw x15, 8(sp),
+  lw x15, 0(x15)
+  mv x13, x15
+  mv x11, x14
+  sgt t1, x13, x11
+  seqz t1, t1
+  mv x11, t1
+  mv t2, x11
+  mv x11, t2
+  li t0, 0
+  xor t1, x11, t0
+  snez t1, t1
+  mv x11, t1
+  lw t2, 8(sp)
+  sw x15, 0(t2)
+  li t0, 2
+  sw t0, 1600(sp)
+  bnez x11, partition_if.then
+  j partition_merge
+partition_for.cond:
+  mv x13, x9
+  mv x11, x16
+  slt t1, x13, x11
+  mv x11, t1
+  mv t2, x11
+  mv x11, t2
+  li t0, 0
+  xor t1, x11, t0
+  snez t1, t1
+  mv x11, t1
+  li t2, 3
+  sw t2, 1600(sp)
+  bnez x11, partition_for.stmt
+  j partition_cur
+partition_merge:
+  mv x9, x9
+  li t0, 1
+  add t1, x9, t0
+  mv x9, t1
+  mv x9, x9
+  li t2, 4
+  sw t2, 1600(sp)
+  j partition_for.cond
+partition_if.then:
+  mv x11, x12
+  li t0, 1
+  add t1, x11, t0
+  mv x11, t1
+  mv x12, x11
+  mv x13, x12
+  mv x11, x9
+  sw x16, 12(sp)
+  sw x14, 16(sp)
+  sw x12, 20(sp)
+  sw x9, 24(sp)
+  sw x8, 28(sp)
+  sw x15, 32(sp)
+  sw x1, 36(sp)
+  lw x10, 0(sp)
+  mv x12, x11
+  mv x11, x13
+  addi sp, sp, 40
+  jal x1, swap
+  addi sp, sp, -40
+  lw x1, 36(sp)
+  lw x16, 12(sp)
+  lw x14, 16(sp)
+  lw x12, 20(sp)
+  lw x9, 24(sp)
+  lw x8, 28(sp)
+  lw x15, 32(sp)
+  li t2, 5
+  sw t2, 1600(sp)
+  j partition_merge
+quickSort:
+  sw x10, 0(sp)
+  mv x8, x11
+  mv x11, x12
+  j quickSort_quickSortEntry
+quickSort_quickSortEntry:
+  mv x9, x8
+  mv x12, x11
+  mv x11, x9
+  mv x8, x12
+  slt t0, x11, x8
+  mv x8, t0
+  mv t1, x8
+  mv x8, t1
+  li t2, 0
+  xor t0, x8, t2
+  snez t0, t0
+  mv x8, t0
+  li t1, 0
+  sw t1, 1600(sp)
+  bnez x8, quickSort_if.then
+  j quickSort_merge
+quickSort_merge:
+  ret
+quickSort_if.then:
+  mv x11, x9
+  mv x8, x12
+  sw x13, 4(sp)
+  sw x8, 8(sp)
+  sw x12, 12(sp)
+  sw x9, 16(sp)
+  sw x1, 20(sp)
+  lw x10, 0(sp)
+  mv x12, x8
+  addi sp, sp, 24
+  jal x1, partition
+  addi sp, sp, -24
+  lw x1, 20(sp)
+  lw x13, 4(sp)
+  lw x8, 8(sp)
+  lw x12, 12(sp)
+  lw x9, 16(sp)
+  mv x8, x10
+  mv x8, x8
+  mv x9, x9
+  mv x11, x8
+  li t2, 1
+  sub t0, x11, t2
+  mv x11, t0
+  sw x13, 4(sp)
+  sw x12, 8(sp)
+  sw x8, 12(sp)
+  sw x1, 16(sp)
+  lw x10, 0(sp)
+  mv x12, x11
+  mv x11, x9
+  addi sp, sp, 20
+  jal x1, quickSort
+  addi sp, sp, -20
+  lw x1, 16(sp)
+  lw x13, 4(sp)
+  lw x12, 8(sp)
+  lw x8, 12(sp)
+  mv x8, x8
+  li t1, 1
+  add t2, x8, t1
+  mv x9, t2
+  mv x8, x12
+  sw x1, 4(sp)
+  lw x10, 0(sp)
+  mv x12, x8
+  mv x11, x9
+  addi sp, sp, 8
+  jal x1, quickSort
+  addi sp, sp, -8
+  lw x1, 4(sp)
+  li t0, 2
+  sw t0, 1600(sp)
+  j quickSort_merge

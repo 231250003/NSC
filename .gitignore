@@ -1,22 +1,22 @@
 # 忽略所有 src 内容（含子目录），但后面有例外
-/src/**
+compiler/src/**
 
 # 取消忽略 .g4 文件（必须先 unignore 父路径）
-!/src/
-!/src/*.g4
-!/src/*.java
+!compiler/src/
+!compiler/src/*.g4
+!compiler/src/*.java
 # 取消忽略你指定的 Java 文件（必须层层 unignore）
 
 
 # 再次忽略 ANTLR 生成的文件（通常不在你指定的路径里）
 # 例如如果 ANTLR 生成在 /src/main/java/com/example/
 # 就需要单独再忽略一遍它们：
-/src/Lexer.java
-/src/Parser.java
-/src/ParserBaseListener.java
-/src/ParserBaseVisitor.java
-/src/ParserListener.java
-/src/ParserVisitor.java
+compiler/src/Lexer.java
+compiler/src/Parser.java
+compiler/src/ParserBaseListener.java
+compiler/src/ParserBaseVisitor.java
+compiler/src/ParserListener.java
+compiler/src/ParserVisitor.java
 
 # 忽略构建产物
 /classes
@@ -26,4 +26,5 @@
 # IDE/系统文件
 .DS_Store
 /.idea
-/Lab.iml
+/.vscode
+/nsc.iml

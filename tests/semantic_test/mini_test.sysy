@@ -1,0 +1,16 @@
+int g(){
+    print(2);
+}
+int c,d,e=1001;
+int main() {
+    int a, b, c;
+    int a, b, c;
+    int c,d,e;
+    int x=a();
+    const int c=5;
+    int c[3]={2,3,4};
+    int d[2003];
+    x=d;
+    x=x+1;
+    main(a);
+}

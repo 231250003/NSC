@@ -1,0 +1,47 @@
+int a = 1;
+int b[3];
+void c() {}
+// 函数重复定义
+int main() {
+    // 变量未声明
+    int x = y; // Error type 1: Variable 'y' is not defined.
+
+    // 变量重复声明
+    int a;
+    // 全局作用域函数和变量重名
+    int c;
+
+    // 函数未定义
+    int result = unknownFunction(5); // Error type 2: Undefined function 'unknownFunction'.
+
+
+    // 赋值号两侧类型不匹配
+    int arr[2];
+    arr = 5; // Error type 5: Cannot assign int to an array.
+
+    // 数组赋值合法性
+    int array2D[3][3];
+    int array1D[2];
+    array2D[1] = array1D; // ✅ Allowed
+    array2D[1][1] = array1D; // Error type 5: Type mismatch in assignment.
+
+    // 运算符需求类型与提供类型不匹配
+    int g;
+    g = b + 1; // Error type 6: Invalid operation between 'array' and 'int'.
+
+
+    int value = func(1); // Error type 8: Function parameter mismatch.
+
+    // 对非数组使用下标运算符
+    int h = 3;
+    int element = h[2]; // Error type 9: Subscript on non-array.
+
+    // 对变量使用函数调用
+    int i = 5;
+    int result2 = i(3); // Error type 10: Not a function.
+
+    // 赋值号左侧非变量或数组元素
+    f = 10; // Error type 11: Cannot assign to function.
+
+    return 0;
+}

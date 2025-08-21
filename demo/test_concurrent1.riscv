@@ -1,0 +1,22 @@
+.data
+
+.text
+.globl main
+main:
+  addi sp, sp, -2044
+  j main_mainEntry
+main_mainEntry:
+  li t0, 0
+  sw t0, 1600(sp)
+  j main_while.stmt
+main_while.stmt:
+  sw x1, 0(sp)
+  li x10, 1
+  li x11, 1
+  addi sp, sp, 4
+  jal x1, print
+  addi sp, sp, -4
+  lw x1, 0(sp)
+  li t1, 1
+  sw t1, 1600(sp)
+  j main_while.stmt
