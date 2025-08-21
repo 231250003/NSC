@@ -27,4 +27,4 @@ compiler/src/ParserVisitor.java
 .DS_Store
 /.idea
 /.vscode
-/nsc.iml
+/*.iml
