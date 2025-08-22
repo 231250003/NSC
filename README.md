@@ -38,6 +38,7 @@ NSC(**N**aive **S**ysY **C**ollection),将SysY编译成riscv并运行，主要�
 └── README.md            # 项目说明文档
 ```
 ## 项目运行方式
+在Linux系统上运行，需要Java和GCC环境
 ```bash
 make compile SRCFILE=demo/Tetris.sysy
 make run_os
