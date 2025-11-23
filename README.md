@@ -1,5 +1,6 @@
 #   NSC项目简介
 NSC(**N**aive **S**ysY **C**ollection),将SysY编译成riscv并运行，主要包括compiler和os两部分，compiler负责将SysY源码生成riscv代码，os负责模拟计算机系统的运行。
+![](./assest/demo-Tetris.gif)
 ##  项目结构
 ```bash
 .
